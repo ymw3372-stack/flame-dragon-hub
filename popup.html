@@ -1,0 +1,54 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FLAME DRAGON HUB</title>
+<style>
+body{margin:0;width:310px;background:#0b1020;color:#eef2ff;font:14px system-ui;padding:16px;box-sizing:border-box}
+h1{font-size:18px;margin:0 0 8px;color:#ff9a65}
+p{color:#aab4cb;line-height:1.5}
+.card{border:1px solid #ffffff20;border-radius:12px;padding:12px;margin:12px 0}
+button,label{display:inline-block;background:#e95b35;color:white;border:0;border-radius:8px;padding:10px 12px;font-weight:700;cursor:pointer}
+input{max-width:100%;margin-top:8px}
+img{width:100%;max-height:170px;object-fit:contain;background:#151b2c;border-radius:8px;margin-top:10px}
+.status{font-size:12px;color:#ffbd8c}
+.muted{font-size:12px}
+.language{display:flex;align-items:center;gap:8px;margin:12px 0}
+select{flex:1;min-width:0;background:#151b2c;color:#eef2ff;border:1px solid #ffffff30;border-radius:8px;padding:8px}
+body[dir="rtl"]{text-align:right}
+body[dir="rtl"] .language{flex-direction:row}
+</style>
+</head>
+<body>
+<h1>FLAME DRAGON HUB</h1>
+<strong data-i18n="subtitle">Skin Bridge · Prototype</strong>
+
+<div class="language">
+<label for="language" data-i18n="languageLabel">Language</label>
+<select id="language">
+<option value="en">🇬🇧 English</option>
+<option value="ar">🇪🇬 العربية</option>
+<option value="ru">🇷🇺 Русский</option>
+<option value="de">🇩🇪 Deutsch</option>
+<option value="hi">🇮🇳 हिन्दी</option>
+</select>
+</div>
+
+<p data-i18n="intro">Load a JSON skin bundle exported from Skin Studio.</p>
+
+<div class="card">
+<label for="file" data-i18n="import">Import skin bundle</label>
+<input id="file" type="file" accept=".json,application/json">
+<div id="msg" class="status" data-i18n="none">No bundle loaded</div>
+<img id="preview" hidden alt="Skin preview">
+<p id="skinName"></p>
+<button id="clear" type="button" style="background:#343c52" data-i18n="clear">Clear saved skin</button>
+</div>
+
+<p class="muted" data-i18n="note">This bridge transfers the design to the extension and can preview it locally. It does not yet replace the in-game avatar.</p>
+
+<script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FLAME DRAGON HUB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:360px;max-height:600px;overflow:auto;padding:14px;background:#0b1020;color:#eef2ff;font:14px system-ui}
+h1{font-size:19px;color:#ff9a65;margin:0 0 6px}
+h2{font-size:15px;margin:0 0 10px}
+p{color:#aab4cb;line-height:1.5}
+.card{border:1px solid #ffffff24;border-radius:16px;padding:12px;margin:12px 0;background:#10172a}
+button,label{display:inline-block;border:0;border-radius:10px;padding:9px 11px;background:#e95b35;color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5}
+input,select{width:100%;margin:7px 0;padding:10px;border:1px solid #ffffff30;border-radius:10px;background:#151b2c;color:white}
+.status{font-size:12px;color:#ffbd8c;overflow-wrap:anywhere}
+.muted{font-size:12px}
+.secondary{background:#343c52}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.tabs button{padding:9px 3px;font-size:11px;background:#252e45}
+.tabs button.active{background:#e95b35;outline:2px solid #ffb18b}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.skin{min-width:0;padding:6px;border:1px solid #ffffff25;border-radius:13px;background:#151b2c;color:#fff}
+.skin img{width:100%;height:70px;object-fit:contain;background:#0b1020;border-radius:9px;margin:0}
+.skin span{display:block;font-size:11px;overflow-wrap:anywhere;margin-top:5px}
+.skin.selected{border:2px solid #ff9a65;background:#33221f}
+.previewBox{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center}
+.previewBox img{width:100px;height:100px;object-fit:contain;margin:0;border-radius:12px;background:#0b1020}
+.previewName{font-weight:700;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<h1>FLAME DRAGON HUB</h1>
+<p>Skin Library · Custom Skin Manager</p>
+
+<section class="card">
+<h2>Choose Skin Group</h2>
+<div class="tabs">
+<button class="active" data-folder="ghostly-reaper">Ghostly</button>
+<button data-folder="grim-reaper">Grim Reaper</button>
+<button data-folder="pumpkin-ghost">Pumpkin Ghost</button>
+</div>
+<input id="search" type="search" placeholder="Search skins...">
+<div id="libraryStatus" class="status">Loading skins...</div>
+<div id="skinGrid" class="grid"></div>
+</section>
+
+<section class="card">
+<h2>🎯 Selected Original Skin</h2>
+<div class="previewBox">
+<img id="targetPreview" alt="Selected skin preview" hidden>
+<div>
+<div id="targetName" class="previewName">No skin selected</div>
+<p id="replaceStatus" class="status">Choose a skin from the gallery.</p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>＋ Add Your Skin</h2>
+<label for="customFile">Choose your image</label>
+<input id="customFile" type="file" accept="image/png,image/jpeg,image/webp">
+<img id="customPreview" hidden alt="Custom skin preview">
+<div id="customMsg" class="status">Choose an image and an original skin.</div>
+<button id="saveCustom">Save Custom Skin</button>
+<button id="removeCustom" class="secondary">Remove Custom Skin</button>
+</section>
+
+<section class="card">
+<h2>Import Skin Studio Bundle</h2>
+<input id="file" type="file" accept=".json,application/json">
+<div id="msg" class="status">No bundle loaded</div>
+<img id="preview" hidden alt="Imported skin preview">
+<p id="skinName"></p>
+<button id="clear" class="secondary">Clear saved bundle</button>
+</section>
+
+<p class="muted">Choose one original skin to target. Saving a custom image stores it in the extension; actual in-game replacement depends on matching EvoWorld's sprite requests.</p>
+<script src="popup.js"></script>
+</body>
+</html>

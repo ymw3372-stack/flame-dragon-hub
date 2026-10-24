@@ -1,0 +1,16 @@
+{
+    "name": "FLAME DRAGON HUB",
+    "short_name": "FLAME DRAGON",
+    "description": "A community-made EvoWorld companion hub.",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#160805",
+    "theme_color": "#ff6a18",
+    "icons": [
+        {
+            "src": "assets/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

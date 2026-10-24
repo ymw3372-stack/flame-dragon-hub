@@ -1,0 +1,35 @@
+
+{
+  "manifest_version": 3,
+  "name": "FLAME DRAGON HUB — Skin Bridge",
+  "version": "0.2.1",
+  "description": "FLAME DRAGON HUB skin bridge.",
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "FLAME DRAGON HUB"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://evoworld.io/*",
+        "*://*.evoworld.io/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "https://ymw3372-stack.github.io/*"
+    ]
+  }
+}
+
+      "https://ymw3372-stack.github.io/*"
+    ]
+  }
+}

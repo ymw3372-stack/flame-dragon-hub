@@ -1,0 +1,92 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | FLAME DRAGON HUB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <aside class="bonus-codes" aria-label="Bonus codes">
+        <strong>ALL BONUS CODES</strong>
+        <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
+    </aside>
+
+    <main class="welcome-page">
+        <section class="welcome-container">
+
+            <img
+                src="assets/logo.png"
+                alt="FLAME DRAGON HUB"
+                class="welcome-logo"
+            >
+
+            <span class="welcome-badge">
+                WELCOME TO THE HUB
+            </span>
+
+            <h1>Choose Your Path</h1>
+
+            <p class="welcome-subtitle">
+                Tell us how you want to explore FLAME DRAGON HUB.
+            </p>
+
+            <section class="welcome-options">
+
+                <a href="evolutions.html" class="welcome-card" data-choice="experienced">
+                    <div class="welcome-icon">⚔️</div>
+                    <h2>im new Player in evoworld</h2>
+                    <p>
+                        Jump straight into evolutions and explore
+                        advanced paths.
+                    </p>
+                    <span>Explore Evolutions →</span>
+                </a>
+
+                <a href="index.html" class="welcome-card" data-choice="explore">
+                    <div class="welcome-icon">🔎</div>
+                    <h2>I Know What I'm Looking For</h2>
+                    <p>
+                        Go directly to the hub and explore everything
+                        available.
+                    </p>
+                    <span>Enter Hub →</span>
+                </a>
+
+            </section>
+
+            <div style="margin-top:26px;text-align:center">
+                <a
+                    href="FLAME_DRAGON_HUB_Chrome_Extension_v0.9.1.zip"
+                    download
+                    style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:12px;background:linear-gradient(135deg,#ff8a24,#e84a12);color:#fff;text-decoration:none;font-weight:800;box-shadow:0 8px 28px #ff5a183d;border:1px solid #ffbd77"
+                >
+                    ⬇ Download FLAME DRAGON HUB Extension
+                </a>
+                <p style="margin:10px 0 0;color:#ffd8bf;font-size:12px">
+                    Chrome extension · Test build · Select and replace one original skin
+                </p>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll(".welcome-card").forEach(card => {
+            card.addEventListener("click", () => {
+                localStorage.setItem("flameDragonWelcomed", "true");
+            });
+        });
+    </script>
+
+    <script src="preferences.js"></script>
+    <script src="cursor-glow.js"></script>
+</body>
+</html>
+```
+    <script src="preferences.js"></script>
+    <script src="cursor-glow.js"></script>
+</body>
+</html>

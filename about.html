@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About FLAME DRAGON HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<aside class="bonus-codes" aria-label="Bonus codes"><strong>ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p></aside>
+
+
+    <header class="topbar">
+
+        <div class="brand">
+            <img src="assets/logo.png" alt="FLAME DRAGON HUB">
+            <span>FLAME DRAGON HUB</span>
+        </div>
+
+                <nav class="navigation" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="evolutions.html">Evolutions</a>
+            <a href="skins.html">Skins</a>
+<a href="favorites.html">Favorites</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+
+    </header>
+
+    <main class="about-page">
+
+        <section class="about-hero">
+
+            <span class="guide-badge">
+                FLAME DRAGON IDENTITY
+            </span>
+
+            <h1>More Than a Hub.</h1>
+
+            <p>
+                FLAME DRAGON HUB is a community-made EvoWorld companion
+                built to make exploring, learning, and discovering
+                EvoWorld easier.
+            </p>
+
+        </section>
+
+        <section class="about-grid">
+
+            <article class="about-card">
+                <div class="about-icon">🐉</div>
+
+                <h2>Built for Players</h2>
+
+                <p>
+                    A simple place where players can discover evolutions,
+                    explore locations, learn the basics, and keep track
+                    of the things they care about.
+                </p>
+            </article>
+
+            <article class="about-card">
+                <div class="about-icon">🔥</div>
+
+                <h2>The FLAME DRAGON Identity</h2>
+
+                <p>
+                    The hub brings the FLAME DRAGON style into one
+                    organized experience with a strong visual identity
+                    and a focus on exploration.
+                </p>
+            </article>
+
+            <article class="about-card">
+                <div class="about-icon">🧭</div>
+
+                <h2>Your Companion</h2>
+
+                <p>
+                    Whether you are completely new or already experienced,
+                    the hub is designed to help you find your way faster.
+                </p>
+            </article>
+
+            <article class="about-card">
+                <div class="about-icon">⚡</div>
+
+                <h2>Simple. Fast. Useful.</h2>
+
+                <p>
+                    No unnecessary complexity. Just useful information,
+                    helpful tools, and a clean experience across PC,
+                    tablet, and mobile.
+                </p>
+            </article>
+
+        </section>
+
+    </main>
+
+<div class="share-box">
+    <button id="shareButton" class="share-button">
+        📤 Share This Page
+    </button>
+</div>
+
+<script>
+    const shareButton = document.getElementById("shareButton");
+
+    shareButton.addEventListener("click", async () => {
+
+        const shareData = {
+            title: document.title,
+            text: "Check out FLAME DRAGON HUB!",
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (error) {
+                // User cancelled sharing
+            }
+        } else {
+            await navigator.clipboard.writeText(window.location.href);
+
+            shareButton.textContent = "✓ Link Copied!";
+
+            setTimeout(() => {
+                shareButton.textContent = "📤 Share This Page";
+            }, 2000);
+        }
+
+    });
+</script>
+
+    <script src="preferences.js"></script>
+    <script src="cursor-glow.js"></script>
+</body>
+</html>

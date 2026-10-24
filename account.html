@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account | FLAME DRAGON HUB</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .account-page {
+      max-width: 520px;
+      margin: 45px auto;
+      padding: 20px;
+      animation: accountEnter .65s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes accountEnter {
+      from { opacity: 0; transform: translateY(22px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .account-back {
+      display: inline-block;
+      margin: 0 0 18px;
+      padding: 10px 16px;
+      color: #ffb16e;
+      background: rgba(255,138,36,.09);
+      border: 1px solid rgba(255,138,36,.35);
+      border-radius: 14px;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+
+    .account-back:hover {
+      background: rgba(255,138,36,.18);
+      transform: translateX(-3px);
+    }
+
+    .account-card {
+      padding: 28px;
+      color: #f8fafc;
+      background: linear-gradient(145deg,#171b27,#10121b);
+      border: 1px solid rgba(255,138,36,.45);
+      border-radius: 24px;
+      box-shadow: 0 14px 42px rgba(0,0,0,.25);
+    }
+
+    .account-card h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      color: #ffb16e;
+      font-size: 25px;
+    }
+
+    .account-subtitle {
+      color: #b8becb;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .account-card label {
+      display: block;
+      margin: 16px 0 7px;
+    }
+
+    .account-card input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 15px;
+      color: white;
+      background: #0c0f17;
+      border: 1px solid #353b4a;
+      border-radius: 12px;
+      font: inherit;
+    }
+
+    .account-card input:focus {
+      outline: 2px solid rgba(255,150,61,.4);
+      border-color: #ff963d;
+    }
+
+    .account-card button {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 13px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s, filter .2s;
+    }
+
+    .account-card button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .account-primary {
+      color: #211207;
+      background: linear-gradient(135deg,#ffb15f,#ff8129);
+      border: 0;
+    }
+
+    .account-secondary {
+      color: #f1f3f7;
+      background: #252a37;
+      border: 1px solid #414757;
+    }
+
+    .account-google {
+      color: #3c4043;
+      background: #fff;
+      border: 1px solid #dadce0;
+    }
+
+    .account-google span {
+      color: #4285f4;
+      font-weight: 800;
+      font-size: 19px;
+      margin-right: 9px;
+    }
+
+    .account-forgot {
+      color: #ffb16e;
+      background: transparent;
+      border: 0;
+    }
+
+    #authStatus {
+      min-height: 20px;
+      color: #cbd5e1;
+      text-align: center;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .account-card [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 560px) {
+      .account-page { margin: 22px auto; padding: 14px; }
+      .account-card { padding: 22px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .account-page { animation: none; }
+      .account-back, .account-card button { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="FLAME DRAGON HUB">
+      <span>FLAME DRAGON HUB</span>
+    </div>
+    <nav class="navigation" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="evolutions.html">Evolutions</a>
+      <a href="skins.html">Skins</a>
+      <a href="settings.html">Settings</a>
+      <a href="account.html" class="active" aria-current="page">👤 Account</a>
+    </nav>
+  </header>
+
+  <main class="account-page">
+    <a class="account-back" href="index.html">← Back to Home</a>
+
+    <section id="account" class="account-card">
+      <h1>🐉 Your Dragon Account</h1>
+      <p class="account-subtitle">Sign in and join the hub.</p>
+      <p id="authStatus" aria-live="polite">Checking account...</p>
+
+      <form id="authForm">
+        <label for="authEmail">Email address</label>
+        <input id="authEmail" type="email" autocomplete="email"
+          placeholder="you@example.com" required>
+
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" minlength="6"
+          autocomplete="current-password" placeholder="At least 6 characters"
+          required>
+
+        <button class="account-primary" type="submit">Sign in</button>
+        <button id="createAccount" class="account-secondary" type="button">
+          Create account
+        </button>
+      </form>
+
+      <button id="googleSignIn" class="account-google" type="button">
+        <span>G</span> Continue with Google
+      </button>
+
+      <button id="resetPassword" class="account-forgot" type="button">
+        Forgot password?
+      </button>
+
+      <button id="signOut" class="account-secondary" type="button" hidden>
+        Sign out
+      </button>
+    </section>
+  </main>
+
+  <script src="preferences.js"></script>
+  <script src="i18n.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
