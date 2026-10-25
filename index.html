@@ -2,98 +2,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAME DRAGON HUB</title>
+<link rel="icon" href="assets/dragon.png">
 
-  <title>FLAME DRAGON HUB</title>
+<style>
+:root {
+  --red: #ff2929;
+  --orange: #ff782e;
+  --bg: #100b0d;
+  --panel: rgba(32, 19, 22, .88);
+}
 
-  <!-- FLAME DRAGON HUB Favicon -->
-  <link rel="icon" type="image/png" href="assets/dragon.png">
-  <link rel="shortcut icon" type="image/png" href="assets/dragon.png">
-  <meta name="theme-color" content="#ff5a18">
+* {
+  box-sizing: border-box;
+}
 
-  <meta name="google-site-verification" content="u67ARLrX5k4m_GXr8fY2JXgBSeeHxzB2kEUnXyJK9qE">
+html {
+  scroll-behavior: smooth;
+}
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 50% 30%, #401419 0%, #1a0c10 45%, #09080b 100%);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#embers {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main, header, footer {
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  padding: 35px 16px 0;
+  text-align: center;
+}
+
+.brand {
+  display: inline-block;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 6vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px #ff352c66;
+  cursor: default;
+  transform: scale(1);
+  transition:
+    transform .35s ease,
+    color .35s ease,
+    text-shadow .35s ease;
+}
+
+/* تكبير وتوهج أحمر عند تحديد كلمة FLAME DRAGON */
+.brand::selection {
+  color: #fff;
+  background: #b80000;
+}
+
+.brand:hover,
+.brand:active {
+  color: #ff3535;
+  transform: scale(1.09);
+  text-shadow:
+    0 0 8px #ff1717,
+    0 0 22px #ff1717,
+    0 0 42px #ff1717;
+}
+
+.subtitle {
+  color: #e9b5b5;
+  margin-top: 12px;
+  letter-spacing: 3px;
+  font-size: .85rem;
+}
+
+.orbit-stage {
+  position: relative;
+  width: min(94vw, 720px);
+  height: 450px;
+  margin: 15px auto 45px;
+}
+
+.orbit-ring {
+  position: absolute;
+  width: 390px;
+  height: 390px;
+  max-width: 82vw;
+  max-height: 82vw;
+  border: 1px solid #ff553d30;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 40px #ff2d1910, inset 0 0 40px #ff2d1910;
+}
+
+.orbit-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 145px;
+  height: 145px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, #4b171b, #180c10 72%);
+  border: 2px solid #ff493e80;
+  box-shadow: 0 0 28px #ff261d45, 0 0 75px #ff261d20;
+}
+
+.orbit-center img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px #ff302d88);
+  animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  from { filter: drop-shadow(0 0 7px #ff302d55); }
+  to   { filter: drop-shadow(0 0 20px #ff302dcc); }
+}
+
+.orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  animation: orbitSpin 24s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.orbit-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 155px;
+  min-height: 105px;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: linear-gradient(145deg, #32171b, #160e12);
+  border: 1px solid #ff493e80;
+  border-radius: 18px;
+  box-shadow: 0 0 24px #ff302d22;
+  transform: translate(-50%, -50%);
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+
+.orbit-card:hover {
+  border-color: #ff3939;
+  background: #45171b;
+  box-shadow: 0 0 30px #ff292966;
+}
+
+/* عكس دوران الكروت حتى يظل النص مستقيمًا */
+.orbit-card .card-content {
+  animation: orbitCounter 24s linear infinite;
+}
+
+@keyframes orbitCounter {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+.orbit-card .symbol {
+  font-size: 1.8rem;
+}
+
+.orbit-card strong {
+  font-size: .95rem;
+}
+
+.orbit-card small {
+  color: #e7a6a6;
+  font-size: .72rem;
+}
+
+.orbit-card:nth-child(1) {
+  left: 50%;
+  top: 0;
+}
+
+.orbit-card:nth-child(2) {
+  left: 100%;
+  top: 87%;
+}
+
+.orbit-card:nth-child(3) {
+  left: 0;
+  top: 87%;
+}
+
+.section-title {
+  text-align: center;
+  margin: 25px 12px;
+  font-size: 1.7rem;
+  color: #fff;
+  text-shadow: 0 0 16px #ff302d66;
+}
+
+.features {
+  width: min(1100px, 92%);
+  margin: 0 auto 65px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.feature {
+  padding: 24px;
+  background: var(--panel);
+  border: 1px solid #ff493e35;
+  border-radius: 18px;
+  transition: transform .25s, border-color .25s;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  border-color: #ff493e99;
+}
+
+.feature h3 {
+  margin-top: 0;
+  color: #ff6b58;
+}
+
+.feature p {
+  color: #d8c5c8;
+  line-height: 1.7;
+}
+
+.feature a {
+  color: #ff8a76;
+  text-decoration: none;
+}
+
+.feature a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  padding: 25px;
+  text-align: center;
+  color: #9d7c82;
+  border-top: 1px solid #ff493e20;
+}
+
+@media (max-width: 520px) {
+  .orbit-stage {
+    height: 360px;
+  }
+
+  .orbit-ring {
+    width: 285px;
+    height: 285px;
+  }
+
+  .orbit-center {
+    width: 110px;
+    height: 110px;
+  }
+
+  .orbit-card {
+    width: 125px;
+    min-height: 88px;
+    padding: 12px 7px;
+  }
+
+  .orbit-card .symbol {
+    font-size: 1.45rem;
+  }
+
+  .orbit-card strong {
+    font-size: .8rem;
+  }
+
+  .orbit-card small {
+    font-size: .65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit, .orbit-card .card-content, .orbit-center img {
+    animation: none;
+  }
+
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+</style>
 </head>
 
 <body>
+<canvas id="embers" aria-hidden="true"></canvas>
 
-<aside class="bonus-codes" aria-label="Bonus codes">
-  <strong>ALL BONUS CODES</strong>
-  <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
-</aside>
-
-<header class="topbar">
-  <div class="brand">
-    <img src="assets/logo.png" alt="FLAME DRAGON HUB">
-    <span>FLAME DRAGON HUB</span>
-  </div>
-
-  <nav class="navigation" aria-label="Main navigation">
-    <a href="index.html" class="active" aria-current="page">Home</a>
-    <a href="evolutions.html">Evolutions</a>
-    <a href="skins.html">Skins</a>
-    <a href="settings.html">Settings</a>
-  </nav>
+<header>
+  <h1 class="brand">FLAME DRAGON</h1>
+  <div class="subtitle">YOUR EVOWORLD HUB</div>
 </header>
 
-<main class="home">
-  <section class="home-intro">
-    <h1>Welcome to FLAME DRAGON HUB</h1>
-    <p>Your ultimate EvoWorld companion</p>
+<main>
+  <section class="orbit-stage" aria-label="Main navigation">
+    <div class="orbit-ring"></div>
+
+    <div class="orbit-center">
+      <img src="assets/logo.png" alt="FLAME DRAGON HUB logo">
+    </div>
+
+    <nav class="orbit">
+      <a class="orbit-card" href="extension.html">
+        <div class="card-content">
+          <span class="symbol">⬇️</span>
+          <strong>Download Extension</strong>
+          <small>Get the Chrome extension</small>
+        </div>
+      </a>
+
+      <a class="orbit-card" href="skins.html">
+        <div class="card-content">
+          <span class="symbol">🎭</span>
+          <strong>Skins Library</strong>
+          <small>Explore the skins</small>
+        </div>
+      </a>
+
+      <a class="orbit-card" href="evolutions.html">
+        <div class="card-content">
+          <span class="symbol">🦇</span>
+          <strong>Evolutions</strong>
+          <small>Explore every stage</small>
+        </div>
+      </a>
+    </nav>
   </section>
 
-  <section class="hub-cards">
-    <a href="evolutions.html" class="hub-card">
-      <div class="card-icon">🔥</div>
-      <h2>Evolutions <small>(For New Players)</small></h2>
-      <p>Explore the evolution path and discover every creature.</p>
-      <span>Explore →</span>
-    </a>
+  <h2 class="section-title">Explore FLAME DRAGON HUB</h2>
 
-    <a href="skins.html" class="hub-card">
-      <div class="card-icon">🎨</div>
-      <h2>Skins</h2>
-      <p>Discover EvoWorld skins and legendary designs.</p>
-      <span>View Skins →</span>
-    </a>
-  </section>
+  <!-- الكروت الثابتة تحت: احتفظ هنا بكروتك الحالية كما هي -->
+  <section class="features">
+    <article class="feature">
+      <h3>Skins Library</h3>
+      <p>Explore the EvoWorld skins collection.</p>
+      <a href="skins.html">Open Skins →</a>
+    </article>
 
-  <section class="fdh-download-card" style="margin:34px auto 0;text-align:center;max-width:760px;padding:24px;border:1px solid rgba(255,120,35,.35);border-radius:18px;background:rgba(40,12,5,.55)">
-    <h2 style="margin:0 0 8px;color:#ffb071">FLAME DRAGON HUB Skin Bridge</h2>
+    <article class="feature">
+      <h3>Evolutions</h3>
+      <p>Discover the EvoWorld evolution path.</p>
+      <a href="evolutions.html">View Evolutions →</a>
+    </article>
 
-    <p>Download the original Chrome extension with 397 skins and preview the original skin and its replacement.</p>
-
-    <a
-      href="FLAME_DRAGON_HUB_Chrome_Extension_v0.9.1.zip"
-      download
-      style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:12px;background:linear-gradient(135deg,#ff8a24,#e84a12);color:#fff;text-decoration:none;font-weight:800;box-shadow:0 8px 28px #ff5a183d;border:1px solid #ffbd77"
-    >⬇ Download Extension v0.9.1</a>
-
-    <p>Download the ZIP, extract it, open chrome://extensions, enable Developer mode, then click Load unpacked and select the extracted extension folder.</p>
+    <article class="feature">
+      <h3>Settings</h3>
+      <p>Customize your FLAME DRAGON HUB experience.</p>
+      <a href="settings.html">Open Settings →</a>
+    </article>
   </section>
 </main>
 
-<script>
-  const hasWelcomed = localStorage.getItem("flameDragonWelcomed");
-
-  if (!hasWelcomed) {
-    window.location.href = "welcome.html";
-  }
-</script>
+<footer>FLAME DRAGON HUB · Made for EvoWorld players</footer>
 
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
+/* خلفية الجمر المتحرك */
+const canvas = document.getElementById("embers");
+const ctx = canvas.getContext("2d");
+let embers = [];
+let width = 0;
+let height = 0;
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const count = Math.min(75, Math.floor(width / 16));
+  embers = Array.from({ length: count }, () => newEmber(true));
+}
+
+function newEmber(randomY = false) {
+  return {
+    x: Math.random() * width,
+    y: randomY ? Math.random() * height : height + 10,
+    size: Math.random() * 2.2 + .5,
+    speed: Math.random() * .65 + .25,
+    drift: (Math.random() - .5) * .7,
+    alpha: Math.random() * .65 + .2
+  };
+}
+
+function animateEmbers() {
+  ctx.clearRect(0, 0, width, height);
+
+  for (const e of embers) {
+    e.y -= e.speed;
+    e.x += e.drift;
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(255, ${Math.floor(65 + Math.random() * 70)}, 35, ${e.alpha})`;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = "#ff351c";
+    ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (e.y < -10 || e.x < -10 || e.x > width + 10) {
+      Object.assign(e, newEmber());
+    }
   }
+
+  ctx.shadowBlur = 0;
+  requestAnimationFrame(animateEmbers);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+animateEmbers();
 </script>
-
-<script src="preferences.js"></script>
-<script src="cursor-glow.js"></script>
-<script src="i18n.js"></script>
-
 </body>
 </html>
-```
