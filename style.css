@@ -2777,8 +2777,16 @@ body{font-size:.94rem}
     text-decoration: none;
     box-shadow: 0 4px 16px rgba(255, 138, 36, 0.3);
 }
-
 .navigation a.account-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 7px 22px rgba(255, 138, 36, 0.4);
+}
+/* Remove unwanted pen / cursor icon */
+.pen,
+.pen-icon,
+.cursor-pen,
+.custom-cursor,
+#pen,
+#pen-icon {
+  display: none !important;
 }
