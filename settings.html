@@ -1,379 +1,411 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Settings | FLAME DRAGON HUB</title> <link rel="stylesheet" href="style.css">
+<style>
+    .profile-account-row {
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        align-items: stretch;
+        gap: 16px;
+        max-width: 1050px;
+        margin: 24px auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings | FLAME DRAGON HUB</title>
-    <link rel="stylesheet" href="style.css">
+    .profile-account-card {
+        min-width: 0;
+        padding: 20px;
+        border: 1px solid #ff963d;
+        border-radius: 20px;
+        background: rgba(255, 150, 61, 0.07);
+        text-align: center;
+        box-sizing: border-box;
+    }
 
-    <style>
+
+    .profile-account-card h2 {
+        margin-top: 0;
+        font-size: 21px;
+        overflow-wrap: anywhere;
+    }
+
+
+    .profile-plus {
+        display: none;
+    }
+
+
+    .profile-account-card input {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid #777;
+        border-radius: 10px;
+    }
+
+
+    .profile-account-card button,
+    .profile-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        margin: 6px 3px;
+        padding: 11px 16px;
+        border: 1px solid #ff963d;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ffb15f, #ff8129);
+        color: #211207;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+    .profile-account-card button:hover,
+    .profile-action:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+    }
+
+
+    #authStatus {
+        overflow-wrap: anywhere;
+        padding: 12px;
+        border-radius: 10px;
+        background: rgba(255, 150, 61, 0.10);
+    }
+
+
+    #signOut[hidden],
+    #authForm[hidden],
+    #googleSignIn[hidden],
+    #resetPassword[hidden],
+    #createAccount[hidden] {
+        display: none !important;
+    }
+
+
+    /* PLAYER PROFILE: smaller card, same features */
+    .fdh-player-profile {
+        padding: 16px;
+    }
+
+
+    .fdh-player-profile h2 {
+        margin-bottom: 12px;
+    }
+
+
+    .fdh-player-profile .profile-avatar {
+        width: 82px;
+        height: 82px;
+        margin: 8px auto 12px;
+        border-radius: 50%;
+        border: 2px solid #ff963d;
+        background-color: rgba(255, 150, 61, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-sizing: border-box;
+    }
+
+
+    .fdh-player-profile .avatar-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        margin: 10px 0;
+    }
+
+
+    .fdh-player-profile .avatar-options button {
+        min-width: 38px;
+        padding: 6px;
+        margin: 2px;
+        font-size: 19px;
+        border-radius: 9px;
+    }
+
+
+    .fdh-player-profile .avatar-options .upload-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 10px;
+        margin: 3px;
+        border: 1px solid #ff963d;
+        border-radius: 10px;
+        background: rgba(255, 150, 61, 0.12);
+        color: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+
+    .fdh-player-profile .upload-avatar input[type="file"] {
+        display: none;
+    }
+
+
+    .fdh-player-profile .profile-info h3 {
+        margin: 10px 0 5px;
+        font-size: 19px;
+        overflow-wrap: anywhere;
+    }
+
+
+    .fdh-player-profile .profile-info p {
+        margin: 5px 0 10px;
+        font-size: 13px;
+    }
+
+
+    .fdh-player-profile .profile-info .profile-button {
+        padding: 8px 12px;
+        margin: 4px;
+        font-size: 13px;
+    }
+
+
+    .settings-grid {
+        max-width: 1050px;
+        margin: 24px auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+
+
+    @media (max-width: 760px) {
         .profile-account-row {
-            display: grid;
-            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-            align-items: stretch;
-            gap: 16px;
-            max-width: 1050px;
-            margin: 24px auto;
-            padding: 0 16px;
-            box-sizing: border-box;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 14px;
         }
+
 
         .profile-account-card {
-            min-width: 0;
-            padding: 20px;
-            border: 1px solid #ff963d;
-            border-radius: 20px;
-            background: rgba(255, 150, 61, 0.07);
-            text-align: center;
-            box-sizing: border-box;
+            padding: 18px;
         }
 
-        .profile-account-card h2 {
-            margin-top: 0;
-            font-size: 21px;
-            overflow-wrap: anywhere;
-        }
 
-        .profile-plus {
-            display: none;
-        }
-
-        .profile-account-card input {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin: 12px 0;
-            border: 1px solid #777;
-            border-radius: 10px;
-        }
-
-        .profile-account-card button,
-        .profile-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-            margin: 6px 3px;
-            padding: 11px 16px;
-            border: 1px solid #ff963d;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ffb15f, #ff8129);
-            color: #211207;
-            font-weight: 800;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .profile-account-card button:hover,
-        .profile-action:hover {
-            filter: brightness(1.08);
-            transform: translateY(-1px);
-        }
-
-        #authStatus {
-            overflow-wrap: anywhere;
-            padding: 12px;
-            border-radius: 10px;
-            background: rgba(255, 150, 61, 0.10);
-        }
-
-        #signOut[hidden],
-        #authForm[hidden],
-        #googleSignIn[hidden],
-        #resetPassword[hidden],
-        #createAccount[hidden] {
-            display: none !important;
-        }
-
-        /* PLAYER PROFILE: smaller card, same features */
         .fdh-player-profile {
             padding: 16px;
         }
+    }
+</style>
+</head> <body> <aside class="bonus-codes" aria-label="Bonus codes"> <strong>ALL BONUS CODES</strong> <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p> </aside>
+<header class="topbar">
+    <div class="brand">
+        <img src="assets/logo.png" alt="FLAME DRAGON HUB">
+        <span>FLAME DRAGON HUB</span>
+    </div>
 
-        .fdh-player-profile h2 {
-            margin-bottom: 12px;
-        }
 
-        .fdh-player-profile .profile-avatar {
-            width: 82px;
-            height: 82px;
-            margin: 8px auto 12px;
-            border-radius: 50%;
-            border: 2px solid #ff963d;
-            background-color: rgba(255, 150, 61, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 42px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            box-sizing: border-box;
-        }
+    <nav class="navigation" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="evolutions.html">Evolutions</a>
+        <a href="skins.html">Skins</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="settings.html" class="active" aria-current="page">Settings</a>
+    </nav>
+</header>
 
-        .fdh-player-profile .avatar-options {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            margin: 10px 0;
-        }
 
-        .fdh-player-profile .avatar-options button {
-            min-width: 38px;
-            padding: 6px;
-            margin: 2px;
-            font-size: 19px;
-            border-radius: 9px;
-        }
+<main class="settings-page">
+    <section class="settings-hero">
+        <span class="guide-badge">CUSTOMIZE YOUR HUB</span>
+        <h1>Settings</h1>
+        <p>Customize the FLAME DRAGON HUB experience to your preference.</p>
+    </section>
 
-        .fdh-player-profile .avatar-options .upload-avatar {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 10px;
-            margin: 3px;
-            border: 1px solid #ff963d;
-            border-radius: 10px;
-            background: rgba(255, 150, 61, 0.12);
-            color: inherit;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-        }
 
-        .fdh-player-profile .upload-avatar input[type="file"] {
-            display: none;
-        }
+    <section class="profile-account-row">
 
-        .fdh-player-profile .profile-info h3 {
-            margin: 10px 0 5px;
-            font-size: 19px;
-            overflow-wrap: anywhere;
-        }
 
-        .fdh-player-profile .profile-info p {
-            margin: 5px 0 10px;
-            font-size: 13px;
-        }
+        <!-- PLAYER PROFILE -->
+        <article class="profile-account-card fdh-player-profile">
+            <h2>🎮 Player Profile</h2>
 
-        .fdh-player-profile .profile-info .profile-button {
-            padding: 8px 12px;
-            margin: 4px;
-            font-size: 13px;
-        }
 
-        .settings-grid {
-            max-width: 1050px;
-            margin: 24px auto;
-            padding: 0 16px;
-            box-sizing: border-box;
-        }
+            <div class="profile-avatar" id="profileAvatar">🐉</div>
 
-        @media (max-width: 760px) {
-            .profile-account-row {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 14px;
-            }
 
-            .profile-account-card {
-                padding: 18px;
-            }
+            <div class="avatar-options" id="avatarOptions">
+                <button type="button" data-avatar="🐉" aria-label="Dragon avatar">🐉</button>
+                <button type="button" data-avatar="🔥" aria-label="Fire avatar">🔥</button>
+                <button type="button" data-avatar="🤠" aria-label="Ogre avatar">👹</button>
+                <button type="button" data-avatar="🌃" aria-label="Lightning avatar">⚡</button>
+                <button type="button" data-avatar="🌑" aria-label="Moon avatar">🌑</button>
+                <button type="button" data-avatar="💀" aria-label="Skull avatar">💀</button>
 
-            .fdh-player-profile {
-                padding: 16px;
-            }
-        }
-    </style>
-</head>
 
-<body>
-    <aside class="bonus-codes" aria-label="Bonus codes">
-        <strong>ALL BONUS CODES</strong>
-        <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
-    </aside>
+                <label class="upload-avatar">
+                    📷 Add Your Photo
+                    <input type="file" id="avatarUpload" accept="image/*">
+                </label>
+            </div>
 
-    <header class="topbar">
-        <div class="brand">
-            <img src="assets/logo.png" alt="FLAME DRAGON HUB">
-            <span>FLAME DRAGON HUB</span>
-        </div>
 
-        <nav class="navigation" aria-label="Main navigation">
-            <a href="index.html">Home</a>
-            <a href="evolutions.html">Evolutions</a>
-            <a href="skins.html">Skins</a>
-            <a href="favorites.html">Favorites</a>
-            <a href="settings.html" class="active" aria-current="page">Settings</a>
-        </nav>
-    </header>
+            <div class="profile-info">
+                <h3 id="profileName">FLAME DRAGON</h3>
+                <p>EvoWorld Explorer</p>
+                <button id="editProfile" class="profile-button" type="button">
+                    ✏️ Edit Name
+                </button>
+            </div>
+        </article>
 
-    <main class="settings-page">
-        <section class="settings-hero">
-            <span class="guide-badge">CUSTOMIZE YOUR HUB</span>
-            <h1>Settings</h1>
-            <p>Customize the FLAME DRAGON HUB experience to your preference.</p>
-        </section>
 
-        <section class="profile-account-row">
+        <!-- YOUR ACCOUNT -->
+        <article class="profile-account-card">
+            <h2>👤 Your Account</h2>
 
-            <!-- PLAYER PROFILE -->
-            <article class="profile-account-card fdh-player-profile">
-                <h2>🎮 Player Profile</h2>
 
-                <div class="profile-avatar" id="profileAvatar">🐉</div>
+            <p id="authStatus" role="status" aria-live="polite">
+                Checking your sign-in status...
+            </p>
 
-                <div class="avatar-options" id="avatarOptions">
-                    <button type="button" data-avatar="🐉" aria-label="Dragon avatar">🐉</button>
-                    <button type="button" data-avatar="🔥" aria-label="Fire avatar">🔥</button>
-                    <button type="button" data-avatar="🤠" aria-label="Ogre avatar">👹</button>
-                    <button type="button" data-avatar="🌃" aria-label="Lightning avatar">⚡</button>
-                    <button type="button" data-avatar="🌑" aria-label="Moon avatar">🌑</button>
-                    <button type="button" data-avatar="💀" aria-label="Skull avatar">💀</button>
 
-                    <label class="upload-avatar">
-                        📷 Add Your Photo
-                        <input type="file" id="avatarUpload" accept="image/*">
-                    </label>
-                </div>
+            <form id="authForm">
+                <input
+                    id="authEmail"
+                    type="email"
+                    placeholder="Email address"
+                    autocomplete="email"
+                    aria-label="Email address"
+                    required
+                >
 
-                <div class="profile-info">
-                    <h3 id="profileName">FLAME DRAGON</h3>
-                    <p>EvoWorld Explorer</p>
-                    <button id="editProfile" class="profile-button" type="button">
-                        ✏️ Edit Name
-                    </button>
-                </div>
-            </article>
 
-            <!-- YOUR ACCOUNT -->
-            <article class="profile-account-card">
-                <h2>👤 Your Account</h2>
+                <input
+                    id="authPassword"
+                    type="password"
+                    placeholder="Password (at least 6 characters)"
+                    autocomplete="current-password"
+                    aria-label="Password"
+                    minlength="6"
+                    required
+                >
 
-                <p id="authStatus" role="status" aria-live="polite">
-                    Checking your sign-in status...
-                </p>
 
-                <form id="authForm">
-                    <input
-                        id="authEmail"
-                        type="email"
-                        placeholder="Email address"
-                        autocomplete="email"
-                        aria-label="Email address"
-                        required
-                    >
-
-                    <input
-                        id="authPassword"
-                        type="password"
-                        placeholder="Password (at least 6 characters)"
-                        autocomplete="current-password"
-                        aria-label="Password"
-                        minlength="6"
-                        required
-                    >
-
-                    <button id="createAccount" type="button">
-                        Create Account
-                    </button>
-
-                    <button type="submit">Sign In</button>
-                </form>
-
-                <button id="googleSignIn" type="button">
-                    Sign in with Google
+                <button id="createAccount" type="button">
+                    Create Account
                 </button>
 
-                <button id="resetPassword" type="button">
-                    Forgot Password?
+
+                <button type="submit">Sign In</button>
+            </form>
+
+
+            <button id="googleSignIn" type="button">
+                Sign in with Google
+            </button>
+
+
+            <button id="resetPassword" type="button">
+                Forgot Password?
+            </button>
+
+
+            <button id="signOut" type="button" hidden>
+                Sign Out
+            </button>
+        </article>
+
+
+    </section>
+
+
+    <section class="settings-grid">
+        <article class="settings-card">
+            <div class="settings-title">
+                <span class="settings-icon">🎨</span>
+                <div>
+                    <h2>Appearance</h2>
+                    <p>Choose how the hub looks.</p>
+                </div>
+            </div>
+
+
+            <div class="setting-row">
+                <div>
+                    <strong>Theme</strong>
+                    <small>Change the visual style of the hub.</small>
+                </div>
+
+
+                <select id="themeSelect">
+                    <option value="ember">Ember Warmth</option>
+                    <option value="night">Dark Night</option>
+                    <option value="void">Purple Void</option>
+                    <option value="frost">Frost</option>
+                </select>
+            </div>
+        </article>
+
+
+        <article class="settings-card">
+            <div class="settings-title">
+                <span class="settings-icon">⚡</span>
+                <div>
+                    <h2>Performance</h2>
+                    <p>Control visual effects and animations.</p>
+                </div>
+            </div>
+
+
+            <div class="setting-row">
+                <div>
+                    <strong>Performance Mode</strong>
+                    <small>Reduce animations and visual effects.</small>
+                </div>
+
+
+                <label class="switch">
+                    <input type="checkbox" id="performanceMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </article>
+
+
+        <article class="settings-card">
+            <div class="settings-title">
+                <span class="settings-icon">⚙️</span>
+                <div>
+                    <h2>General</h2>
+                    <p>Manage basic hub settings.</p>
+                </div>
+            </div>
+
+
+            <div class="setting-row">
+                <div>
+                    <strong>Reset Settings</strong>
+                    <small>Return all settings to their defaults.</small>
+                </div>
+
+
+                <button id="resetSettings" class="settings-button" type="button">
+                    Reset
                 </button>
+            </div>
+        </article>
+    </section>
+</main>
 
-                <button id="signOut" type="button" hidden>
-                    Sign Out
-                </button>
-            </article>
 
-        </section>
-
-        <section class="settings-grid">
-            <article class="settings-card">
-                <div class="settings-title">
-                    <span class="settings-icon">🎨</span>
-                    <div>
-                        <h2>Appearance</h2>
-                        <p>Choose how the hub looks.</p>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div>
-                        <strong>Theme</strong>
-                        <small>Change the visual style of the hub.</small>
-                    </div>
-
-                    <select id="themeSelect">
-                        <option value="ember">Ember Warmth</option>
-                        <option value="night">Dark Night</option>
-                        <option value="void">Purple Void</option>
-                        <option value="frost">Frost</option>
-                    </select>
-                </div>
-            </article>
-
-            <article class="settings-card">
-                <div class="settings-title">
-                    <span class="settings-icon">⚡</span>
-                    <div>
-                        <h2>Performance</h2>
-                        <p>Control visual effects and animations.</p>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div>
-                        <strong>Performance Mode</strong>
-                        <small>Reduce animations and visual effects.</small>
-                    </div>
-
-                    <label class="switch">
-                        <input type="checkbox" id="performanceMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </article>
-
-            <article class="settings-card">
-                <div class="settings-title">
-                    <span class="settings-icon">⚙️</span>
-                    <div>
-                        <h2>General</h2>
-                        <p>Manage basic hub settings.</p>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div>
-                        <strong>Reset Settings</strong>
-                        <small>Return all settings to their defaults.</small>
-                    </div>
-
-                    <button id="resetSettings" class="settings-button" type="button">
-                        Reset
-                    </button>
-                </div>
-            </article>
-        </section>
-    </main>
-
-    <script src="settings.js"></script>
-    <script src="profile.js"></script>
-    <script src="preferences.js"></script>
-    <script src="cursor-glow.js"></script>
-    <script type="module" src="auth.js"></script>
-</body>
-</html>
+<script src="settings.js"></script>
+<script src="profile.js"></script>
+<script src="preferences.js"></script>
+<script src="cursor-glow.js"></script>
+<script type="module" src="auth.js"></script>
