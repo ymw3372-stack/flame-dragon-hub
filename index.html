@@ -2,510 +2,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAME DRAGON HUB</title>
-<link rel="icon" href="assets/dragon.png">
-
-<style>
-:root {
-  --red: #ff3038;
-  --orange: #ff782e;
-  --panel: rgba(35, 15, 20, .94);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  background:
-    radial-gradient(ellipse at 50% 25%, #401318, #1b0b10 50%, #09070a);
-  background-attachment: fixed;
-}
-
-#embers {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-header, main, footer {
-  position: relative;
-  z-index: 1;
-}
-
-header {
-  padding: 30px 15px 10px;
-  text-align: center;
-}
-
-.brand {
-  display: inline-block;
-  margin: 0;
-  color: #fff;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-shadow: 0 0 15px #ff292944;
-  cursor: default;
-  transition: transform .35s ease, color .35s ease,
-              text-shadow .35s ease;
-}
-
-.brand:hover {
-  color: #ff3038;
-  transform: scale(1.09);
-  text-shadow: 0 0 10px #ff3038, 0 0 30px #ff303899;
-}
-
-.subtitle {
-  margin-top: 12px;
-  color: #e9b5b5;
-  letter-spacing: 3px;
-  font-size: .85rem;
-}
-
-nav.main-nav {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 22px auto 0;
-}
-
-.main-nav a {
-  color: #f5dada;
-  text-decoration: none;
-  padding: 10px 16px;
-  border: 1px solid #ff493e44;
-  border-radius: 10px;
-  background: #1b0c10bb;
-  transition: .25s;
-}
-
-.main-nav a:hover {
-  color: white;
-  border-color: var(--red);
-  box-shadow: 0 0 16px #ff303844;
-}
-
-.intro {
-  text-align: center;
-  padding: 25px 15px 0;
-}
-
-.intro h2 {
-  font-size: clamp(1.4rem, 4vw, 2.3rem);
-  margin-bottom: 8px;
-}
-
-.intro p {
-  color: #d6b9be;
-}
-
-.orbit-stage {
-  position: relative;
-  width: min(94vw, 720px);
-  height: 480px;
-  margin: 0 auto 35px;
-}
-
-.orbit-ring {
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  max-width: 75vw;
-  max-height: 75vw;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid #ff554444;
-  border-radius: 50%;
-  box-shadow: 0 0 35px #ff292918;
-}
-
-.orbit-logo {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  top: 50%;
-  width: 135px;
-  height: 135px;
-  display: grid;
-  place-items: center;
-  transform: translate(-50%, -50%);
-  border: 2px solid #ff554488;
-  border-radius: 50%;
-  background: radial-gradient(circle, #45151b, #15090d);
-  box-shadow: 0 0 32px #ff302d55;
-}
-
-.orbit-logo img {
-  width: 84%;
-  height: 84%;
-  object-fit: contain;
-  animation: logo-pulse 2.5s ease-in-out infinite alternate;
-}
-
-@keyframes logo-pulse {
-  from { filter: drop-shadow(0 0 5px #ff342d55); }
-  to { filter: drop-shadow(0 0 18px #ff342ddd); }
-}
-
-/* المدار نفسه يدور */
-.orbit-track {
-  position: absolute;
-  inset: 0;
-  animation: orbit-turn 18s linear infinite;
-}
-
-@keyframes orbit-turn {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* تحديد أماكن الكروت حول الدائرة */
-.orbit-position {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-}
-
-.orbit-position:nth-child(1) {
-  transform: rotate(0deg) translateY(-190px);
-}
-
-.orbit-position:nth-child(2) {
-  transform: rotate(120deg) translateY(-190px);
-}
-
-.orbit-position:nth-child(3) {
-  transform: rotate(240deg) translateY(-190px);
-}
-
-/* الكارت يعكس دوران المدار حتى يظل مستقيمًا */
-.orbit-card {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 155px;
-  min-height: 105px;
-  padding: 13px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  border: 1px solid #ff493e88;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #35171c, #160d11);
-  box-shadow: 0 0 22px #ff302d25;
-  animation: card-counter 18s linear infinite;
-  transition: border-color .25s, box-shadow .25s, background .25s;
-}
-
-.orbit-card:hover {
-  border-color: var(--red);
-  background: #48171d;
-  box-shadow: 0 0 30px #ff292966;
-}
-
-@keyframes card-counter {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(-360deg); }
-}
-
-.orbit-icon {
-  font-size: 1.8rem;
-}
-
-.orbit-card strong {
-  font-size: .9rem;
-}
-
-.orbit-card small {
-  color: #e7b2b2;
-  font-size: .7rem;
-}
-
-.section-title {
-  margin: 25px 15px;
-  text-align: center;
-  font-size: 1.7rem;
-}
-
-.features {
-  width: min(1050px, 92%);
-  margin: 0 auto 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-
-.feature {
-  padding: 23px;
-  border: 1px solid #ff493e44;
-  border-radius: 16px;
-  background: var(--panel);
-  transition: transform .25s, border-color .25s;
-}
-
-.feature:hover {
-  transform: translateY(-4px);
-  border-color: #ff493eaa;
-}
-
-.feature h3 {
-  color: #ff7766;
-}
-
-.feature p {
-  color: #d8c5c8;
-  line-height: 1.6;
-}
-
-.feature a {
-  color: #ff9b88;
-  text-decoration: none;
-}
-
-.feature a:hover {
-  text-decoration: underline;
-}
-
-footer {
-  padding: 22px 12px;
-  border-top: 1px solid #ff493e22;
-  text-align: center;
-  color: #a88b91;
-}
-
-@media (max-width: 520px) {
-  .orbit-stage {
-    height: 370px;
-  }
-
-  .orbit-ring {
-    width: 265px;
-    height: 265px;
-  }
-
-  .orbit-logo {
-    width: 100px;
-    height: 100px;
-  }
-
-  .orbit-position:nth-child(1) {
-    transform: rotate(0deg) translateY(-150px);
-  }
-
-  .orbit-position:nth-child(2) {
-    transform: rotate(120deg) translateY(-150px);
-  }
-
-  .orbit-position:nth-child(3) {
-    transform: rotate(240deg) translateY(-150px);
-  }
-
-  .orbit-card {
-    width: 124px;
-    min-height: 84px;
-    padding: 9px 6px;
-  }
-
-  .orbit-card strong {
-    font-size: .76rem;
-  }
-
-  .orbit-card small {
-    font-size: .62rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit-track, .orbit-card, .orbit-logo img {
-    animation: none;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-}
-</style>
-</head>
-
-<body>
-<canvas id="embers" aria-hidden="true"></canvas>
-
-<header>
-  <h1 class="brand">FLAME DRAGON HUB</h1>
-  <div class="subtitle">YOUR EVOWORLD HUB</div>
-
-  <nav class="main-nav" aria-label="Main navigation">
-    <a href="index.html">Home</a>
-    <a href="evolutions.html">Evolutions</a>
-    <a href="skins.html">Skins</a>
-    <a href="settings.html">Settings</a>
-  </nav>
-</header>
-
-<main>
-  <section class="intro">
-    <h2>Welcome to FLAME DRAGON HUB</h2>
-    <p>Your ultimate EvoWorld companion</p>
-  </section>
-
-  <section class="orbit-stage" aria-label="Featured pages">
-    <div class="orbit-ring"></div>
-
-    <div class="orbit-logo">
-      <img src="assets/logo.png" alt="FLAME DRAGON HUB logo">
-    </div>
-
-    <nav class="orbit-track" aria-label="Featured links">
-
-      <div class="orbit-position">
-        <a class="orbit-card"
-           href="FLAME_DRAGON_HUB_Chrome_Extension_v0.9.1.zip"
-           download>
-          <span class="orbit-icon">⬇️</span>
-          <strong>Download Extension</strong>
-          <small>Chrome Extension</small>
-        </a>
-      </div>
-
-      <div class="orbit-position">
-        <a class="orbit-card" href="skins.html">
-          <span class="orbit-icon">🎨</span>
-          <strong>Skins Library</strong>
-          <small>Explore the skins</small>
-        </a>
-      </div>
-
-      <div class="orbit-position">
-        <a class="orbit-card" href="evolutions.html">
-          <span class="orbit-icon">🔥</span>
-          <strong>Evolutions</strong>
-          <small>Explore every stage</small>
-        </a>
-      </div>
-
-    </nav>
-  </section>
-
-  <h2 class="section-title">Explore FLAME DRAGON HUB</h2>
-
-  <!-- كروت ثابتة، كل قسم يظهر مرة واحدة -->
-  <section class="features">
-    <article class="feature">
-      <h3>Bonus Codes</h3>
-      <p>Find useful EvoWorld bonus codes and keep them handy.</p>
-      <a href="bonus-codes.html">Explore Bonus Codes →</a>
-    </article>
-
-    <article class="feature">
-      <h3>Settings</h3>
-      <p>Customize your FLAME DRAGON HUB experience.</p>
-      <a href="settings.html">Open Settings →</a>
-    </article>
-
-    <article class="feature">
-      <h3>About the Hub</h3>
-      <p>Your companion for EvoWorld skins and evolutions.</p>
-      <a href="welcome.html">Learn More →</a>
-    </article>
-  </section>
-</main>
-
-<footer>
-  FLAME DRAGON HUB · Made for EvoWorld players
-</footer>
-
-<script>
-(() => {
-  const canvas = document.getElementById("embers");
-  const ctx = canvas.getContext("2d");
-  let width = 0;
-  let height = 0;
-  let particles = [];
-
-  function makeParticle(randomY = false) {
-    return {
-      x: Math.random() * width,
-      y: randomY ? Math.random() * height : height + 10,
-      size: Math.random() * 2 + .5,
-      speed: Math.random() * .65 + .25,
-      drift: (Math.random() - .5) * .45,
-      alpha: Math.random() * .55 + .2
-    };
-  }
-
-  function resize() {
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-    particles = Array.from(
-      { length: Math.min(70, Math.floor(width / 16)) },
-      () => makeParticle(true)
-    );
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, width, height);
-
-    for (const p of particles) {
-      p.y -= p.speed;
-      p.x += p.drift;
-
-      ctx.beginPath();
-      ctx.fillStyle =
-        `rgba(255, ${70 + Math.floor(Math.random() * 80)}, 40, ${p.alpha})`;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = "#ff351c";
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-
-      if (p.y < -10 || p.x < -10 || p.x > width + 10) {
-        Object.assign(p, makeParticle());
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100b10">
+  <title>FLAME DRAGON HUB</title>
+
+  <link rel="icon" href="assets/dragon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #100b10;
+      --panel: rgba(29, 19, 27, .84);
+      --red: #ff424b;
+      --red-light: #ffb1b5;
+      --text: #fff4f5;
+      --muted: #b8a8b3;
+      --border: rgba(255, 95, 105, .20);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 50% 34%, rgba(143, 24, 43, .19), transparent 42%),
+        radial-gradient(ellipse at 10% 90%, rgba(94, 23, 66, .14), transparent 38%),
+        var(--bg);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Moving ember background */
+    #embers {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .65;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1160px, 92%);
+      margin: auto;
+    }
+
+    /* Navigation */
+    .navbar {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-family: Orbitron, sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .brand img {
+      width: 37px;
+      height: 37px;
+      object-fit: contain;
+    }
+
+    .brand span {
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      color: #c8b9c5;
+      font-size: 13px;
+      padding: 10px 13px;
+      border-radius: 9px;
+      transition: .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+      background: rgba(255, 69, 82, .12);
+    }
+
+    /* Main heading */
+    .hero {
+      text-align: center;
+      padding-top: 54px;
+    }
+
+    .eyebrow {
+      color: #ff8b92;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .main-title {
+      display: inline-block;
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(29px, 5vw, 55px);
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff4f5;
+      text-shadow: 0 0 22px rgba(255, 48, 64, .15);
+      transition: transform .28s ease, color .28s ease,
+                  text-shadow .28s ease;
+    }
+
+    .main-title span {
+      color: var(--red);
+    }
+
+    .main-title:hover {
+      transform: scale(1.055);
+      color: white;
+      text-shadow:
+        0 0 8px rgba(255, 75, 85, .9),
+        0 0 25px rgba(255, 45, 60, .65),
+        0 0 50px rgba(255, 35, 55, .35);
+    }
+
+    .subtitle {
+      max-width: 550px;
+      margin: 15px auto 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* Orbit area */
+    .orbit-section {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .orbit-stage {
+      position: relative;
+      width: min(100%, 720px);
+      height: 440px;
+      isolation: isolate;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      width: 330px;
+      height: 330px;
+      left: 50%;
+      top: 50%;
+      border: 1px solid rgba(255, 76, 91, .13);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 45px rgba(255, 35, 55, .035),
+        inset 0 0 45px rgba(255, 35, 55, .025);
+    }
+
+    .orbit-ring::before,
+    .orbit-ring::after {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border: 1px dashed rgba(255, 106, 115, .10);
+      border-radius: 50%;
+    }
+
+    .orbit-ring::after {
+      inset: -23px;
+      border-style: solid;
+      border-color: rgba(255, 76, 91, .055);
+    }
+
+    .logo-core {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      width: 174px;
+      height: 174px;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(97, 19, 36, .55), rgba(20, 12, 20, .82) 68%);
+      border: 1px solid rgba(255, 80, 95, .27);
+      box-shadow:
+        0 0 30px rgba(255, 42, 62, .14),
+        inset 0 0 28px rgba(255, 58, 73, .08);
+    }
+
+    .logo-core img {
+      width: 76%;
+      height: 76%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(255, 50, 67, .35));
+      animation: logo-float 4s ease-in-out infinite;
+    }
+
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /*
+      The orbit rotates the card positions.
+      Each card gets the opposite rotation so its text stays upright.
+    */
+    .orbit-track {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      animation: orbit-turn 24s linear infinite;
+    }
+
+    .orbit-stage:hover .orbit-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes orbit-turn {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orbit-position {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0;
+    }
+
+    .orbit-position:nth-child(1) {
+      transform: rotate(0deg) translateY(-190px);
+    }
+
+    .orbit-position:nth-child(2) {
+      transform: rotate(120deg) translateY(-190px);
+    }
+
+    .orbit-position:nth-child(3) {
+      transform: rotate(240deg) translateY(-190px);
+    }
+
+    .orbit-card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 166px;
+      min-height: 100px;
+      padding: 17px 12px;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-align: center;
+      border: 1px solid rgba(255, 94, 105, .24);
+      border-radius: 16px;
+      background: rgba(25, 17, 25, .96);
+      box-shadow: 0 12px 32px rgba(0,0,0,.25);
+      backdrop-filter: blur(12px);
+      animation: card-counter 24s linear infinite;
+      transition: background .25s ease, border-color .25s ease,
+                  box-shadow .25s ease, color .25s ease;
+    }
+
+    @keyframes card-counter {
+      from { rotate: 0deg; }
+      to { rotate: -360deg; }
+    }
+
+    .orbit-card:hover {
+      background: rgba(255, 100, 110, .17);
+      border-color: rgba(255, 180, 185, .85);
+      box-shadow:
+        0 0 0 1px rgba(255, 90, 105, .10),
+        0 0 27px rgba(255, 58, 75, .22),
+        0 12px 32px rgba(0,0,0,.25);
+      color: white;
+    }
+
+    .orbit-card .card-icon {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 67, 82, .13);
+      color: #ff858d;
+      font-size: 19px;
+    }
+
+    .orbit-card strong {
+      font-family: Orbitron, sans-serif;
+      font-size: 11px;
+      letter-spacing: .3px;
+      line-height: 1.5;
+    }
+
+    .orbit-card small {
+      color: #b8a8b3;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    /* Cards below the orbit */
+    .section-heading {
+      margin: 12px 0 22px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      font-family: Orbitron, sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
+      padding-bottom: 60px;
+    }
+
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 150px;
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      transition: transform .25s ease, border-color .25s ease,
+                  background .25s ease;
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      right: -45px;
+      top: -45px;
+      border-radius: 50%;
+      background: rgba(255, 48, 68, .08);
+      filter: blur(12px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 115, 125, .55);
+      background: rgba(42, 23, 34, .95);
+    }
+
+    .feature-card .mini-icon {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: Orbitron, sans-serif;
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding: 22px 0 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: #8f808c;
+      font-size: 11px;
+    }
+
+    .footer strong {
+      color: #ff737d;
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        padding: 15px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 3px;
+      }
+
+      .nav-links a {
+        padding: 9px 10px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding-top: 38px;
+      }
+
+      .orbit-stage {
+        height: 385px;
+      }
+
+      .orbit-ring {
+        width: 240px;
+        height: 240px;
+      }
+
+      .logo-core {
+        width: 135px;
+        height: 135px;
+      }
+
+      .orbit-position:nth-child(1) {
+        transform: rotate(0deg) translateY(-155px);
+      }
+
+      .orbit-position:nth-child(2) {
+        transform: rotate(120deg) translateY(-155px);
+      }
+
+      .orbit-position:nth-child(3) {
+        transform: rotate(240deg) translateY(-155px);
+      }
+
+      .orbit-card {
+        width: 130px;
+        min-height: 88px;
+        padding: 12px 8px;
+        gap: 6px;
+      }
+
+      .orbit-card strong {
+        font-size: 9px;
+      }
+
+      .orbit-card small {
+        font-size: 9px;
+      }
+
+      .orbit-card .card-icon {
+        width: 29px;
+        height: 29px;
+        font-size: 16px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        margin-top: 0;
       }
     }
 
-    ctx.shadowBlur = 0;
-    requestAnimationFrame(draw);
-  }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
 
-  window.addEventListener("resize", resize);
-  resize();
-  draw();
-})();
-</script>
+<body>
+  <canvas id="embers" aria-hidden="true"></canvas>
 
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
-}
-</script>
+  <div class="page">
+    <header class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="Flame Dragon logo">
+        <div>FLAME <span>DRAGON</span></div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="evolutions.html">Evolutions</a>
+        <a href="skins.html">Skins Library</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Your EvoWorld companion</div>
+
+        <h1 class="main-title">
+          FLAME <span>DRAGON</span>
+        </h1>
+
+        <p class="subtitle">
+          Your EvoWorld hub — explore evolutions, discover skins,
+          and customize your experience.
+        </p>
+      </section>
+
+      <section class="orbit-section" aria-label="Quick navigation">
+        <div class="orbit-stage">
+          <div class="orbit-ring"></div>
+
+          <div class="logo-core">
+            <img src="assets/logo.png" alt="FLAME DRAGON">
+          </div>
+
+          <div class="orbit-track">
+            <div class="orbit-position">
+              <a class="orbit-card" href="https://github.com/ymw3372-stack/flame-dragon-hub" target="_blank" rel="noopener noreferrer">
+                <span class="card-icon">⬇</span>
+                <strong>DOWNLOAD EXTENSION</strong>
+                <small>Get the Chrome extension</small>
+              </a>
+            </div>
+
+            <div class="orbit-position">
+              <a class="orbit-card" href="skins.html">
+                <span class="card-icon">✦</span>
+                <strong>SKINS LIBRARY</strong>
+                <small>Explore your skin collection</small>
+              </a>
+            </div>
+
+            <div class="orbit-position">
+              <a class="orbit-card" href="evolutions.html">
+                <span class="card-icon">◆</span>
+                <strong>EVOLUTIONS</strong>
+                <small>Explore the evolution path</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="more-section">
+        <div class="section-heading">
+          <h2>EXPLORE THE HUB</h2>
+          <p>More tools and information in one place.</p>
+        </div>
+
+        <div class="feature-grid">
+          <a class="feature-card" href="settings.html">
+            <div class="mini-icon">⚙</div>
+            <h3>SETTINGS</h3>
+            <p>Manage your hub preferences and personalize your experience.</p>
+          </a>
+
+          <a class="feature-card" href="skins.html">
+            <div class="mini-icon">✧</div>
+            <h3>YOUR COLLECTION</h3>
+            <p>Browse the available skins and find your next favorite look.</p>
+          </a>
+
+          <a class="feature-card" href="evolutions.html">
+            <div class="mini-icon">♢</div>
+            <h3>EVOLUTION GUIDE</h3>
+            <p>Follow the EvoWorld evolution path and discover its stages.</p>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span><strong>FLAME DRAGON HUB</strong> · Unofficial EvoWorld companion</span>
+      <span>Made for the EvoWorld community</span>
+    </footer>
+  </div>
+
+  <script>
+    // Floating ember particles
+    (() => {
+      const canvas = document.getElementById("embers");
+      const ctx = canvas.getContext("2d");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let particles = [];
+      let width = 0;
+      let height = 0;
+      let animationId;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const count = Math.min(65, Math.floor(width / 18));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 2 + .5,
+          speed: Math.random() * .45 + .15,
+          drift: (Math.random() - .5) * .35,
+          alpha: Math.random() * .5 + .15
+        }));
+
+        if (reduceMotion) draw();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (const p of particles) {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255, ${70 + Math.floor(Math.random() * 45)}, 65, ${p.alpha})`;
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (!reduceMotion) {
+            p.y -= p.speed;
+            p.x += p.drift;
+
+            if (p.y < -5) {
+              p.y = height + 5;
+              p.x = Math.random() * width;
+            }
+
+            if (p.x < -5) p.x = width + 5;
+            if (p.x > width + 5) p.x = -5;
+          }
+        }
+
+        if (!reduceMotion) animationId = requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+      if (!reduceMotion) draw();
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        } else if (!document.hidden && !reduceMotion && !animationId) {
+          draw();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
