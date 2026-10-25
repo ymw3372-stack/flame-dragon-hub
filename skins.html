@@ -1,95 +1,652 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reaper Vault | FLAME DRAGON HUB</title>
+<title>Skins | FLAME DRAGON HUB</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
-.reaper-vault{max-width:1500px;margin:auto;padding:38px 22px 78px}
-.vault-hero{position:relative;overflow:hidden;padding:clamp(24px,5vw,52px);border:1px solid rgba(255,127,64,.24);border-radius:26px;background:radial-gradient(ellipse at 85% 10%,rgba(255,82,34,.17),transparent 36%),linear-gradient(135deg,rgba(23,27,45,.98),rgba(10,14,28,.98));box-shadow:0 18px 55px rgba(0,0,0,.2)}
-.vault-hero:after{content:"";position:absolute;right:-70px;bottom:-130px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(255,128,64,.15);box-shadow:0 0 0 25px rgba(255,128,64,.025),0 0 0 55px rgba(255,128,64,.02);pointer-events:none}
-.vault-kicker{display:inline-flex;gap:8px;align-items:center;color:#ffae78;font-size:11px;font-weight:800;letter-spacing:.2em}
-.vault-hero h1{font-size:clamp(30px,5vw,54px);line-height:1.05;margin:14px 0 12px;color:#fff4e8}
-.vault-hero p{max-width:650px;color:#b8bfd1;line-height:1.65;margin:0}
-.vault-counts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.vault-pill{border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:8px 13px;background:rgba(255,255,255,.04);font-size:12px;color:#e9edf8}
-.vault-pill strong{color:#ffad75}
-.vault-tools{display:grid;grid-template-columns:minmax(200px,1fr) minmax(150px,220px) minmax(140px,180px);gap:10px;margin:24px 0 28px}
-.vault-tools input,.vault-tools select{width:100%;min-height:46px;border:1px solid rgba(133,148,187,.28);border-radius:12px;background:#101629;color:#edf1fc;padding:0 14px;font:inherit;outline:none}
-.vault-tools input:focus,.vault-tools select:focus{border-color:#ff8248;box-shadow:0 0 0 3px rgba(255,130,72,.12)}
-.vault-category{margin:34px 0}
-.vault-category-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:15px}
-.vault-category-head h2{font-size:clamp(21px,3vw,29px);margin:8px 0 4px;color:#fff4e8}
-.vault-category-head p{margin:0;color:#9ea8bf;font-size:13px}
-.vault-total{white-space:nowrap;color:#ffad75;font-size:12px;font-weight:700}
-.vault-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;align-items:start}
-.vault-card{position:relative;min-width:0;overflow:hidden;border:1px solid rgba(123,140,181,.19);border-radius:17px;background:linear-gradient(155deg,rgba(20,27,47,.98),rgba(11,15,29,.99));transition:transform .2s,border-color .2s,box-shadow .2s;transform-origin:center;will-change:transform}
-.vault-card:hover,.vault-card:focus-within{z-index:5;transform:translateY(-5px) scale(1.035);border-color:rgba(255,123,64,.65);box-shadow:0 14px 32px rgba(0,0,0,.4),0 0 20px rgba(255,88,30,.1)}
-.vault-art{height:138px;display:grid;place-items:center;position:relative;background:radial-gradient(ellipse at 50% 70%,rgba(255,105,48,.1),transparent 60%);padding:12px}
-.vault-art img{max-width:100%;max-height:115px;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 7px rgba(0,0,0,.3))}
-.vault-number{position:absolute;left:10px;top:10px;border:1px solid rgba(255,255,255,.1);background:rgba(5,8,17,.65);border-radius:7px;padding:4px 7px;font-size:10px;color:#cbd2e2}
-.vault-fav{position:absolute;right:9px;top:8px;width:30px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(5,8,17,.7);color:#c7cedf;font-size:18px;cursor:pointer}
-.vault-fav.is-favorite{color:#ff694c;border-color:rgba(255,105,76,.35);background:rgba(255,80,50,.13)}
-.vault-meta{padding:12px 12px 13px;border-top:1px solid rgba(255,255,255,.045)}
-.vault-name{display:block;color:#f2f3f8;font-weight:750;font-size:12px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vault-sub{margin-top:5px;color:#8e9ab5;font-size:10px;display:flex;justify-content:space-between;gap:8px}
-.vault-actions{display:flex;gap:6px;margin-top:10px}
-.vault-actions button{flex:1;min-width:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);color:#dfe5f4;border-radius:8px;padding:7px 5px;font-size:11px;cursor:pointer}
-.vault-actions button:hover{border-color:rgba(255,128,64,.45);color:#ffbd92}
-.vault-hover-info{display:grid;gap:5px;max-height:0;overflow:hidden;padding:0 11px;opacity:0;border-top:0 solid rgba(255,255,255,.06);background:rgba(7,11,22,.96);transition:max-height .22s ease,opacity .2s ease,padding .22s ease}
-.vault-card:hover .vault-hover-info,.vault-card:focus-within .vault-hover-info{max-height:110px;padding:9px 11px;opacity:1;border-top-width:1px}
-.vault-info-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;color:#9ba8c1;font-size:10px;line-height:1.4}
-.vault-info-line strong{min-width:0;overflow:hidden;color:#ffb17f;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
-.vault-empty{padding:30px;text-align:center;border:1px dashed rgba(255,255,255,.15);border-radius:16px;color:#aeb8cd}
-.vault-hidden{display:none!important}
-.vault-dialog{width:min(420px,calc(100% - 28px));border:1px solid rgba(255,128,64,.32);border-radius:20px;background:#11172a;color:#edf1fc;padding:0;box-shadow:0 25px 80px #000a}
-.vault-dialog::backdrop{background:rgba(2,4,12,.78);backdrop-filter:blur(5px)}
-.dialog-inner{padding:22px}
-.dialog-inner h3{margin:0 0 8px;font-size:21px}
-.dialog-inner p{margin:0 0 16px;color:#aab4c9;font-size:13px;line-height:1.5}
-.dialog-inner label{display:block;font-size:12px;color:#cbd3e3;margin-bottom:7px}
-.dialog-inner input{width:100%;box-sizing:border-box;min-height:44px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:#090e1b;color:#fff;padding:0 12px;font:inherit}
-.dialog-actions{display:flex;gap:8px;margin-top:16px}
-.dialog-actions button{flex:1;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px;background:rgba(255,255,255,.05);color:#fff;cursor:pointer}
-.dialog-actions .primary{background:linear-gradient(135deg,#ff713b,#d63b28);border:0;font-weight:800}
-.vault-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;padding:11px 16px;border-radius:12px;background:#202941;border:1px solid rgba(255,128,64,.3);color:#fff;box-shadow:0 12px 35px #0007;font-size:13px}
-.vault-toast[hidden]{display:none}
-.nav-studio{display:inline-flex;align-items:center;justify-content:center;margin-left:-5px;padding:5px 8px;border:1px solid rgba(255,154,101,.25);border-radius:8px;color:#ffb17f!important;text-decoration:none;font-size:14px}
-.nav-studio:hover{background:rgba(255,130,72,.12)}
-
-/* Floating navigation bar */
-.vault-float-bar{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:900;display:flex;align-items:center;gap:9px;width:44px;min-height:44px;padding:5px;overflow:hidden;border:1px solid rgba(255,145,85,.4);border-radius:16px;background:rgba(13,19,36,.94);color:#ffb17f;box-shadow:0 8px 28px #0007;backdrop-filter:blur(12px);cursor:pointer;transition:width .25s ease,border-color .2s,box-shadow .2s}
-.vault-float-bar:hover,.vault-float-bar:focus-visible{width:158px;border-color:#ff8248;box-shadow:0 8px 30px #0008,0 0 18px #ff713b22}
-.vault-float-icon{flex:0 0 32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#ff713b18;font-size:20px}
-.vault-float-label{overflow:hidden;white-space:nowrap;font-size:12px;font-weight:800;opacity:0;transition:opacity .18s ease}
-.vault-float-bar:hover .vault-float-label,.vault-float-bar:focus-visible .vault-float-label{opacity:1}
-
-@media(hover:none){
-.vault-hover-info{max-height:110px;padding:8px 11px;opacity:1;border-top-width:1px}
-.vault-card:hover,.vault-card:focus-within{transform:none}
+/* ===== Main page ===== */
+.reaper-vault {
+  width: min(1500px, 100%);
+  margin: auto;
+  padding: 34px 22px 80px;
 }
-@media(max-width:650px){
-.reaper-vault{padding:25px 12px 55px}
-.vault-tools{grid-template-columns:1fr 1fr}
-.vault-tools input{grid-column:1/-1}
-.vault-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.vault-art{height:125px}
-.vault-art img{max-height:105px}
-.vault-card{border-radius:14px}
-.vault-category-head{align-items:start}
-.vault-total{font-size:10px}
-.vault-float-bar{right:9px;bottom:18px;top:auto;transform:none}
-.vault-float-bar:hover,.vault-float-bar:focus-visible{width:145px}
+
+.vault-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(25px, 5vw, 52px);
+  border: 1px solid rgba(255,127,64,.25);
+  border-radius: 26px;
+  background:
+    radial-gradient(ellipse at 85% 10%,rgba(255,82,34,.18),transparent 36%),
+    linear-gradient(135deg,rgba(23,27,45,.97),rgba(10,14,28,.97));
+  box-shadow: 0 18px 55px rgba(0,0,0,.22);
 }
-@media(prefers-reduced-motion:reduce){
-.vault-float-bar,.vault-float-label,.vault-card,.vault-hover-info{transition:none}
+
+.vault-hero:after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  bottom: -130px;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(255,128,64,.15);
+  border-radius: 50%;
+  box-shadow: 0 0 0 25px rgba(255,128,64,.025),
+              0 0 0 55px rgba(255,128,64,.02);
+  pointer-events: none;
+}
+
+.vault-kicker {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #ffae78;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.vault-hero h1 {
+  margin: 14px 0 12px;
+  color: #fff4e8;
+  font-size: clamp(32px,5vw,54px);
+  line-height: 1.05;
+}
+
+.vault-hero p {
+  max-width: 680px;
+  margin: 0;
+  color: #b8bfd1;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.vault-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.vault-pill {
+  padding: 8px 13px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  color: #e9edf8;
+  font-size: 12px;
+}
+
+.vault-pill strong {
+  color: #ffad75;
+}
+
+/* ===== Search and filters ===== */
+.vault-tools {
+  display: grid;
+  grid-template-columns: minmax(200px,1fr) minmax(150px,220px) minmax(140px,180px);
+  gap: 10px;
+  margin: 24px 0 30px;
+}
+
+.vault-tools input,
+.vault-tools select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(133,148,187,.28);
+  border-radius: 12px;
+  outline: none;
+  background: #101629;
+  color: #edf1fc;
+  font: inherit;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.vault-tools input:focus,
+.vault-tools select:focus {
+  border-color: #ff8248;
+  box-shadow: 0 0 0 3px rgba(255,130,72,.12);
+}
+
+/* ===== Skin sections ===== */
+.vault-category {
+  margin: 36px 0;
+  scroll-margin-top: 25px;
+}
+
+.vault-category-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.vault-category-head h2 {
+  margin: 8px 0 4px;
+  color: #fff4e8;
+  font-size: clamp(21px,3vw,29px);
+}
+
+.vault-category-head p {
+  margin: 0;
+  color: #9ea8bf;
+  font-size: 13px;
+}
+
+.vault-total {
+  color: #ffad75;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(155px,1fr));
+  align-items: start;
+  gap: 13px;
+}
+
+/* ===== Skin cards ===== */
+.vault-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(123,140,181,.2);
+  border-radius: 17px;
+  background:
+    linear-gradient(155deg,rgba(24,31,52,.98),rgba(11,15,29,.99));
+  box-shadow: 0 7px 22px rgba(0,0,0,.12);
+  transform-origin: center;
+  transition: transform .22s ease,
+              border-color .22s ease,
+              box-shadow .22s ease;
+}
+
+.vault-card:hover,
+.vault-card:focus-within {
+  z-index: 5;
+  transform: translateY(-5px) scale(1.035);
+  border-color: rgba(255,123,64,.68);
+  box-shadow: 0 16px 35px rgba(0,0,0,.35),
+              0 0 22px rgba(255,88,30,.1);
+}
+
+.vault-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 138px;
+  padding: 12px;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(255,105,48,.12),transparent 62%);
+}
+
+.vault-art img {
+  width: 100%;
+  height: 100%;
+  max-height: 115px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 7px rgba(0,0,0,.3));
+  transition: transform .22s ease, filter .22s ease;
+}
+
+.vault-card:hover .vault-art img {
+  transform: scale(1.09);
+  filter: drop-shadow(0 8px 12px rgba(255,105,48,.18));
+}
+
+.vault-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 7px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 7px;
+  background: rgba(5,8,17,.72);
+  color: #cbd2e2;
+  font-size: 10px;
+}
+
+.vault-fav {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9px;
+  background: rgba(5,8,17,.76);
+  color: #c7cedf;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.vault-fav.is-favorite {
+  border-color: rgba(255,105,76,.4);
+  background: rgba(255,80,50,.15);
+  color: #ff694c;
+}
+
+.vault-meta {
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+
+.vault-name {
+  display: block;
+  overflow: hidden;
+  color: #f2f3f8;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vault-sub {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 5px;
+  color: #8e9ab5;
+  font-size: 10px;
+}
+
+.vault-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.vault-actions button {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 5px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  background: rgba(255,255,255,.045);
+  color: #dfe5f4;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background .2s,border-color .2s,color .2s;
+}
+
+.vault-actions button:hover {
+  border-color: rgba(255,128,64,.5);
+  background: rgba(255,128,64,.09);
+  color: #ffbd92;
+}
+
+/* Hover information */
+.vault-hover-info {
+  display: grid;
+  gap: 6px;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  border-top: 0 solid rgba(255,255,255,.06);
+  background: rgba(7,11,22,.97);
+  opacity: 0;
+  transition: max-height .24s ease,
+              opacity .2s ease,
+              padding .24s ease;
+}
+
+.vault-card:hover .vault-hover-info,
+.vault-card:focus-within .vault-hover-info {
+  max-height: 120px;
+  padding: 10px 11px;
+  border-top-width: 1px;
+  opacity: 1;
+}
+
+.vault-info-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  color: #9ba8c1;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.vault-info-line strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #ffb17f;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Floating taskbar-style navigation ===== */
+.vault-side-nav {
+  position: fixed;
+  top: 50%;
+  right: 16px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 48px;
+  padding: 8px 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,145,85,.32);
+  border-radius: 18px;
+  background: rgba(13,19,36,.91);
+  box-shadow: 0 12px 35px rgba(0,0,0,.3);
+  backdrop-filter: blur(16px);
+  transform: translateY(-50%);
+  transition: width .24s ease, border-color .2s ease;
+}
+
+.vault-side-nav:hover,
+.vault-side-nav:focus-within {
+  width: 190px;
+  border-color: rgba(255,130,72,.7);
+}
+
+.vault-side-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 42px;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: #cbd4e8;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+.vault-side-link:hover,
+.vault-side-link:focus-visible,
+.vault-side-link.active {
+  border-color: rgba(255,143,84,.2);
+  background: rgba(255,125,62,.12);
+  outline: none;
+}
+
+.vault-side-icon {
+  display: grid;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(255,255,255,.055);
+  color: #ffb17f;
+  font-size: 16px;
+}
+
+.vault-side-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+.vault-side-nav:hover .vault-side-text,
+.vault-side-nav:focus-within .vault-side-text {
+  opacity: 1;
+}
+
+.vault-side-title {
+  color: #fff2e6;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.vault-side-desc {
+  color: #9eabc3;
+  font-size: 9px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.vault-side-divider {
+  height: 1px;
+  margin: 2px 4px;
+  background: rgba(255,255,255,.09);
+}
+
+.vault-side-link.top-link .vault-side-icon {
+  background: rgba(255,112,58,.15);
+}
+
+/* ===== Rename dialog and messages ===== */
+.vault-empty {
+  padding: 30px;
+  border: 1px dashed rgba(255,255,255,.15);
+  border-radius: 16px;
+  color: #aeb8cd;
+  text-align: center;
+}
+
+.vault-hidden {
+  display: none !important;
+}
+
+.vault-dialog {
+  width: min(420px,calc(100% - 28px));
+  padding: 0;
+  border: 1px solid rgba(255,128,64,.32);
+  border-radius: 20px;
+  background: #11172a;
+  color: #edf1fc;
+  box-shadow: 0 25px 80px #000a;
+}
+
+.vault-dialog::backdrop {
+  background: rgba(2,4,12,.78);
+  backdrop-filter: blur(5px);
+}
+
+.dialog-inner {
+  padding: 22px;
+}
+
+.dialog-inner h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.dialog-inner p {
+  margin: 0 0 16px;
+  color: #aab4c9;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dialog-inner label {
+  display: block;
+  margin-bottom: 7px;
+  color: #cbd3e3;
+  font-size: 12px;
+}
+
+.dialog-inner input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 10px;
+  background: #090e1b;
+  color: #fff;
+  font: inherit;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.dialog-actions button {
+  flex: 1;
+  padding: 11px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  cursor: pointer;
+}
+
+.dialog-actions .primary {
+  border: 0;
+  background: linear-gradient(135deg,#ff713b,#d63b28);
+  font-weight: 800;
+}
+
+.vault-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 1100;
+  padding: 11px 16px;
+  border: 1px solid rgba(255,128,64,.3);
+  border-radius: 12px;
+  background: #202941;
+  color: #fff;
+  box-shadow: 0 12px 35px #0007;
+  font-size: 13px;
+  transform: translateX(-50%);
+}
+
+.vault-toast[hidden] {
+  display: none;
+}
+
+.nav-studio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -5px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255,154,101,.25);
+  border-radius: 8px;
+  color: #ffb17f !important;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-studio:hover {
+  background: rgba(255,130,72,.12);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 850px) {
+  .vault-side-nav {
+    right: 9px;
+  }
+
+  .vault-side-nav:hover,
+  .vault-side-nav:focus-within {
+    width: 175px;
+  }
+
+  .vault-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vault-tools input {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .reaper-vault {
+    padding: 25px 12px 55px;
+  }
+
+  .vault-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 9px;
+  }
+
+  .vault-art {
+    height: 125px;
+  }
+
+  .vault-art img {
+    max-height: 105px;
+  }
+
+  .vault-card {
+    border-radius: 14px;
+  }
+
+  .vault-category-head {
+    align-items: start;
+  }
+
+  .vault-total {
+    font-size: 10px;
+  }
+
+  .vault-side-nav {
+    top: auto;
+    right: 10px;
+    bottom: 16px;
+    width: 48px;
+    transform: none;
+  }
+
+  .vault-side-nav:hover,
+  .vault-side-nav:focus-within {
+    width: 175px;
+  }
+}
+
+@media (hover: none) {
+  .vault-hover-info {
+    max-height: 120px;
+    padding: 9px 11px;
+    border-top-width: 1px;
+    opacity: 1;
+  }
+
+  .vault-card:hover {
+    transform: none;
+  }
+
+  .vault-side-nav {
+    width: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <aside class="bonus-codes" aria-label="Bonus codes">
   <strong>ALL BONUS CODES</strong>
   <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
@@ -100,6 +657,7 @@
     <img src="assets/logo.png" alt="FLAME DRAGON HUB">
     <span>FLAME DRAGON HUB</span>
   </div>
+
   <nav class="navigation" aria-label="Main navigation">
     <a href="index.html">Home</a>
     <a href="evolutions.html">Evolutions</a>
@@ -111,20 +669,29 @@
 </header>
 
 <main class="reaper-vault">
+
   <section class="vault-hero">
     <span class="vault-kicker">✦ FLAME DRAGON / SKIN ARCHIVE</span>
     <h1>Reaper Vault</h1>
-    <p>Browse every EvoWorld skin the FLAME DRAGON HUB extension can replace, plus the pets it can swap. Search, sort, preview, rename display labels, and save favorites. These are still previews: a single image cannot show real action animation without the separate frame art.</p>
+    <p>
+      Explore your EvoWorld skin archive. Search the collection, preview
+      images, rename display labels and save favorites. Hover over a skin
+      to reveal its family, ID and original image filename.
+    </p>
+
     <div class="vault-counts">
-      <span class="vault-pill"><strong>397</strong> local skins</span>
-      <span class="vault-pill"><strong>5</strong> skin families</span>
+      <span class="vault-pill"><strong id="vaultTotalCount">397</strong> local skins</span>
+      <span class="vault-pill"><strong id="vaultFamilyCount">5</strong> skin families</span>
       <span class="vault-pill">Names are editable</span>
     </div>
   </section>
 
   <div class="vault-tools" role="search">
-    <input id="vaultSearch" type="search" placeholder="Search skins or your custom names…" aria-label="Search skins">
-    <select id="vaultCategory" aria-label="Filter Reaper family">
+    <input id="vaultSearch" type="search"
+      placeholder="Search skins or your custom names…"
+      aria-label="Search skins">
+
+    <select id="vaultCategory" aria-label="Filter skin family">
       <option value="all">All families</option>
       <option value="grim-reaper">Grim Reaper</option>
       <option value="pumpkin-ghost">Pumpkin Ghost</option>
@@ -132,6 +699,7 @@
       <option value="ghost">Ghosts</option>
       <option value="pets">Pets</option>
     </select>
+
     <select id="vaultSort" aria-label="Sort skins">
       <option value="default">Default order</option>
       <option value="az">Name A–Z</option>
@@ -193,7 +761,7 @@
       <div>
         <span class="vault-kicker">FAMILY 05</span>
         <h2>Pets</h2>
-        <p>Every pet the game can load</p>
+        <p>Every pet in the local skin archive</p>
       </div>
       <span class="vault-total">42 SKINS</span>
     </div>
@@ -203,26 +771,84 @@
   <div id="vaultNoResults" class="vault-empty vault-hidden">
     No skins match that search. Try another name or filter.
   </div>
+
 </main>
 
-<button
-  class="vault-float-bar"
-  id="vaultFloatBar"
-  type="button"
-  aria-label="Explore skins"
-  title="Explore skins"
->
-  <span class="vault-float-icon" id="vaultFloatIcon">↓</span>
-  <span class="vault-float-label" id="vaultFloatLabel">Explore skins</span>
-</button>
+<!-- Expanding taskbar-style quick navigation -->
+<aside class="vault-side-nav" aria-label="Quick navigation">
+
+  <a class="vault-side-link" href="index.html" title="Home">
+    <span class="vault-side-icon">⌂</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Home</span>
+      <span class="vault-side-desc">Return to your hub</span>
+    </span>
+  </a>
+
+  <a class="vault-side-link" href="evolutions.html" title="Evolutions">
+    <span class="vault-side-icon">♧</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Evolutions</span>
+      <span class="vault-side-desc">Explore character stages</span>
+    </span>
+  </a>
+
+  <a class="vault-side-link active" href="skins.html" title="Skins" aria-current="page">
+    <span class="vault-side-icon">✦</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Skins Vault</span>
+      <span class="vault-side-desc">Browse and preview skins</span>
+    </span>
+  </a>
+
+  <a class="vault-side-link" href="favorites.html" title="Favorites">
+    <span class="vault-side-icon">♡</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Favorites</span>
+      <span class="vault-side-desc">Find saved skins</span>
+    </span>
+  </a>
+
+  <a class="vault-side-link" href="skin-studio.html" title="Skin Studio">
+    <span class="vault-side-icon">✎</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Skin Studio</span>
+      <span class="vault-side-desc">Open skin tools</span>
+    </span>
+  </a>
+
+  <a class="vault-side-link" href="settings.html" title="Settings">
+    <span class="vault-side-icon">⚙</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title">Settings</span>
+      <span class="vault-side-desc">Adjust your preferences</span>
+    </span>
+  </a>
+
+  <div class="vault-side-divider"></div>
+
+  <button class="vault-side-link top-link" id="vaultBackToTop" type="button"
+    title="Back to top">
+    <span class="vault-side-icon" id="vaultTopIcon">↑</span>
+    <span class="vault-side-text">
+      <span class="vault-side-title" id="vaultTopTitle">Back to top</span>
+      <span class="vault-side-desc" id="vaultTopDesc">Return to page header</span>
+    </span>
+  </button>
+
+</aside>
 
 <dialog class="vault-dialog" id="renameDialog">
   <form method="dialog" id="renameForm">
     <div class="dialog-inner">
       <h3>Rename skin</h3>
-      <p>This changes only the label shown in FLAME DRAGON HUB. The original image file and path stay untouched, so the image will keep loading.</p>
+      <p>
+        This changes only the label shown on this page. The original image
+        file and path remain unchanged.
+      </p>
       <label for="renameInput">Display name</label>
       <input id="renameInput" maxlength="48" required autocomplete="off">
+
       <div class="dialog-actions">
         <button type="button" id="resetName">Reset name</button>
         <button type="button" id="cancelRename">Cancel</button>
@@ -238,31 +864,35 @@
 
 <script>
 (() => {
+  const noResults = document.getElementById('vaultNoResults');
+
   if (typeof skinsData === 'undefined' || !skinsData) {
-    console.error('skins-data.js did not load or skinsData is missing.');
-    const empty = document.getElementById('vaultNoResults');
-    empty.textContent = 'Skin data could not load. Check skins-data.js and refresh the page.';
-    empty.classList.remove('vault-hidden');
+    noResults.textContent =
+      'Skin data could not load. Check skins-data.js and refresh the page.';
+    noResults.classList.remove('vault-hidden');
     return;
   }
 
-  const categories = Object.entries(skinsData).map(([id, c]) => ({
+  const categories = Object.entries(skinsData).map(([id, category]) => ({
     id,
-    title: c.title,
-    folder: c.folder,
-    skins: c.skins
+    title: category.title,
+    folder: category.folder,
+    skins: Array.isArray(category.skins) ? category.skins : []
   }));
 
+  const categoryIds = new Set(categories.map(category => category.id));
   const favKey = 'flameDragonFavorites';
   const namesKey = 'flameDragonSkinNames';
 
   let renaming = null;
   let toastTimer;
 
-  const read = (key, fallback) => {
+  const read = (storageKey, fallback) => {
     try {
-      const x = JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-      return x && typeof x === 'object' ? x : fallback;
+      const value = JSON.parse(
+        localStorage.getItem(storageKey) || JSON.stringify(fallback)
+      );
+      return value && typeof value === 'object' ? value : fallback;
     } catch {
       return fallback;
     }
@@ -271,63 +901,89 @@
   const getNames = () => read(namesKey, {});
 
   const getFavs = () => {
-    const x = read(favKey, []);
-    return Array.isArray(x) ? x : [];
+    const value = read(favKey, []);
+    return Array.isArray(value) ? value : [];
   };
 
-  const key = (c, i) => `${c.id}:${i}`;
-  const skinAt = (c, i) => c.skins[i - 1];
-  const defaultName = (c, i) => skinAt(c, i).name;
-  const displayName = (c, i) => getNames()[key(c, i)] || defaultName(c, i);
-  const assetPath = (c, i) => `assets/skins/${c.folder}/${skinAt(c, i).file}`;
+  const skinKey = (category, index) => `${category.id}:${index}`;
+  const skinAt = (category, index) => category.skins[index - 1];
 
-  function toast(msg) {
-    const el = document.getElementById('vaultToast');
-    el.textContent = msg;
-    el.hidden = false;
+  const defaultName = (category, index) => {
+    const skin = skinAt(category, index);
+    return skin?.name || skin?.file || `Skin ${index}`;
+  };
+
+  const displayName = (category, index) =>
+    getNames()[skinKey(category, index)] || defaultName(category, index);
+
+  const assetPath = (category, index) => {
+    const skin = skinAt(category, index);
+    return `assets/skins/${category.folder}/${skin.file}`;
+  };
+
+  function toast(message) {
+    const element = document.getElementById('vaultToast');
+    element.textContent = message;
+    element.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.hidden = true, 2100);
+    toastTimer = setTimeout(() => element.hidden = true, 2200);
+  }
+
+  function addHoverInfo(container, label, value) {
+    const row = document.createElement('div');
+    row.className = 'vault-info-line';
+
+    const caption = document.createElement('span');
+    caption.textContent = label;
+
+    const detail = document.createElement('strong');
+    detail.textContent = value;
+    detail.title = value;
+
+    row.append(caption, detail);
+    container.appendChild(row);
   }
 
   function build() {
-    for (const c of categories) {
-      const grid = document.getElementById(`grid-${c.id}`);
+    let actualTotal = 0;
 
-      if (!grid) {
-        console.warn(`Missing grid for category: ${c.id}`);
-        continue;
-      }
+    for (const category of categories) {
+      const grid = document.getElementById(`grid-${category.id}`);
 
-      for (let i = 1; i <= c.skins.length; i++) {
-        const id = key(c, i);
-        const skin = skinAt(c, i);
+      if (!grid) continue;
+
+      category.skins.forEach((skin, index) => {
+        const i = index + 1;
+        const id = skinKey(category, i);
+        const originalName = defaultName(category, i);
+
+        actualTotal++;
 
         const card = document.createElement('article');
         card.className = 'vault-card';
         card.dataset.id = id;
-        card.dataset.category = c.id;
-        card.dataset.order = i;
-        card.dataset.defaultName = defaultName(c, i).toLowerCase();
+        card.dataset.category = category.id;
+        card.dataset.order = String(i);
 
         const art = document.createElement('div');
         art.className = 'vault-art';
 
-        const img = document.createElement('img');
-        img.src = assetPath(c, i);
-        img.alt = defaultName(c, i);
-        img.loading = 'lazy';
-        img.decoding = 'async';
+        const image = document.createElement('img');
+        image.src = assetPath(category, i);
+        image.alt = originalName;
+        image.loading = 'lazy';
+        image.decoding = 'async';
 
-        img.onerror = () => {
-          img.alt = 'Image missing';
-          img.style.display = 'none';
+        image.onerror = () => {
+          image.style.display = 'none';
 
           if (!art.querySelector('.vault-image-error')) {
-            const message = document.createElement('span');
-            message.className = 'vault-image-error';
-            message.textContent = 'Image file missing';
-            message.style.cssText = 'font-size:11px;color:#ffad75;text-align:center';
-            art.appendChild(message);
+            const error = document.createElement('span');
+            error.className = 'vault-image-error';
+            error.textContent = 'Image unavailable';
+            error.style.cssText =
+              'font-size:10px;color:#ffad75;text-align:center';
+            art.appendChild(error);
           }
         };
 
@@ -335,15 +991,14 @@
         number.className = 'vault-number';
         number.textContent = `#${String(i).padStart(2, '0')}`;
 
-        const fav = document.createElement('button');
-        fav.type = 'button';
-        fav.className = 'vault-fav';
-        fav.title = 'Toggle favorite';
-        fav.setAttribute('aria-label', `Toggle favorite for ${defaultName(c, i)}`);
-        fav.textContent = '♡';
-        fav.addEventListener('click', () => toggleFavorite(id));
+        const favorite = document.createElement('button');
+        favorite.type = 'button';
+        favorite.className = 'vault-fav';
+        favorite.title = 'Toggle favorite';
+        favorite.setAttribute('aria-label', `Favorite ${originalName}`);
+        favorite.addEventListener('click', () => toggleFavorite(id));
 
-        art.append(img, number, fav);
+        art.append(image, number, favorite);
 
         const meta = document.createElement('div');
         meta.className = 'vault-meta';
@@ -351,19 +1006,19 @@
         const name = document.createElement('span');
         name.className = 'vault-name';
         name.dataset.nameFor = id;
-        name.textContent = displayName(c, i);
-        name.title = displayName(c, i);
+        name.textContent = displayName(category, i);
+        name.title = displayName(category, i);
 
-        const sub = document.createElement('div');
-        sub.className = 'vault-sub';
+        const subtitle = document.createElement('div');
+        subtitle.className = 'vault-sub';
 
-        const familyLabel = document.createElement('span');
-        familyLabel.textContent = c.title;
+        const family = document.createElement('span');
+        family.textContent = category.title;
 
-        const localLabel = document.createElement('span');
-        localLabel.textContent = 'LOCAL';
+        const local = document.createElement('span');
+        local.textContent = 'LOCAL';
 
-        sub.append(familyLabel, localLabel);
+        subtitle.append(family, local);
 
         const actions = document.createElement('div');
         actions.className = 'vault-actions';
@@ -372,48 +1027,50 @@
         rename.type = 'button';
         rename.textContent = '✎ Rename';
         rename.addEventListener('click', () => {
-          openRename(id, displayName(c, i));
+          openRename(id, displayName(category, i));
         });
 
         const preview = document.createElement('button');
         preview.type = 'button';
         preview.textContent = 'View image';
         preview.addEventListener('click', () => {
-          const w = window.open(assetPath(c, i), '_blank');
-
-          if (!w) {
-            toast('Allow pop-ups to open the original image.');
-          }
+          const opened = window.open(assetPath(category, i), '_blank');
+          if (!opened) toast('Allow pop-ups to open the image.');
         });
 
         actions.append(rename, preview);
-        meta.append(name, sub, actions);
+        meta.append(name, subtitle, actions);
 
-        // Compact information revealed on hover.
-        const info = document.createElement('div');
-        info.className = 'vault-hover-info';
+        const details = document.createElement('div');
+        details.className = 'vault-hover-info';
 
-        const addInfo = (label, value) => {
-          const line = document.createElement('div');
-          line.className = 'vault-info-line';
+        addHoverInfo(details, 'Family', category.title);
+        addHoverInfo(details, 'Skin ID', id);
+        addHoverInfo(details, 'Image', skin.file || 'Unknown');
 
-          const title = document.createElement('span');
-          title.textContent = label;
-
-          const detail = document.createElement('strong');
-          detail.textContent = value;
-          detail.title = value;
-
-          line.append(title, detail);
-          info.appendChild(line);
-        };
-
-        addInfo('Family', c.title);
-        addInfo('Skin ID', id);
-        addInfo('Image', skin.file);
-
-        card.append(art, meta, info);
+        card.append(art, meta, details);
         grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('vaultTotalCount').textContent =
+      actualTotal.toLocaleString();
+
+    document.getElementById('vaultFamilyCount').textContent =
+      categories.length;
+
+    // Use the data file as the source of truth for displayed family counts.
+    for (const category of categories) {
+      const section = document.querySelector(
+        `[data-section="${category.id}"]`
+      );
+
+      if (!section) continue;
+
+      const total = section.querySelector('.vault-total');
+      if (total) {
+        total.textContent =
+          `${category.skins.length.toLocaleString()} SKINS`;
       }
     }
 
@@ -422,30 +1079,35 @@
   }
 
   function toggleFavorite(id) {
-    let f = getFavs();
+    let favorites = getFavs();
 
-    f = f.includes(id)
-      ? f.filter(x => x !== id)
-      : [...f, id];
+    favorites = favorites.includes(id)
+      ? favorites.filter(value => value !== id)
+      : [...favorites, id];
 
-    localStorage.setItem(favKey, JSON.stringify(f));
+    localStorage.setItem(favKey, JSON.stringify(favorites));
 
     syncFavorites();
     filterAndSort();
 
-    toast(f.includes(id) ? 'Added to Favorites' : 'Removed from Favorites');
+    toast(
+      favorites.includes(id)
+        ? 'Added to Favorites'
+        : 'Removed from Favorites'
+    );
   }
 
   function syncFavorites() {
-    const f = getFavs();
+    const favorites = getFavs();
 
     document.querySelectorAll('.vault-card').forEach(card => {
-      const b = card.querySelector('.vault-fav');
-      const active = f.includes(card.dataset.id);
+      const button = card.querySelector('.vault-fav');
+      if (!button) return;
 
-      b.textContent = active ? '♥' : '♡';
-      b.classList.toggle('is-favorite', active);
-      b.setAttribute('aria-pressed', String(active));
+      const active = favorites.includes(card.dataset.id);
+      button.textContent = active ? '♥' : '♡';
+      button.classList.toggle('is-favorite', active);
+      button.setAttribute('aria-pressed', String(active));
     });
   }
 
@@ -471,22 +1133,23 @@
     if (value === null) {
       delete names[renaming];
     } else {
-      const v = value.trim();
+      const newName = value.trim();
 
-      if (!v) {
+      if (!newName) {
         toast('Name cannot be empty');
         return;
       }
 
-      const [cid, idx] = renaming.split(':');
-      const c = categories.find(x => x.id === cid);
+      const [categoryId, indexText] = renaming.split(':');
+      const category = categories.find(item => item.id === categoryId);
+      const index = Number(indexText);
 
-      if (!c) return;
+      if (!category || !Number.isInteger(index)) return;
 
-      if (v === defaultName(c, Number(idx))) {
+      if (newName === defaultName(category, index)) {
         delete names[renaming];
       } else {
-        names[renaming] = v;
+        names[renaming] = newName;
       }
     }
 
@@ -496,24 +1159,25 @@
     renaming = null;
 
     document.querySelectorAll('.vault-card').forEach(card => {
-      const [cid, idx] = card.dataset.id.split(':');
-      const c = categories.find(x => x.id === cid);
+      const [categoryId, indexText] = card.dataset.id.split(':');
+      const category = categories.find(item => item.id === categoryId);
+      if (!category) return;
 
-      if (!c) return;
+      const index = Number(indexText);
+      const label = displayName(category, index);
+      const nameElement = card.querySelector('.vault-name');
 
-      const label = displayName(c, Number(idx));
-      const el = card.querySelector('.vault-name');
-
-      el.textContent = label;
-      el.title = label;
+      nameElement.textContent = label;
+      nameElement.title = label;
     });
 
     filterAndSort();
+
     toast(value === null ? 'Original label restored' : 'Skin name saved');
   }
 
-  document.getElementById('renameForm').addEventListener('submit', e => {
-    e.preventDefault();
+  document.getElementById('renameForm').addEventListener('submit', event => {
+    event.preventDefault();
     finishRename(document.getElementById('renameInput').value);
   });
 
@@ -527,16 +1191,22 @@
   });
 
   function filterAndSort() {
-    const q = document.getElementById('vaultSearch').value.trim().toLowerCase();
-    const cat = document.getElementById('vaultCategory').value;
+    const query = document.getElementById('vaultSearch')
+      .value.trim().toLowerCase();
+
+    const selectedCategory =
+      document.getElementById('vaultCategory').value;
+
     const sort = document.getElementById('vaultSort').value;
-    const f = getFavs();
+    const favorites = getFavs();
 
-    let total = 0;
+    let visibleTotal = 0;
 
-    for (const c of categories) {
-      const section = document.querySelector(`[data-section="${c.id}"]`);
-      const grid = document.getElementById(`grid-${c.id}`);
+    for (const category of categories) {
+      const section = document.querySelector(
+        `[data-section="${category.id}"]`
+      );
+      const grid = document.getElementById(`grid-${category.id}`);
 
       if (!section || !grid) continue;
 
@@ -545,77 +1215,95 @@
       cards.sort((a, b) => {
         if (
           sort === 'favorites' &&
-          f.includes(a.dataset.id) !== f.includes(b.dataset.id)
+          favorites.includes(a.dataset.id) !==
+          favorites.includes(b.dataset.id)
         ) {
-          return f.includes(a.dataset.id) ? -1 : 1;
+          return favorites.includes(a.dataset.id) ? -1 : 1;
         }
 
         if (sort === 'az' || sort === 'za') {
-          const an = a.querySelector('.vault-name').textContent.toLowerCase();
-          const bn = b.querySelector('.vault-name').textContent.toLowerCase();
+          const nameA = a.querySelector('.vault-name')
+            .textContent.toLowerCase();
+
+          const nameB = b.querySelector('.vault-name')
+            .textContent.toLowerCase();
 
           return sort === 'az'
-            ? an.localeCompare(bn)
-            : bn.localeCompare(an);
+            ? nameA.localeCompare(nameB)
+            : nameB.localeCompare(nameA);
         }
 
         return Number(a.dataset.order) - Number(b.dataset.order);
-      }).forEach(card => grid.appendChild(card));
+      });
 
-      let count = 0;
+      cards.forEach(card => grid.appendChild(card));
 
-      for (const card of cards) {
-        const name = card.querySelector('.vault-name').textContent.toLowerCase();
+      let visibleInCategory = 0;
 
-        const matches =
-          (cat === 'all' || cat === c.id) &&
-          (`${name} ${c.title.toLowerCase()} ${card.dataset.id}`).includes(q);
+      cards.forEach(card => {
+        const display = card.querySelector('.vault-name')
+          .textContent.toLowerCase();
 
-        card.classList.toggle('vault-hidden', !matches);
+        const searchable = [
+          display,
+          category.title.toLowerCase(),
+          card.dataset.id.toLowerCase()
+        ].join(' ');
 
-        if (matches) {
-          count++;
-          total++;
+        const matchesCategory =
+          selectedCategory === 'all' ||
+          selectedCategory === category.id;
+
+        const matchesSearch = searchable.includes(query);
+        const visible = matchesCategory && matchesSearch;
+
+        card.classList.toggle('vault-hidden', !visible);
+
+        if (visible) {
+          visibleInCategory++;
+          visibleTotal++;
         }
-      }
+      });
 
-      section.classList.toggle('vault-hidden', count === 0);
+      section.classList.toggle('vault-hidden', visibleInCategory === 0);
     }
 
-    document.getElementById('vaultNoResults')
-      .classList.toggle('vault-hidden', total !== 0);
+    noResults.classList.toggle('vault-hidden', visibleTotal > 0);
   }
 
   ['vaultSearch', 'vaultCategory', 'vaultSort'].forEach(id => {
-    document.getElementById(id).addEventListener(
+    const element = document.getElementById(id);
+
+    element.addEventListener(
       id === 'vaultSearch' ? 'input' : 'change',
       filterAndSort
     );
   });
 
-  // Floating navigation button.
-  const floatBar = document.getElementById('vaultFloatBar');
-  const floatIcon = document.getElementById('vaultFloatIcon');
-  const floatLabel = document.getElementById('vaultFloatLabel');
+  // Taskbar button: scroll to the top or to the skin collection.
+  const backToTop = document.getElementById('vaultBackToTop');
+  const topIcon = document.getElementById('vaultTopIcon');
+  const topTitle = document.getElementById('vaultTopTitle');
+  const topDesc = document.getElementById('vaultTopDesc');
 
-  function updateFloatBar() {
+  function updateTopButton() {
     const nearTop = window.scrollY < 250;
 
-    floatIcon.textContent = nearTop ? '↓' : '↑';
-    floatLabel.textContent = nearTop ? 'Explore skins' : 'Back to top';
+    topIcon.textContent = nearTop ? '↓' : '↑';
+    topTitle.textContent = nearTop ? 'Explore skins' : 'Back to top';
+    topDesc.textContent = nearTop
+      ? 'Jump to search and filters'
+      : 'Return to page header';
 
-    floatBar.setAttribute(
+    backToTop.title = nearTop ? 'Explore skins' : 'Back to top';
+    backToTop.setAttribute(
       'aria-label',
       nearTop ? 'Explore skins' : 'Back to top'
     );
-
-    floatBar.title = nearTop ? 'Explore skins' : 'Back to top';
   }
 
-  floatBar.addEventListener('click', () => {
-    const nearTop = window.scrollY < 250;
-
-    if (nearTop) {
+  backToTop.addEventListener('click', () => {
+    if (window.scrollY < 250) {
       document.querySelector('.vault-tools')?.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
@@ -628,9 +1316,16 @@
     }
   });
 
-  window.addEventListener('scroll', updateFloatBar, { passive: true });
+  window.addEventListener('scroll', updateTopButton, { passive: true });
 
-  updateFloatBar();
+  // Quick navigation highlights the current page.
+  document.querySelectorAll('.vault-side-link[href]').forEach(link => {
+    if (link.getAttribute('href') === 'skins.html') {
+      link.classList.add('active');
+    }
+  });
+
+  updateTopButton();
   build();
 })();
 </script>
@@ -638,5 +1333,6 @@
 <script src="script.js"></script>
 <script src="preferences.js"></script>
 <script src="cursor-glow.js"></script>
+
 </body>
 </html>
