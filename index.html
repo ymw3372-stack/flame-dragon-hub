@@ -2,453 +2,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAME DRAGON HUB</title>
-<link rel="icon" href="assets/dragon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAME DRAGON HUB</title>
 
-<style>
-:root {
-  --red: #ff2929;
-  --orange: #ff782e;
-  --bg: #100b0d;
-  --panel: rgba(32, 19, 22, .88);
-}
+  <link rel="icon" type="image/png" href="assets/dragon.png">
+  <meta name="theme-color" content="#16090c">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 
-* {
-  box-sizing: border-box;
-}
+  <style>
+    :root {
+      --ember-red: #ff3038;
+      --ember-orange: #ff782e;
+      --ember-panel: rgba(32, 14, 18, .88);
+    }
 
-html {
-  scroll-behavior: smooth;
-}
+    body {
+      background:
+        radial-gradient(ellipse at 50% 25%, #401318 0%, #1b0b10 48%, #09070a 100%);
+      background-attachment: fixed;
+    }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
-  color: #fff;
-  background:
-    radial-gradient(ellipse at 50% 30%, #401419 0%, #1a0c10 45%, #09080b 100%);
-  font-family: Arial, Helvetica, sans-serif;
-}
+    #ember-background {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-#embers {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
+    body > *:not(#ember-background) {
+      position: relative;
+      z-index: 1;
+    }
 
-main, header, footer {
-  position: relative;
-  z-index: 1;
-}
+    .topbar,
+    .bonus-codes,
+    .home,
+    body > footer {
+      position: relative;
+      z-index: 1;
+    }
 
-header {
-  padding: 35px 16px 0;
-  text-align: center;
-}
+    .home-intro h1 {
+      transition: transform .35s ease, color .35s ease,
+                  text-shadow .35s ease;
+      transform-origin: center;
+    }
 
-.brand {
-  display: inline-block;
-  margin: 0;
-  color: #fff;
-  font-size: clamp(2rem, 6vw, 4.2rem);
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-shadow: 0 0 15px #ff352c66;
-  cursor: default;
-  transform: scale(1);
-  transition:
-    transform .35s ease,
-    color .35s ease,
-    text-shadow .35s ease;
-}
+    .home-intro h1:hover {
+      color: #ff3535;
+      transform: scale(1.07);
+      text-shadow: 0 0 10px #ff2424, 0 0 28px #ff242499;
+    }
 
-/* تكبير وتوهج أحمر عند تحديد كلمة FLAME DRAGON */
-.brand::selection {
-  color: #fff;
-  background: #b80000;
-}
+    .orbit-stage {
+      position: relative;
+      width: min(100%, 760px);
+      height: 440px;
+      margin: 22px auto 48px;
+    }
 
-.brand:hover,
-.brand:active {
-  color: #ff3535;
-  transform: scale(1.09);
-  text-shadow:
-    0 0 8px #ff1717,
-    0 0 22px #ff1717,
-    0 0 42px #ff1717;
-}
+    .orbit-ring {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      max-width: 78vw;
+      max-height: 78vw;
+      border: 1px solid #ff554533;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 35px #ff292918;
+    }
 
-.subtitle {
-  color: #e9b5b5;
-  margin-top: 12px;
-  letter-spacing: 3px;
-  font-size: .85rem;
-}
+    .orbit-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 140px;
+      height: 140px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border: 2px solid #ff554488;
+      border-radius: 50%;
+      background: radial-gradient(circle, #42161c, #15090d 75%);
+      box-shadow: 0 0 35px #ff302d44;
+    }
 
-.orbit-stage {
-  position: relative;
-  width: min(94vw, 720px);
-  height: 450px;
-  margin: 15px auto 45px;
-}
+    .orbit-logo img {
+      width: 84%;
+      height: 84%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px #ff342d88);
+      animation: logo-pulse 2.8s ease-in-out infinite alternate;
+    }
 
-.orbit-ring {
-  position: absolute;
-  width: 390px;
-  height: 390px;
-  max-width: 82vw;
-  max-height: 82vw;
-  border: 1px solid #ff553d30;
-  border-radius: 50%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 40px #ff2d1910, inset 0 0 40px #ff2d1910;
-}
+    @keyframes logo-pulse {
+      from { filter: drop-shadow(0 0 5px #ff342d55); }
+      to { filter: drop-shadow(0 0 19px #ff342ddd); }
+    }
 
-.orbit-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 145px;
-  height: 145px;
-  transform: translate(-50%, -50%);
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: radial-gradient(circle, #4b171b, #180c10 72%);
-  border: 2px solid #ff493e80;
-  box-shadow: 0 0 28px #ff261d45, 0 0 75px #ff261d20;
-}
+    .orbit-track {
+      position: absolute;
+      inset: 0;
+      animation: orbit-turn 24s linear infinite;
+    }
 
-.orbit-center img {
-  width: 82%;
-  height: 82%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 12px #ff302d88);
-  animation: logoGlow 3s ease-in-out infinite alternate;
-}
+    @keyframes orbit-turn {
+      to { transform: rotate(360deg); }
+    }
 
-@keyframes logoGlow {
-  from { filter: drop-shadow(0 0 7px #ff302d55); }
-  to   { filter: drop-shadow(0 0 20px #ff302dcc); }
-}
+    .orbit-link {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 160px;
+      min-height: 100px;
+      padding: 15px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      border: 1px solid #ff493e88;
+      border-radius: 17px;
+      background: linear-gradient(145deg, #35171c, #160d11);
+      box-shadow: 0 0 20px #ff302d20;
+      transform: translate(-50%, -50%);
+      transition: border-color .25s, box-shadow .25s, background .25s;
+    }
 
-.orbit {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  inset: 0;
-  animation: orbitSpin 24s linear infinite;
-}
+    .orbit-link:hover {
+      border-color: #ff3838;
+      background: #48171d;
+      box-shadow: 0 0 28px #ff292966;
+    }
 
-@keyframes orbitSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
+    .orbit-link .orbit-content {
+      animation: orbit-counter 24s linear infinite;
+    }
 
-.orbit-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 155px;
-  min-height: 105px;
-  padding: 18px 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  background: linear-gradient(145deg, #32171b, #160e12);
-  border: 1px solid #ff493e80;
-  border-radius: 18px;
-  box-shadow: 0 0 24px #ff302d22;
-  transform: translate(-50%, -50%);
-  transition: border-color .25s, box-shadow .25s, background .25s;
-}
+    @keyframes orbit-counter {
+      to { transform: rotate(-360deg); }
+    }
 
-.orbit-card:hover {
-  border-color: #ff3939;
-  background: #45171b;
-  box-shadow: 0 0 30px #ff292966;
-}
+    .orbit-link .orbit-icon {
+      font-size: 1.8rem;
+    }
 
-/* عكس دوران الكروت حتى يظل النص مستقيمًا */
-.orbit-card .card-content {
-  animation: orbitCounter 24s linear infinite;
-}
+    .orbit-link strong {
+      font-size: .94rem;
+    }
 
-@keyframes orbitCounter {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
-}
+    .orbit-link small {
+      color: #e7b2b2;
+      font-size: .73rem;
+    }
 
-.orbit-card .symbol {
-  font-size: 1.8rem;
-}
+    .orbit-link:nth-child(1) {
+      transform: translate(-50%, -50%) translateY(-190px);
+    }
 
-.orbit-card strong {
-  font-size: .95rem;
-}
+    .orbit-link:nth-child(2) {
+      transform: translate(-50%, -50%) translate(165px, 95px);
+    }
 
-.orbit-card small {
-  color: #e7a6a6;
-  font-size: .72rem;
-}
+    .orbit-link:nth-child(3) {
+      transform: translate(-50%, -50%) translate(-165px, 95px);
+    }
 
-.orbit-card:nth-child(1) {
-  left: 50%;
-  top: 0;
-}
+    @media (max-width: 520px) {
+      .orbit-stage {
+        height: 360px;
+      }
 
-.orbit-card:nth-child(2) {
-  left: 100%;
-  top: 87%;
-}
+      .orbit-ring {
+        width: 270px;
+        height: 270px;
+      }
 
-.orbit-card:nth-child(3) {
-  left: 0;
-  top: 87%;
-}
+      .orbit-logo {
+        width: 105px;
+        height: 105px;
+      }
 
-.section-title {
-  text-align: center;
-  margin: 25px 12px;
-  font-size: 1.7rem;
-  color: #fff;
-  text-shadow: 0 0 16px #ff302d66;
-}
+      .orbit-link {
+        width: 124px;
+        min-height: 84px;
+        padding: 10px 6px;
+      }
 
-.features {
-  width: min(1100px, 92%);
-  margin: 0 auto 65px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
+      .orbit-link:nth-child(1) {
+        transform: translate(-50%, -50%) translateY(-145px);
+      }
 
-.feature {
-  padding: 24px;
-  background: var(--panel);
-  border: 1px solid #ff493e35;
-  border-radius: 18px;
-  transition: transform .25s, border-color .25s;
-}
+      .orbit-link:nth-child(2) {
+        transform: translate(-50%, -50%) translate(112px, 75px);
+      }
 
-.feature:hover {
-  transform: translateY(-5px);
-  border-color: #ff493e99;
-}
+      .orbit-link:nth-child(3) {
+        transform: translate(-50%, -50%) translate(-112px, 75px);
+      }
 
-.feature h3 {
-  margin-top: 0;
-  color: #ff6b58;
-}
+      .orbit-link strong {
+        font-size: .78rem;
+      }
 
-.feature p {
-  color: #d8c5c8;
-  line-height: 1.7;
-}
+      .orbit-link small {
+        font-size: .64rem;
+      }
+    }
 
-.feature a {
-  color: #ff8a76;
-  text-decoration: none;
-}
-
-.feature a:hover {
-  text-decoration: underline;
-}
-
-footer {
-  padding: 25px;
-  text-align: center;
-  color: #9d7c82;
-  border-top: 1px solid #ff493e20;
-}
-
-@media (max-width: 520px) {
-  .orbit-stage {
-    height: 360px;
-  }
-
-  .orbit-ring {
-    width: 285px;
-    height: 285px;
-  }
-
-  .orbit-center {
-    width: 110px;
-    height: 110px;
-  }
-
-  .orbit-card {
-    width: 125px;
-    min-height: 88px;
-    padding: 12px 7px;
-  }
-
-  .orbit-card .symbol {
-    font-size: 1.45rem;
-  }
-
-  .orbit-card strong {
-    font-size: .8rem;
-  }
-
-  .orbit-card small {
-    font-size: .65rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit, .orbit-card .card-content, .orbit-center img {
-    animation: none;
-  }
-
-  * {
-    scroll-behavior: auto !important;
-  }
-}
-</style>
+    @media (prefers-reduced-motion: reduce) {
+      .orbit-track,
+      .orbit-link .orbit-content,
+      .orbit-logo img {
+        animation: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<canvas id="embers" aria-hidden="true"></canvas>
+<canvas id="ember-background" aria-hidden="true"></canvas>
 
-<header>
-  <h1 class="brand">FLAME DRAGON</h1>
-  <div class="subtitle">YOUR EVOWORLD HUB</div>
+<aside class="bonus-codes" aria-label="Bonus codes">
+  <strong>ALL BONUS CODES</strong>
+  <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
+</aside>
+
+<header class="topbar">
+  <div class="brand">
+    <img src="assets/logo.png" alt="FLAME DRAGON HUB">
+    <span>FLAME DRAGON HUB</span>
+  </div>
+
+  <nav class="navigation" aria-label="Main navigation">
+    <a href="index.html" class="active" aria-current="page">Home</a>
+    <a href="evolutions.html">Evolutions</a>
+    <a href="skins.html">Skins</a>
+    <a href="settings.html">Settings</a>
+  </nav>
 </header>
 
-<main>
-  <section class="orbit-stage" aria-label="Main navigation">
+<main class="home">
+  <section class="home-intro">
+    <h1>Welcome to FLAME DRAGON HUB</h1>
+    <p>Your ultimate EvoWorld companion</p>
+  </section>
+
+  <section class="orbit-stage" aria-label="Featured pages">
     <div class="orbit-ring"></div>
 
-    <div class="orbit-center">
+    <div class="orbit-logo">
       <img src="assets/logo.png" alt="FLAME DRAGON HUB logo">
     </div>
 
-    <nav class="orbit">
-      <a class="orbit-card" href="extension.html">
-        <div class="card-content">
-          <span class="symbol">⬇️</span>
+    <nav class="orbit-track" aria-label="Featured links">
+      <a class="orbit-link"
+         href="FLAME_DRAGON_HUB_Chrome_Extension_v0.9.1.zip"
+         download>
+        <div class="orbit-content">
+          <span class="orbit-icon">⬇️</span>
           <strong>Download Extension</strong>
-          <small>Get the Chrome extension</small>
+          <small>Chrome extension · v0.9.1</small>
         </div>
       </a>
 
-      <a class="orbit-card" href="skins.html">
-        <div class="card-content">
-          <span class="symbol">🎭</span>
+      <a class="orbit-link" href="skins.html">
+        <div class="orbit-content">
+          <span class="orbit-icon">🎨</span>
           <strong>Skins Library</strong>
-          <small>Explore the skins</small>
+          <small>Explore the collection</small>
         </div>
       </a>
 
-      <a class="orbit-card" href="evolutions.html">
-        <div class="card-content">
-          <span class="symbol">🦇</span>
+      <a class="orbit-link" href="evolutions.html">
+        <div class="orbit-content">
+          <span class="orbit-icon">🔥</span>
           <strong>Evolutions</strong>
-          <small>Explore every stage</small>
+          <small>Discover every stage</small>
         </div>
       </a>
     </nav>
   </section>
 
-  <h2 class="section-title">Explore FLAME DRAGON HUB</h2>
-
-  <!-- الكروت الثابتة تحت: احتفظ هنا بكروتك الحالية كما هي -->
-  <section class="features">
-    <article class="feature">
-      <h3>Skins Library</h3>
-      <p>Explore the EvoWorld skins collection.</p>
-      <a href="skins.html">Open Skins →</a>
-    </article>
-
-    <article class="feature">
-      <h3>Evolutions</h3>
-      <p>Discover the EvoWorld evolution path.</p>
-      <a href="evolutions.html">View Evolutions →</a>
-    </article>
-
-    <article class="feature">
-      <h3>Settings</h3>
-      <p>Customize your FLAME DRAGON HUB experience.</p>
-      <a href="settings.html">Open Settings →</a>
-    </article>
-  </section>
+  <!-- الكروت الثابتة الأصلية لا تُكرر هنا.
+       أضف محتواها الأصلي بعد هذه المنطقة إن كان موجودًا في نسختك المحلية. -->
 </main>
 
-<footer>FLAME DRAGON HUB · Made for EvoWorld players</footer>
-
 <script>
-/* خلفية الجمر المتحرك */
-const canvas = document.getElementById("embers");
-const ctx = canvas.getContext("2d");
-let embers = [];
-let width = 0;
-let height = 0;
+(() => {
+  const canvas = document.getElementById("ember-background");
+  const ctx = canvas.getContext("2d");
+  let width = 0, height = 0, particles = [];
 
-function resizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  const count = Math.min(75, Math.floor(width / 16));
-  embers = Array.from({ length: count }, () => newEmber(true));
-}
-
-function newEmber(randomY = false) {
-  return {
-    x: Math.random() * width,
-    y: randomY ? Math.random() * height : height + 10,
-    size: Math.random() * 2.2 + .5,
-    speed: Math.random() * .65 + .25,
-    drift: (Math.random() - .5) * .7,
-    alpha: Math.random() * .65 + .2
-  };
-}
-
-function animateEmbers() {
-  ctx.clearRect(0, 0, width, height);
-
-  for (const e of embers) {
-    e.y -= e.speed;
-    e.x += e.drift;
-
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(255, ${Math.floor(65 + Math.random() * 70)}, 35, ${e.alpha})`;
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = "#ff351c";
-    ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (e.y < -10 || e.x < -10 || e.x > width + 10) {
-      Object.assign(e, newEmber());
-    }
+  function createParticle(randomHeight = false) {
+    return {
+      x: Math.random() * width,
+      y: randomHeight ? Math.random() * height : height + 8,
+      radius: Math.random() * 2 + .5,
+      speed: Math.random() * .65 + .25,
+      drift: (Math.random() - .5) * .45,
+      alpha: Math.random() * .5 + .2
+    };
   }
 
-  ctx.shadowBlur = 0;
-  requestAnimationFrame(animateEmbers);
-}
+  function resize() {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    particles = Array.from(
+      { length: Math.min(70, Math.floor(width / 16)) },
+      () => createParticle(true)
+    );
+  }
 
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-animateEmbers();
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (const p of particles) {
+      p.y -= p.speed;
+      p.x += p.drift;
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255, ${70 + Math.floor(Math.random() * 80)}, 40, ${p.alpha})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#ff351c";
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (p.y < -10 || p.x < -10 || p.x > width + 10) {
+        Object.assign(p, createParticle());
+      }
+    }
+
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  draw();
+})();
 </script>
+
+<script>
+const hasWelcomed = localStorage.getItem("flameDragonWelcomed");
+if (!hasWelcomed) {
+  window.location.href = "welcome.html";
+}
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+<script src="preferences.js"></script>
+<script src="cursor-glow.js"></script>
+<script src="i18n.js"></script>
 </body>
 </html>
