@@ -1,638 +1,356 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#100b10">
-<title>FLAME DRAGON HUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAME DRAGON - Orbit</title>
 
 <style>
-:root {
-  --bg: #100b10;
-  --panel: rgba(29, 20, 31, .96);
-  --red: #ff4657;
-  --blue: #42a5ff;
-  --text: #fff4f6;
-  --muted: #b8aab8;
-}
-
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
+  margin: 0;
   min-height: 100vh;
-  overflow-x: hidden;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at 50% 35%, rgba(130,22,45,.20), transparent 45%),
-    #100b10;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.page {
-  position: relative;
-  z-index: 1;
-  width: min(1150px, 92%);
-  margin: auto;
-}
-
-/* NAVIGATION */
-
-.navbar {
-  min-height: 78px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.brand img {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-}
-
-.brand span {
-  color: var(--red);
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.nav-links a {
-  padding: 10px 14px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  color: var(--muted);
-  font-size: 13px;
-  transition: .22s ease;
-}
-
-.nav-links a.active {
+  background: radial-gradient(ellipse at center, #21100f 0%, #09090d 65%, #050507 100%);
   color: white;
-  background: rgba(255,65,85,.16);
-  border-color: rgba(255,80,100,.55);
-  box-shadow: 0 0 17px rgba(255,55,80,.13);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-.nav-links a:hover {
-  color: white;
-  background: rgba(66,165,255,.13);
-  border-color: rgba(66,165,255,.5);
-}
-
-/* HERO */
-
-.hero {
-  padding-top: 43px;
+.container {
+  width: 100%;
+  max-width: 1000px;
+  padding: 15px;
   text-align: center;
 }
 
-.eyebrow {
-  margin-bottom: 13px;
-  color: #ff929b;
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-.main-title {
-  display: inline-block;
-  font-size: clamp(30px,5vw,53px);
-  font-weight: 900;
-  letter-spacing: 2px;
-  transition: transform .25s, text-shadow .25s;
-}
-
-.main-title span {
-  color: var(--red);
-}
-
-.main-title:hover {
-  transform: scale(1.055);
-  text-shadow:
-    0 0 10px rgba(255,65,85,.8),
-    0 0 30px rgba(255,45,65,.5);
+h1 {
+  color: #ff4b32;
+  font-size: clamp(22px, 4vw, 34px);
+  text-shadow: 0 0 18px #ff321b66;
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  max-width: 540px;
-  margin: 14px auto 0;
-  color: var(--muted);
+  color: #b9b9c5;
+  margin-bottom: 15px;
   font-size: 14px;
-  line-height: 1.8;
-}
-
-/* ORBIT AREA */
-
-.orbit-section {
-  display: flex;
-  justify-content: center;
-  margin: 18px auto 0;
 }
 
 .orbit-stage {
   position: relative;
-  width: min(100%, 820px);
-  height: 550px;
+  width: 100%;
+  height: min(70vh, 590px);
+  min-height: 400px;
+  overflow: hidden;
   isolation: isolate;
 }
 
-/* Orbit circles */
-
-.orbit-ring {
+/* المسار الدائري */
+.orbit-path {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 390px;
-  height: 390px;
-  border: 1px solid rgba(255,75,95,.16);
+  width: min(76%, 470px);
+  aspect-ratio: 1;
+  border: 1px solid #ff57334d;
   border-radius: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 25px #ff321b0d;
   pointer-events: none;
 }
 
-.orbit-ring::before {
+/* توهج إضافي للمسار */
+.orbit-path::before {
   content: "";
   position: absolute;
-  inset: 20px;
-  border: 1px dashed rgba(255,100,115,.13);
+  inset: -8px;
+  border: 1px dashed #ff573326;
   border-radius: 50%;
 }
 
-.orbit-ring::after {
-  content: "";
-  position: absolute;
-  inset: -25px;
-  border: 1px solid rgba(255,75,95,.06);
-  border-radius: 50%;
-}
-
-/* Center logo */
-
-.logo-core {
+/* اللوجو في المنتصف */
+.logo {
   position: absolute;
   z-index: 2;
   left: 50%;
   top: 50%;
-  width: 160px;
-  height: 160px;
-  display: grid;
-  place-items: center;
-  transform: translate(-50%,-50%);
-  border: 1px solid rgba(255,80,100,.35);
+  transform: translate(-50%, -50%);
+  width: 125px;
+  height: 125px;
   border-radius: 50%;
-  background: radial-gradient(circle,#321321,#171019 72%);
-  box-shadow:
-    0 0 30px rgba(255,45,70,.16),
-    inset 0 0 25px rgba(255,55,75,.08);
-}
-
-.logo-core img {
-  width: 78%;
-  height: 78%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(255,55,75,.3));
-}
-
-/*
-  Only the track rotates.
-  Each card counter-rotates to keep its content upright.
-  The cards are spaced 120 degrees apart on a larger orbit.
-*/
-
-.orbit-track {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  animation: orbit-spin 30s linear infinite;
-}
-
-@keyframes orbit-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* Fixed starting positions */
-
-.orbit-position {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-}
-
-/* Wider radius = more space between cards */
-
-.orbit-position:nth-child(1) {
-  transform: rotate(0deg) translateY(-240px);
-}
-
-.orbit-position:nth-child(2) {
-  transform: rotate(120deg) translateY(-240px);
-}
-
-.orbit-position:nth-child(3) {
-  transform: rotate(240deg) translateY(-240px);
-}
-
-/* Cards */
-
-.orbit-card {
-  position: absolute;
-  left: 0;
-  top: 0;
-
-  width: 155px;
-  min-height: 105px;
-  padding: 15px 10px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  text-align: center;
+  background: linear-gradient(145deg, #27110f, #100d12);
+  border: 2px solid #ff5733;
+  box-shadow:
+    0 0 20px #ff321b50,
+    inset 0 0 20px #ff321b18;
+}
 
-  /*
-    Counter-rotation affects the card's own orientation,
-    not its position around the orbit.
-  */
-  transform: translate(-50%,-50%);
-  animation: card-counter-spin 30s linear infinite;
+.logo-icon {
+  font-size: 42px;
+  line-height: 1.1;
+}
 
-  border: 1px solid rgba(255,90,110,.28);
+.logo-name {
+  color: #ff6247;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 7px;
+  direction: ltr;
+}
+
+/*
+  العنصر الخارجي يتحرك على المسار فقط.
+  لا نضيف دورانًا إلى المربع نفسه.
+*/
+.orbit-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 155px;
+  min-height: 110px;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+  z-index: 3;
+}
+
+/* المربع ومحتواه يظلان مستقيمين */
+.orbit-card {
+  width: 100%;
+  min-height: 110px;
+  padding: 16px 10px;
+  border: 1px solid #ff57336b;
   border-radius: 15px;
-  background: var(--panel);
-  box-shadow: 0 10px 28px rgba(0,0,0,.3);
-  backdrop-filter: blur(8px);
-
+  background: linear-gradient(145deg, #211416f5, #100e13f5);
+  box-shadow: 0 8px 25px #0008, 0 0 15px #ff321b0b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   transition:
-    background .2s ease,
-    border-color .2s ease,
-    box-shadow .2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
-
-@keyframes card-counter-spin {
-  from { rotate: 0deg; }
-  to   { rotate: -360deg; }
-}
-
-/* Stop in place when hovering, so cards are easy to click */
-
-.orbit-stage:hover .orbit-track,
-.orbit-stage:hover .orbit-card {
-  animation-play-state: paused;
-}
-
-/* Hover highlight */
 
 .orbit-card:hover {
-  background: rgba(255,75,95,.22);
-  border-color: #ff9da7;
-  box-shadow:
-    0 0 0 1px rgba(255,110,125,.12),
-    0 0 25px rgba(255,60,85,.23),
-    0 10px 28px rgba(0,0,0,.3);
+  border-color: #ff6247;
+  background: linear-gradient(145deg, #351718, #171017);
+  box-shadow: 0 0 25px #ff321b35;
 }
 
 .card-icon {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: rgba(255,70,90,.13);
-  color: #ff929d;
-  font-size: 19px;
+  font-size: 27px;
+  margin-bottom: 8px;
 }
 
-.orbit-card strong {
-  font-size: 11px;
-  line-height: 1.5;
-  letter-spacing: .3px;
+.card-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ff674d;
+  direction: ltr;
 }
 
-.orbit-card small {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.5;
-}
-
-/* LOWER CARDS */
-
-.section-heading {
-  margin: 5px 0 22px;
-  text-align: center;
-}
-
-.section-heading h2 {
-  font-size: 18px;
-  letter-spacing: 1px;
-}
-
-.section-heading p {
-  margin-top: 8px;
-  color: var(--muted);
+.card-description {
+  margin-top: 6px;
+  color: #c7c3cc;
   font-size: 12px;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 17px;
-  padding-bottom: 45px;
-}
-
-.feature-card {
-  padding: 23px;
-  min-height: 145px;
-  border: 1px solid rgba(255,80,100,.22);
-  border-radius: 15px;
-  background: var(--panel);
-  transition: .23s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255,100,120,.65);
-  background: rgba(48,25,38,.95);
-}
-
-.feature-card .icon {
-  margin-bottom: 15px;
-  font-size: 22px;
-}
-
-.feature-card h3 {
-  margin-bottom: 9px;
-  font-size: 13px;
-}
-
-.feature-card p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-/* FOOTER */
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 22px 0 28px;
-  border-top: 1px solid rgba(255,255,255,.08);
-  color: #9b8998;
-  font-size: 11px;
-}
-
-.footer strong {
-  color: var(--red);
-}
-
-/* MOBILE */
-
-@media (max-width: 650px) {
-  .navbar {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 14px 0;
+/* حركة مستمرة للمربعات */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-item {
+    will-change: auto;
   }
+}
 
-  .nav-links {
-    gap: 4px;
-  }
-
-  .nav-links a {
-    padding: 9px 10px;
-    font-size: 12px;
-  }
-
-  .hero {
-    padding-top: 35px;
-  }
-
+@media (max-width: 520px) {
   .orbit-stage {
-    height: 440px;
+    height: 450px;
+    min-height: 450px;
   }
 
-  .orbit-ring {
-    width: 245px;
-    height: 245px;
-  }
-
-  .logo-core {
-    width: 125px;
-    height: 125px;
-  }
-
-  /*
-    Compact mobile orbit.
-    The radius is still large enough to keep the cards apart.
-  */
-
-  .orbit-position:nth-child(1) {
-    transform: rotate(0deg) translateY(-185px);
-  }
-
-  .orbit-position:nth-child(2) {
-    transform: rotate(120deg) translateY(-185px);
-  }
-
-  .orbit-position:nth-child(3) {
-    transform: rotate(240deg) translateY(-185px);
+  .orbit-item {
+    width: 112px;
+    min-height: 94px;
   }
 
   .orbit-card {
-    width: 118px;
-    min-height: 88px;
-    padding: 10px 7px;
-    gap: 5px;
-  }
-
-  .orbit-card strong {
-    font-size: 9px;
-  }
-
-  .orbit-card small {
-    font-size: 9px;
+    min-height: 94px;
+    padding: 10px 5px;
+    border-radius: 12px;
   }
 
   .card-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    font-size: 22px;
+    margin-bottom: 5px;
   }
 
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit-track,
-  .orbit-card {
-    animation-play-state: paused;
+  .card-title {
+    font-size: 12px;
   }
 
-  * {
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
+  .card-description {
+    font-size: 10px;
+  }
+
+  .logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .logo-icon {
+    font-size: 33px;
+  }
+
+  .logo-name {
+    font-size: 10px;
+  }
+
+  .orbit-path {
+    width: 72%;
   }
 }
 </style>
 </head>
 
 <body>
-<div class="page">
+<main class="container">
+  <h1>FLAME DRAGON HUB</h1>
+  <p class="subtitle">Your EvoWorld hub</p>
 
-  <header class="navbar">
-    <a class="brand" href="index.html">
-      <img src="assets/logo.png" alt="Flame Dragon logo">
-      <div>FLAME <span>DRAGON</span></div>
-    </a>
+  <section class="orbit-stage" id="orbitStage">
+    <div class="orbit-path"></div>
 
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="evolutions.html">Evolutions</a>
-      <a href="skins.html">Skins Library</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-  </header>
+    <div class="logo">
+      <div class="logo-icon">🔥</div>
+      <div class="logo-name">FLAME DRAGON</div>
+    </div>
 
-  <main>
-    <section class="hero">
-      <div class="eyebrow">Your EvoWorld companion</div>
-
-      <h1 class="main-title">
-        FLAME <span>DRAGON</span>
-      </h1>
-
-      <p class="subtitle">
-        Your EvoWorld hub — explore evolutions, discover skins,
-        and customize your experience.
-      </p>
-    </section>
-
-    <section class="orbit-section" aria-label="Quick navigation">
-      <div class="orbit-stage">
-
-        <div class="orbit-ring"></div>
-
-        <div class="logo-core">
-          <img src="assets/logo.png" alt="FLAME DRAGON">
-        </div>
-
-        <div class="orbit-track">
-
-          <div class="orbit-position">
-            <a class="orbit-card"
-               href="https://github.com/ymw3372-stack/flame-dragon-hub">
-              <span class="card-icon">⬇</span>
-              <strong>DOWNLOAD EXTENSION</strong>
-              <small>Get the Chrome extension</small>
-            </a>
-          </div>
-
-          <div class="orbit-position">
-            <a class="orbit-card" href="skins.html">
-              <span class="card-icon">✦</span>
-              <strong>SKINS LIBRARY</strong>
-              <small>Explore the skin collection</small>
-            </a>
-          </div>
-
-          <div class="orbit-position">
-            <a class="orbit-card" href="evolutions.html">
-              <span class="card-icon">◆</span>
-              <strong>EVOLUTIONS</strong>
-              <small>Explore the evolution path</small>
-            </a>
-          </div>
-
-        </div>
+    <div class="orbit-item">
+      <div class="orbit-card">
+        <div class="card-icon">🦇</div>
+        <div class="card-title">Evolutions</div>
+        <div class="card-description">Explore every stage</div>
       </div>
-    </section>
+    </div>
 
-    <section>
-      <div class="section-heading">
-        <h2>EXPLORE THE HUB</h2>
-        <p>Explore more tools and features.</p>
+    <div class="orbit-item">
+      <div class="orbit-card">
+        <div class="card-icon">💀</div>
+        <div class="card-title">Skins Library</div>
+        <div class="card-description">Discover your skins</div>
       </div>
+    </div>
 
-      <div class="feature-grid">
-        <a class="feature-card" href="settings.html">
-          <div class="icon">⚙</div>
-          <h3>SETTINGS</h3>
-          <p>Manage your preferences and personalize your experience.</p>
-        </a>
-
-        <a class="feature-card" href="skins.html">
-          <div class="icon">✧</div>
-          <h3>YOUR COLLECTION</h3>
-          <p>Browse the available skins and discover new looks.</p>
-        </a>
-
-        <a class="feature-card" href="evolutions.html">
-          <div class="icon">♢</div>
-          <h3>EVOLUTION GUIDE</h3>
-          <p>Explore the EvoWorld evolution path and its stages.</p>
-        </a>
+    <div class="orbit-item">
+      <div class="orbit-card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Settings</div>
+        <div class="card-description">Customize your hub</div>
       </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <span><strong>FLAME DRAGON HUB</strong> · Unofficial EvoWorld companion</span>
-    <span>Made for the EvoWorld community</span>
-  </footer>
-
-</div>
+    </div>
+  </section>
+</main>
 
 <script>
 (() => {
-  const currentFile =
-    location.pathname.split("/").filter(Boolean).pop() || "index.html";
+  const stage = document.getElementById("orbitStage");
+  const items = [...stage.querySelectorAll(".orbit-item")];
 
-  document.querySelectorAll(".nav-links a").forEach(link => {
-    const linkFile =
-      new URL(link.href, location.href).pathname
-        .split("/").filter(Boolean).pop() || "index.html";
+  const speed = 0.00022;
+  let angle = -Math.PI / 2;
+  let lastTime = 0;
+  let radiusX = 180;
+  let radiusY = 180;
+  let centerX = 0;
+  let centerY = 0;
+  let animationId;
 
-    if (linkFile.toLowerCase() === currentFile.toLowerCase()) {
-      link.classList.add("active");
-      link.setAttribute("aria-current", "page");
+  function measure() {
+    const rect = stage.getBoundingClientRect();
+
+    centerX = rect.width / 2;
+    centerY = rect.height / 2;
+
+    const cardWidth = items[0].offsetWidth;
+    const cardHeight = items[0].offsetHeight;
+
+    radiusX = Math.max(
+      0,
+      Math.min(300, (rect.width - cardWidth) / 2 - 10)
+    );
+
+    radiusY = Math.max(
+      0,
+      Math.min(245, (rect.height - cardHeight) / 2 - 10)
+    );
+  }
+
+  function render() {
+    items.forEach((item, index) => {
+      const a = angle + index * (Math.PI * 2 / items.length);
+
+      const x = centerX + Math.cos(a) * radiusX;
+      const y = centerY + Math.sin(a) * radiusY;
+
+      /*
+        مهم:
+        نغير مكان العنصر الخارجي فقط.
+        لا نستخدم rotate() للمربع أو النص.
+      */
+      item.style.left = `${x}px`;
+      item.style.top = `${y}px`;
+    });
+  }
+
+  function animate(time) {
+    if (!lastTime) lastTime = time;
+
+    const delta = Math.min(time - lastTime, 40);
+    lastTime = time;
+
+    angle += speed * delta;
+
+    if (angle > Math.PI * 2) {
+      angle -= Math.PI * 2;
     }
+
+    render();
+    animationId = requestAnimationFrame(animate);
+  }
+
+  measure();
+  render();
+  animationId = requestAnimationFrame(animate);
+
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(() => {
+      measure();
+      render();
+    }).observe(stage);
+  } else {
+    window.addEventListener("resize", () => {
+      measure();
+      render();
+    });
+  }
+
+  window.addEventListener("pagehide", () => {
+    cancelAnimationFrame(animationId);
   });
 })();
 </script>
-
 </body>
 </html>
