@@ -1,8 +1,126 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Favorites | FLAME DRAGON HUB</title><link rel="stylesheet" href="style.css"><style>
-.fav-page{max-width:1450px;margin:auto;padding:38px 22px 75px}.fav-hero{padding:clamp(24px,4vw,42px);border-radius:24px;border:1px solid rgba(255,127,64,.23);background:radial-gradient(ellipse at 85% 5%,rgba(255,83,35,.15),transparent 38%),linear-gradient(135deg,#171b2e,#0b1020)}.fav-hero .eyebrow{color:#ffad75;font-size:11px;font-weight:800;letter-spacing:.2em}.fav-hero h1{color:#fff4e8;font-size:clamp(30px,5vw,48px);margin:12px 0}.fav-hero p{color:#b5bfd2;max-width:620px;line-height:1.6;margin:0}.fav-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 16px;color:#aeb8cc;font-size:13px}.fav-summary strong{color:#ffad75}.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}.fav-card{overflow:hidden;border:1px solid rgba(123,140,181,.2);border-radius:16px;background:linear-gradient(155deg,#141b2f,#0b1020)}.fav-card img{width:100%;height:135px;object-fit:contain;padding:12px;box-sizing:border-box;filter:drop-shadow(0 5px 7px #0005)}.fav-card-info{border-top:1px solid #ffffff0a;padding:12px}.fav-card h3{margin:0 0 6px;color:#f4f5fa;font-size:13px}.fav-card p{margin:0;color:#98a4bd;font-size:11px}.fav-card button{margin-top:11px;width:100%;padding:9px;border:1px solid #ffffff16;border-radius:9px;background:#ffffff08;color:#ffd0b3;cursor:pointer}.fav-empty{margin-top:22px;padding:42px 20px;text-align:center;border:1px dashed #ffffff24;border-radius:20px;background:#ffffff03}.fav-empty .heart{font-size:42px;color:#ff714b}.fav-empty h2{color:#fff;margin:10px 0}.fav-empty p{color:#aeb8cc}.fav-empty a{display:inline-block;margin-top:12px;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#ff713b,#d63b28);color:#fff;text-decoration:none;font-weight:800}.fav-hidden{display:none!important}@media(max-width:600px){.fav-page{padding:25px 12px 50px}.fav-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.fav-card img{height:120px}}
+.fav-page{max-width:1450px;margin:auto;padding:38px 22px 75px}.fav-hero{padding:clamp(24px,4vw,42px);border-radius:24px;border:1px solid rgba(255,80,100,.28);background:radial-gradient(ellipse at 85% 5%,rgba(130,22,45,.2),transparent 38%),linear-gradient(135deg,#2b1621,#120d14)}.fav-hero .eyebrow{color:#ff929b;font-size:11px;font-weight:800;letter-spacing:.2em}.fav-hero h1{color:#fff4f6;font-size:clamp(30px,5vw,48px);margin:12px 0}.fav-hero p{color:#b8aab8;max-width:620px;line-height:1.6;margin:0}.fav-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 16px;color:#b8aab8;font-size:13px}.fav-summary strong{color:#ff929b}.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}.fav-card{overflow:hidden;border:1px solid rgba(255,80,100,.15);border-radius:16px;background:linear-gradient(155deg,#301926,#120d14)}.fav-card img{width:100%;height:135px;object-fit:contain;padding:12px;box-sizing:border-box;filter:drop-shadow(0 5px 7px #0005)}.fav-card-info{border-top:1px solid #ffffff0a;padding:12px}.fav-card h3{margin:0 0 6px;color:#fff4f6;font-size:13px}.fav-card p{margin:0;color:#a89aa8;font-size:11px}.fav-card button{margin-top:11px;width:100%;padding:9px;border:1px solid #ffffff16;border-radius:9px;background:#ffffff08;color:#ffb1ba;cursor:pointer}.fav-empty{margin-top:22px;padding:42px 20px;text-align:center;border:1px dashed #ffffff24;border-radius:20px;background:#ffffff03}.fav-empty .heart{font-size:42px;color:#ff4657}.fav-empty h2{color:#fff;margin:10px 0}.fav-empty p{color:#b8aab8}.fav-empty a{display:inline-block;margin-top:12px;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#ff4657,#c81f36);color:#fff;text-decoration:none;font-weight:800}.fav-hidden{display:none!important}@media(max-width:600px){.fav-page{padding:25px 12px 50px}.fav-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.fav-card img{height:120px}}
+
+
+/* ===== Shared chrome — matches index.html / evolutions.html exactly =====
+   style.css ships a warm ember shell (two drifting orange glows on
+   body::before / body::after) plus a sticky .topbar / .navigation header.
+   index.html and evolutions.html use neither: they use a plain
+   .navbar / .nav-links shell on a flat #100b10 background. This block
+   neutralises the shared ember rules and applies that same shell here. */
+body {
+  color: #fff4f6;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
+    #100b10;
+}
+
+/* index.html has no background glows, so switch the shared ones off. */
+body::before,
+body::after {
+  content: none;
+  display: none;
+}
+
+/* ===== Header — same shell as index.html / evolutions.html ===== */
+.navbar {
+  position: relative;
+  z-index: 100;
+  width: min(1150px, 92%);
+  min-height: 76px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff4f6;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.brand img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
+}
+
+.brand span {
+  color: #ff4657;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 13px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #b8aab8;
+  font-size: 13px;
+  transition: .25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: #fff;
+  background: rgba(255, 70, 87, .12);
+  border-color: rgba(255, 70, 87, .38);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.nav-links a.active {
+  color: #fff;
+  background: rgba(255, 70, 87, .15);
+  border-color: rgba(255, 70, 87, .42);
+  box-shadow: 0 0 18px rgba(255, 70, 87, .10);
+}
+
+@media (max-width: 800px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px 0;
+    gap: 10px;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+.bonus-codes {
+  border-color: rgba(255, 80, 100, .45);
+  background: rgba(20, 10, 18, .96);
+}
+
+.bonus-codes strong {
+  color: #ff9da7;
+}
 </style></head><body>
 <aside class="bonus-codes" aria-label="Bonus codes"><strong>ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p></aside>
-<header class="topbar"><div class="brand"><img src="assets/logo.png" alt="FLAME DRAGON HUB"><span>FLAME DRAGON HUB</span></div><nav class="navigation" aria-label="Main navigation"><a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="favorites.html" class="active" aria-current="page">Favorites</a><a href="settings.html">Settings</a></nav></header><main class="fav-page"><section class="fav-hero"><span class="eyebrow">YOUR PERSONAL COLLECTION</span><h1>Favorites</h1><p>All the Reaper designs you saved, with their original image files and your custom display names.</p></section><div id="favSummary" class="fav-summary"></div><div id="favGrid" class="fav-grid"></div><section id="favEmpty" class="fav-empty fav-hidden"><div class="heart">♡</div><h2>Your vault is waiting</h2><p>Save a few Reaper designs from the Skins page and they’ll appear here with their pictures.</p><a href="skins.html">Explore Reaper Vault →</a></section></main><script src="skins-data.js"></script><script>
+<header class="navbar"><a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home"><img src="assets/logo.png" alt=""><span>FLAME DRAGON HUB</span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="favorites.html" class="active" aria-current="page">Favorites</a><a href="settings.html">Settings</a></nav></header><main class="fav-page"><section class="fav-hero"><span class="eyebrow">YOUR PERSONAL COLLECTION</span><h1>Favorites</h1><p>All the Reaper designs you saved, with their original image files and your custom display names.</p></section><div id="favSummary" class="fav-summary"></div><div id="favGrid" class="fav-grid"></div><section id="favEmpty" class="fav-empty fav-hidden"><div class="heart">♡</div><h2>Your vault is waiting</h2><p>Save a few Reaper designs from the Skins page and they’ll appear here with their pictures.</p><a href="skins.html">Explore Reaper Vault →</a></section></main><script src="skins-data.js"></script><script>
 (()=>{
  const read=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k)||JSON.stringify(d));return v&&typeof v==='object'?v:d}catch{return d}};
  const favKey='flameDragonFavorites',namesKey='flameDragonSkinNames';
