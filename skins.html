@@ -20,18 +20,18 @@
   position: relative;
   overflow: hidden;
   padding: clamp(25px, 5vw, 52px);
-  border: 1px solid rgba(255, 112, 45, .28);
+  border: 1px solid rgba(255, 80, 100, 0.28);
   border-radius: 26px;
   background:
-    radial-gradient(ellipse at 85% 10%, rgba(255, 91, 30, .20), transparent 38%),
-    linear-gradient(135deg, rgba(37, 22, 20, .91), rgba(18, 15, 20, .94));
-  box-shadow: 0 18px 55px rgba(0, 0, 0, .24);
+    radial-gradient(ellipse at 85% 10%, rgba(130, 22, 45, 0.2), transparent 38%),
+    linear-gradient(135deg, rgba(43, 22, 33, 0.94), rgba(18, 13, 20, 0.96));
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
   transition: border-color .25s ease, box-shadow .25s ease;
 }
 
 .vault-hero:hover {
-  border-color: rgba(255, 112, 45, .48);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, .3), 0 0 28px rgba(255, 83, 24, .08);
+  border-color: rgba(255, 90, 110, 0.48);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 28px rgba(255, 60, 85, 0.1);
 }
 
 .vault-hero::after {
@@ -41,18 +41,53 @@
   bottom: -130px;
   width: 280px;
   height: 280px;
-  border: 1px solid rgba(255, 128, 64, .17);
+  border: 1px solid rgba(255, 80, 100, 0.17);
   border-radius: 50%;
-  box-shadow: 0 0 0 25px rgba(255, 128, 64, .025),
-              0 0 0 55px rgba(255, 128, 64, .02);
+  box-shadow: 0 0 0 25px rgba(255, 80, 100, 0.025),
+              0 0 0 55px rgba(255, 80, 100, 0.02);
   pointer-events: none;
+}
+
+/* Tiny ember with a subtle flicker (same accent as index.html) */
+.vault-hero::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 22px;
+  left: 24px;
+  width: 7px;
+  height: 11px;
+  border-radius: 70% 35% 65% 40%;
+  background: #ff702b;
+  transform: rotate(25deg);
+  box-shadow:
+    0 0 5px 2px rgba(255, 90, 25, .55),
+    0 0 12px rgba(255, 45, 15, .3);
+  animation: ember-flicker 1.7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ember-flicker {
+  from {
+    opacity: .55;
+    transform: rotate(15deg) scale(.8);
+    box-shadow: 0 0 4px 1px rgba(255, 90, 25, .4);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(35deg) scale(1.12);
+    box-shadow:
+      0 0 6px 2px rgba(255, 90, 25, .65),
+      0 0 13px rgba(255, 45, 15, .4);
+  }
 }
 
 .vault-kicker {
   display: inline-flex;
   gap: 8px;
   align-items: center;
-  color: #ff9a5c;
+  color: #ff929b;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .2em;
@@ -63,17 +98,20 @@
   position: relative;
   z-index: 1;
   margin: 14px 0 12px;
-  color: #fff4e8;
+  color: #fff4f6;
   font-size: clamp(32px, 5vw, 54px);
+  font-weight: 900;
+  letter-spacing: 2px;
   line-height: 1.05;
   transform-origin: left center;
-  transition: transform .24s ease, color .24s ease, text-shadow .24s ease;
+  transition: transform .25s, text-shadow .25s;
 }
 
 .vault-hero h1:hover {
   transform: scale(1.055);
-  color: #ffb17f;
-  text-shadow: 0 0 25px rgba(255, 87, 30, .25);
+  text-shadow:
+    0 0 10px rgba(255, 65, 85, .8),
+    0 0 30px rgba(255, 45, 65, .5);
 }
 
 .vault-hero p {
@@ -81,7 +119,7 @@
   z-index: 1;
   max-width: 680px;
   margin: 0;
-  color: #c8bdb8;
+  color: #b8aab8;
   line-height: 1.7;
   font-size: 14px;
 }
@@ -97,22 +135,22 @@
 
 .vault-pill {
   padding: 8px 13px;
-  border: 1px solid rgba(255, 255, 255, .11);
+  border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 999px;
-  background: rgba(255, 255, 255, .045);
-  color: #f2e9e4;
+  background: rgba(255, 255, 255, 0.045);
+  color: #f4ebf4;
   font-size: 12px;
   transition: transform .2s ease, border-color .2s ease, background .2s ease;
 }
 
 .vault-pill:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 128, 64, .4);
-  background: rgba(255, 112, 45, .08);
+  border-color: rgba(255, 80, 100, 0.4);
+  background: rgba(255, 65, 85, 0.08);
 }
 
 .vault-pill strong {
-  color: #ff9a5c;
+  color: #ff929b;
 }
 
 /* ===== Search and filters ===== */
@@ -130,24 +168,24 @@
   width: 100%;
   min-height: 46px;
   padding: 0 14px;
-  border: 1px solid rgba(255, 128, 64, .24);
+  border: 1px solid rgba(255, 80, 100, 0.24);
   border-radius: 12px;
   outline: none;
-  background: rgba(25, 19, 20, .94);
-  color: #f4eae4;
+  background: rgba(30, 19, 31, 0.94);
+  color: #f6eef6;
   font: inherit;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .vault-tools input:focus,
 .vault-tools select:focus {
-  border-color: #ff8248;
-  box-shadow: 0 0 0 3px rgba(255, 130, 72, .13);
+  border-color: #ff4657;
+  box-shadow: 0 0 0 3px rgba(255, 65, 85, 0.13);
 }
 
 .vault-tools input:hover,
 .vault-tools select:hover {
-  border-color: rgba(255, 128, 64, .48);
+  border-color: rgba(255, 90, 110, 0.48);
 }
 
 /* ===== Skin sections ===== */
@@ -167,26 +205,26 @@
 
 .vault-category-head h2 {
   margin: 8px 0 4px;
-  color: #fff1e8;
+  color: #fff4f6;
   font-size: clamp(21px, 3vw, 29px);
   transform-origin: left center;
   transition: color .2s ease, transform .2s ease, text-shadow .2s ease;
 }
 
 .vault-category-head h2:hover {
-  color: #ff9a5c;
+  color: #ff929b;
   transform: scale(1.035);
-  text-shadow: 0 0 18px rgba(255, 91, 30, .18);
+  text-shadow: 0 0 18px rgba(255, 60, 85, 0.18);
 }
 
 .vault-category-head p {
   margin: 0;
-  color: #b7a7a0;
+  color: #b8aab8;
   font-size: 13px;
 }
 
 .vault-total {
-  color: #ff9a5c;
+  color: #ff929b;
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
@@ -204,10 +242,10 @@
   position: relative;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 128, 64, .15);
+  border: 1px solid rgba(255, 80, 100, 0.15);
   border-radius: 17px;
-  background: linear-gradient(155deg, rgba(39, 27, 25, .98), rgba(19, 16, 19, .99));
-  box-shadow: 0 7px 22px rgba(0, 0, 0, .16);
+  background: linear-gradient(155deg, rgba(48, 25, 38, 0.98), rgba(19, 13, 20, 0.99));
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.16);
   transform-origin: center;
   transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
@@ -216,9 +254,9 @@
 .vault-card:focus-within {
   z-index: 5;
   transform: translateY(-5px) scale(1.035);
-  border-color: rgba(255, 123, 64, .72);
-  box-shadow: 0 16px 35px rgba(0, 0, 0, .36),
-              0 0 22px rgba(255, 88, 30, .12);
+  border-color: rgba(255, 100, 120, 0.65);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.36),
+              0 0 22px rgba(255, 60, 85, 0.23);
 }
 
 .vault-art {
@@ -227,7 +265,7 @@
   place-items: center;
   height: 138px;
   padding: 12px;
-  background: radial-gradient(ellipse at 50% 70%, rgba(255, 105, 48, .13), transparent 62%);
+  background: radial-gradient(ellipse at 50% 70%, rgba(255, 65, 85, 0.13), transparent 62%);
 }
 
 .vault-art img {
@@ -235,14 +273,14 @@
   height: 100%;
   max-height: 115px;
   object-fit: contain;
-  filter: drop-shadow(0 6px 7px rgba(0, 0, 0, .3));
+  filter: drop-shadow(0 6px 7px rgba(0, 0, 0, 0.3));
   transition: transform .22s ease, filter .22s ease;
 }
 
 .vault-card:hover .vault-art img,
 .vault-card:focus-within .vault-art img {
   transform: scale(1.09);
-  filter: drop-shadow(0 8px 12px rgba(255, 105, 48, .2));
+  filter: drop-shadow(0 8px 12px rgba(255, 65, 85, 0.2));
 }
 
 .vault-number {
@@ -250,10 +288,10 @@
   top: 10px;
   left: 10px;
   padding: 4px 7px;
-  border: 1px solid rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 7px;
-  background: rgba(12, 8, 8, .78);
-  color: #eadbd3;
+  background: rgba(8, 5, 9, 0.78);
+  color: #e8d9e6;
   font-size: 10px;
 }
 
@@ -263,10 +301,10 @@
   right: 9px;
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9px;
-  background: rgba(12, 8, 8, .8);
-  color: #e4d3cc;
+  background: rgba(8, 5, 9, 0.8);
+  color: #e0d2e0;
   font-size: 18px;
   cursor: pointer;
   transition: transform .18s ease, color .18s ease, background .18s ease, border-color .18s ease;
@@ -274,24 +312,24 @@
 
 .vault-fav:hover {
   transform: scale(1.1);
-  border-color: rgba(255, 105, 76, .55);
+  border-color: rgba(255, 70, 90, 0.55);
 }
 
 .vault-fav.is-favorite {
-  border-color: rgba(255, 105, 76, .45);
-  background: rgba(255, 80, 50, .16);
-  color: #ff694c;
+  border-color: rgba(255, 70, 90, 0.45);
+  background: rgba(255, 65, 85, 0.16);
+  color: #ff4657;
 }
 
 .vault-meta {
   padding: 12px;
-  border-top: 1px solid rgba(255, 255, 255, .06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .vault-name {
   display: block;
   overflow: hidden;
-  color: #fff0e8;
+  color: #fff4f6;
   font-size: 12px;
   font-weight: 750;
   line-height: 1.45;
@@ -304,7 +342,7 @@
   justify-content: space-between;
   gap: 8px;
   margin-top: 5px;
-  color: #b19e96;
+  color: #a89aa8;
   font-size: 10px;
 }
 
@@ -318,10 +356,10 @@
   flex: 1;
   min-width: 0;
   padding: 7px 5px;
-  border: 1px solid rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  background: rgba(255, 255, 255, .045);
-  color: #f0e4de;
+  background: rgba(255, 255, 255, 0.045);
+  color: #f2e8f2;
   font-size: 11px;
   cursor: pointer;
   transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
@@ -329,9 +367,9 @@
 
 .vault-actions button:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 128, 64, .55);
-  background: rgba(255, 128, 64, .1);
-  color: #ffbd92;
+  border-color: rgba(255, 100, 120, 0.55);
+  background: rgba(255, 80, 100, 0.1);
+  color: #ffb1ba;
 }
 
 /* ===== Animated hover information ===== */
@@ -341,8 +379,8 @@
   max-height: 0;
   overflow: hidden;
   padding: 0 11px;
-  border-top: 0 solid rgba(255, 255, 255, .07);
-  background: rgba(13, 9, 9, .97);
+  border-top: 0 solid rgba(255, 255, 255, 0.07);
+  background: rgba(10, 6, 11, 0.97);
   opacity: 0;
   transition: max-height .24s ease, opacity .2s ease, padding .24s ease;
 }
@@ -360,7 +398,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
-  color: #b6a39b;
+  color: #ab9cab;
   font-size: 10px;
   line-height: 1.45;
 }
@@ -368,7 +406,7 @@
 .vault-info-line strong {
   min-width: 0;
   overflow: hidden;
-  color: #ffad75;
+  color: #ff9da7;
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -376,9 +414,9 @@
 
 .vault-empty {
   padding: 30px;
-  border: 1px dashed rgba(255, 128, 64, .3);
+  border: 1px dashed rgba(255, 80, 100, 0.3);
   border-radius: 16px;
-  color: #c4b2aa;
+  color: #b8aab8;
   text-align: center;
 }
 
@@ -390,15 +428,15 @@
 .vault-dialog {
   width: min(420px, calc(100% - 28px));
   padding: 0;
-  border: 1px solid rgba(255, 128, 64, .4);
+  border: 1px solid rgba(255, 80, 100, 0.4);
   border-radius: 20px;
-  background: #1b1414;
-  color: #f7ece6;
+  background: #1d141f;
+  color: #f8f0f8;
   box-shadow: 0 25px 80px #000a;
 }
 
 .vault-dialog::backdrop {
-  background: rgba(2, 4, 12, .78);
+  background: rgba(6, 2, 8, 0.78);
   backdrop-filter: blur(5px);
 }
 
@@ -413,7 +451,7 @@
 
 .dialog-inner p {
   margin: 0 0 16px;
-  color: #c0aea6;
+  color: #b8aab8;
   font-size: 13px;
   line-height: 1.5;
 }
@@ -421,7 +459,7 @@
 .dialog-inner label {
   display: block;
   margin-bottom: 7px;
-  color: #e2d1c8;
+  color: #e3d6e2;
   font-size: 12px;
 }
 
@@ -430,9 +468,9 @@
   width: 100%;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, .16);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 10px;
-  background: #100c0c;
+  background: #150e16;
   color: #fff;
   font: inherit;
 }
@@ -447,22 +485,22 @@
 .dialog-actions button {
   flex: 1;
   padding: 11px;
-  border: 1px solid rgba(255, 255, 255, .13);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 10px;
-  background: rgba(255, 255, 255, .05);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
   cursor: pointer;
   transition: background .2s ease, border-color .2s ease;
 }
 
 .dialog-actions button:hover {
-  border-color: rgba(255, 128, 64, .55);
-  background: rgba(255, 128, 64, .1);
+  border-color: rgba(255, 100, 120, 0.55);
+  background: rgba(255, 80, 100, 0.1);
 }
 
 .dialog-actions .primary {
   border: 0;
-  background: linear-gradient(135deg, #ff713b, #d63b28);
+  background: linear-gradient(135deg, #ff4657, #c81f36);
   font-weight: 800;
 }
 
@@ -472,9 +510,9 @@
   left: 50%;
   z-index: 1100;
   padding: 11px 16px;
-  border: 1px solid rgba(255, 128, 64, .4);
+  border: 1px solid rgba(255, 80, 100, 0.4);
   border-radius: 12px;
-  background: #281b18;
+  background: #241725;
   color: #fff;
   box-shadow: 0 12px 35px #0007;
   font-size: 13px;
@@ -492,9 +530,9 @@
   justify-content: center;
   margin-left: -5px;
   padding: 5px 8px;
-  border: 1px solid rgba(255, 154, 101, .25);
+  border: 1px solid rgba(255, 80, 100, 0.25);
   border-radius: 8px;
-  color: #ffb17f !important;
+  color: #ffb1ba !important;
   text-decoration: none;
   font-size: 14px;
   transition: background .2s ease, transform .2s ease, border-color .2s ease;
@@ -502,8 +540,8 @@
 
 .nav-studio:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 154, 101, .5);
-  background: rgba(255, 130, 72, .12);
+  border-color: rgba(255, 90, 110, 0.5);
+  background: rgba(255, 65, 85, 0.12);
 }
 
 @keyframes vaultFadeIn {
@@ -576,6 +614,80 @@
     animation-duration: .01ms !important;
     transition-duration: .01ms !important;
   }
+}
+
+/* ===== Shared chrome retint — matches the index.html FLAME DRAGON theme =====
+   style.css ships the warm ember palette; these overrides re-point the shared
+   shell (page background, moving glows, header, navigation, bonus panel) at the
+   crimson palette used by index.html, without touching layout or behaviour. */
+body {
+  color: #fff4f6;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
+    #100b10;
+}
+
+body::before {
+  background: radial-gradient(circle,
+    rgba(200, 40, 70, .26) 0%,
+    rgba(150, 25, 55, .12) 35%,
+    transparent 70%);
+}
+
+body::after {
+  background: radial-gradient(circle,
+    rgba(190, 35, 65, .22) 0%,
+    rgba(255, 95, 125, .08) 35%,
+    transparent 70%);
+}
+
+.brand {
+  color: #fff4f6;
+}
+
+.brand img {
+  filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
+}
+
+.topbar {
+  background: rgba(24, 9, 16, .72);
+  border-bottom-color: rgba(255, 80, 100, .35);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, .35),
+    0 0 25px rgba(255, 60, 85, .10);
+}
+
+.navigation a {
+  color: #b8aab8;
+}
+
+.navigation a:hover {
+  color: #ffffff;
+  background: rgba(255, 65, 85, .12);
+}
+
+.navigation a.active {
+  background: rgba(255, 65, 85, .16);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 80, 100, .22),
+    0 0 18px rgba(255, 60, 85, .10);
+}
+
+.navigation a.active::after {
+  background: #ff4657;
+  box-shadow:
+    0 0 8px rgba(255, 70, 90, .9),
+    0 0 16px rgba(255, 60, 85, .55);
+}
+
+.bonus-codes {
+  border-color: rgba(255, 80, 100, .45);
+  background: rgba(20, 10, 18, .96);
+}
+
+.bonus-codes strong {
+  color: #ff9da7;
 }
 </style>
 </head>
@@ -845,7 +957,7 @@
             error.className = 'vault-image-error';
             error.textContent = 'Image unavailable';
             error.style.cssText =
-              'font-size:10px;color:#ffad75;text-align:center';
+              'font-size:10px;color:#ff9da7;text-align:center';
             art.appendChild(error);
           }
         };
