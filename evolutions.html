@@ -5,87 +5,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#100b10">
-<title>Evolutions | FLAME DRAGON HUB</title>
+<title>How to Evolve | FLAME DRAGON HUB</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
-:root {
-  --bg: #100b10;
-  --panel: rgba(29,20,31,.96);
-  --red: #ff4657;
-  --blue: #42a5ff;
-  --text: #fff4f6;
-  --muted: #b8aab8;
-}
-
-body {
-  background:
-    radial-gradient(ellipse at 50% 35%,rgba(130,22,45,.20),transparent 45%),
-    #100b10;
-  color: var(--text);
-}
-
+/* Keep the same global body background as Home from style.css */
 .evolutions-page {
   max-width: 1450px;
   margin: auto;
   padding: 36px 22px 80px;
   text-align: left;
+  color: #fff4f6;
 }
 
-.evolution-howto-card,
-.evolution-video {
-  border: 1px solid rgba(255,70,87,.25);
-  border-radius: 20px;
-  background: linear-gradient(135deg,rgba(29,20,31,.98),rgba(16,11,16,.98));
-  box-shadow: 0 12px 35px rgba(0,0,0,.18);
-}
-
-.evolution-howto-card {
-  max-width: 860px;
-  margin: 0 auto 24px;
-  padding: 24px;
+.evolutions-hero {
   text-align: center;
+  padding: 24px 12px 26px;
 }
 
-.difficulty,
 .guide-badge {
-  color: #ff929b;
+  color: #ff7885;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .18em;
 }
 
+.evolutions-hero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 12px 0 0;
+  color: #fff4f6;
+}
+
+.evolutions-hero p {
+  color: #b8aab8;
+  line-height: 1.6;
+  margin: 12px auto;
+  max-width: 700px;
+}
+
+.evolution-howto-card,
+.evolution-video {
+  border: 1px solid rgba(255, 70, 87, .28);
+  border-radius: 20px;
+  background: rgba(29, 20, 31, .88);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
+  backdrop-filter: blur(10px);
+}
+
+.evolution-howto-card {
+  margin: 0 auto 24px;
+  max-width: 860px;
+  padding: 24px;
+  text-align: center;
+}
+
+.evolution-howto-card .difficulty {
+  color: #ff7885;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
 .evolution-title-main {
   margin: 10px 0 0;
-  color: var(--text);
-  font-size: clamp(28px,4vw,42px);
+  color: #fff4f6;
+  font-size: clamp(28px, 4vw, 42px);
 }
 
 .evolution-title-sub {
-  margin: 4px 0 14px;
+  margin: 2px 0 14px;
   color: #ff929b;
-  font-size: clamp(13px,2vw,17px);
+  font-size: clamp(13px, 2vw, 17px);
   font-weight: 600;
 }
 
 .evolution-description {
-  max-width: 650px;
+  color: #b8aab8;
+  line-height: 1.6;
   margin: 0 auto;
-  color: var(--muted);
-  line-height: 1.8;
+  max-width: 650px;
 }
 
 .evolution-video {
-  max-width: 1000px;
   margin: 22px auto 32px;
+  max-width: 1000px;
   padding: 18px;
 }
 
 .evolution-video h2 {
-  margin: 10px 0 14px;
-  color: var(--text);
-  font-size: clamp(20px,3vw,28px);
+  margin: 7px 0 14px;
+  color: #fff4f6;
+  font-size: clamp(20px, 3vw, 28px);
 }
 
 .evolution-video-frame {
@@ -95,7 +105,7 @@ body {
   max-height: 560px;
   overflow: hidden;
   border-radius: 14px;
-  background: #050507;
+  background: #100b10;
 }
 
 .evolution-video-frame iframe {
@@ -118,17 +128,16 @@ body {
   gap: 8px;
   color: #ff929b;
   text-decoration: none;
-  border: 1px solid rgba(255,70,87,.3);
+  border: 1px solid rgba(255, 70, 87, .3);
   border-radius: 10px;
   padding: 10px 14px;
-  background: rgba(255,70,87,.08);
-  transition: .2s ease;
+  background: rgba(255, 70, 87, .08);
+  transition: background .2s, border-color .2s;
 }
 
 .video-fallback a:hover {
-  color: white;
-  border-color: var(--red);
-  background: rgba(255,70,87,.17);
+  background: rgba(255, 70, 87, .16);
+  border-color: rgba(255, 70, 87, .65);
 }
 
 .evolution-list-heading {
@@ -140,21 +149,22 @@ body {
 }
 
 .evolution-list-heading h2 {
+  margin: 0;
+  color: #fff4f6;
+  font-size: clamp(22px, 3vw, 30px);
+}
+
+.evolution-list-heading p {
+  margin: 6px 0 0;
+  color: #b8aab8;
+  font-size: 13px;
+}
+
+/* Reveal the level count when hovering over Evolution Order */
+.evolution-order-title {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 9px;
-  margin: 0;
-  color: var(--text);
-  font-size: clamp(22px,3vw,30px);
-}
-
-/* Hover text next to Evolution Order */
-
-.evolution-order-title {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   cursor: default;
 }
@@ -169,35 +179,26 @@ body {
   font-size: 12px;
   font-weight: 700;
   transform: translateX(-5px);
-  transition:
-    max-width .3s ease,
-    opacity .25s ease,
-    transform .3s ease;
+  transition: max-width .3s ease, opacity .25s ease, transform .3s ease;
 }
 
 .evolution-order-title:hover .hover-count,
-.evolution-order-title:focus-within .hover-count {
+.evolution-order-title:focus .hover-count {
   max-width: 220px;
   opacity: 1;
   transform: translateX(0);
 }
 
-.evolution-list-heading p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
 .evolution-list-heading .count {
   white-space: nowrap;
-  color: #ff929b;
+  color: #ff7885;
   font-size: 12px;
   font-weight: 800;
 }
 
 .evolution-creature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(145px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
   gap: 12px;
 }
 
@@ -205,21 +206,18 @@ body {
   position: relative;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(255,70,87,.18);
+  border: 1px solid rgba(255, 244, 246, .12);
   border-radius: 15px;
-  background: linear-gradient(155deg,rgba(29,20,31,.98),rgba(16,11,16,.99));
-  transition:
-    transform .18s,
-    border-color .18s,
-    box-shadow .18s;
+  background: rgba(29, 20, 31, .88);
+  backdrop-filter: blur(8px);
+  transition: transform .18s, border-color .18s, box-shadow .18s;
 }
 
 .evolution-creature-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(255,70,87,.65);
-  box-shadow:
-    0 12px 28px rgba(0,0,0,.25),
-    0 0 18px rgba(255,70,87,.08);
+  border-color: rgba(255, 70, 87, .6);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .25),
+              0 0 18px rgba(255, 70, 87, .09);
 }
 
 .evolution-number {
@@ -228,9 +226,9 @@ body {
   left: 8px;
   z-index: 1;
   padding: 4px 6px;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255, 255, 255, .12);
   border-radius: 7px;
-  background: rgba(16,11,16,.85);
+  background: rgba(16, 11, 16, .82);
   color: #fff4f6;
   font-size: 10px;
 }
@@ -240,7 +238,11 @@ body {
   display: grid;
   place-items: center;
   padding: 12px;
-  background: radial-gradient(ellipse at 50% 70%,rgba(255,70,87,.10),transparent 60%);
+  background: radial-gradient(
+    ellipse at 50% 70%,
+    rgba(255, 70, 87, .12),
+    transparent 65%
+  );
 }
 
 .evolution-creature-art img {
@@ -249,12 +251,12 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 7px rgba(0,0,0,.3));
+  filter: drop-shadow(0 6px 7px rgba(0, 0, 0, .3));
 }
 
 .evolution-creature-name {
   padding: 10px 8px 12px;
-  border-top: 1px solid rgba(255,255,255,.045);
+  border-top: 1px solid rgba(255, 255, 255, .06);
   color: #fff4f6;
   text-align: center;
   font-size: 12px;
@@ -266,7 +268,7 @@ body {
   justify-content: center;
 }
 
-@media(max-width:650px) {
+@media (max-width: 650px) {
   .evolutions-page {
     padding: 22px 12px 55px;
   }
@@ -276,7 +278,7 @@ body {
   }
 
   .evolution-creature-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
   }
 
@@ -285,21 +287,17 @@ body {
   }
 
   .evolution-list-heading {
-    align-items: flex-start;
+    align-items: start;
   }
 
   .evolution-list-heading .count {
     font-size: 10px;
   }
-
-  .evolution-order-title .hover-count {
-    font-size: 10px;
-  }
 }
 
-@media(prefers-reduced-motion:reduce) {
-  .evolution-order-title .hover-count,
+@media (prefers-reduced-motion: reduce) {
   .evolution-creature-card,
+  .evolution-order-title .hover-count,
   .video-fallback a {
     transition: none;
   }
@@ -329,14 +327,13 @@ body {
 </header>
 
 <main class="evolutions-page">
-
   <section class="evolution-howto-card">
     <span class="difficulty">NEW PLAYER GUIDE</span>
-    <h1 class="evolution-title-main">How to evolve</h1>
+    <h1 class="evolution-title-main">How to Evolve</h1>
     <p class="evolution-title-sub">For new players</p>
     <p class="evolution-description">
-      Watch the guide, then explore all 45 evolution levels
-      in the same order as the game — from Fly to Grim Reaper.
+      Watch the guide, then explore all 45 evolution stages in order,
+      from Fly to Grim Reaper.
     </p>
   </section>
 
@@ -356,7 +353,8 @@ body {
 
     <div class="video-fallback">
       <a href="https://www.youtube.com/watch?v=AVEHLSJV-5I"
-         target="_blank" rel="noopener noreferrer">
+         target="_blank"
+         rel="noopener noreferrer">
         ▶ Open video on YouTube
       </a>
     </div>
@@ -373,7 +371,7 @@ body {
         </h2>
         <p>Arranged from the first evolution to the final stage.</p>
       </div>
-      <span class="count">45 LEVELS</span>
+      <span class="count">45 STAGES</span>
     </div>
 
     <div class="evolution-creature-grid">
@@ -418,12 +416,11 @@ body {
       <article class="evolution-creature-card"><span class="evolution-number">38</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/cosmic-insect-2.webp" alt="Cosmic Big Eye" loading="lazy"></div><div class="evolution-creature-name">Cosmic Big Eye</div></article>
       <article class="evolution-creature-card"><span class="evolution-number">39</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/cosmic-angry-eye.webp" alt="Cosmic Angry Eye" loading="lazy"></div><div class="evolution-creature-name">Cosmic Angry Eye</div></article>
       <article class="evolution-creature-card"><span class="evolution-number">40</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/cosmicbat.webp" alt="Cosmic Bat" loading="lazy"></div><div class="evolution-creature-name">Cosmic Bat</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">41</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/overfed-cosmic-bat.webp" alt="Overfed Cosmic Bat" loading="lazy"></div><div class="evolution-creature-name">Overfed Cosmic Bat</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">42</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/ghost.webp" alt="Ghost" loading="lazy"></div><div class="evolution-creature-name">Ghost</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">43</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/ghostly-reaper.webp" alt="Ghostly Reaper" loading="lazy"></div><div class="evolution-creature-name">Ghostly Reaper</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">44</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/pumpkin.webp" alt="Pumpkin" loading="lazy"></div><div class="evolution-creature-name">Pumpkin</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">45</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/pumpkin-reaper.webp" alt="Pumpkin Ghost" loading="lazy"></div><div class="evolution-creature-name">Pumpkin Ghost</div></article>
-      <article class="evolution-creature-card"><span class="evolution-number">46</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/grim-reaper.webp" alt="Grim Reaper" loading="lazy"></div><div class="evolution-creature-name">Grim Reaper</div></article>
+      <article class="evolution-creature-card"><span class="evolution-number">41</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/ghost.webp" alt="Ghost" loading="lazy"></div><div class="evolution-creature-name">Ghost</div></article>
+      <article class="evolution-creature-card"><span class="evolution-number">42</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/ghostly-reaper.webp" alt="Ghostly Reaper" loading="lazy"></div><div class="evolution-creature-name">Ghostly Reaper</div></article>
+      <article class="evolution-creature-card"><span class="evolution-number">43</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/pumpkin.webp" alt="Pumpkin" loading="lazy"></div><div class="evolution-creature-name">Pumpkin</div></article>
+      <article class="evolution-creature-card"><span class="evolution-number">44</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/pumpkin-reaper.webp" alt="Pumpkin Ghost" loading="lazy"></div><div class="evolution-creature-name">Pumpkin Ghost</div></article>
+      <article class="evolution-creature-card"><span class="evolution-number">45</span><div class="evolution-creature-art"><img src="assets/skins/evolution-creatures/grim-reaper.webp" alt="Grim Reaper" loading="lazy"></div><div class="evolution-creature-name">Grim Reaper</div></article>
 
     </div>
   </section>
