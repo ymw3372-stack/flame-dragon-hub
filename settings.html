@@ -1,1319 +1,613 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skins | FLAME DRAGON HUB</title>
-
-<link rel="stylesheet" href="style.css">
-
-<style>
-/* ===== Skins page — matches the shared FLAME DRAGON HUB theme ===== */
-.reaper-vault {
-  width: min(1500px, 100%);
-  margin: auto;
-  padding: 34px 22px 80px;
-  box-sizing: border-box;
-}
-
-.vault-hero {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(25px, 5vw, 52px);
-  border: 1px solid rgba(255, 80, 100, 0.28);
-  border-radius: 26px;
-  background:
-    radial-gradient(ellipse at 85% 10%, rgba(130, 22, 45, 0.2), transparent 38%),
-    linear-gradient(135deg, rgba(43, 22, 33, 0.94), rgba(18, 13, 20, 0.96));
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
-  transition: border-color .25s ease, box-shadow .25s ease;
-}
-
-.vault-hero:hover {
-  border-color: rgba(255, 90, 110, 0.48);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 28px rgba(255, 60, 85, 0.1);
-}
-
-.vault-hero::after {
-  content: "";
-  position: absolute;
-  right: -70px;
-  bottom: -130px;
-  width: 280px;
-  height: 280px;
-  border: 1px solid rgba(255, 80, 100, 0.17);
-  border-radius: 50%;
-  box-shadow: 0 0 0 25px rgba(255, 80, 100, 0.025),
-              0 0 0 55px rgba(255, 80, 100, 0.02);
-  pointer-events: none;
-}
-
-/* Tiny ember with a subtle flicker (same accent as index.html) */
-.vault-hero::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 22px;
-  left: 24px;
-  width: 7px;
-  height: 11px;
-  border-radius: 70% 35% 65% 40%;
-  background: #ff702b;
-  transform: rotate(25deg);
-  box-shadow:
-    0 0 5px 2px rgba(255, 90, 25, .55),
-    0 0 12px rgba(255, 45, 15, .3);
-  animation: ember-flicker 1.7s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-@keyframes ember-flicker {
-  from {
-    opacity: .55;
-    transform: rotate(15deg) scale(.8);
-    box-shadow: 0 0 4px 1px rgba(255, 90, 25, .4);
-  }
-
-  to {
-    opacity: 1;
-    transform: rotate(35deg) scale(1.12);
-    box-shadow:
-      0 0 6px 2px rgba(255, 90, 25, .65),
-      0 0 13px rgba(255, 45, 15, .4);
-  }
-}
-
-.vault-kicker {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  color: #ff929b;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-}
-
-.vault-hero h1 {
-  position: relative;
-  z-index: 1;
-  margin: 14px 0 12px;
-  color: #fff4f6;
-  font-size: clamp(32px, 5vw, 54px);
-  font-weight: 900;
-  letter-spacing: 2px;
-  line-height: 1.05;
-  transform-origin: left center;
-  transition: transform .25s, text-shadow .25s;
-}
-
-.vault-hero h1:hover {
-  transform: scale(1.055);
-  text-shadow:
-    0 0 10px rgba(255, 65, 85, .8),
-    0 0 30px rgba(255, 45, 65, .5);
-}
-
-.vault-hero p {
-  position: relative;
-  z-index: 1;
-  max-width: 680px;
-  margin: 0;
-  color: #b8aab8;
-  line-height: 1.7;
-  font-size: 14px;
-}
-
-.vault-counts {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.vault-pill {
-  padding: 8px 13px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.045);
-  color: #f4ebf4;
-  font-size: 12px;
-  transition: transform .2s ease, border-color .2s ease, background .2s ease;
-}
-
-.vault-pill:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 80, 100, 0.4);
-  background: rgba(255, 65, 85, 0.08);
-}
-
-.vault-pill strong {
-  color: #ff929b;
-}
-
-/* ===== Search and filters ===== */
-.vault-tools {
-  display: grid;
-  grid-template-columns: minmax(200px, 1fr) minmax(150px, 220px) minmax(140px, 180px);
-  gap: 10px;
-  margin: 24px 0 30px;
-  scroll-margin-top: 100px;
-}
-
-.vault-tools input,
-.vault-tools select {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 46px;
-  padding: 0 14px;
-  border: 1px solid rgba(255, 80, 100, 0.24);
-  border-radius: 12px;
-  outline: none;
-  background: rgba(30, 19, 31, 0.94);
-  color: #f6eef6;
-  font: inherit;
-  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-}
-
-.vault-tools input:focus,
-.vault-tools select:focus {
-  border-color: #ff4657;
-  box-shadow: 0 0 0 3px rgba(255, 65, 85, 0.13);
-}
-
-.vault-tools input:hover,
-.vault-tools select:hover {
-  border-color: rgba(255, 90, 110, 0.48);
-}
-
-/* ===== Skin sections ===== */
-.vault-category {
-  margin: 36px 0;
-  scroll-margin-top: 100px;
-  animation: vaultFadeIn .45s ease both;
-}
-
-.vault-category-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.vault-category-head h2 {
-  margin: 8px 0 4px;
-  color: #fff4f6;
-  font-size: clamp(21px, 3vw, 29px);
-  transform-origin: left center;
-  transition: color .2s ease, transform .2s ease, text-shadow .2s ease;
-}
-
-.vault-category-head h2:hover {
-  color: #ff929b;
-  transform: scale(1.035);
-  text-shadow: 0 0 18px rgba(255, 60, 85, 0.18);
-}
-
-.vault-category-head p {
-  margin: 0;
-  color: #b8aab8;
-  font-size: 13px;
-}
-
-.vault-total {
-  color: #ff929b;
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-/* ===== Skin cards ===== */
-.vault-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-  align-items: start;
-  gap: 13px;
-}
-
-.vault-card {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid rgba(255, 80, 100, 0.15);
-  border-radius: 17px;
-  background: linear-gradient(155deg, rgba(48, 25, 38, 0.98), rgba(19, 13, 20, 0.99));
-  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.16);
-  transform-origin: center;
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-}
-
-.vault-card:hover,
-.vault-card:focus-within {
-  z-index: 5;
-  transform: translateY(-5px) scale(1.035);
-  border-color: rgba(255, 100, 120, 0.65);
-  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.36),
-              0 0 22px rgba(255, 60, 85, 0.23);
-}
-
-.vault-art {
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: 138px;
-  padding: 12px;
-  background: radial-gradient(ellipse at 50% 70%, rgba(255, 65, 85, 0.13), transparent 62%);
-}
-
-.vault-art img {
-  width: 100%;
-  height: 100%;
-  max-height: 115px;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 7px rgba(0, 0, 0, 0.3));
-  transition: transform .22s ease, filter .22s ease;
-}
-
-.vault-card:hover .vault-art img,
-.vault-card:focus-within .vault-art img {
-  transform: scale(1.09);
-  filter: drop-shadow(0 8px 12px rgba(255, 65, 85, 0.2));
-}
-
-.vault-number {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 4px 7px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 7px;
-  background: rgba(8, 5, 9, 0.78);
-  color: #e8d9e6;
-  font-size: 10px;
-}
-
-.vault-fav {
-  position: absolute;
-  top: 8px;
-  right: 9px;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 9px;
-  background: rgba(8, 5, 9, 0.8);
-  color: #e0d2e0;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform .18s ease, color .18s ease, background .18s ease, border-color .18s ease;
-}
-
-.vault-fav:hover {
-  transform: scale(1.1);
-  border-color: rgba(255, 70, 90, 0.55);
-}
-
-.vault-fav.is-favorite {
-  border-color: rgba(255, 70, 90, 0.45);
-  background: rgba(255, 65, 85, 0.16);
-  color: #ff4657;
-}
-
-.vault-meta {
-  padding: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.vault-name {
-  display: block;
-  overflow: hidden;
-  color: #fff4f6;
-  font-size: 12px;
-  font-weight: 750;
-  line-height: 1.45;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.vault-sub {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 5px;
-  color: #a89aa8;
-  font-size: 10px;
-}
-
-.vault-actions {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.vault-actions button {
-  flex: 1;
-  min-width: 0;
-  padding: 7px 5px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
-  color: #f2e8f2;
-  font-size: 11px;
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
-}
-
-.vault-actions button:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255, 100, 120, 0.55);
-  background: rgba(255, 80, 100, 0.1);
-  color: #ffb1ba;
-}
-
-/* ===== Animated hover information ===== */
-.vault-hover-info {
-  display: grid;
-  gap: 6px;
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 11px;
-  border-top: 0 solid rgba(255, 255, 255, 0.07);
-  background: rgba(10, 6, 11, 0.97);
-  opacity: 0;
-  transition: max-height .24s ease, opacity .2s ease, padding .24s ease;
-}
-
-.vault-card:hover .vault-hover-info,
-.vault-card:focus-within .vault-hover-info {
-  max-height: 120px;
-  padding: 10px 11px;
-  border-top-width: 1px;
-  opacity: 1;
-}
-
-.vault-info-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
-  color: #ab9cab;
-  font-size: 10px;
-  line-height: 1.45;
-}
-
-.vault-info-line strong {
-  min-width: 0;
-  overflow: hidden;
-  color: #ff9da7;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.vault-empty {
-  padding: 30px;
-  border: 1px dashed rgba(255, 80, 100, 0.3);
-  border-radius: 16px;
-  color: #b8aab8;
-  text-align: center;
-}
-
-.vault-hidden {
-  display: none !important;
-}
-
-/* ===== Rename dialog and toast ===== */
-.vault-dialog {
-  width: min(420px, calc(100% - 28px));
-  padding: 0;
-  border: 1px solid rgba(255, 80, 100, 0.4);
-  border-radius: 20px;
-  background: #1d141f;
-  color: #f8f0f8;
-  box-shadow: 0 25px 80px #000a;
-}
-
-.vault-dialog::backdrop {
-  background: rgba(6, 2, 8, 0.78);
-  backdrop-filter: blur(5px);
-}
-
-.dialog-inner {
-  padding: 22px;
-}
-
-.dialog-inner h3 {
-  margin: 0 0 8px;
-  font-size: 21px;
-}
-
-.dialog-inner p {
-  margin: 0 0 16px;
-  color: #b8aab8;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.dialog-inner label {
-  display: block;
-  margin-bottom: 7px;
-  color: #e3d6e2;
-  font-size: 12px;
-}
-
-.dialog-inner input {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 10px;
-  background: #150e16;
-  color: #fff;
-  font: inherit;
-}
-
-.dialog-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.dialog-actions button {
-  flex: 1;
-  padding: 11px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease;
-}
-
-.dialog-actions button:hover {
-  border-color: rgba(255, 100, 120, 0.55);
-  background: rgba(255, 80, 100, 0.1);
-}
-
-.dialog-actions .primary {
-  border: 0;
-  background: linear-gradient(135deg, #ff4657, #c81f36);
-  font-weight: 800;
-}
-
-.vault-toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  z-index: 1100;
-  padding: 11px 16px;
-  border: 1px solid rgba(255, 80, 100, 0.4);
-  border-radius: 12px;
-  background: #241725;
-  color: #fff;
-  box-shadow: 0 12px 35px #0007;
-  font-size: 13px;
-  transform: translateX(-50%);
-}
-
-.vault-toast[hidden] {
-  display: none;
-}
-
-@keyframes vaultFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 850px) {
-  .vault-tools {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .vault-tools input {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 650px) {
-  .reaper-vault {
-    padding: 25px 12px 55px;
-  }
-
-  .vault-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .vault-art {
-    height: 125px;
-  }
-
-  .vault-art img {
-    max-height: 105px;
-  }
-
-  .vault-card {
-    border-radius: 14px;
-  }
-
-  .vault-category-head {
-    align-items: start;
-  }
-
-  .vault-total {
-    font-size: 10px;
-  }
-
-  .vault-hero h1:hover {
-    transform: none;
-  }
-}
-
-@media (hover: none) {
-  .vault-hover-info {
-    max-height: 120px;
-    padding: 9px 11px;
-    border-top-width: 1px;
-    opacity: 1;
-  }
-
-  .vault-card:hover {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
-  }
-}
-
-/* ===== Shared chrome — matches index.html / evolutions.html exactly =====
-   style.css ships a warm ember shell: two drifting orange glows painted on
-   body::before / body::after, plus a sticky .topbar and .navigation pills.
-   index.html and evolutions.html use none of those — they use a plain
-   .navbar / .nav-links shell on a flat #100b10 background. This block
-   neutralises the shared ember rules and applies that same shell here. */
-body {
-  color: #fff4f6;
-  font-family: Arial, Helvetica, sans-serif;
-  background:
-    radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
-    #100b10;
-  background-attachment: fixed;
-}
-
-
-/* Themes picked in Settings, copied from style.css. Pinning the gradient to
-   the viewport keeps it identical to index.html however tall this page is. */
-
-body[data-theme="night"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(80,90,120,.25) 0%, rgba(30,35,55,.12) 25%, transparent 50%),
-    linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
-  background-attachment: fixed, fixed;
-}
-
-body[data-theme="void"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(150,60,255,.28) 0%, rgba(80,30,160,.12) 25%, transparent 50%),
-    linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
-  background-attachment: fixed, fixed;
-}
-
-body[data-theme="frost"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(100,210,255,.25) 0%, rgba(50,130,190,.10) 25%, transparent 50%),
-    linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
-  background-attachment: fixed, fixed;
-}
-
-/* index.html has no background glows, so switch the shared ones off. */
-body::before,
-body::after {
-  content: none;
-  display: none;
-  background: none;
-  box-shadow: none;
-  animation: none;
-  filter: none;
-}
-
-/* ===== Header — same shell as index.html / evolutions.html ===== */
-.navbar {
-  position: relative;
-  z-index: 100;
-  width: min(1150px, 92%);
-  min-height: 76px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #fff4f6;
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.brand img {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
-}
-
-.brand span {
-  color: #ff4657;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.nav-links a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 13px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  color: #b8aab8;
-  font-size: 13px;
-  transition: .25s ease;
-}
-
-.nav-links a:hover,
-.nav-links a:focus-visible {
-  color: #fff;
-  background: rgba(255, 70, 87, .12);
-  border-color: rgba(255, 70, 87, .38);
-  transform: translateY(-2px);
-  outline: none;
-}
-
-.nav-links a.active {
-  color: #fff;
-  background: rgba(255, 70, 87, .15);
-  border-color: rgba(255, 70, 87, .42);
-  box-shadow: 0 0 18px rgba(255, 70, 87, .10);
-}
-
-@media (max-width: 800px) {
-  .navbar {
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    padding: 14px 0;
-    gap: 10px;
-  }
-
-  .nav-links {
-    justify-content: flex-start;
-    width: 100%;
-  }
-}
-
-.bonus-codes {
-  border-color: rgba(255, 80, 100, .45);
-  background: rgba(20, 10, 18, .96);
-}
-
-.bonus-codes strong {
-  color: #ff9da7;
-}
-
-/* style.css paints a warm ember cursor glow (orange, mix-blend-mode: screen).
-   Re-point it at the crimson accent so the pointer trail matches index.html. */
-.cursor-glow {
-  background: radial-gradient(circle,
-    rgba(255, 70, 87, .22) 0%,
-    rgba(255, 55, 75, .11) 32%,
-    rgba(255, 45, 65, 0) 72%);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | FLAME DRAGON HUB</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .profile-account-row {
+            display: grid;
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            align-items: stretch;
+            gap: 16px;
+            max-width: 1050px;
+            margin: 24px auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        .profile-account-card {
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid #ff4657;
+            border-radius: 20px;
+            background: rgba(255, 70, 87, 0.07);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .profile-account-card h2 {
+            margin-top: 0;
+            font-size: 21px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-plus {
+            display: none;
+        }
+
+        .profile-account-card input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #777;
+            border-radius: 10px;
+        }
+
+        .profile-account-card button,
+        .profile-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 6px 3px;
+            padding: 11px 16px;
+            border: 1px solid #ff4657;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff4657, #c81f36);
+            color: #21070c;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile-account-card button:hover,
+        .profile-action:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        #authStatus {
+            overflow-wrap: anywhere;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 70, 87, 0.10);
+        }
+
+        #signOut[hidden],
+        #authForm[hidden],
+        #googleSignIn[hidden],
+        #resetPassword[hidden],
+        #createAccount[hidden] {
+            display: none !important;
+        }
+
+        /* PLAYER PROFILE: smaller card, same features */
+        .fdh-player-profile {
+            padding: 16px;
+        }
+
+        .fdh-player-profile h2 {
+            margin-bottom: 12px;
+        }
+
+        .fdh-player-profile .profile-avatar {
+            width: 82px;
+            height: 82px;
+            margin: 8px auto 12px;
+            border-radius: 50%;
+            border: 2px solid #ff4657;
+            background-color: rgba(255, 70, 87, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-sizing: border-box;
+        }
+
+        .fdh-player-profile .avatar-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .fdh-player-profile .avatar-options button {
+            min-width: 38px;
+            padding: 6px;
+            margin: 2px;
+            font-size: 19px;
+            border-radius: 9px;
+        }
+
+        .fdh-player-profile .avatar-options .upload-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 10px;
+            margin: 3px;
+            border: 1px solid #ff4657;
+            border-radius: 10px;
+            background: rgba(255, 70, 87, 0.12);
+            color: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .fdh-player-profile .upload-avatar input[type="file"] {
+            display: none;
+        }
+
+        .fdh-player-profile .profile-info h3 {
+            margin: 10px 0 5px;
+            font-size: 19px;
+            overflow-wrap: anywhere;
+        }
+
+        .fdh-player-profile .profile-info p {
+            margin: 5px 0 10px;
+            font-size: 13px;
+        }
+
+        .fdh-player-profile .profile-info .profile-button {
+            padding: 8px 12px;
+            margin: 4px;
+            font-size: 13px;
+        }
+
+        .settings-grid {
+            max-width: 1050px;
+            margin: 24px auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 760px) {
+            .profile-account-row {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 14px;
+            }
+
+            .profile-account-card {
+                padding: 18px;
+            }
+
+            .fdh-player-profile {
+                padding: 16px;
+            }
+        }
+
+        /* ===== Shared chrome + settings skin - matches index.html =====
+           style.css ships a warm ember shell (two drifting orange glows on
+           body::before / body::after), a sticky .topbar / .navigation header,
+           and ember-coloured settings/profile widgets. index.html uses none of
+           that: it is a plain .navbar / .nav-links shell on a flat #100b10
+           background. This block switches off the ember rules and re-points
+           the shared widgets at the crimson palette; layout is untouched. */
+        body {
+            color: #fff4f6;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
+                #100b10;
+            background-attachment: fixed;
+        }
+
+        /* Themes picked in Settings, copied from style.css. Pinning the gradient to
+           the viewport keeps it identical to index.html however tall this page is. */
+        body[data-theme="night"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(80,90,120,.25) 0%, rgba(30,35,55,.12) 25%, transparent 50%),
+            linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body[data-theme="void"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(150,60,255,.28) 0%, rgba(80,30,160,.12) 25%, transparent 50%),
+            linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body[data-theme="frost"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(100,210,255,.25) 0%, rgba(50,130,190,.10) 25%, transparent 50%),
+            linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body::before,
+        body::after {
+            content: none;
+            display: none;
+            background: none;
+            box-shadow: none;
+            animation: none;
+            filter: none;
+        }
+
+        /* ===== Header - same shell as index.html / evolutions.html ===== */
+        .navbar {
+            position: relative;
+            z-index: 100;
+            width: min(1150px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff4f6;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .brand img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
+        }
+
+        .brand span { color: #ff4657; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #b8aab8;
+            font-size: 13px;
+            transition: .25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: #fff;
+            background: rgba(255, 70, 87, .12);
+            border-color: rgba(255, 70, 87, .38);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 70, 87, .15);
+            border-color: rgba(255, 70, 87, .42);
+            box-shadow: 0 0 18px rgba(255, 70, 87, .10);
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                padding: 14px 0;
+                gap: 10px;
+            }
+            .nav-links { justify-content: flex-start; width: 100%; }
+        }
+
+        .bonus-codes {
+            border-color: rgba(255, 80, 100, .45);
+            background: rgba(20, 10, 18, .96);
+        }
+
+        .bonus-codes strong { color: #ff9da7; }
+
+        /* ===== Settings page widgets (owned by style.css) ===== */
+        .settings-hero h1 {
+            text-shadow:
+                0 0 14px rgba(255, 65, 85, .45),
+                0 0 35px rgba(255, 45, 65, .16);
+        }
+
+        .settings-hero p { color: #b8aab8; }
+
+        .guide-badge {
+            border-color: rgba(255, 80, 100, .4);
+            background: rgba(255, 65, 85, .10);
+            color: #ff9da7;
+            box-shadow: 0 0 18px rgba(255, 60, 85, .08);
+        }
+
+        .settings-card {
+            border-color: rgba(255, 80, 100, .24);
+            background: linear-gradient(145deg, rgba(43, 22, 33, .72), rgba(18, 13, 20, .84));
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, .35),
+                inset 0 0 35px rgba(255, 55, 75, .025);
+        }
+
+        .settings-icon {
+            border-color: rgba(255, 80, 100, .25);
+            background: rgba(255, 65, 85, .10);
+        }
+
+        .settings-title p { color: #b8aab8; }
+
+        .setting-row { border-top-color: rgba(255, 80, 100, .12); }
+
+        .setting-row small { color: #b8aab8; }
+
+        #themeSelect {
+            border-color: rgba(255, 80, 100, .30);
+            background: rgba(16, 9, 14, .75);
+            color: #fff4f6;
+        }
+
+        .slider {
+            background: rgba(255, 244, 246, .14);
+            border-color: rgba(255, 80, 100, .25);
+        }
+
+        .slider::before { background: rgba(255, 244, 246, .75); }
+
+        .switch input:checked + .slider {
+            background: rgba(255, 65, 85, .35);
+            border-color: rgba(255, 90, 110, .65);
+        }
+
+        .switch input:checked + .slider::before { background: #ff4657; }
+
+        .settings-button {
+            border-color: rgba(255, 80, 100, .30);
+            background: rgba(255, 65, 85, .08);
+            color: #ff9da7;
+        }
+
+        .settings-button:hover {
+            color: #ffffff;
+            background: rgba(255, 65, 85, .18);
+            border-color: rgba(255, 90, 110, .65);
+        }
+
+        .profile-avatar {
+            border-color: rgba(255, 80, 100, .35);
+            background: rgba(255, 65, 85, .10);
+            box-shadow: 0 0 25px rgba(255, 60, 85, .15);
+        }
+
+        .profile-info p { color: #b8aab8; }
+
+        .profile-button {
+            border-color: rgba(255, 80, 100, .30);
+            background: rgba(255, 65, 85, .10);
+            color: #ff9da7;
+        }
+
+        .profile-button:hover {
+            color: #fff;
+            background: rgba(255, 65, 85, .20);
+            border-color: rgba(255, 90, 110, .65);
+        }
+
+        /* style.css paints a warm ember cursor glow (orange, mix-blend-mode: screen).
+           Re-point it at the crimson accent so the pointer trail matches index.html. */
+        .cursor-glow {
+            background: radial-gradient(circle,
+                rgba(255, 70, 87, .22) 0%,
+                rgba(255, 55, 75, .11) 32%,
+                rgba(255, 45, 65, 0) 72%);
+        }
 </style>
 </head>
 
 <body>
-
-<aside class="bonus-codes" aria-label="Bonus codes">
-  <strong>ALL BONUS CODES</strong>
-  <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
-</aside>
-
-<header class="navbar">
-  <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
-    <img src="assets/logo.png" alt="">
-    <span>FLAME DRAGON HUB</span>
-  </a>
-
-  <nav class="nav-links" aria-label="Main navigation">
-    <a href="index.html">Home</a>
-    <a href="evolutions.html">Evolutions</a>
-    <a href="skins.html" class="active" aria-current="page">Skins</a>
-    <a href="favorites.html">Favorites</a>
-    <a href="settings.html">Settings</a>
-  </nav>
-</header>
-
-<main class="reaper-vault">
-  <section class="vault-hero">
-    <span class="vault-kicker">✦ FLAME DRAGON / SKIN ARCHIVE</span>
-    <h1>Reaper Vault</h1>
-    <p>
-      Explore your EvoWorld skin archive. Search the collection, preview
-      images, rename display labels and save favorites. Hover over a skin
-      to reveal its family, ID and original image filename.
-    </p>
-    <div class="vault-counts">
-      <span class="vault-pill"><strong id="vaultTotalCount">0</strong> local skins</span>
-      <span class="vault-pill"><strong id="vaultFamilyCount">0</strong> skin families</span>
-      <span class="vault-pill">Names are editable</span>
-    </div>
-  </section>
-
-  <div class="vault-tools" role="search">
-    <input id="vaultSearch" type="search"
-      placeholder="Search skins or your custom names…"
-      aria-label="Search skins">
-
-    <select id="vaultCategory" aria-label="Filter skin family">
-      <option value="all">All families</option>
-      <option value="grim-reaper">Grim Reaper</option>
-      <option value="pumpkin-ghost">Pumpkin Ghost</option>
-      <option value="ghostly-reaper">Ghostly Reaper</option>
-      <option value="ghost">Ghosts</option>
-      <option value="pets">Pets</option>
-    </select>
-
-    <select id="vaultSort" aria-label="Sort skins">
-      <option value="default">Default order</option>
-      <option value="az">Name A–Z</option>
-      <option value="za">Name Z–A</option>
-      <option value="favorites">Favorites first</option>
-    </select>
-  </div>
-
-  <section class="vault-category" data-section="grim-reaper">
-    <div class="vault-category-head">
-      <div>
-        <span class="vault-kicker">FAMILY 01</span>
-        <h2>Grim Reaper</h2>
-        <p>Original Grim Reaper skin collection</p>
-      </div>
-      <span class="vault-total">0 SKINS</span>
-    </div>
-    <div class="vault-grid" id="grid-grim-reaper"></div>
-  </section>
-
-  <section class="vault-category" data-section="pumpkin-ghost">
-    <div class="vault-category-head">
-      <div>
-        <span class="vault-kicker">FAMILY 02</span>
-        <h2>Pumpkin Ghost</h2>
-        <p>Original Pumpkin Ghost skin collection</p>
-      </div>
-      <span class="vault-total">0 SKINS</span>
-    </div>
-    <div class="vault-grid" id="grid-pumpkin-ghost"></div>
-  </section>
-
-  <section class="vault-category" data-section="ghostly-reaper">
-    <div class="vault-category-head">
-      <div>
-        <span class="vault-kicker">FAMILY 03</span>
-        <h2>Ghostly Reaper</h2>
-        <p>Original Ghostly Reaper skin collection</p>
-      </div>
-      <span class="vault-total">0 SKINS</span>
-    </div>
-    <div class="vault-grid" id="grid-ghostly-reaper"></div>
-  </section>
-
-  <section class="vault-category" data-section="ghost">
-    <div class="vault-category-head">
-      <div>
-        <span class="vault-kicker">FAMILY 04</span>
-        <h2>Ghosts</h2>
-        <p>The game's Halloween ghost skins</p>
-      </div>
-      <span class="vault-total">0 SKINS</span>
-    </div>
-    <div class="vault-grid" id="grid-ghost"></div>
-  </section>
-
-  <section class="vault-category" data-section="pets">
-    <div class="vault-category-head">
-      <div>
-        <span class="vault-kicker">FAMILY 05</span>
-        <h2>Pets</h2>
-        <p>Every pet in the local skin archive</p>
-      </div>
-      <span class="vault-total">0 SKINS</span>
-    </div>
-    <div class="vault-grid" id="grid-pets"></div>
-  </section>
-
-  <div id="vaultNoResults" class="vault-empty vault-hidden">
-    No skins match that search. Try another name or filter.
-  </div>
-</main>
-
-<dialog class="vault-dialog" id="renameDialog">
-  <form method="dialog" id="renameForm">
-    <div class="dialog-inner">
-      <h3>Rename skin</h3>
-      <p>
-        This changes only the label shown on this page. The original image
-        file and path remain unchanged.
-      </p>
-      <label for="renameInput">Display name</label>
-      <input id="renameInput" maxlength="48" required autocomplete="off">
-      <div class="dialog-actions">
-        <button type="button" id="resetName">Reset name</button>
-        <button type="button" id="cancelRename">Cancel</button>
-        <button type="submit" class="primary">Save name</button>
-      </div>
-    </div>
-  </form>
-</dialog>
-
-<div id="vaultToast" class="vault-toast" role="status" hidden></div>
-
-<script src="skins-data.js?v=archive-skins-1"></script>
-
-<script>
-(() => {
-  const noResults = document.getElementById('vaultNoResults');
-
-  if (typeof skinsData === 'undefined' || !skinsData) {
-    noResults.textContent =
-      'Skin data could not load. Check skins-data.js and refresh the page.';
-    noResults.classList.remove('vault-hidden');
-    return;
-  }
-
-  const categories = Object.entries(skinsData).map(([id, category]) => ({
-    id,
-    title: category.title,
-    folder: category.folder,
-    skins: Array.isArray(category.skins) ? category.skins : []
-  }));
-
-  const favKey = 'flameDragonFavorites';
-  const namesKey = 'flameDragonSkinNames';
-
-  let renaming = null;
-  let toastTimer;
-
-  const read = (storageKey, fallback) => {
-    try {
-      const value = JSON.parse(
-        localStorage.getItem(storageKey) || JSON.stringify(fallback)
-      );
-      return value && typeof value === 'object' ? value : fallback;
-    } catch {
-      return fallback;
-    }
-  };
-
-  const getNames = () => read(namesKey, {});
-
-  const getFavs = () => {
-    const value = read(favKey, []);
-    return Array.isArray(value) ? value : [];
-  };
-
-  const skinKey = (category, index) => `${category.id}:${index}`;
-  const skinAt = (category, index) => category.skins[index - 1];
-
-  const defaultName = (category, index) => {
-    const skin = skinAt(category, index);
-    return skin?.name || skin?.file || `Skin ${index}`;
-  };
-
-  const displayName = (category, index) =>
-    getNames()[skinKey(category, index)] || defaultName(category, index);
-
-  const assetPath = (category, index) => {
-    const skin = skinAt(category, index);
-    return `assets/skins/${category.folder}/${skin.file}`;
-  };
-
-  function toast(message) {
-    const element = document.getElementById('vaultToast');
-    element.textContent = message;
-    element.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => element.hidden = true, 2200);
-  }
-
-  function addHoverInfo(container, label, value) {
-    const row = document.createElement('div');
-    row.className = 'vault-info-line';
-
-    const caption = document.createElement('span');
-    caption.textContent = label;
-
-    const detail = document.createElement('strong');
-    detail.textContent = value;
-    detail.title = value;
-
-    row.append(caption, detail);
-    container.appendChild(row);
-  }
-
-  function build() {
-    let actualTotal = 0;
-
-    for (const category of categories) {
-      const grid = document.getElementById(`grid-${category.id}`);
-      if (!grid) continue;
-
-      category.skins.forEach((skin, index) => {
-        const i = index + 1;
-        const id = skinKey(category, i);
-        const originalName = defaultName(category, i);
-        actualTotal++;
-
-        const card = document.createElement('article');
-        card.className = 'vault-card';
-        card.dataset.id = id;
-        card.dataset.category = category.id;
-        card.dataset.order = String(i);
-
-        const art = document.createElement('div');
-        art.className = 'vault-art';
-
-        const image = document.createElement('img');
-        image.src = assetPath(category, i);
-        image.alt = originalName;
-        image.loading = 'lazy';
-        image.decoding = 'async';
-
-        image.onerror = () => {
-          image.style.display = 'none';
-          if (!art.querySelector('.vault-image-error')) {
-            const error = document.createElement('span');
-            error.className = 'vault-image-error';
-            error.textContent = 'Image unavailable';
-            error.style.cssText =
-              'font-size:10px;color:#ff9da7;text-align:center';
-            art.appendChild(error);
-          }
-        };
-
-        const number = document.createElement('span');
-        number.className = 'vault-number';
-        number.textContent = `#${String(i).padStart(2, '0')}`;
-
-        const favorite = document.createElement('button');
-        favorite.type = 'button';
-        favorite.className = 'vault-fav';
-        favorite.title = 'Toggle favorite';
-        favorite.setAttribute('aria-label', `Favorite ${originalName}`);
-        favorite.addEventListener('click', () => toggleFavorite(id));
-
-        art.append(image, number, favorite);
-
-        const meta = document.createElement('div');
-        meta.className = 'vault-meta';
-
-        const name = document.createElement('span');
-        name.className = 'vault-name';
-        name.dataset.nameFor = id;
-        name.textContent = displayName(category, i);
-        name.title = displayName(category, i);
-
-        const subtitle = document.createElement('div');
-        subtitle.className = 'vault-sub';
-
-        const family = document.createElement('span');
-        family.textContent = category.title;
-
-        const local = document.createElement('span');
-        local.textContent = 'LOCAL';
-
-        subtitle.append(family, local);
-
-        const actions = document.createElement('div');
-        actions.className = 'vault-actions';
-
-        const rename = document.createElement('button');
-        rename.type = 'button';
-        rename.textContent = '✎ Rename';
-        rename.addEventListener('click', () => {
-          openRename(id, displayName(category, i));
-        });
-
-        const preview = document.createElement('button');
-        preview.type = 'button';
-        preview.textContent = 'View image';
-        preview.addEventListener('click', () => {
-          const opened = window.open(assetPath(category, i), '_blank');
-          if (!opened) toast('Allow pop-ups to open the image.');
-        });
-
-        actions.append(rename, preview);
-        meta.append(name, subtitle, actions);
-
-        const details = document.createElement('div');
-        details.className = 'vault-hover-info';
-
-        addHoverInfo(details, 'Family', category.title);
-        addHoverInfo(details, 'Skin ID', id);
-        addHoverInfo(details, 'Image', skin.file || 'Unknown');
-
-        card.append(art, meta, details);
-        grid.appendChild(card);
-      });
-    }
-
-    document.getElementById('vaultTotalCount').textContent =
-      actualTotal.toLocaleString();
-
-    document.getElementById('vaultFamilyCount').textContent =
-      categories.length;
-
-    for (const category of categories) {
-      const section = document.querySelector(
-        `[data-section="${category.id}"]`
-      );
-      if (!section) continue;
-
-      const total = section.querySelector('.vault-total');
-      if (total) {
-        total.textContent =
-          `${category.skins.length.toLocaleString()} SKINS`;
-      }
-    }
-
-    syncFavorites();
-    filterAndSort();
-  }
-
-  function toggleFavorite(id) {
-    let favorites = getFavs();
-
-    favorites = favorites.includes(id)
-      ? favorites.filter(value => value !== id)
-      : [...favorites, id];
-
-    localStorage.setItem(favKey, JSON.stringify(favorites));
-    syncFavorites();
-    filterAndSort();
-
-    toast(
-      favorites.includes(id)
-        ? 'Added to Favorites'
-        : 'Removed from Favorites'
-    );
-  }
-
-  function syncFavorites() {
-    const favorites = getFavs();
-
-    document.querySelectorAll('.vault-card').forEach(card => {
-      const button = card.querySelector('.vault-fav');
-      if (!button) return;
-
-      const active = favorites.includes(card.dataset.id);
-      button.textContent = active ? '♥' : '♡';
-      button.classList.toggle('is-favorite', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-  }
-
-  function openRename(id, name) {
-    renaming = id;
-    const input = document.getElementById('renameInput');
-    input.value = name;
-    document.getElementById('renameDialog').showModal();
-
-    setTimeout(() => {
-      input.focus();
-      input.select();
-    }, 30);
-  }
-
-  function finishRename(value) {
-    if (!renaming) return;
-
-    const names = getNames();
-
-    if (value === null) {
-      delete names[renaming];
-    } else {
-      const newName = value.trim();
-
-      if (!newName) {
-        toast('Name cannot be empty');
-        return;
-      }
-
-      const [categoryId, indexText] = renaming.split(':');
-      const category = categories.find(item => item.id === categoryId);
-      const index = Number(indexText);
-      if (!category || !Number.isInteger(index)) return;
-
-      if (newName === defaultName(category, index)) {
-        delete names[renaming];
-      } else {
-        names[renaming] = newName;
-      }
-    }
-
-    localStorage.setItem(namesKey, JSON.stringify(names));
-    document.getElementById('renameDialog').close();
-    renaming = null;
-
-    document.querySelectorAll('.vault-card').forEach(card => {
-      const [categoryId, indexText] = card.dataset.id.split(':');
-      const category = categories.find(item => item.id === categoryId);
-      if (!category) return;
-
-      const index = Number(indexText);
-      const label = displayName(category, index);
-      const nameElement = card.querySelector('.vault-name');
-
-      nameElement.textContent = label;
-      nameElement.title = label;
-    });
-
-    filterAndSort();
-    toast(value === null ? 'Original label restored' : 'Skin name saved');
-  }
-
-  document.getElementById('renameForm').addEventListener('submit', event => {
-    event.preventDefault();
-    finishRename(document.getElementById('renameInput').value);
-  });
-
-  document.getElementById('cancelRename').addEventListener('click', () => {
-    document.getElementById('renameDialog').close();
-    renaming = null;
-  });
-
-  document.getElementById('resetName').addEventListener('click', () => {
-    finishRename(null);
-  });
-
-  function filterAndSort() {
-    const query = document.getElementById('vaultSearch')
-      .value.trim().toLowerCase();
-
-    const selectedCategory =
-      document.getElementById('vaultCategory').value;
-
-    const sort = document.getElementById('vaultSort').value;
-    const favorites = getFavs();
-
-    let visibleTotal = 0;
-
-    for (const category of categories) {
-      const section = document.querySelector(
-        `[data-section="${category.id}"]`
-      );
-      const grid = document.getElementById(`grid-${category.id}`);
-      if (!section || !grid) continue;
-
-      const cards = [...grid.querySelectorAll('.vault-card')];
-
-      cards.sort((a, b) => {
-        if (
-          sort === 'favorites' &&
-          favorites.includes(a.dataset.id) !==
-          favorites.includes(b.dataset.id)
-        ) {
-          return favorites.includes(a.dataset.id) ? -1 : 1;
-        }
-
-        if (sort === 'az' || sort === 'za') {
-          const nameA = a.querySelector('.vault-name')
-            .textContent.toLowerCase();
-          const nameB = b.querySelector('.vault-name')
-            .textContent.toLowerCase();
-
-          return sort === 'az'
-            ? nameA.localeCompare(nameB)
-            : nameB.localeCompare(nameA);
-        }
-
-        return Number(a.dataset.order) - Number(b.dataset.order);
-      });
-
-      cards.forEach(card => grid.appendChild(card));
-
-      let visibleInCategory = 0;
-
-      cards.forEach(card => {
-        const display = card.querySelector('.vault-name')
-          .textContent.toLowerCase();
-
-        const searchable = [
-          display,
-          category.title.toLowerCase(),
-          card.dataset.id.toLowerCase()
-        ].join(' ');
-
-        const matchesCategory =
-          selectedCategory === 'all' ||
-          selectedCategory === category.id;
-
-        const matchesSearch = searchable.includes(query);
-        const visible = matchesCategory && matchesSearch;
-
-        card.classList.toggle('vault-hidden', !visible);
-
-        if (visible) {
-          visibleInCategory++;
-          visibleTotal++;
-        }
-      });
-
-      section.classList.toggle('vault-hidden', visibleInCategory === 0);
-    }
-
-    noResults.classList.toggle('vault-hidden', visibleTotal > 0);
-  }
-
-  ['vaultSearch', 'vaultCategory', 'vaultSort'].forEach(id => {
-    const element = document.getElementById(id);
-    element.addEventListener(
-      id === 'vaultSearch' ? 'input' : 'change',
-      filterAndSort
-    );
-  });
-
-  build();
-})();
-</script>
-
-<script src="script.js"></script>
-<script src="preferences.js"></script>
-<script src="cursor-glow.js"></script>
-
+    <aside class="bonus-codes" aria-label="Bonus codes">
+        <strong>ALL BONUS CODES</strong>
+        <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
+    </aside>
+
+    <header class="navbar">
+        <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
+            <img src="assets/logo.png" alt="">
+            <span>FLAME DRAGON HUB</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="evolutions.html">Evolutions</a>
+            <a href="skins.html">Skins</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="settings.html" class="active" aria-current="page">Settings</a>
+        </nav>
+    </header>
+
+    <main class="settings-page">
+        <section class="settings-hero">
+            <span class="guide-badge">CUSTOMIZE YOUR HUB</span>
+            <h1>Settings</h1>
+            <p>Customize the FLAME DRAGON HUB experience to your preference.</p>
+        </section>
+
+        <section class="profile-account-row">
+
+            <!-- PLAYER PROFILE -->
+            <article class="profile-account-card fdh-player-profile">
+                <h2>🎮 Player Profile</h2>
+
+                <div class="profile-avatar" id="profileAvatar">🐉</div>
+
+                <div class="avatar-options" id="avatarOptions">
+                    <button type="button" data-avatar="🐉" aria-label="Dragon avatar">🐉</button>
+                    <button type="button" data-avatar="🔥" aria-label="Fire avatar">🔥</button>
+                    <button type="button" data-avatar="🤠" aria-label="Ogre avatar">👹</button>
+                    <button type="button" data-avatar="🌃" aria-label="Lightning avatar">⚡</button>
+                    <button type="button" data-avatar="🌑" aria-label="Moon avatar">🌑</button>
+                    <button type="button" data-avatar="💀" aria-label="Skull avatar">💀</button>
+
+                    <label class="upload-avatar">
+                        📷 Add Your Photo
+                        <input type="file" id="avatarUpload" accept="image/*">
+                    </label>
+                </div>
+
+                <div class="profile-info">
+                    <h3 id="profileName">FLAME DRAGON</h3>
+                    <p>EvoWorld Explorer</p>
+                    <button id="editProfile" class="profile-button" type="button">
+                        ✏️ Edit Name
+                    </button>
+                </div>
+            </article>
+
+            <!-- YOUR ACCOUNT -->
+            <article class="profile-account-card">
+                <h2>👤 Your Account</h2>
+
+                <p id="authStatus" role="status" aria-live="polite">
+                    Checking your sign-in status...
+                </p>
+
+                <form id="authForm">
+                    <input
+                        id="authEmail"
+                        type="email"
+                        placeholder="Email address"
+                        autocomplete="email"
+                        aria-label="Email address"
+                        required
+                    >
+
+                    <input
+                        id="authPassword"
+                        type="password"
+                        placeholder="Password (at least 6 characters)"
+                        autocomplete="current-password"
+                        aria-label="Password"
+                        minlength="6"
+                        required
+                    >
+
+                    <button id="createAccount" type="button">
+                        Create Account
+                    </button>
+
+                    <button type="submit">Sign In</button>
+                </form>
+
+                <button id="googleSignIn" type="button">
+                    Sign in with Google
+                </button>
+
+                <button id="resetPassword" type="button">
+                    Forgot Password?
+                </button>
+
+                <button id="signOut" type="button" hidden>
+                    Sign Out
+                </button>
+            </article>
+
+        </section>
+
+        <section class="settings-grid">
+            <article class="settings-card">
+                <div class="settings-title">
+                    <span class="settings-icon">🎨</span>
+                    <div>
+                        <h2>Appearance</h2>
+                        <p>Choose how the hub looks.</p>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Theme</strong>
+                        <small>Change the visual style of the hub.</small>
+                    </div>
+
+                    <select id="themeSelect">
+                        <option value="ember">Ember Warmth</option>
+                        <option value="night">Dark Night</option>
+                        <option value="void">Purple Void</option>
+                        <option value="frost">Frost</option>
+                    </select>
+                </div>
+            </article>
+
+            <article class="settings-card">
+                <div class="settings-title">
+                    <span class="settings-icon">⚡</span>
+                    <div>
+                        <h2>Performance</h2>
+                        <p>Control visual effects and animations.</p>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Performance Mode</strong>
+                        <small>Reduce animations and visual effects.</small>
+                    </div>
+
+                    <label class="switch">
+                        <input type="checkbox" id="performanceMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </article>
+
+            <article class="settings-card">
+                <div class="settings-title">
+                    <span class="settings-icon">⚙️</span>
+                    <div>
+                        <h2>General</h2>
+                        <p>Manage basic hub settings.</p>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Reset Settings</strong>
+                        <small>Return all settings to their defaults.</small>
+                    </div>
+
+                    <button id="resetSettings" class="settings-button" type="button">
+                        Reset
+                    </button>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script src="settings.js"></script>
+    <script src="profile.js"></script>
+    <script src="preferences.js"></script>
+    <script src="cursor-glow.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 </html>
