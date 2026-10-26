@@ -29,7 +29,45 @@ body {
   background:
     radial-gradient(ellipse at 50% 35%, rgba(130,22,45,.20), transparent 45%),
     var(--bg);
+  /* Themed and base gradients alike are pinned to the viewport, so the
+     background looks the same on a 20000px page as on a short one. */
+  background-attachment: fixed;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Themes picked in Settings. Gradients are copied from style.css so a theme
+   selected there looks identical here. The higher specificity of
+   body[data-theme] makes these override the base background above, while
+   "ember" (the default) intentionally keeps the crimson shell. */
+
+body[data-theme="night"] {
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(80,90,120,.25) 0%,
+      rgba(30,35,55,.12) 25%,
+      transparent 50%),
+    linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
+  background-attachment: fixed, fixed;
+}
+
+body[data-theme="void"] {
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(150,60,255,.28) 0%,
+      rgba(80,30,160,.12) 25%,
+      transparent 50%),
+    linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
+  background-attachment: fixed, fixed;
+}
+
+body[data-theme="frost"] {
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(100,210,255,.25) 0%,
+      rgba(50,130,190,.10) 25%,
+      transparent 50%),
+    linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
+  background-attachment: fixed, fixed;
 }
 
 a {
@@ -505,6 +543,14 @@ a {
             </a>
           </div>
 
+          <div class="orbit-position">
+            <a class="orbit-card" href="settings.html">
+              <span class="card-icon">⚙</span>
+              <strong>SETTINGS</strong>
+              <small>Customize your experience</small>
+            </a>
+          </div>
+
         </div>
       </div>
     </section>
@@ -669,6 +715,8 @@ a {
   start();
 })();
 </script>
+
+<script src="preferences.js"></script>
 
 </body>
 </html>
