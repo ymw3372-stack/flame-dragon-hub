@@ -1,161 +1,85 @@
-const profileName = document.getElementById("profileName");
-const editProfile = document.getElementById("editProfile");
-const favoriteCount = document.getElementById("favoriteCount");
+(() => {
+  const profileName = document.getElementById("profileName");
+  const editProfile = document.getElementById("editProfile");
+  const favoriteCount = document.getElementById("favoriteCount");
+  const profileAvatar = document.getElementById("profileAvatar");
+  const avatarOptions = document.querySelectorAll("[data-avatar]");
+  const avatarUpload = document.getElementById("avatarUpload");
+  if (!profileName || !profileAvatar || !avatarUpload) return;
 
-const profileAvatar = document.getElementById("profileAvatar");
-const avatarOptions = document.querySelectorAll("[data-avatar]");
-const avatarUpload = document.getElementById("avatarUpload");
+  profileName.textContent = localStorage.getItem("flameDragonProfileName") || "FLAME DRAGON";
+  editProfile?.addEventListener("click", () => {
+    const value = prompt("Enter your player name:", profileName.textContent);
+    if (value === null) return;
+    const clean = value.trim().slice(0, 24);
+    if (!clean) return;
+    localStorage.setItem("flameDragonProfileName", clean);
+    profileName.textContent = clean;
+  });
 
+  try {
+    const favorites = JSON.parse(localStorage.getItem("flameDragonFavorites") || "[]");
+    if (favoriteCount) favoriteCount.textContent = String(Array.isArray(favorites) ? favorites.length : 0);
+  } catch { if (favoriteCount) favoriteCount.textContent = "0"; }
 
-// =========================
-// PROFILE NAME
-// =========================
-
-const savedName =
-    localStorage.getItem("flameDragonProfileName") ||
-    "FLAME DRAGON";
-
-profileName.textContent = savedName;
-
-
-// Edit profile name
-editProfile.addEventListener("click", () => {
-
-    const newName = prompt(
-        "Enter your player name:",
-        profileName.textContent
-    );
-
-    if (!newName) return;
-
-    const cleanName = newName.trim();
-
-    if (!cleanName) return;
-
-    localStorage.setItem(
-        "flameDragonProfileName",
-        cleanName
-    );
-
-    profileName.textContent = cleanName;
-});
-
-
-// =========================
-// FAVORITES
-// =========================
-
-function updateFavoriteCount() {
-
-    const favorites =
-        JSON.parse(
-            localStorage.getItem("flameDragonFavorites")
-        ) || [];
-
-    favoriteCount.textContent = favorites.length;
-}
-
-updateFavoriteCount();
-
-
-// =========================
-// LOAD AVATAR
-// =========================
-
-const savedImage =
-    localStorage.getItem("flameDragonProfileImage");
-
-const savedAvatar =
-    localStorage.getItem("flameDragonProfileAvatar") || "🐉";
-
-if (savedImage) {
-
+  function showImage(data) {
     profileAvatar.textContent = "";
-
-    profileAvatar.style.backgroundImage =
-        `url("${savedImage}")`;
-
+    profileAvatar.style.backgroundImage = 'url("' + data + '")';
     profileAvatar.style.backgroundSize = "cover";
     profileAvatar.style.backgroundPosition = "center";
     profileAvatar.style.backgroundRepeat = "no-repeat";
-
-} else {
-
+  }
+  function showEmoji(value) {
     profileAvatar.style.backgroundImage = "none";
+    profileAvatar.textContent = value;
+  }
 
-    profileAvatar.textContent =
-        savedAvatar;
-}
+  const savedImage = localStorage.getItem("flameDragonProfileImage");
+  if (savedImage) showImage(savedImage);
+  else showEmoji(localStorage.getItem("flameDragonProfileAvatar") || "🐉");
 
+  avatarOptions.forEach(button => button.addEventListener("click", () => {
+    const emoji = button.dataset.avatar;
+    if (!emoji) return;
+    localStorage.removeItem("flameDragonProfileImage");
+    localStorage.setItem("flameDragonProfileAvatar", emoji);
+    showEmoji(emoji);
+  }));
 
-// =========================
-// READY AVATARS
-// =========================
-
-avatarOptions.forEach(option => {
-
-    option.addEventListener("click", () => {
-
-        const selectedAvatar =
-            option.dataset.avatar;
-
-        // Remove uploaded image
-        localStorage.removeItem(
-            "flameDragonProfileImage"
-        );
-
-        profileAvatar.style.backgroundImage = "none";
-
-        profileAvatar.textContent =
-            selectedAvatar;
-
-        localStorage.setItem(
-            "flameDragonProfileAvatar",
-            selectedAvatar
-        );
-
-    });
-
-});
-
-
-// =========================
-// UPLOAD PHOTO
-// =========================
-
-avatarUpload.addEventListener("change", () => {
-
-    const file = avatarUpload.files[0];
-
+  avatarUpload.addEventListener("change", async () => {
+    const file = avatarUpload.files?.[0];
     if (!file) return;
-
     if (!file.type.startsWith("image/")) {
-
-        alert("Please select an image.");
-
-        return;
+      alert("Please choose a valid image file.");
+      avatarUpload.value = "";
+      return;
     }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-
-        profileAvatar.textContent = "";
-
-        profileAvatar.style.backgroundImage =
-            `url("${reader.result}")`;
-
-        profileAvatar.style.backgroundSize = "cover";
-        profileAvatar.style.backgroundPosition = "center";
-        profileAvatar.style.backgroundRepeat = "no-repeat";
-
-        localStorage.setItem(
-            "flameDragonProfileImage",
-            reader.result
-        );
-
-    };
-
-    reader.readAsDataURL(file);
-
-});
+    if (file.size > 12 * 1024 * 1024) {
+      alert("Please choose an image smaller than 12 MB.");
+      avatarUpload.value = "";
+      return;
+    }
+    try {
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, 512 / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Canvas unavailable");
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close?.();
+      let data = canvas.toDataURL("image/webp", 0.82);
+      if (!data.startsWith("data:image/webp")) data = canvas.toDataURL("image/jpeg", 0.82);
+      if (data.length > 900000) data = canvas.toDataURL("image/jpeg", 0.68);
+      localStorage.setItem("flameDragonProfileImage", data);
+      localStorage.removeItem("flameDragonProfileAvatar");
+      showImage(data);
+    } catch (error) {
+      console.error("Could not save profile photo", error);
+      alert("Couldn't save this photo. Try a smaller image.");
+    } finally {
+      avatarUpload.value = "";
+    }
+  });
+})();
