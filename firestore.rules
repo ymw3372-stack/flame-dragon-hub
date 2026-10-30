@@ -5,12 +5,16 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isOwner(uid) {
-      return signedIn() && request.auth.uid == uid;
+    // The sole dashboard administrator is the verified owner of this exact email.
+    // This is enforced by Firestore itself, not only by the page UI.
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == 'ymw3372@gmail.com'
+        && request.auth.token.email_verified == true;
     }
 
-    function isAdmin() {
-      return signedIn() && request.auth.token.admin == true;
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
     }
 
     function validAuthMetadata(data, uid) {

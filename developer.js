@@ -96,9 +96,10 @@ async function loadDashboard() {
     return;
   }
 
-  const token = await auth.currentUser.getIdTokenResult(true);
-  if (token.claims.admin !== true) {
-    showGate("This account does not have the administrator permission. No account data was loaded.");
+  // Match the same verified-email allowlist enforced by Firestore rules.
+  const signedInEmail = (auth.currentUser.email || "").trim().toLowerCase();
+  if (signedInEmail !== "ymw3372@gmail.com" || auth.currentUser.emailVerified !== true) {
+    showGate("Sign in with the verified administrator account (ymw3372@gmail.com). No account data was loaded.");
     return;
   }
 
