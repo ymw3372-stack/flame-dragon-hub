@@ -13,6 +13,13 @@ service cloud.firestore {
       return signedIn() && request.auth.token.admin == true;
     }
 
+    function validAuthMetadata(data, uid) {
+      return data.uid == uid
+        && data.email == request.auth.token.email
+        && data.provider == request.auth.token.firebase.sign_in_provider
+        && data.emailVerified == (request.auth.token.email_verified == true);
+    }
+
     match /users/{uid} {
       allow read: if isOwner(uid) || isAdmin();
 
@@ -21,7 +28,7 @@ service cloud.firestore {
           'uid', 'email', 'displayName', 'provider', 'emailVerified',
           'createdAt', 'lastSignInAt', 'updatedAt'
         ])
-        && request.resource.data.uid == uid
+        && validAuthMetadata(request.resource.data, uid)
         && request.resource.data.provider is string
         && request.resource.data.emailVerified is bool
         && request.resource.data.createdAt == request.time
@@ -33,7 +40,7 @@ service cloud.firestore {
           'email', 'displayName', 'provider', 'emailVerified',
           'lastSignInAt', 'updatedAt'
         ])
-        && request.resource.data.uid == resource.data.uid
+        && validAuthMetadata(request.resource.data, uid)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.lastSignInAt == request.time
         && request.resource.data.updatedAt == request.time;
@@ -46,7 +53,7 @@ service cloud.firestore {
         allow create: if isOwner(uid)
           && request.resource.data.keys().hasOnly(['type', 'provider', 'createdAt'])
           && request.resource.data.type in ['register', 'sign_in', 'sign_out']
-          && request.resource.data.provider is string
+          && request.resource.data.provider == request.auth.token.firebase.sign_in_provider
           && request.resource.data.createdAt == request.time;
 
         allow update, delete: if false;
