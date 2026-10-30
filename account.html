@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,213 +6,62 @@
   <title>Account | FLAME DRAGON HUB</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .account-page {
-      max-width: 520px;
-      margin: 45px auto;
-      padding: 20px;
-      animation: accountEnter .65s cubic-bezier(.2,.8,.2,1) both;
-    }
-
-    @keyframes accountEnter {
-      from { opacity: 0; transform: translateY(22px) scale(.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .account-back {
-      display: inline-block;
-      margin: 0 0 18px;
-      padding: 10px 16px;
-      color: #ffb16e;
-      background: rgba(255,138,36,.09);
-      border: 1px solid rgba(255,138,36,.35);
-      border-radius: 14px;
-      text-decoration: none;
-      transition: background .2s, transform .2s;
-    }
-
-    .account-back:hover {
-      background: rgba(255,138,36,.18);
-      transform: translateX(-3px);
-    }
-
-    .account-card {
-      padding: 28px;
-      color: #f8fafc;
-      background: linear-gradient(145deg,#171b27,#10121b);
-      border: 1px solid rgba(255,138,36,.45);
-      border-radius: 24px;
-      box-shadow: 0 14px 42px rgba(0,0,0,.25);
-    }
-
-    .account-card h1 {
-      margin: 0 0 8px;
-      text-align: center;
-      color: #ffb16e;
-      font-size: 25px;
-    }
-
-    .account-subtitle {
-      color: #b8becb;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .account-card label {
-      display: block;
-      margin: 16px 0 7px;
-    }
-
-    .account-card input {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 13px 15px;
-      color: white;
-      background: #0c0f17;
-      border: 1px solid #353b4a;
-      border-radius: 12px;
-      font: inherit;
-    }
-
-    .account-card input:focus {
-      outline: 2px solid rgba(255,150,61,.4);
-      border-color: #ff963d;
-    }
-
-    .account-card button {
-      width: 100%;
-      min-height: 46px;
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 13px;
-      font: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .2s, filter .2s;
-    }
-
-    .account-card button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-    }
-
-    .account-primary {
-      color: #211207;
-      background: linear-gradient(135deg,#ffb15f,#ff8129);
-      border: 0;
-    }
-
-    .account-secondary {
-      color: #f1f3f7;
-      background: #252a37;
-      border: 1px solid #414757;
-    }
-
-    .account-google {
-      color: #3c4043;
-      background: #fff;
-      border: 1px solid #dadce0;
-    }
-
-    .account-google span {
-      color: #4285f4;
-      font-weight: 800;
-      font-size: 19px;
-      margin-right: 9px;
-    }
-
-    .account-forgot {
-      color: #ffb16e;
-      background: transparent;
-      border: 0;
-    }
-
-    #authStatus {
-      min-height: 20px;
-      color: #cbd5e1;
-      text-align: center;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-
-    .account-card [hidden] {
-      display: none !important;
-    }
-
-    @media (max-width: 560px) {
-      .account-page { margin: 22px auto; padding: 14px; }
-      .account-card { padding: 22px 18px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .account-page { animation: none; }
-      .account-back, .account-card button { transition: none; }
-    }
+    .account-page{max-width:1040px;margin:38px auto;padding:18px}
+    .account-layout{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:20px;align-items:start}
+    .account-profile-card{padding:26px;color:#f8fafc;background:linear-gradient(145deg,#171b27,#10121b);border:1px solid rgba(255,138,36,.42);border-radius:24px;box-shadow:0 14px 42px rgba(0,0,0,.25);text-align:center}
+    .account-profile-card h2{margin:0 0 8px;color:#ffb16e}
+    .account-profile-card .profile-avatar{width:112px;height:112px;margin:18px auto 12px;border-radius:50%;border:2px solid #ff963d;display:flex;align-items:center;justify-content:center;font-size:54px;background-color:rgba(255,150,61,.12);background-position:center;background-size:cover;background-repeat:no-repeat;overflow:hidden}
+    .account-profile-card .avatar-options{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;margin:14px 0}
+    .account-profile-card .avatar-options button{min-width:40px;min-height:38px;border:1px solid rgba(255,150,61,.4);border-radius:10px;background:rgba(255,150,61,.1);color:white;cursor:pointer;font-size:20px}
+    .account-profile-card .upload-avatar{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 12px;border:1px solid rgba(255,150,61,.45);border-radius:10px;background:rgba(255,150,61,.12);color:#ffcf9e;cursor:pointer;font-size:13px}
+    .account-profile-card .upload-avatar input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+    .account-profile-card .profile-info p,.account-profile-card .profile-hint{color:#b8becb;font-size:13px}
+    .account-profile-card .profile-button{margin-top:8px;padding:10px 15px;border:1px solid rgba(255,150,61,.4);border-radius:11px;color:#ffcf9e;background:rgba(255,150,61,.1);cursor:pointer}
+    .account-profile-stats{margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,.1);color:#cbd5e1}
+    .account-profile-stats strong{display:block;color:#ffb16e;font-size:24px}
+    .account-back{display:inline-block;margin:0 0 18px;padding:10px 16px;color:#ffb16e;background:rgba(255,138,36,.09);border:1px solid rgba(255,138,36,.35);border-radius:14px;text-decoration:none}
+    @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-page{margin:18px auto;padding:14px}}
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
-      <img src="assets/logo.png" alt="FLAME DRAGON HUB">
-      <span>FLAME DRAGON HUB</span>
-    </div>
+    <div class="brand"><img src="assets/logo.png" alt="FLAME DRAGON HUB"><span>FLAME DRAGON HUB</span></div>
     <nav class="navigation" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="evolutions.html">Evolutions</a>
-      <a href="skins.html">Skins</a>
-      <a href="settings.html">Settings</a>
-      <a href="account.html" class="active" aria-current="page">👤 Account</a>
+      <a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="settings.html">Settings</a><a href="account.html" class="active" aria-current="page">👤 Account</a>
     </nav>
   </header>
-
   <main class="account-page">
-    <a class="account-back" href="index.html">← Back to Home</a>
-
-    <section id="account" class="account-card">
-      <h1>🐉 Your Dragon Account</h1>
-      <p class="account-subtitle">Sign in and join the hub.</p>
-      <p id="authStatus" aria-live="polite">Checking account...</p>
-
-      <form id="authForm">
-        <label for="authEmail">Email address</label>
-        <input id="authEmail" type="email" autocomplete="email"
-          placeholder="you@example.com" required>
-
-        <label for="authPassword">Password</label>
-        <input id="authPassword" type="password" minlength="6"
-          autocomplete="current-password" placeholder="At least 6 characters"
-          required>
-
-        <button class="account-primary" type="submit">Sign in</button>
-        <button id="createAccount" class="account-secondary" type="button">
-          Create account
-        </button>
-      </form>
-
-      <button id="googleSignIn" class="account-google" type="button">
-        <span>G</span> Continue with Google
-      </button>
-
-      <button id="resetPassword" class="account-forgot" type="button">
-        Forgot password?
-      </button>
-
-      <button id="resendVerification" class="account-secondary" type="button" hidden>
-        Resend verification email
-      </button>
-
-      <button id="refreshVerification" class="account-secondary" type="button" hidden>
-        I've verified my email
-      </button>
-
-      <button id="signOut" class="account-secondary" type="button" hidden>
-        Sign out
-      </button>
-    </section>
+    <a class="account-back" href="settings.html">← Back to Settings</a>
+    <div class="account-layout">
+      <section class="account-profile-card" aria-labelledby="profileHeading">
+        <h2 id="profileHeading">🎮 Account Profile</h2>
+        <div class="profile-avatar" id="profileAvatar">🐉</div>
+        <div class="avatar-options" id="avatarOptions" aria-label="Choose profile avatar">
+          <button type="button" data-avatar="🐉" aria-label="Dragon">🐉</button><button type="button" data-avatar="🔥" aria-label="Fire">🔥</button><button type="button" data-avatar="👹" aria-label="Ogre">👹</button><button type="button" data-avatar="⚡" aria-label="Lightning">⚡</button><button type="button" data-avatar="🌑" aria-label="Moon">🌑</button><button type="button" data-avatar="💀" aria-label="Skull">💀</button>
+          <label class="upload-avatar" for="avatarUpload">📷 Choose Photo</label>
+          <input type="file" id="avatarUpload" accept="image/png,image/jpeg,image/webp,image/gif">
+        </div>
+        <div class="profile-info"><h2 id="profileName">FLAME DRAGON</h2><p>EvoWorld Explorer</p><button id="editProfile" class="profile-button" type="button">✏️ Edit Player Name</button></div>
+        <div class="account-profile-stats"><strong id="favoriteCount">0</strong><span>Favorites</span></div>
+        <p class="profile-hint">Your profile photo and player name are saved on this browser.</p>
+      </section>
+      <section id="account" class="account-card" aria-labelledby="accountHeading">
+        <h1 id="accountHeading">🐉 Your Dragon Account</h1>
+        <p class="account-subtitle">Sign in or create an account to join the hub.</p>
+        <p id="authStatus" aria-live="polite">Checking account...</p>
+        <form id="authForm">
+          <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+          <label for="authPassword">Password</label><input id="authPassword" type="password" minlength="6" autocomplete="current-password" placeholder="At least 6 characters" required>
+          <button class="account-primary" type="submit">Sign in</button><button id="createAccount" class="account-secondary" type="button">Create account</button>
+        </form>
+        <button id="googleSignIn" class="account-google" type="button"><span>G</span> Continue with Google</button>
+        <button id="resetPassword" class="account-forgot" type="button">Forgot password?</button>
+        <button id="resendVerification" class="account-secondary" type="button" hidden>Resend verification email</button>
+        <button id="refreshVerification" class="account-secondary" type="button" hidden>I've verified my email</button>
+        <button id="signOut" class="account-secondary" type="button" hidden>Sign out</button>
+      </section>
+    </div>
   </main>
-
-  <script src="preferences.js"></script>
-  <script src="i18n.js"></script>
-  <script type="module" src="auth.js"></script>
+  <script src="profile.js"></script><script src="preferences.js"></script><script src="cursor-glow.js"></script><script type="module" src="auth.js"></script>
 </body>
 </html>
