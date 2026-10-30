@@ -1,5 +1,6 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { recordAuthEvent } from "./firebase-data.js";
 
 import {
   getAuth,
@@ -26,7 +27,7 @@ const firebaseConfig = {
   measurementId: "G-D96H7FXTTL"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
@@ -64,6 +65,15 @@ async function startAuth() {
     status.textContent = message;
   }
 
+  async function recordAuthEventSafely(user, eventType) {
+    try {
+      await recordAuthEvent(user, eventType);
+    } catch (error) {
+      // Account authentication must keep working even if Firestore is unavailable.
+      console.warn("Could not save account activity:", error);
+    }
+  }
+
   function errorMessage(error) {
     const messages = {
       "auth/email-already-in-use": "This email already has an account.",
@@ -85,11 +95,12 @@ async function startAuth() {
     event.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(
+      const credential = await signInWithEmailAndPassword(
         auth,
         emailInput.value.trim(),
         passwordInput.value
       );
+      await recordAuthEventSafely(credential.user, "sign_in");
     } catch (error) {
       errorMessage(error);
     }
@@ -104,6 +115,7 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
+      await recordAuthEventSafely(credential.user, "register");
       await sendEmailVerification(credential.user);
       showMessage("Account created! We sent a verification link to " + credential.user.email + ". Check your inbox and spam folder.");
     } catch (error) {
@@ -113,7 +125,8 @@ async function startAuth() {
 
   googleButton.addEventListener("click", async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const credential = await signInWithPopup(auth, googleProvider);
+      await recordAuthEventSafely(credential.user, "sign_in");
     } catch (error) {
       errorMessage(error);
     }
@@ -165,6 +178,9 @@ async function startAuth() {
 
   signOutButton.addEventListener("click", async () => {
     try {
+      if (auth.currentUser) {
+        await recordAuthEventSafely(auth.currentUser, "sign_out");
+      }
       await signOut(auth);
     } catch (error) {
       errorMessage(error);

@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function validAuthMetadata(data, uid) {
+      return data.uid == uid
+        && data.email == request.auth.token.email
+        && data.provider == request.auth.token.firebase.sign_in_provider
+        && data.emailVerified == (request.auth.token.email_verified == true);
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'displayName', 'provider', 'emailVerified',
+          'createdAt', 'lastSignInAt', 'updatedAt'
+        ])
+        && validAuthMetadata(request.resource.data, uid)
+        && request.resource.data.provider is string
+        && request.resource.data.emailVerified is bool
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.lastSignInAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if isOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'email', 'displayName', 'provider', 'emailVerified',
+          'lastSignInAt', 'updatedAt'
+        ])
+        && validAuthMetadata(request.resource.data, uid)
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.lastSignInAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if false;
+
+      match /activity/{eventId} {
+        allow read: if isOwner(uid) || isAdmin();
+
+        allow create: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['type', 'provider', 'createdAt'])
+          && request.resource.data.type in ['register', 'sign_in', 'sign_out']
+          && request.resource.data.provider == request.auth.token.firebase.sign_in_provider
+          && request.resource.data.createdAt == request.time;
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}
