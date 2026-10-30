@@ -37,13 +37,207 @@
     .upload-avatar{cursor:pointer}
     #avatarUpload{display:block;width:100%;max-width:260px;margin:8px auto;color:#d8c4b6;font-size:12px}
     @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-page{margin:18px auto;padding:14px}.account-card{padding:20px}}
+  
+        .settings-grid {
+            max-width: 1050px;
+            margin: 24px auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        /* ===== Shared chrome + settings skin - matches index.html =====
+           style.css ships a warm ember shell (two drifting orange glows on
+           body::before / body::after), a sticky .topbar / .navigation header,
+           and ember-coloured settings/profile widgets. index.html uses none of
+           that: it is a plain .navbar / .nav-links shell on a flat #100b10
+           background. This block switches off the ember rules and re-points
+           the shared widgets at the crimson palette; layout is untouched. */
+        body {
+            color: #fff4f6;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
+                #100b10;
+            background-attachment: fixed;
+        }
+
+        /* Themes picked in Settings, copied from style.css. Pinning the gradient to
+           the viewport keeps it identical to index.html however tall this page is. */
+        body[data-theme="night"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(80,90,120,.25) 0%, rgba(30,35,55,.12) 25%, transparent 50%),
+            linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body[data-theme="void"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(150,60,255,.28) 0%, rgba(80,30,160,.12) 25%, transparent 50%),
+            linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body[data-theme="frost"] {
+          background:
+            radial-gradient(circle at 50% 45%,
+              rgba(100,210,255,.25) 0%, rgba(50,130,190,.10) 25%, transparent 50%),
+            linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
+            background-attachment: fixed, fixed;
+        }
+
+        body::before,
+        body::after {
+            content: none;
+            display: none;
+            background: none;
+            box-shadow: none;
+            animation: none;
+            filter: none;
+        }
+
+        /* ===== Header - same shell as index.html / evolutions.html ===== */
+        .navbar {
+            position: relative;
+            z-index: 100;
+            width: min(1150px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff4f6;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .brand img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
+        }
+
+        .brand span { color: #ff4657; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #b8aab8;
+            font-size: 13px;
+            transition: .25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: #fff;
+            background: rgba(255, 70, 87, .12);
+            border-color: rgba(255, 70, 87, .38);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 70, 87, .15);
+            border-color: rgba(255, 70, 87, .42);
+            box-shadow: 0 0 18px rgba(255, 70, 87, .10);
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                padding: 14px 0;
+                gap: 10px;
+            }
+            .nav-links { justify-content: flex-start; width: 100%; }
+        }
+
+        .bonus-codes {
+            border-color: rgba(255, 80, 100, .45);
+            background: rgba(20, 10, 18, .96);
+        }
+
+        .bonus-codes strong { color: #ff9da7; }
+
+        
+/* ===== Account page: match the main FLAME DRAGON HUB interface ===== */
+.account-page{width:min(1050px,92%);max-width:1050px;margin:34px auto 60px;padding:0 0 30px}
+.account-layout{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:20px}
+.account-profile-card,.account-card{color:#fff4f6;background:linear-gradient(145deg,rgba(43,22,33,.82),rgba(18,13,20,.94));border:1px solid rgba(255,80,100,.28);border-radius:22px;box-shadow:0 15px 35px rgba(0,0,0,.35),inset 0 0 35px rgba(255,55,75,.025)}
+.account-profile-card h2,.account-card h1{color:#fff4f6}
+.account-profile-card .account-section-label{color:#ff9da7;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.account-profile-card .profile-avatar{border-color:rgba(255,80,100,.55);background-color:rgba(255,65,85,.10);box-shadow:0 0 25px rgba(255,60,85,.15)}
+.account-profile-card .avatar-options button,.account-profile-card .upload-avatar{border-color:rgba(255,80,100,.32);background:rgba(255,65,85,.10);color:#ffb5bd}
+.account-profile-card .avatar-options button:hover,.account-profile-card .upload-avatar:hover{background:rgba(255,65,85,.20);border-color:rgba(255,90,110,.65);color:#fff}
+.account-profile-card .profile-info p,.account-profile-card .profile-hint,.account-card .account-subtitle{color:#b8aab8}
+.account-profile-card .profile-button{border-color:rgba(255,80,100,.30);background:rgba(255,65,85,.10);color:#ff9da7}
+.account-profile-card .profile-button:hover{color:#fff;background:rgba(255,65,85,.20);border-color:rgba(255,90,110,.65)}
+.account-profile-stats{border-top-color:rgba(255,80,100,.16);color:#b8aab8}
+.account-profile-stats strong{color:#ff6878}
+.account-back{color:#ff9da7;background:rgba(255,65,85,.08);border-color:rgba(255,80,100,.30)}
+.account-back:hover{color:#fff;background:rgba(255,65,85,.18);border-color:rgba(255,90,110,.65)}
+.account-card h1{font-size:28px;text-shadow:0 0 14px rgba(255,65,85,.35),0 0 30px rgba(255,45,65,.12)}
+.account-card label{color:#e8dce2}
+.account-card input[type=email],.account-card input[type=password]{border-color:rgba(255,80,100,.28);background:rgba(16,9,14,.85);color:#fff4f6}
+.account-card input:focus{border-color:#ff6878;box-shadow:0 0 0 3px rgba(255,70,87,.13)}
+.account-card button{border-color:rgba(255,80,100,.30);background:rgba(255,65,85,.09);color:#ffb0b9}
+.account-card button:hover{background:rgba(255,65,85,.18);border-color:rgba(255,90,110,.65);color:#fff}
+.account-card .account-primary{background:linear-gradient(100deg,#e83f55,#a92348);border-color:#ff6878;color:#fff}
+.account-card .account-google{background:#f7f7f7;color:#252525;border-color:#ddd}
+.account-card .account-google:hover{background:#fff;color:#111;border-color:#fff}
+.account-card .account-forgot{background:transparent;border-color:transparent;color:#ff9da7}
+#authStatus{background:rgba(255,65,85,.08);color:#ffb5bd;border:1px solid rgba(255,80,100,.14)}
+.account-profile-card .upload-avatar{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 12px;border-radius:10px;cursor:pointer}
+.account-profile-card .upload-avatar input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+#avatarUpload{display:block;width:100%;max-width:260px;margin:8px auto;color:#b8aab8;font-size:12px}
+@media(max-width:800px){.navbar{align-items:flex-start;flex-direction:column;justify-content:center;padding:14px 0;gap:10px}.nav-links{justify-content:flex-start;width:100%}}
+@media(max-width:760px){.account-page{width:92%;margin:22px auto 45px;padding:0}.account-layout{grid-template-columns:1fr}.account-profile-card,.account-card{padding:20px}}
+
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><img src="assets/logo.png" alt="FLAME DRAGON HUB"><span>FLAME DRAGON HUB</span></div>
-    <nav class="navigation" aria-label="Main navigation">
-      <a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="settings.html">Settings</a><a href="account.html" class="active" aria-current="page">👤 Account</a>
+  <aside class="bonus-codes" aria-label="Bonus codes">
+    <strong>ALL BONUS CODES</strong>
+    <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
+  </aside>
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
+      <img src="assets/logo.png" alt="">
+      <span>FLAME DRAGON HUB</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="evolutions.html">Evolutions</a>
+      <a href="skins.html">Skins</a>
+      <a href="favorites.html">Favorites</a>
+      <a href="settings.html">Settings</a>
+      <a href="account.html" class="active" aria-current="page">Account</a>
     </nav>
   </header>
   <main class="account-page">
