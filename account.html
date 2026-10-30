@@ -20,7 +20,23 @@
     .account-profile-stats{margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,.1);color:#cbd5e1}
     .account-profile-stats strong{display:block;color:#ffb16e;font-size:24px}
     .account-back{display:inline-block;margin:0 0 18px;padding:10px 16px;color:#ffb16e;background:rgba(255,138,36,.09);border:1px solid rgba(255,138,36,.35);border-radius:14px;text-decoration:none}
-    @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-page{margin:18px auto;padding:14px}}
+    .account-page{max-width:1100px}
+    .account-section-label{margin:0 0 16px;color:#ffb16e;font-size:22px;font-weight:800;text-align:left}
+    .account-profile-card,.account-card{min-width:0}
+    .account-card{padding:26px;color:#f8fafc;background:linear-gradient(145deg,#171b27,#10121b);border:1px solid rgba(255,138,36,.42);border-radius:24px;box-shadow:0 14px 42px rgba(0,0,0,.25);text-align:left}
+    .account-card h1{margin:0 0 10px;color:#ffb16e;font-size:28px}
+    .account-card .account-subtitle{color:#b8becb;line-height:1.6}
+    .account-card label{display:block;margin:16px 0 7px;color:#e7d9d0;font-size:13px;font-weight:700}
+    .account-card input[type=email],.account-card input[type=password]{display:block;width:100%;min-height:44px;padding:11px 13px;border:1px solid rgba(255,150,61,.3);border-radius:10px;background:#0c1019;color:#fff;outline:none}
+    .account-card input:focus{border-color:#ff963d;box-shadow:0 0 0 3px rgba(255,150,61,.12)}
+    .account-card button{width:100%;min-height:43px;margin-top:11px;padding:10px 14px;border:1px solid rgba(255,150,61,.4);border-radius:10px;background:rgba(255,150,61,.12);color:#ffcf9e;font-weight:700;cursor:pointer}
+    .account-card .account-primary{background:linear-gradient(100deg,#e65b27,#b82d45);border-color:#ff8b52;color:white}
+    .account-card .account-google{background:#f7f7f7;color:#252525;border-color:#ddd}
+    .account-card .account-forgot{background:transparent;border-color:transparent;text-decoration:underline}
+    #authStatus{padding:12px;border-radius:10px;background:rgba(255,150,61,.08);color:#ffd2a8;line-height:1.5}
+    .upload-avatar{cursor:pointer}
+    #avatarUpload{display:block;width:100%;max-width:260px;margin:8px auto;color:#d8c4b6;font-size:12px}
+    @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-page{margin:18px auto;padding:14px}.account-card{padding:20px}}
   </style>
 </head>
 <body>
@@ -34,19 +50,19 @@
     <a class="account-back" href="settings.html">← Back to Settings</a>
     <div class="account-layout">
       <section class="account-profile-card" aria-labelledby="profileHeading">
-        <h2 id="profileHeading">🎮 Account Profile</h2>
+        <p class="account-section-label">Your Profile</p><h2 id="profileHeading">🎮 Player Profile</h2>
         <div class="profile-avatar" id="profileAvatar">🐉</div>
         <div class="avatar-options" id="avatarOptions" aria-label="Choose profile avatar">
           <button type="button" data-avatar="🐉" aria-label="Dragon">🐉</button><button type="button" data-avatar="🔥" aria-label="Fire">🔥</button><button type="button" data-avatar="👹" aria-label="Ogre">👹</button><button type="button" data-avatar="⚡" aria-label="Lightning">⚡</button><button type="button" data-avatar="🌑" aria-label="Moon">🌑</button><button type="button" data-avatar="💀" aria-label="Skull">💀</button>
           <label class="upload-avatar" for="avatarUpload">📷 Choose Photo</label>
-          <input type="file" id="avatarUpload" accept="image/png,image/jpeg,image/webp,image/gif">
+          <input type="file" id="avatarUpload" accept="image/png,image/jpeg,image/webp,image/gif" aria-label="Choose profile photo">
         </div>
         <div class="profile-info"><h2 id="profileName">FLAME DRAGON</h2><p>EvoWorld Explorer</p><button id="editProfile" class="profile-button" type="button">✏️ Edit Player Name</button></div>
         <div class="account-profile-stats"><strong id="favoriteCount">0</strong><span>Favorites</span></div>
         <p class="profile-hint">Your profile photo and player name are saved on this browser.</p>
       </section>
       <section id="account" class="account-card" aria-labelledby="accountHeading">
-        <h1 id="accountHeading">🐉 Your Dragon Account</h1>
+        <h1 id="accountHeading">🐉 Your Account</h1>
         <p class="account-subtitle">Sign in or create an account to join the hub.</p>
         <p id="authStatus" aria-live="polite">Checking account...</p>
         <form id="authForm">
