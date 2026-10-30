@@ -2790,3 +2790,22 @@ body{font-size:.94rem}
 #pen-icon {
   display: none !important;
 }
+
+ 
+/* Owner-only dashboard navigation link */
+.developer-link,
+.nav-links a.developer-link,
+.navigation a.developer-link {
+  color: #f4d27a !important;
+  border: 1px solid rgba(244, 210, 122, .48) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .18), rgba(244, 210, 122, .07)) !important;
+  box-shadow: 0 0 14px rgba(218, 175, 74, .12);
+}
+.developer-link:hover,
+.nav-links a.developer-link:hover,
+.navigation a.developer-link:hover {
+  color: #fff0bd !important;
+  border-color: rgba(255, 224, 151, .85) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .3), rgba(244, 210, 122, .13)) !important;
+  box-shadow: 0 0 20px rgba(218, 175, 74, .22);
+}
