@@ -6,7 +6,6 @@ service cloud.firestore {
     }
 
     // The sole dashboard administrator is the verified owner UID.
-    // Firestore enforces this independently of the public page UI.
     function isAdmin() {
       return signedIn()
         && request.auth.uid == 'mPYAzTPWOkZTpzB0caXXXzNHDdg2'
@@ -62,6 +61,45 @@ service cloud.firestore {
 
         allow update, delete: if false;
       }
+    }
+
+    // Publicly readable only when published; only the verified owner can manage posts.
+    match /announcements/{announcementId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly([
+          'title', 'body', 'published', 'createdAt', 'updatedAt', 'createdBy'
+        ])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.body is string
+        && request.resource.data.body.size() > 0
+        && request.resource.data.body.size() <= 1200
+        && request.resource.data.published is bool
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['published', 'updatedAt'])
+        && request.resource.data.published is bool
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Public release notes are readable by everyone; writes remain owner-only.
+    match /siteConfig/{configId} {
+      allow read: if configId == 'public';
+      allow create, update: if isAdmin()
+        && configId == 'public'
+        && request.resource.data.keys().hasOnly(['version', 'releaseNotes', 'updatedAt'])
+        && request.resource.data.version is string
+        && request.resource.data.version.size() > 0
+        && request.resource.data.version.size() <= 30
+        && request.resource.data.releaseNotes is string
+        && request.resource.data.releaseNotes.size() <= 1200
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if isAdmin() && configId == 'public';
     }
   }
 }
