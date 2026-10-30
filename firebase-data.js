@@ -11,25 +11,48 @@ import {
 
 const db = getFirestore(getApp());
 
-function getProvider(user) {
-  return user.providerData?.[0]?.providerId || "password";
+// Use the provider recorded in the signed Firebase ID token so it matches Firestore rules.
+async function getVerifiedAuthMetadata(user) {
+  await user.getIdToken(true);
+  const tokenResult = await user.getIdTokenResult();
+  return {
+    provider: tokenResult.claims.firebase?.sign_in_provider || "password",
+    email: tokenResult.claims.email ?? user.email ?? null,
+    emailVerified: tokenResult.claims.email_verified === true
+  };
 }
 
-// Stores only basic account metadata. Passwords and authentication secrets are never stored here.
+// Stores basic account metadata and an informational activity event.
+// Passwords, tokens, and authentication secrets are never stored in Firestore.
 export async function recordAuthEvent(user, eventType) {
   if (!user?.uid) return;
+  if (!["register", "sign_in", "sign_out"].includes(eventType)) {
+    throw new Error("Unsupported account activity event.");
+  }
+
+  const { provider, email, emailVerified } = await getVerifiedAuthMetadata(user);
+  const activityRef = collection(db, "users", user.uid, "activity");
+
+  // Signing out is an activity event, not a new sign-in. Do not change lastSignInAt.
+  if (eventType === "sign_out") {
+    await addDoc(activityRef, {
+      type: eventType,
+      provider,
+      createdAt: serverTimestamp()
+    });
+    return;
+  }
 
   const userRef = doc(db, "users", user.uid);
   const existing = await getDoc(userRef);
-  const provider = getProvider(user);
   const now = serverTimestamp();
 
   const accountData = {
     uid: user.uid,
-    email: user.email || null,
+    email,
     displayName: user.displayName || null,
     provider,
-    emailVerified: Boolean(user.emailVerified),
+    emailVerified,
     lastSignInAt: now,
     updatedAt: now
   };
@@ -40,7 +63,7 @@ export async function recordAuthEvent(user, eventType) {
 
   await setDoc(userRef, accountData, { merge: true });
 
-  await addDoc(collection(db, "users", user.uid, "activity"), {
+  await addDoc(activityRef, {
     type: eventType,
     provider,
     createdAt: serverTimestamp()
