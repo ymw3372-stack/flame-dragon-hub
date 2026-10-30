@@ -2,7 +2,7 @@ import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import {
   getFirestore, collection, getDocs, query, orderBy, limit,
-  doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp
+  doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -159,8 +159,8 @@ async function loadAnnouncements() {
 }
 async function loadRelease() {
   try {
-    const snap = await getDocs(query(collection(db, "siteConfig"), limit(10)));
-    const config = snap.docs.find(item => item.id === "public")?.data();
+    const snap = await getDoc(doc(db, "siteConfig", "public"));
+    const config = snap.exists() ? snap.data() : null;
     if (config) {
       $("siteVersion").value = config.version || "";
       $("releaseNotes").value = config.releaseNotes || "";
