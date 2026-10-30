@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "flame-dragon-hub-v9";
+const CACHE_NAME = "flame-dragon-hub-v10";
 
 const FILES_TO_CACHE = [
   "./",
@@ -14,7 +14,6 @@ const FILES_TO_CACHE = [
   "./account.html",
   "./developer.html",
   "./developer.js",
-  "./public-updates.js",
   "./about.html",
   "./style.css",
   "./script.js",
