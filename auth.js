@@ -11,7 +11,9 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   signOut,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  reload
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -36,6 +38,8 @@ const createButton = document.getElementById("createAccount");
 const googleButton = document.getElementById("googleSignIn");
 const resetButton = document.getElementById("resetPassword");
 const signOutButton = document.getElementById("signOut");
+const resendVerificationButton = document.getElementById("resendVerification");
+const refreshVerificationButton = document.getElementById("refreshVerification");
 
 async function startAuth() {
   await setPersistence(auth, browserLocalPersistence);
@@ -49,7 +53,9 @@ async function startAuth() {
     !createButton ||
     !googleButton ||
     !resetButton ||
-    !signOutButton
+    !signOutButton ||
+    !resendVerificationButton ||
+    !refreshVerificationButton
   ) {
     return;
   }
@@ -67,7 +73,9 @@ async function startAuth() {
       "auth/popup-closed-by-user": "Google sign-in was cancelled.",
       "auth/popup-blocked": "Allow popups for this site and try again.",
       "auth/unauthorized-domain": "Add this website to Firebase Authorized domains.",
-      "auth/network-request-failed": "Network error. Check your internet connection."
+      "auth/network-request-failed": "Network error. Check your internet connection.",
+      "auth/too-many-requests": "Too many attempts. Please wait a while and try again.",
+      "auth/requires-recent-login": "Please sign in again, then retry this action."
     };
 
     showMessage(messages[error.code] || "Something went wrong. Please try again.");
@@ -91,11 +99,13 @@ async function startAuth() {
     if (!form.reportValidity()) return;
 
     try {
-      await createUserWithEmailAndPassword(
+      const credential = await createUserWithEmailAndPassword(
         auth,
         emailInput.value.trim(),
         passwordInput.value
       );
+      await sendEmailVerification(credential.user);
+      showMessage("Account created! We sent a verification link to " + credential.user.email + ". Check your inbox and spam folder.");
     } catch (error) {
       errorMessage(error);
     }
@@ -126,6 +136,33 @@ async function startAuth() {
     }
   });
 
+  resendVerificationButton.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      showMessage("Sign in first to resend the verification email.");
+      return;
+    }
+
+    try {
+      await sendEmailVerification(user);
+      showMessage("A new verification email has been sent. Check your inbox and spam folder.");
+    } catch (error) {
+      errorMessage(error);
+    }
+  });
+
+  refreshVerificationButton.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+      await reload(user);
+      await renderAccountState(auth.currentUser);
+    } catch (error) {
+      errorMessage(error);
+    }
+  });
+
   signOutButton.addEventListener("click", async () => {
     try {
       await signOut(auth);
@@ -134,22 +171,39 @@ async function startAuth() {
     }
   });
 
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      showMessage("Signed in as " + (user.email || "Google user"));
-      form.hidden = true;
-      googleButton.hidden = true;
-      resetButton.hidden = true;
-      createButton.hidden = true;
-      signOutButton.hidden = false;
-    } else {
+  async function renderAccountState(user) {
+    const signedIn = Boolean(user);
+    const verified = Boolean(user && user.emailVerified);
+
+    if (!signedIn) {
       showMessage("Sign in or create your account");
       form.hidden = false;
       googleButton.hidden = false;
       resetButton.hidden = false;
       createButton.hidden = false;
       signOutButton.hidden = true;
+      resendVerificationButton.hidden = true;
+      refreshVerificationButton.hidden = true;
+      return;
     }
+
+    form.hidden = true;
+    googleButton.hidden = true;
+    resetButton.hidden = true;
+    createButton.hidden = true;
+    signOutButton.hidden = false;
+    resendVerificationButton.hidden = !user.email || verified;
+    refreshVerificationButton.hidden = !user.email || verified;
+
+    if (verified) {
+      showMessage("Your account is verified. Signed in as " + (user.email || "Google user"));
+    } else {
+      showMessage("Your account was created, but your email is not verified yet. Open the verification link we sent to " + (user.email || "your email") + ". Then click 'I've verified my email'.");
+    }
+  }
+
+  onAuthStateChanged(auth, user => {
+    renderAccountState(user).catch(errorMessage);
   });
 }
 
