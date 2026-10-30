@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - developer-dashboard-foundation
+      - secure-developer-dashboard-email-admin
   pull_request:
     branches:
       - main
@@ -33,13 +34,16 @@ jobs:
             echo "Syntax OK: $file"
           done
 
-      - name: Check dashboard wiring
+      - name: Check dashboard wiring and admin protection
         shell: bash
         run: |
           set -euo pipefail
           grep -q 'id="devGate"' developer.html
           grep -q 'id="devContent"' developer.html
           grep -q 'src="developer.js"' developer.html
-          grep -q 'claims.admin' developer.js
+          grep -q 'ymw3372@gmail.com' developer.js
+          grep -q 'emailVerified' developer.js
+          grep -q 'ymw3372@gmail.com' firestore.rules
+          grep -q 'email_verified' firestore.rules
           grep -q 'recordAuthEvent' auth.js
-          echo "Dashboard wiring checks passed."
+          echo "Dashboard wiring and admin protection checks passed."
