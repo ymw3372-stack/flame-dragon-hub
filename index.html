@@ -541,15 +541,6 @@ a {
 }
 </style>
 
-<style>
-.public-updates{width:min(900px,92%);margin:20px auto 28px;padding:18px;border:1px solid rgba(244,210,122,.28);border-radius:18px;background:linear-gradient(145deg,rgba(45,30,25,.88),rgba(20,14,19,.96));box-shadow:0 12px 30px rgba(0,0,0,.2)}
-.public-update-heading{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-.public-update-heading span{color:#f4d27a;font-size:12px;font-weight:900;letter-spacing:2px}
-.public-update-heading small{color:#b8aab8}
-.public-release,.public-announcement{padding:13px;margin-top:9px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(0,0,0,.16)}
-.public-release strong,.public-announcement h3{color:#ffb5bd;font-size:14px}
-.public-release p,.public-announcement p{margin-top:6px;color:#d3c5cf;font-size:13px;line-height:1.7;white-space:pre-wrap}
-</style>
 </head>
 
 <body>
@@ -584,14 +575,6 @@ a {
         and customize your experience.
       </p>
     </section>
-
-    
-    <section id="publicUpdates" class="public-updates" hidden aria-live="polite">
-      <div class="public-update-heading"><span>✦ HUB UPDATES</span><small>News from FLAME DRAGON</small></div>
-      <div id="publicRelease" class="public-release" hidden></div>
-      <div id="publicAnnouncements" class="public-announcements"></div>
-    </section>
-
 <section class="orbit-section" aria-label="Quick navigation">
       <div class="orbit-stage">
 
@@ -801,8 +784,6 @@ a {
   start();
 })();
 </script>
-
-<script type="module" src="public-updates.js"></script>
 <script src="preferences.js"></script>
 
 </body>
