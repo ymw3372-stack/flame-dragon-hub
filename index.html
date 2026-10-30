@@ -154,6 +154,24 @@ a {
   border-color: rgba(66,165,255,.5);
 }
 
+/* Keep the owner link gold even when Home marks it as the current page. */
+.nav-links a.developer-link,
+.nav-links a.developer-link.active {
+  color: #f4d27a !important;
+  border: 1px solid rgba(244, 210, 122, .68) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .28), rgba(244, 210, 122, .12)) !important;
+  box-shadow: 0 0 18px rgba(218, 175, 74, .24) !important;
+  text-shadow: 0 0 8px rgba(244, 210, 122, .22);
+}
+.nav-links a.developer-link:hover,
+.nav-links a.developer-link:focus-visible,
+.nav-links a.developer-link.active:hover {
+  color: #fff0bd !important;
+  border-color: rgba(255, 224, 151, .95) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .38), rgba(244, 210, 122, .18)) !important;
+  box-shadow: 0 0 23px rgba(218, 175, 74, .32) !important;
+}
+
 /* Keep the gold Developer entry visible in the Home navigation. */
 .nav-links a.developer-link {
   display: inline-flex !important;
@@ -537,8 +555,9 @@ a {
       <a href="index.html">Home</a>
       <a href="evolutions.html">Evolutions</a>
       <a href="skins.html">Skins Library</a>
+      <a href="favorites.html">Favorites</a>
       <a href="settings.html">Settings</a>
-        <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
+      <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
   </nav>
   </header>
 
