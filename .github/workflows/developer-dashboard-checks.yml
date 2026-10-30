@@ -1,0 +1,45 @@
+name: Developer dashboard checks
+
+on:
+  push:
+    branches:
+      - developer-dashboard-foundation
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  syntax-and-wiring:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in auth.js firebase-data.js developer.js; do
+            test -f "$file"
+            node --input-type=module --check < "$file"
+            echo "Syntax OK: $file"
+          done
+
+      - name: Check dashboard wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'id="devGate"' developer.html
+          grep -q 'id="devContent"' developer.html
+          grep -q 'src="developer.js"' developer.html
+          grep -q 'claims.admin' developer.js
+          grep -q 'recordAuthEvent' auth.js
+          echo "Dashboard wiring checks passed."
