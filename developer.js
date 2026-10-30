@@ -1,9 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import {
-  getFirestore, collection, getDocs, query, orderBy, limit,
-  doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -21,7 +18,6 @@ const db = getFirestore(app);
 const $ = id => document.getElementById(id);
 const ADMIN_UID = "mPYAzTPWOkZTpzB0caXXXzNHDdg2";
 let cachedUsers = [];
-let cachedAnnouncements = [];
 
 function showGate(message, title = "Administrator access required") {
   $("devContent")?.classList.add("dev-hidden");
@@ -43,12 +39,6 @@ function cell(value) {
   const td = document.createElement("td");
   td.textContent = safeText(value);
   return td;
-}
-function setStatus(id, message, isError = false) {
-  const node = $(id);
-  if (!node) return;
-  node.textContent = message;
-  node.style.color = isError ? "#ff9da7" : "#b8aab8";
 }
 function renderUsers() {
   const table = $("usersTable");
@@ -78,100 +68,6 @@ function renderUsers() {
     }
   }
   if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to 100 most recently active).`;
-}
-function renderAnnouncements() {
-  const list = $("announcementList");
-  if (!list) return;
-  list.replaceChildren();
-  const published = cachedAnnouncements.filter(item => item.published).length;
-  $("publishedCount").textContent = String(published);
-  if (!cachedAnnouncements.length) {
-    const empty = document.createElement("p");
-    empty.className = "dev-section-note";
-    empty.textContent = "No announcements yet.";
-    list.append(empty);
-    return;
-  }
-  for (const item of cachedAnnouncements) {
-    const card = document.createElement("article");
-    card.className = "dev-item";
-    const top = document.createElement("div");
-    top.className = "dev-item-top";
-    const title = document.createElement("strong");
-    title.textContent = item.title || "Untitled announcement";
-    const state = document.createElement("span");
-    state.className = "dev-status";
-    state.textContent = item.published ? "PUBLISHED" : "HIDDEN";
-    top.append(title, state);
-    const body = document.createElement("p");
-    body.textContent = item.body || "";
-    const actions = document.createElement("div");
-    actions.className = "dev-form-actions";
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "dev-button";
-    toggle.textContent = item.published ? "Hide announcement" : "Publish";
-    toggle.addEventListener("click", async () => {
-      toggle.disabled = true;
-      try {
-        await updateDoc(doc(db, "announcements", item.id), {
-          published: !item.published,
-          updatedAt: serverTimestamp()
-        });
-        await loadAnnouncements();
-        setStatus("announcementStatus", "Announcement status updated.");
-      } catch (error) {
-        toggle.disabled = false;
-        setStatus("announcementStatus", `Could not update: ${error.message}`, true);
-      }
-    });
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "dev-button danger";
-    remove.textContent = "Delete";
-    remove.addEventListener("click", async () => {
-      if (!confirm("Delete this announcement permanently?")) return;
-      remove.disabled = true;
-      try {
-        await deleteDoc(doc(db, "announcements", item.id));
-        await loadAnnouncements();
-        setStatus("announcementStatus", "Announcement deleted.");
-      } catch (error) {
-        remove.disabled = false;
-        setStatus("announcementStatus", `Could not delete: ${error.message}`, true);
-      }
-    });
-    actions.append(toggle, remove);
-    card.append(top, body, actions);
-    list.append(card);
-  }
-}
-async function loadAnnouncements() {
-  try {
-    const snap = await getDocs(query(collection(db, "announcements"), orderBy("createdAt", "desc"), limit(30)));
-    cachedAnnouncements = snap.docs.map(item => ({ id: item.id, ...item.data() }));
-    renderAnnouncements();
-    setStatus("announcementStatus", "Announcement list is up to date.");
-  } catch (error) {
-    $("announcementList").textContent = "Announcements are not available yet. Publish the updated Firestore rules, then refresh this page.";
-    setStatus("announcementStatus", `Firestore access: ${error.message}`, true);
-  }
-}
-async function loadRelease() {
-  try {
-    const snap = await getDoc(doc(db, "siteConfig", "public"));
-    const config = snap.exists() ? snap.data() : null;
-    if (config) {
-      $("siteVersion").value = config.version || "";
-      $("releaseNotes").value = config.releaseNotes || "";
-      $("currentVersion").textContent = config.version || "Not set";
-    } else {
-      $("currentVersion").textContent = "Not set";
-    }
-  } catch (error) {
-    $("currentVersion").textContent = "Rules needed";
-    setStatus("versionStatus", `Firestore access: ${error.message}. Publish the updated rules, then refresh.`, true);
-  }
 }
 async function loadDashboard() {
   const user = auth.currentUser;
@@ -217,48 +113,9 @@ async function loadDashboard() {
       table.append(row);
     }
   }
-  await Promise.all([loadAnnouncements(), loadRelease()]);
 }
 $("userSearch")?.addEventListener("input", renderUsers);
 $("refreshUsers")?.addEventListener("click", () => loadDashboard().catch(error => showGate(`Could not load dashboard data: ${error.message}`, "Dashboard error")));
-$("refreshAnnouncements")?.addEventListener("click", loadAnnouncements);
-$("announcementForm")?.addEventListener("submit", async event => {
-  event.preventDefault();
-  const title = $("announcementTitle").value.trim();
-  const body = $("announcementBody").value.trim();
-  if (!title || !body) return;
-  const button = $("announcementForm").querySelector('button[type="submit"]');
-  button.disabled = true;
-  try {
-    await addDoc(collection(db, "announcements"), {
-      title, body, published: $("announcementPublished").checked,
-      createdAt: serverTimestamp(), updatedAt: serverTimestamp(), createdBy: auth.currentUser.uid
-    });
-    $("announcementForm").reset();
-    $("announcementPublished").checked = true;
-    await loadAnnouncements();
-    setStatus("announcementStatus", "Announcement saved successfully.");
-  } catch (error) {
-    setStatus("announcementStatus", `Could not save announcement: ${error.message}. Check that the new Firestore rules are published.`, true);
-  } finally { button.disabled = false; }
-});
-$("versionForm")?.addEventListener("submit", async event => {
-  event.preventDefault();
-  const version = $("siteVersion").value.trim();
-  const releaseNotes = $("releaseNotes").value.trim();
-  if (!version) return;
-  const button = $("versionForm").querySelector('button[type="submit"]');
-  button.disabled = true;
-  try {
-    await setDoc(doc(db, "siteConfig", "public"), {
-      version, releaseNotes, updatedAt: serverTimestamp()
-    }, { merge: true });
-    $("currentVersion").textContent = version;
-    setStatus("versionStatus", "Release information saved and ready to display on Home.");
-  } catch (error) {
-    setStatus("versionStatus", `Could not save release information: ${error.message}. Publish the new Firestore rules first.`, true);
-  } finally { button.disabled = false; }
-});
 onAuthStateChanged(auth, user => {
   if (!user) return showGate("Please sign in first, then return to this page.");
   loadDashboard().catch(error => {
