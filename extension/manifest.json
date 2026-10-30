@@ -5,6 +5,7 @@
   "version": "0.2.1",
   "description": "FLAME DRAGON HUB skin bridge.",
   "permissions": ["storage"],
+  "host_permissions": ["https://identitytoolkit.googleapis.com/*", "https://securetoken.googleapis.com/*"],
   "background": {
     "service_worker": "background.js"
   },
