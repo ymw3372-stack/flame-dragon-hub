@@ -2792,6 +2792,23 @@ body{font-size:.94rem}
 }
 
  
+/* Strong gold state for the Developer link, including the active page state. */
+.navbar .nav-links a.developer-link,
+.navbar .nav-links a.developer-link.active {
+  color: #f4d27a !important;
+  border-color: rgba(244, 210, 122, .68) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .28), rgba(244, 210, 122, .12)) !important;
+  box-shadow: 0 0 18px rgba(218, 175, 74, .24) !important;
+}
+.navbar .nav-links a.developer-link:hover,
+.navbar .nav-links a.developer-link:focus-visible,
+.navbar .nav-links a.developer-link.active:hover {
+  color: #fff0bd !important;
+  border-color: rgba(255, 224, 151, .95) !important;
+  background: linear-gradient(135deg, rgba(180, 132, 42, .38), rgba(244, 210, 122, .18)) !important;
+  box-shadow: 0 0 23px rgba(218, 175, 74, .32) !important;
+}
+
 /* Owner-only dashboard navigation link */
 .developer-link,
 .nav-links a.developer-link,
