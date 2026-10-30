@@ -5,6 +5,7 @@ on:
     branches:
       - developer-dashboard-foundation
       - secure-developer-dashboard-email-admin
+      - owner-only-dashboard-uid-nav
   pull_request:
     branches:
       - main
@@ -41,9 +42,13 @@ jobs:
           grep -q 'id="devGate"' developer.html
           grep -q 'id="devContent"' developer.html
           grep -q 'src="developer.js"' developer.html
-          grep -q 'ymw3372@gmail.com' developer.js
+          grep -q 'mPYAzTPWOkZTpzB0caXXXzNHDdg2' developer.js
           grep -q 'emailVerified' developer.js
-          grep -q 'ymw3372@gmail.com' firestore.rules
+          grep -q 'mPYAzTPWOkZTpzB0caXXXzNHDdg2' firestore.rules
           grep -q 'email_verified' firestore.rules
           grep -q 'recordAuthEvent' auth.js
+          for page in index.html evolutions.html skins.html favorites.html settings.html account.html profile.html about.html guide.html skin-studio.html; do
+            grep -q 'href="developer.html"' "$page"
+          done
+          grep -q 'developer-link' style.css
           echo "Dashboard wiring and admin protection checks passed."

@@ -26,6 +26,8 @@ const usersTable = $("usersTable");
 const activityTable = $("activityTable");
 const searchInput = $("userSearch");
 
+const ADMIN_UID = "mPYAzTPWOkZTpzB0caXXXzNHDdg2";
+
 let cachedUsers = [];
 
 function showGate(message, title = "Administrator access required") {
@@ -96,10 +98,9 @@ async function loadDashboard() {
     return;
   }
 
-  // Match the same verified-email allowlist enforced by Firestore rules.
-  const signedInEmail = (auth.currentUser.email || "").trim().toLowerCase();
-  if (signedInEmail !== "ymw3372@gmail.com" || auth.currentUser.emailVerified !== true) {
-    showGate("Sign in with the verified administrator account (ymw3372@gmail.com). No account data was loaded.");
+  // Match the same owner UID and verified-email requirement enforced by Firestore rules.
+  if (auth.currentUser.uid !== ADMIN_UID || auth.currentUser.emailVerified !== true) {
+    showGate("This area is reserved for the site owner. You do not have permission to access it.");
     return;
   }
 
@@ -160,6 +161,6 @@ onAuthStateChanged(auth, user => {
   }
   loadDashboard().catch(error => {
     console.error("Developer dashboard error:", error);
-    showGate("Could not load dashboard data. Check Firestore rules and the administrator claim.", "Dashboard error");
+    showGate("Could not load dashboard data. Check your administrator access and Firestore rules.", "Dashboard error");
   });
 });
