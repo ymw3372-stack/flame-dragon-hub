@@ -7,7 +7,24 @@
 <title>FLAME DRAGON HUB</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;width:360px;max-height:600px;overflow:auto;padding:14px;background:#0b1020;color:#eef2ff;font:14px system-ui}
+body{position:relative;isolation:isolate;margin:0;width:440px;max-height:650px;overflow:auto;padding:16px;background:radial-gradient(ellipse at 15% 15%,rgba(105,18,45,.28),transparent 45%),radial-gradient(ellipse at 90% 80%,rgba(22,65,170,.25),transparent 48%),#070912;color:#eef2ff;font:14px system-ui}
+body::before{content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;opacity:.5;background-image:radial-gradient(2px 2px at 8% 18%,#ff775d 50%,transparent 100%),radial-gradient(1.5px 1.5px at 22% 72%,#6e9dff 50%,transparent 100%),radial-gradient(2px 2px at 44% 32%,#ff526c 50%,transparent 100%),radial-gradient(1px 1px at 68% 65%,#9a82ff 50%,transparent 100%),radial-gradient(2px 2px at 88% 24%,#ff9a65 50%,transparent 100%);background-size:260px 230px,330px 290px,380px 320px,300px 270px,290px 250px;animation:particleDrift 32s linear infinite}
+body::after{content:"";position:fixed;inset:-40%;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 15% 35%,rgba(255,35,55,.18),transparent 40%),radial-gradient(ellipse at 85% 65%,rgba(30,85,255,.19),transparent 42%);filter:blur(22px);animation:nebulaFlow 18s ease-in-out infinite alternate}
+@keyframes particleDrift{to{transform:translate3d(-65px,45px,0)}}@keyframes nebulaFlow{to{transform:translate3d(4%,-3%,0) scale(1.08)}}
+.card{background:linear-gradient(145deg,rgba(25,23,39,.86),rgba(9,13,27,.9));backdrop-filter:blur(13px);border-color:rgba(130,145,255,.18);box-shadow:0 12px 34px rgba(0,0,0,.24)}
+button{transition:filter .2s,transform .2s,box-shadow .2s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+#authPanel{margin:18px 0 14px;padding:20px;border:1px solid transparent;border-radius:20px;background:linear-gradient(145deg,rgba(8,10,22,.94),rgba(13,12,27,.94)) padding-box,linear-gradient(120deg,#ff443d,#a52cff,#176bff) border-box;box-shadow:0 18px 45px #0008,0 0 28px #6336ff22}
+#authPanel h2{font-size:23px;margin:0 0 5px;background:linear-gradient(90deg,#fff,#ff879b 55%,#8d9cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#authPanel p{font-size:12px;margin:0 0 13px}
+#authPanel input{background:rgba(4,8,20,.82);border-color:#53608088;padding:12px}
+#authPanel .auth-primary{width:100%;margin-top:10px;background:linear-gradient(100deg,#ff382e,#b91c75 55%,#244dff);box-shadow:0 0 20px #f43a652c}
+#authPanel .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#authPanel .auth-row button{width:100%;margin-top:8px;background:#222a42}
+#authStatus{min-height:18px;margin-top:10px;color:#ffbd9e;font-size:12px;line-height:1.45}
+#appShell[hidden],#authPanel[hidden]{display:none!important}
+#appTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#appTop button{background:#303b5a;font-size:11px}
+@media(prefers-reduced-motion:reduce){body::before,body::after{animation:none}}
 h1{font-size:19px;color:#ff9a65;margin:0 0 6px}
 h2{font-size:15px;margin:0 0 10px}
 p{color:#aab4cb;line-height:1.5}
@@ -32,7 +49,8 @@ input,select{width:100%;margin:7px 0;padding:10px;border:1px solid #ffffff30;bor
 </style>
 </head>
 <body>
-<h1>FLAME DRAGON HUB</h1>
+<section id="authPanel"><div style="font-size:11px;letter-spacing:3px;color:#9da9d5;margin-bottom:8px">FLAME DRAGON HUB</div><h2>Welcome Back</h2><p>Sign in to your FLAME DRAGON HUB account</p><form id="extensionAuthForm"><input id="authEmail" type="email" autocomplete="username" placeholder="Email address" required><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><button class="auth-primary" type="submit" id="signInBtn">Sign In</button></form><div class="auth-row"><button type="button" id="createAccountBtn">Create Account</button><button type="button" id="forgotPasswordBtn">Forgot Password?</button></div><div id="authStatus" role="status">Use the same account as the FLAME DRAGON HUB website.</div></section>
+<main id="appShell" hidden><div id="appTop"><div><h1>FLAME DRAGON HUB</h1><p id="signedInEmail" class="muted"></p></div><button id="signOutBtn" type="button">Sign Out</button></div>
 <p>Skin Library · Custom Skin Manager</p>
 
 <section class="card">
@@ -78,6 +96,7 @@ input,select{width:100%;margin:7px 0;padding:10px;border:1px solid #ffffff30;bor
 </section>
 
 <p class="muted">Choose one original skin to target. Saving a custom image stores it in the extension; actual in-game replacement depends on matching EvoWorld's sprite requests.</p>
+</main>
 <script src="popup.js"></script>
 </body>
 </html>
