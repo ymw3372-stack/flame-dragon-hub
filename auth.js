@@ -68,9 +68,14 @@ async function startAuth() {
   async function recordAuthEventSafely(user, eventType) {
     try {
       await recordAuthEvent(user, eventType);
+      return "";
     } catch (error) {
-      // Account authentication must keep working even if Firestore is unavailable.
-      console.warn("Could not save account activity:", error);
+      // Authentication may succeed while Firestore fails. Never hide this:
+      // the owner needs the exact reason because the dashboard reads Firestore.
+      console.error("Could not save account activity:", error);
+      const detail = [error?.code, error?.message].filter(Boolean).join(" — ");
+      return "Your account is active, but its activity could not be saved. "
+        + "The Developer Dashboard may not show it yet. " + (detail || "Check Firestore Rules.");
     }
   }
 
@@ -100,7 +105,8 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
-      await recordAuthEventSafely(credential.user, "sign_in");
+      const saveWarning = await recordAuthEventSafely(credential.user, "sign_in");
+      if (saveWarning) showMessage(saveWarning);
     } catch (error) {
       errorMessage(error);
     }
@@ -115,9 +121,9 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
-      await recordAuthEventSafely(credential.user, "register");
+      const saveWarning = await recordAuthEventSafely(credential.user, "register");
       await sendEmailVerification(credential.user);
-      showMessage("Account created! We sent a verification link to " + credential.user.email + ". Check your inbox and spam folder.");
+      showMessage(saveWarning || ("Account created! We sent a verification link to " + credential.user.email + ". Check your inbox and spam folder."));
     } catch (error) {
       errorMessage(error);
     }
@@ -126,7 +132,8 @@ async function startAuth() {
   googleButton.addEventListener("click", async () => {
     try {
       const credential = await signInWithPopup(auth, googleProvider);
-      await recordAuthEventSafely(credential.user, "sign_in");
+      const saveWarning = await recordAuthEventSafely(credential.user, "sign_in");
+      if (saveWarning) showMessage(saveWarning);
     } catch (error) {
       errorMessage(error);
     }
