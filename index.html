@@ -540,6 +540,96 @@ a {
   }
 }
 
+
+/* CHROME INSTALLATION GUIDE CALLOUT */
+.install-guide-callout {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(900px, 100%);
+  margin: 2px auto 54px;
+  padding: 26px clamp(18px, 4vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  text-align: left;
+  border: 1px solid rgba(255, 90, 110, .42);
+  border-radius: 18px;
+  background: linear-gradient(110deg, rgba(56, 19, 34, .96), rgba(24, 19, 31, .97) 65%, rgba(30, 28, 48, .96));
+  box-shadow: 0 14px 38px rgba(0,0,0,.28), 0 0 28px rgba(255,65,85,.10);
+}
+.guide-callout-glow {
+  position: absolute;
+  z-index: -1;
+  width: 230px;
+  height: 230px;
+  right: 18%;
+  top: -145px;
+  border-radius: 50%;
+  background: rgba(255, 65, 85, .22);
+  filter: blur(45px);
+  animation: guideGlowDrift 6s ease-in-out infinite alternate;
+}
+@keyframes guideGlowDrift {
+  from { transform: translateX(-18px) scale(.9); opacity: .55; }
+  to { transform: translateX(34px) scale(1.18); opacity: 1; }
+}
+.guide-callout-copy { max-width: 570px; }
+.guide-callout-kicker {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: #ff9aa5;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+}
+.guide-callout-copy h2 {
+  margin-bottom: 9px;
+  color: #fff4f6;
+  font-size: clamp(19px, 2.8vw, 25px);
+  line-height: 1.25;
+}
+.guide-callout-copy p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.install-guide-button {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 54px;
+  padding: 0 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 150, 160, .72);
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(115deg, #d82e48, #9e244e);
+  box-shadow: 0 8px 22px rgba(210, 40, 75, .25);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .65px;
+  transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+}
+.install-guide-button:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.12);
+  box-shadow: 0 12px 28px rgba(255, 55, 85, .36);
+}
+.guide-button-icon { font-size: 19px; transition: transform .22s ease; }
+.install-guide-button:hover .guide-button-icon { transform: translateX(4px); }
+@media (max-width: 700px) {
+  .install-guide-callout { align-items: stretch; flex-direction: column; margin-bottom: 38px; }
+  .install-guide-button { width: 100%; min-height: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-callout-glow { animation: none; }
+  .install-guide-button, .guide-button-icon { transition: none; }
+}
+
 </style>
 
 </head>
@@ -623,6 +713,19 @@ a {
 
         </div>
       </div>
+    </section>
+
+    <section class="install-guide-callout" aria-labelledby="install-guide-title">
+      <div class="guide-callout-glow" aria-hidden="true"></div>
+      <div class="guide-callout-copy">
+        <span class="guide-callout-kicker">NEW · QUICK SETUP</span>
+        <h2 id="install-guide-title">Need help installing the extension?</h2>
+        <p>Follow our step-by-step Chrome setup guide — from downloading the ZIP to launching FLAME DRAGON HUB.</p>
+      </div>
+      <a class="install-guide-button" href="install-guide.html">
+        <span class="guide-button-icon" aria-hidden="true">➜</span>
+        <span>VIEW INSTALLATION GUIDE</span>
+      </a>
     </section>
 
   </main>
