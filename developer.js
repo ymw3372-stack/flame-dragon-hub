@@ -211,7 +211,7 @@ async function loadDashboard() {
     accountStats.sort((a, b) => (b.latestTime?.toMillis?.() || 0) - (a.latestTime?.toMillis?.() || 0));
     const totalEvents = accountStats.reduce((sum, account) => sum + account.signIns + account.signOuts, 0);
     if ($("totalEvents")) $("totalEvents").textContent = String(totalEvents);
-    if ($("latestActivity")) $("latestActivity").textContent = accountStats[0]?.latestTime?.toDate?.().toLocaleDateString() || "No events";
+    if ($("latestActivity")) $("latestActivity").textContent = (accountStats[0]?.latestTime?.toDate ? new Intl.DateTimeFormat("en-GB").format(accountStats[0].latestTime.toDate()) : "No events");
     const table = $("activityTable");
     if (!table) return;
     table.replaceChildren();
