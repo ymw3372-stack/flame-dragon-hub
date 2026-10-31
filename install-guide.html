@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100b10">
+  <title>Chrome Installation Guide | FLAME DRAGON HUB</title>
+  <style>
+    :root { color-scheme: dark; --bg:#100b10; --panel:rgba(29,20,31,.94); --red:#ff4657; --muted:#b8aab8; --text:#fff4f6; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { min-height:100vh; overflow-x:hidden; color:var(--text); font-family:Arial,Helvetica,sans-serif; background:radial-gradient(ellipse at 50% 12%,rgba(130,22,45,.24),transparent 42%),var(--bg); }
+    a { color:inherit; text-decoration:none; }
+    .guide-shell { width:min(920px,92%); margin:auto; }
+    .guide-nav { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid rgba(255,255,255,.09); }
+    .brand { font-weight:900; letter-spacing:1px; } .brand span { color:var(--red); }
+    .back-link { color:#ff9aa5; font-size:13px; transition:color .2s; } .back-link:hover { color:white; }
+    .hero { padding:58px 0 34px; text-align:center; }
+    .eyebrow { margin-bottom:12px; color:#ff929b; font-size:10px; font-weight:800; letter-spacing:4px; }
+    h1 { font-size:clamp(29px,5vw,46px); line-height:1.12; }
+    h1 span { color:var(--red); }
+    .intro { max-width:650px; margin:16px auto 0; color:var(--muted); font-size:14px; line-height:1.8; }
+    .download-strip { margin:0 auto 38px; padding:17px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid rgba(255,90,110,.35); border-radius:14px; background:linear-gradient(105deg,rgba(65,20,37,.92),rgba(28,22,35,.96)); }
+    .download-strip strong { display:block; margin-bottom:5px; font-size:14px; }
+    .download-strip small { color:var(--muted); font-size:12px; }
+    .download-btn { flex:0 0 auto; padding:13px 18px; border-radius:10px; color:white; background:linear-gradient(110deg,#df344e,#a3254d); font-size:11px; font-weight:900; letter-spacing:.5px; transition:transform .2s,filter .2s; }
+    .download-btn:hover { transform:translateY(-2px); filter:brightness(1.12); }
+    .steps { position:relative; padding:4px 0 8px; }
+    .steps::before { content:""; position:absolute; left:27px; top:28px; bottom:50px; width:2px; background:linear-gradient(#ff4657,rgba(255,70,87,.08)); }
+    .step { position:relative; display:grid; grid-template-columns:56px minmax(0,1fr); gap:18px; margin:0 0 18px; opacity:0; transform:translateY(18px); animation:stepReveal .65s ease forwards; }
+    .step:nth-child(2) { animation-delay:.10s; } .step:nth-child(3) { animation-delay:.20s; } .step:nth-child(4) { animation-delay:.30s; } .step:nth-child(5) { animation-delay:.40s; } .step:nth-child(6) { animation-delay:.50s; }
+    @keyframes stepReveal { to { opacity:1; transform:translateY(0); } }
+    .number { z-index:1; width:56px; height:56px; display:grid; place-items:center; border:1px solid rgba(255,115,130,.62); border-radius:16px; color:#fff; background:#28131f; box-shadow:0 0 20px rgba(255,60,85,.13); font-size:16px; font-weight:900; }
+    .step-card { padding:21px 23px; border:1px solid rgba(255,255,255,.09); border-radius:15px; background:var(--panel); box-shadow:0 12px 28px rgba(0,0,0,.18); transition:border-color .22s,transform .22s,box-shadow .22s; }
+    .step-card:hover { transform:translateX(4px); border-color:rgba(255,100,120,.4); box-shadow:0 12px 30px rgba(0,0,0,.24),0 0 22px rgba(255,60,85,.07); }
+    .step-card h2 { margin-bottom:9px; font-size:17px; }
+    .step-card p, .step-card li { color:var(--muted); font-size:13px; line-height:1.8; }
+    .step-card ul { padding-left:19px; margin-top:7px; }
+    .key { display:inline-block; padding:3px 7px; border:1px solid rgba(255,255,255,.14); border-radius:6px; color:#fff; background:rgba(255,255,255,.06); font-family:Consolas,monospace; font-size:12px; }
+    .path { display:inline-block; margin-top:8px; padding:7px 10px; border-radius:7px; color:#ffb2bb; background:rgba(255,70,87,.10); font-family:Consolas,monospace; font-size:12px; }
+    .tip { margin:4px 0 34px 74px; padding:15px 18px; border-left:3px solid #42a5ff; border-radius:0 10px 10px 0; color:#c9d9e8; background:rgba(66,165,255,.08); font-size:12px; line-height:1.8; }
+    .finish { margin:0 0 55px; padding:24px; text-align:center; border:1px solid rgba(255,90,110,.28); border-radius:16px; background:linear-gradient(120deg,rgba(55,18,33,.85),rgba(24,20,32,.95)); }
+    .finish h2 { margin-bottom:8px; font-size:20px; } .finish p { color:var(--muted); font-size:13px; line-height:1.8; }
+    .finish a { display:inline-block; margin-top:15px; padding:11px 18px; border:1px solid rgba(255,140,150,.55); border-radius:9px; color:#fff; background:rgba(255,70,87,.16); font-size:12px; font-weight:800; }
+    footer { padding:20px 0 28px; border-top:1px solid rgba(255,255,255,.08); color:#9b8998; text-align:center; font-size:11px; }
+    @media(max-width:600px) { .hero { padding-top:42px; } .download-strip { align-items:stretch; flex-direction:column; } .download-btn { text-align:center; } .steps::before { left:21px; } .step { grid-template-columns:44px minmax(0,1fr); gap:12px; } .number { width:44px; height:44px; border-radius:13px; font-size:14px; } .step-card { padding:17px 15px; } .step-card h2 { font-size:15px; } .step-card p,.step-card li { font-size:12px; } .tip { margin-left:56px; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .step { opacity:1; transform:none; animation:none; } .step-card,.download-btn { transition:none; } }
+  </style>
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="guide-nav">
+      <a class="brand" href="index.html">FLAME <span>DRAGON</span></a>
+      <a class="back-link" href="index.html">← Back to Home</a>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">FLAME DRAGON · SETUP CENTER</div>
+        <h1>Install the <span>Chrome Extension</span></h1>
+        <p class="intro">Follow these steps once to add FLAME DRAGON HUB to Chrome. This guide is for desktop Chrome on Windows, macOS, or Linux.</p>
+      </section>
+      <section class="download-strip" aria-label="Download extension">
+        <div><strong>Step zero: Get the latest version</strong><small>FLAME DRAGON HUB · Version 1.0.1 · ZIP file</small></div>
+        <a class="download-btn" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.1/FLAME_DRAGON_HUB_v1.0.1.zip">DOWNLOAD v1.0.1 ↓</a>
+      </section>
+      <section class="steps" aria-label="Installation steps">
+        <article class="step"><div class="number">01</div><div class="step-card"><h2>Download the ZIP file</h2><p>Press the download button above and wait for <strong>FLAME_DRAGON_HUB_v1.0.1.zip</strong> to finish downloading. You can find it in your computer's Downloads folder.</p></div></article>
+        <article class="step"><div class="number">02</div><div class="step-card"><h2>Extract the ZIP file</h2><p>Open your Downloads folder, right-click the ZIP file, then choose <strong>Extract All…</strong> and press <strong>Extract</strong>. Keep the extracted folder somewhere you can find later.</p></div></article>
+        <article class="step"><div class="number">03</div><div class="step-card"><h2>Open Chrome Extensions</h2><p>Open Google Chrome, type this address in the address bar, and press Enter:</p><div class="path">chrome://extensions</div></div></article>
+        <article class="step"><div class="number">04</div><div class="step-card"><h2>Turn on Developer mode</h2><p>Find the <strong>Developer mode</strong> switch near the top-right corner of the Extensions page and turn it on. This lets Chrome load the extension folder you extracted.</p></div></article>
+        <article class="step"><div class="number">05</div><div class="step-card"><h2>Load the extension folder</h2><p>Click <strong>Load unpacked</strong>. Select the extracted FLAME DRAGON HUB folder — choose the folder that contains <strong>manifest.json</strong>, then click <strong>Select Folder</strong>.</p></div></article>
+        <article class="step"><div class="number">06</div><div class="step-card"><h2>Pin it and start using it</h2><p>Find FLAME DRAGON HUB in Chrome's Extensions menu (the puzzle-piece icon). Press the pin icon to keep it on your toolbar, then open EvoWorld and use the extension.</p></div></article>
+      </section>
+      <aside class="tip"><strong>Quick check:</strong> If Chrome says it cannot find a manifest, you probably selected the wrong folder. Open the extracted folders until you see <strong>manifest.json</strong>, then select that folder itself. Do not select the ZIP file.</aside>
+      <section class="finish">
+        <h2>You're all set. Welcome to FLAME DRAGON HUB!</h2>
+        <p>The extension is now added to Chrome. Keep the extracted folder in place; Chrome loads the extension from that folder.</p>
+        <a href="index.html">Return to Home</a>
+      </section>
+    </main>
+    <footer>FLAME DRAGON HUB · Unofficial EvoWorld companion</footer>
+  </div>
+</body>
+</html>
