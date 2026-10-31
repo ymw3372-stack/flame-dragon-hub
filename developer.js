@@ -120,15 +120,20 @@ function renderUsers() {
   if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} most recently active).`;
 }
 
-// Falls back to an unordered read when orderBy cannot be served.
+// Firestore drops documents that lack the field used in orderBy, which hides any
+// account whose document has no lastSignInAt yet. An unordered read is used first
+// and the ordering is applied here, so no stored account can go missing.
 async function readUsers() {
+  let snapshot;
   try {
-    const ordered = query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS));
-    return await getDocs(ordered);
+    snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
   } catch (error) {
     if (error?.code === "permission-denied") throw error;
-    return await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
+    snapshot = await getDocs(query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS)));
   }
+  return snapshot.docs
+    .map(item => ({ uid: item.id, ...item.data() }))
+    .sort((a, b) => (b.lastSignInAt?.toMillis?.() || 0) - (a.lastSignInAt?.toMillis?.() || 0));
 }
 
 async function loadDashboard() {
@@ -153,8 +158,7 @@ async function loadDashboard() {
   if ($("activityTable")) $("activityTable").innerHTML = '<tr><td colspan="4">Loading activity...</td></tr>';
 
   try {
-    const snapshot = await readUsers();
-    cachedUsers = snapshot.docs.map(item => ({ uid: item.id, ...item.data() }));
+    cachedUsers = await readUsers();
     if ($("totalUsers")) $("totalUsers").textContent = String(cachedUsers.length);
     if ($("emailUsers")) $("emailUsers").textContent = String(cachedUsers.filter(u => u.provider === "password").length);
     if ($("googleUsers")) $("googleUsers").textContent = String(cachedUsers.filter(u => u.provider === "google.com").length);
@@ -168,13 +172,27 @@ async function loadDashboard() {
   }
 
   try {
-    const activitySnapshots = await Promise.all(cachedUsers.slice(0, ACTIVITY_SAMPLE).map(user =>
+    // allSettled, not all: one unreadable account must not hide every other
+    // account's activity, which is what previously made new sign-ins look missing.
+    const sample = cachedUsers.slice(0, ACTIVITY_SAMPLE);
+    const results = await Promise.allSettled(sample.map(user =>
       getDocs(query(collection(db, "users", user.uid, "activity"), orderBy("createdAt", "desc"), limit(5)))
     ));
     const events = [];
-    activitySnapshots.forEach((snap, index) => {
-      for (const item of snap.docs) events.push({ ...item.data(), email: cachedUsers[index].email || cachedUsers[index].uid });
+    const failures = [];
+    results.forEach((result, index) => {
+      if (result.status !== "fulfilled") {
+        failures.push(`${sample[index].email || sample[index].uid}: ${result.reason?.code || result.reason?.message || result.reason}`);
+        return;
+      }
+      for (const item of result.value.docs) {
+        events.push({ ...item.data(), email: sample[index].email || sample[index].uid });
+      }
     });
+    if (failures.length) {
+      console.warn("Activity unreadable for some accounts:", failures);
+      showReadError(`Activity could not be read for ${failures.length} of ${sample.length} loaded accounts. First reason: ${failures[0]}`);
+    }
     events.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
     if ($("totalEvents")) $("totalEvents").textContent = String(events.length);
     if ($("latestActivity")) $("latestActivity").textContent = events[0]?.createdAt?.toDate?.().toLocaleDateString() || "No events";
@@ -212,10 +230,26 @@ async function loadDashboard() {
 
 $("userSearch")?.addEventListener("input", renderUsers);
 $("refreshUsers")?.addEventListener("click", () => { loadDashboard(); });
+
+// New sign-ins happen on other tabs and on the site itself, so the dashboard
+// reloads when this tab is focused again instead of waiting for a manual refresh.
+let lastLoad = 0;
+const RELOAD_INTERVAL = 15000;
+function reloadIfStale() {
+  if (!auth.currentUser || !isAdminUser(auth.currentUser)) return;
+  if (document.visibilityState !== "visible") return;
+  if (Date.now() - lastLoad < RELOAD_INTERVAL) return;
+  lastLoad = Date.now();
+  loadDashboard();
+}
+window.addEventListener("focus", reloadIfStale);
+document.addEventListener("visibilitychange", reloadIfStale);
+
 onAuthStateChanged(auth, user => {
   if (!user) {
     showGate("Please sign in first, then return to this page.");
     return;
   }
+  lastLoad = Date.now();
   loadDashboard();
 });
