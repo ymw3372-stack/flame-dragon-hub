@@ -44,34 +44,41 @@ export async function recordAuthEvent(user, eventType) {
 
   const { provider, email, emailVerified } = await getVerifiedAuthMetadata(user);
   const activityRef = collection(db, "users", user.uid, "activity");
-
-  // Signing out is an event, not a new sign-in. Preserve lastSignInAt.
-  if (eventType === "sign_out") {
-    await addDoc(activityRef, {
-      type: eventType,
-      provider,
-      createdAt: serverTimestamp()
-    });
-    return;
-  }
-
   const userRef = doc(db, "users", user.uid);
-  const existing = await getDoc(userRef);
   const now = serverTimestamp();
 
-  const accountData = {
-    uid: user.uid,
-    email,
-    displayName: user.displayName || null,
-    provider,
-    emailVerified,
-    lastSignInAt: now,
-    updatedAt: now
-  };
-
-  if (!existing.exists()) accountData.createdAt = now;
-
-  await setDoc(userRef, accountData, { merge: true });
+  // Every event upserts the parent account document. The dashboard lists accounts
+  // from the users collection and reads activity per account, so activity written
+  // under a uid with no account document would never be reachable. Signing out
+  // keeps the existing lastSignInAt, which is why it is read before the write.
+  if (eventType === "sign_out") {
+    const existing = await getDoc(userRef);
+    if (!existing.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email,
+        displayName: user.displayName || null,
+        provider,
+        emailVerified,
+        createdAt: now,
+        lastSignInAt: now,
+        updatedAt: now
+      }, { merge: true });
+    }
+  } else {
+    const existing = await getDoc(userRef);
+    const accountData = {
+      uid: user.uid,
+      email,
+      displayName: user.displayName || null,
+      provider,
+      emailVerified,
+      lastSignInAt: now,
+      updatedAt: now
+    };
+    if (!existing.exists()) accountData.createdAt = now;
+    await setDoc(userRef, accountData, { merge: true });
+  }
 
   await addDoc(activityRef, {
     type: eventType,
