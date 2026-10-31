@@ -16,7 +16,17 @@ const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
-const ADMIN_UID = "mPYAzTPWOkZTpzB0caXXXzNHDdg2";
+// Admin identity. The UID that was here before ("...caXXXzN...") was a placeholder
+// that never matched a real account, which locked the owner out. Email is used now
+// because it is what the owner actually knows, and Firestore rules verify it too.
+const ADMIN_EMAILS = ["ymw3372@gmail.com"];
+// Optional: add real UIDs here later. Both lists are accepted.
+const ADMIN_UIDS = [];
+function isAdminUser(user) {
+  if (!user || user.emailVerified !== true) return false;
+  const email = (user.email || "").toLowerCase();
+  return ADMIN_EMAILS.includes(email) || ADMIN_UIDS.includes(user.uid);
+}
 const MAX_USERS = 100000;
 // Activity is one read per user, run in parallel, so the sample stays capped.
 const ACTIVITY_SAMPLE = 200;
@@ -33,9 +43,9 @@ function showDashboard() {
   $("devGate")?.classList.add("dev-hidden");
   $("devContent")?.classList.remove("dev-hidden");
 }
-function safeText(value) { return String(value ?? "—"); }
+function safeText(value) { return String(value ?? "-"); }
 function formatDate(value) {
-  if (!value?.toDate) return "—";
+  if (!value?.toDate) return "-";
   return value.toDate().toLocaleString();
 }
 function cell(value) {
@@ -75,12 +85,16 @@ function renderUsers() {
 async function loadDashboard() {
   const user = auth.currentUser;
   if (!user) return showGate("Please sign in first, then return to this page.");
-  if (user.uid !== ADMIN_UID || user.emailVerified !== true) {
-    return showGate("This area is reserved for the verified site owner. You do not have permission to access it.");
+  if (!isAdminUser(user)) {
+    return showGate(
+      `This area is reserved for the verified site owner.` +
+      ` Signed in as ${user.email || "(no email)"}, UID ${user.uid},` +
+      ` email verified: ${user.emailVerified === true ? "yes" : "no"}.`
+    );
   }
   showDashboard();
-  $("usersTable").innerHTML = '<tr><td colspan="5">Loading accounts…</td></tr>';
-  $("activityTable").innerHTML = '<tr><td colspan="4">Loading activity…</td></tr>';
+  $("usersTable").innerHTML = '<tr><td colspan="5">Loading accounts...</td></tr>';
+  $("activityTable").innerHTML = '<tr><td colspan="4">Loading activity...</td></tr>';
   const usersQuery = query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS));
   const snapshot = await getDocs(usersQuery);
   cachedUsers = snapshot.docs.map(item => ({ uid: item.id, ...item.data() }));
