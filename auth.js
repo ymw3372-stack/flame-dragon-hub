@@ -1,6 +1,6 @@
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { recordAuthEvent, ensureAccountRecord } from "./firebase-data.js";
+import { recordAuthEvent } from "./firebase-data.js";
 
 import {
   getAuth,
@@ -227,20 +227,12 @@ async function startAuth() {
 
   onAuthStateChanged(auth, async user => {
     try {
+      // Keep this listener focused on rendering. Successful sign-in handlers
+      // write the account and activity event once; writing here as well caused
+      // two simultaneous first-login writes to the same users/{uid} document.
       await renderAccountState(user);
-      // Backfill an account document for users whose session was already active
-      // when this synchronization fix was deployed.
-      if (user) {
-        try {
-          await ensureAccountRecord(user);
-        } catch (error) {
-          console.error("Could not sync signed-in account:", error);
-          const detail = [error?.code, error?.message].filter(Boolean).join(" — ");
-          showMessage("Signed in, but account sync failed: "
-            + (detail || "Check the Firestore Rules published in Firebase Console."));
-        }
-      }
     } catch (error) {
+      console.error("Could not render account state:", error);
       errorMessage(error);
     }
   });
