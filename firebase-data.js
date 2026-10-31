@@ -34,52 +34,38 @@ async function getVerifiedAuthMetadata(user) {
   };
 }
 
-// Stores basic account metadata and informational activity only.
-// Passwords, tokens, and authentication secrets are never stored in Firestore.
+// Ensure every authenticated user has a parent document in users/{uid}.
+// This backfills users who were already signed in before account syncing was fixed.
+export async function ensureAccountRecord(user) {
+  if (!user?.uid) return;
+  const { provider, email, emailVerified } = await getVerifiedAuthMetadata(user);
+  const userRef = doc(db, "users", user.uid);
+  const existing = await getDoc(userRef);
+  const accountData = {
+    uid: user.uid,
+    email,
+    displayName: user.displayName || null,
+    provider,
+    emailVerified,
+    updatedAt: serverTimestamp()
+  };
+  if (!existing.exists()) {
+    accountData.createdAt = serverTimestamp();
+    accountData.lastSignInAt = serverTimestamp();
+  }
+  await setDoc(userRef, accountData, { merge: true });
+}
+
+// Store activity separately from the account record.
 export async function recordAuthEvent(user, eventType) {
   if (!user?.uid) return;
   if (!["register", "sign_in", "sign_out"].includes(eventType)) {
     throw new Error("Unsupported account activity event.");
   }
 
-  const { provider, email, emailVerified } = await getVerifiedAuthMetadata(user);
+  const { provider } = await getVerifiedAuthMetadata(user);
+  await ensureAccountRecord(user);
   const activityRef = collection(db, "users", user.uid, "activity");
-  const userRef = doc(db, "users", user.uid);
-  const now = serverTimestamp();
-
-  // Every event upserts the parent account document. The dashboard lists accounts
-  // from the users collection and reads activity per account, so activity written
-  // under a uid with no account document would never be reachable. Signing out
-  // keeps the existing lastSignInAt, which is why it is read before the write.
-  if (eventType === "sign_out") {
-    const existing = await getDoc(userRef);
-    if (!existing.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        email,
-        displayName: user.displayName || null,
-        provider,
-        emailVerified,
-        createdAt: now,
-        lastSignInAt: now,
-        updatedAt: now
-      }, { merge: true });
-    }
-  } else {
-    const existing = await getDoc(userRef);
-    const accountData = {
-      uid: user.uid,
-      email,
-      displayName: user.displayName || null,
-      provider,
-      emailVerified,
-      lastSignInAt: now,
-      updatedAt: now
-    };
-    if (!existing.exists()) accountData.createdAt = now;
-    await setDoc(userRef, accountData, { merge: true });
-  }
-
   await addDoc(activityRef, {
     type: eventType,
     provider,
