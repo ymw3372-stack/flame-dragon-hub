@@ -5,11 +5,14 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // The sole dashboard administrator is the verified owner UID.
+    // Dashboard administrators. The UID that used to be here was a placeholder
+    // ("...caXXXzN...") that matched no real account, so isAdmin() was always false
+    // and every dashboard read was denied. Email is the identity the owner knows,
+    // and for password/Google sign-in it is a verified claim, not client input.
     function isAdmin() {
       return signedIn()
-        && request.auth.uid == 'mPYAzTPWOkZTpzB0caXXXzNHDdg2'
-        && request.auth.token.email_verified == true;
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['ymw3372@gmail.com'];
     }
 
     function isOwner(uid) {
@@ -61,5 +64,6 @@ service cloud.firestore {
 
         allow update, delete: if false;
       }
-    }  }
+    }
+  }
 }
