@@ -47,11 +47,11 @@ export async function ensureAccountRecord(user) {
     displayName: user.displayName || null,
     provider,
     emailVerified,
+    lastSignInAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
   if (!existing.exists()) {
     accountData.createdAt = serverTimestamp();
-    accountData.lastSignInAt = serverTimestamp();
   }
   await setDoc(userRef, accountData, { merge: true });
 }
@@ -64,7 +64,13 @@ export async function recordAuthEvent(user, eventType) {
   }
 
   const { provider } = await getVerifiedAuthMetadata(user);
-  await ensureAccountRecord(user);
+  if (eventType === "sign_out") {
+    const userRef = doc(db, "users", user.uid);
+    const existing = await getDoc(userRef);
+    if (!existing.exists()) await ensureAccountRecord(user);
+  } else {
+    await ensureAccountRecord(user);
+  }
   const activityRef = collection(db, "users", user.uid, "activity");
   await addDoc(activityRef, {
     type: eventType,
