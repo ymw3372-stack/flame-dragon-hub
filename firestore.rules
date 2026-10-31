@@ -5,14 +5,14 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Dashboard administrators. The UID that used to be here was a placeholder
-    // ("...caXXXzN...") that matched no real account, so isAdmin() was always false
-    // and every dashboard read was denied. Email is the identity the owner knows,
-    // and for password/Google sign-in it is a verified claim, not client input.
+    // Dashboard administrators, by verified email. This matches the check that
+    // worked on the secure-developer-dashboard-email-admin branch. The UID that
+    // replaced it was a placeholder ("...caXXXzN...") matching no real account,
+    // so isAdmin() was always false and every dashboard read was denied.
     function isAdmin() {
       return signedIn()
-        && request.auth.token.email_verified == true
-        && request.auth.token.email in ['ymw3372@gmail.com'];
+        && request.auth.token.email == 'ymw3372@gmail.com'
+        && request.auth.token.email_verified == true;
     }
 
     function isOwner(uid) {
