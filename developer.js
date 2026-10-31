@@ -17,6 +17,9 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
 const ADMIN_UID = "mPYAzTPWOkZTpzB0caXXXzNHDdg2";
+const MAX_USERS = 100000;
+// Activity is one read per user, run in parallel, so the sample stays capped.
+const ACTIVITY_SAMPLE = 200;
 let cachedUsers = [];
 
 function showGate(message, title = "Administrator access required") {
@@ -67,7 +70,7 @@ function renderUsers() {
       table.append(row);
     }
   }
-  if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to 100 most recently active).`;
+  if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} most recently active).`;
 }
 async function loadDashboard() {
   const user = auth.currentUser;
@@ -78,7 +81,7 @@ async function loadDashboard() {
   showDashboard();
   $("usersTable").innerHTML = '<tr><td colspan="5">Loading accounts…</td></tr>';
   $("activityTable").innerHTML = '<tr><td colspan="4">Loading activity…</td></tr>';
-  const usersQuery = query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(100));
+  const usersQuery = query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS));
   const snapshot = await getDocs(usersQuery);
   cachedUsers = snapshot.docs.map(item => ({ uid: item.id, ...item.data() }));
   $("totalUsers").textContent = String(cachedUsers.length);
@@ -87,7 +90,7 @@ async function loadDashboard() {
   $("verifiedUsers").textContent = String(cachedUsers.filter(user => user.emailVerified === true).length);
   renderUsers();
 
-  const activitySnapshots = await Promise.all(cachedUsers.slice(0, 100).map(user =>
+  const activitySnapshots = await Promise.all(cachedUsers.slice(0, ACTIVITY_SAMPLE).map(user =>
     getDocs(query(collection(db, "users", user.uid, "activity"), orderBy("createdAt", "desc"), limit(5)))
   ));
   const events = [];
