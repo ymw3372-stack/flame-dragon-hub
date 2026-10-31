@@ -1,4 +1,3 @@
-
 (() => {
   if (window.__fdhSkinBridgeLoaded) return;
   window.__fdhSkinBridgeLoaded = true;
@@ -56,12 +55,6 @@
       const replacement = replacementFor(originalSrc.get.call(img));
       if (replacement) originalSrc.set.call(img, replacement);
     }
-  });
-
-  console.info("[FLAME DRAGON HUB] Sprite bridge initialized.");
-})();
-
-
   });
 
   console.info("[FLAME DRAGON HUB] Sprite bridge initialized.");
