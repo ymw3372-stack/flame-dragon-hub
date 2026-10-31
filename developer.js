@@ -30,7 +30,7 @@ function isAdminUser(user) {
   return ADMIN_EMAILS.includes(email) || ADMIN_UIDS.includes(user.uid);
 }
 
-const MAX_USERS = 100000;
+const MAX_USERS = 10000;
 // Activity is one read per user, run in parallel, so the sample stays capped.
 const ACTIVITY_SAMPLE = 200;
 let cachedUsers = [];
@@ -117,7 +117,7 @@ function renderUsers() {
       table.append(row);
     }
   }
-  if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} most recently active).`;
+  if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} accounts).`;
 }
 
 // Firestore drops documents that lack the field used in orderBy, which hides any
