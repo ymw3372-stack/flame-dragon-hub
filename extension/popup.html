@@ -267,6 +267,70 @@ label{display:block;font-size:11px;color:#c6c0e6;margin:8px 0 5px}
 .app-top{display:flex;align-items:center;justify-content:space-between;gap:9px}
 .app-top .signed-in{font-size:10px;color:var(--muted);margin-top:4px}
 .app-top .btn{font-size:10px;padding:7px 10px}
+
+/* ===== GOLDEN EMBER / FLOATING SPARKS ===== */
+:root {
+  --bg:#100b04;
+  --panel:rgba(35,24,10,.78);
+  --panel2:rgba(48,31,12,.72);
+  --line:rgba(226,166,73,.28);
+  --text:#fff5df;
+  --muted:#c5ad83;
+  --purple:#c18a35;
+  --purple2:#f0c56e;
+  --blue:#a66a24;
+  --blue2:#e7ad4e;
+  --orange:#d89432;
+  --orange2:#ffd17a;
+}
+body { background:linear-gradient(145deg,#100b04,#241605 52%,#0b0803); }
+body::before {
+  opacity:.58;
+  background-image:
+    radial-gradient(2px 2px at 8% 18%,rgba(255,211,125,.95) 50%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 22% 72%,rgba(255,160,55,.9) 50%,transparent 100%),
+    radial-gradient(2px 2px at 44% 32%,rgba(255,194,83,.85) 50%,transparent 100%),
+    radial-gradient(1px 1px at 68% 65%,rgba(255,225,160,.95) 50%,transparent 100%),
+    radial-gradient(2px 2px at 88% 24%,rgba(255,176,62,.85) 50%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 34% 88%,rgba(255,205,111,.8) 50%,transparent 100%),
+    radial-gradient(1px 1px at 78% 48%,rgba(255,235,180,.8) 50%,transparent 100%);
+  animation:fdhOrbDrift 24s linear infinite;
+}
+body::after {
+  background:
+    radial-gradient(ellipse at 16% 30%,rgba(206,137,40,.25),transparent 42%),
+    radial-gradient(ellipse at 84% 64%,rgba(255,177,58,.20),transparent 44%),
+    radial-gradient(ellipse at 50% 8%,rgba(255,214,130,.13),transparent 40%),
+    radial-gradient(ellipse at 30% 92%,rgba(176,104,28,.16),transparent 40%);
+}
+header {
+  background:linear-gradient(120deg,rgba(52,34,12,.94),rgba(28,20,8,.94));
+  border-bottom-color:rgba(226,166,73,.28);
+}
+header::after {
+  background:linear-gradient(90deg,transparent,rgba(255,195,88,.9),rgba(194,124,37,.8),transparent);
+}
+h1 {
+  background:linear-gradient(90deg,#fff8e8,#f5ce7b 52%,#e7a64a);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.section {
+  border-color:rgba(226,166,73,.24);
+  box-shadow:0 14px 38px rgba(0,0,0,.4),0 0 26px rgba(214,148,50,.06);
+}
+.section-title { color:#f2d69d; }
+.note {
+  color:#f2dfb9;
+  background:linear-gradient(135deg,rgba(195,133,42,.16),rgba(105,66,20,.13));
+  border-color:rgba(226,166,73,.30);
+}
+.tab { color:#ddc89f;background:rgba(54,38,16,.78);border-color:rgba(226,166,73,.22); }
+.tab.active { background:linear-gradient(120deg,rgba(176,111,30,.95),rgba(214,155,57,.9));color:#fff8e9; }
+main::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#e0a64d,#8d571e); }
+@media (prefers-reduced-motion:reduce) {
+  body::before,body::after,.fdh-dragon { animation:none !important; }
+}
+
 </style>
 </head>
 <body>
