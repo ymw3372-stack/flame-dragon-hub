@@ -1,84 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#100b10">
-  <title>Chrome Installation Guide | FLAME DRAGON HUB</title>
-  <style>
-    :root { color-scheme: dark; --bg:#100b10; --panel:rgba(29,20,31,.94); --red:#ff4657; --muted:#b8aab8; --text:#fff4f6; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body { min-height:100vh; overflow-x:hidden; color:var(--text); font-family:Arial,Helvetica,sans-serif; background:radial-gradient(ellipse at 50% 12%,rgba(130,22,45,.24),transparent 42%),var(--bg); }
-    a { color:inherit; text-decoration:none; }
-    .guide-shell { width:min(920px,92%); margin:auto; }
-    .guide-nav { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid rgba(255,255,255,.09); }
-    .brand { font-weight:900; letter-spacing:1px; } .brand span { color:var(--red); }
-    .back-link { color:#ff9aa5; font-size:13px; transition:color .2s; } .back-link:hover { color:white; }
-    .hero { padding:58px 0 34px; text-align:center; }
-    .eyebrow { margin-bottom:12px; color:#ff929b; font-size:10px; font-weight:800; letter-spacing:4px; }
-    h1 { font-size:clamp(29px,5vw,46px); line-height:1.12; }
-    h1 span { color:var(--red); }
-    .intro { max-width:650px; margin:16px auto 0; color:var(--muted); font-size:14px; line-height:1.8; }
-    .download-strip { margin:0 auto 38px; padding:17px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid rgba(255,90,110,.35); border-radius:14px; background:linear-gradient(105deg,rgba(65,20,37,.92),rgba(28,22,35,.96)); }
-    .download-strip strong { display:block; margin-bottom:5px; font-size:14px; }
-    .download-strip small { color:var(--muted); font-size:12px; }
-    .download-btn { flex:0 0 auto; padding:13px 18px; border-radius:10px; color:white; background:linear-gradient(110deg,#df344e,#a3254d); font-size:11px; font-weight:900; letter-spacing:.5px; transition:transform .2s,filter .2s; }
-    .download-btn:hover { transform:translateY(-2px); filter:brightness(1.12); }
-    .steps { position:relative; padding:4px 0 8px; }
-    .steps::before { content:""; position:absolute; left:27px; top:28px; bottom:50px; width:2px; background:linear-gradient(#ff4657,rgba(255,70,87,.08)); }
-    .step { position:relative; display:grid; grid-template-columns:56px minmax(0,1fr); gap:18px; margin:0 0 18px; opacity:0; transform:translateY(18px); animation:stepReveal .65s ease forwards; }
-    .step:nth-child(2) { animation-delay:.10s; } .step:nth-child(3) { animation-delay:.20s; } .step:nth-child(4) { animation-delay:.30s; } .step:nth-child(5) { animation-delay:.40s; } .step:nth-child(6) { animation-delay:.50s; }
-    @keyframes stepReveal { to { opacity:1; transform:translateY(0); } }
-    .number { z-index:1; width:56px; height:56px; display:grid; place-items:center; border:1px solid rgba(255,115,130,.62); border-radius:16px; color:#fff; background:#28131f; box-shadow:0 0 20px rgba(255,60,85,.13); font-size:16px; font-weight:900; }
-    .step-card { padding:21px 23px; border:1px solid rgba(255,255,255,.09); border-radius:15px; background:var(--panel); box-shadow:0 12px 28px rgba(0,0,0,.18); transition:border-color .22s,transform .22s,box-shadow .22s; }
-    .step-card:hover { transform:translateX(4px); border-color:rgba(255,100,120,.4); box-shadow:0 12px 30px rgba(0,0,0,.24),0 0 22px rgba(255,60,85,.07); }
-    .step-card h2 { margin-bottom:9px; font-size:17px; }
-    .step-card p, .step-card li { color:var(--muted); font-size:13px; line-height:1.8; }
-    .step-card ul { padding-left:19px; margin-top:7px; }
-    .key { display:inline-block; padding:3px 7px; border:1px solid rgba(255,255,255,.14); border-radius:6px; color:#fff; background:rgba(255,255,255,.06); font-family:Consolas,monospace; font-size:12px; }
-    .path { display:inline-block; margin-top:8px; padding:7px 10px; border-radius:7px; color:#ffb2bb; background:rgba(255,70,87,.10); font-family:Consolas,monospace; font-size:12px; }
-    .tip { margin:4px 0 34px 74px; padding:15px 18px; border-left:3px solid #42a5ff; border-radius:0 10px 10px 0; color:#c9d9e8; background:rgba(66,165,255,.08); font-size:12px; line-height:1.8; }
-    .finish { margin:0 0 55px; padding:24px; text-align:center; border:1px solid rgba(255,90,110,.28); border-radius:16px; background:linear-gradient(120deg,rgba(55,18,33,.85),rgba(24,20,32,.95)); }
-    .finish h2 { margin-bottom:8px; font-size:20px; } .finish p { color:var(--muted); font-size:13px; line-height:1.8; }
-    .finish a { display:inline-block; margin-top:15px; padding:11px 18px; border:1px solid rgba(255,140,150,.55); border-radius:9px; color:#fff; background:rgba(255,70,87,.16); font-size:12px; font-weight:800; }
-    footer { padding:20px 0 28px; border-top:1px solid rgba(255,255,255,.08); color:#9b8998; text-align:center; font-size:11px; }
-    @media(max-width:600px) { .hero { padding-top:42px; } .download-strip { align-items:stretch; flex-direction:column; } .download-btn { text-align:center; } .steps::before { left:21px; } .step { grid-template-columns:44px minmax(0,1fr); gap:12px; } .number { width:44px; height:44px; border-radius:13px; font-size:14px; } .step-card { padding:17px 15px; } .step-card h2 { font-size:15px; } .step-card p,.step-card li { font-size:12px; } .tip { margin-left:56px; } }
-    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .step { opacity:1; transform:none; animation:none; } .step-card,.download-btn { transition:none; } }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#100b10">
+<title>Chrome Installation Guide | FLAME DRAGON HUB</title>
+<style>
+:root{color-scheme:dark;--bg:#100b10;--panel:#211722;--red:#ff4657;--gold:#e8c15d;--muted:#c1b4c1;--text:#fff5f7}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Arial,Helvetica,sans-serif;background:radial-gradient(ellipse at 50% 0%,#6d183044,transparent 48%),var(--bg)}
+.guide-shell{width:min(1160px,94%);margin:auto}.guide-nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18}.brand{font-weight:950;letter-spacing:1px;text-decoration:none;color:white}.brand span{color:var(--red)}.back-link{color:#ff9aa5;text-decoration:none;font-size:14px}
+.hero{text-align:center;padding:46px 0 28px}.eyebrow{color:#ff9aa5;font-size:11px;font-weight:900;letter-spacing:4px;margin-bottom:12px}h1{font-size:clamp(32px,5vw,54px);margin:0;line-height:1.1}h1 span{color:var(--red)}.intro{max-width:720px;margin:15px auto 0;color:var(--muted);font-size:16px;line-height:1.8}
+.download-strip{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 24px;margin:0 auto 26px;border:1px solid #ff64774f;border-radius:18px;background:linear-gradient(110deg,#481b31,#201a2b);box-shadow:0 16px 38px #0005}.download-strip strong{display:block;font-size:17px;margin-bottom:6px}.download-strip small{color:var(--muted);font-size:13px}.download-btn{padding:15px 22px;border-radius:12px;color:white;text-decoration:none;font-size:13px;font-weight:900;background:linear-gradient(110deg,#ed3c58,#982747);box-shadow:0 8px 22px #ed3c5833;white-space:nowrap;transition:.2s}.download-btn:hover{transform:translateY(-3px);filter:brightness(1.13)}
+.tutorial{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:22px;align-items:stretch;margin:0 0 24px}.stage{min-width:0;padding:clamp(20px,3vw,34px);border:1px solid #ffffff18;border-radius:24px;background:linear-gradient(145deg,#241925f5,#17131e);box-shadow:0 20px 55px #0006;position:relative;overflow:hidden}.stage:before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:#ff465710;filter:blur(30px);right:-100px;top:-130px;pointer-events:none}
+.progress-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;color:#d5c4d2;font-size:12px;font-weight:800;letter-spacing:1px}.progress-track{height:7px;background:#ffffff16;border-radius:20px;overflow:hidden;margin-bottom:28px}.progress-fill{height:100%;width:16.666%;background:linear-gradient(90deg,#ff4657,#f0bd62);border-radius:20px;transition:width .45s ease}
+.step-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.9fr);gap:26px;align-items:center;min-height:360px;animation:slideIn .42s ease both}@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}.step-copy .step-kicker{color:#f3c86e;font-size:12px;font-weight:900;letter-spacing:2px}.step-copy h2{font-size:clamp(25px,3vw,36px);margin:12px 0}.step-copy p,.step-copy li{color:var(--muted);font-size:15px;line-height:1.85}.step-copy ul{padding-left:20px}.step-copy strong{color:#fff}.path{display:inline-block;margin-top:10px;padding:12px 15px;border:1px solid #ff647755;border-radius:10px;background:#ff465714;color:#ffc0c8;font:700 15px Consolas,monospace}
+.visual{min-height:285px;display:grid;place-items:center;padding:16px;border:1px solid #ffffff18;border-radius:19px;background:radial-gradient(circle at 50% 35%,#59304766,transparent 65%),#100d16;overflow:hidden}.mock-window{width:100%;max-width:420px;border:1px solid #ffffff2c;border-radius:13px;background:#20212a;box-shadow:0 15px 35px #0008;overflow:hidden}.mock-top{height:35px;display:flex;align-items:center;gap:6px;padding:0 11px;background:#30313a;border-bottom:1px solid #ffffff16}.dot{width:8px;height:8px;border-radius:50%;background:#ff6673}.dot:nth-child(2){background:#e8c15d}.dot:nth-child(3){background:#62c98a}.mock-url{margin-left:10px;flex:1;padding:5px 9px;border-radius:6px;background:#171820;color:#b9bac5;font:10px Arial;white-space:nowrap;overflow:hidden}.mock-body{padding:19px}.mock-title{font-size:14px;font-weight:800;margin-bottom:12px}.mock-row{display:flex;align-items:center;gap:10px;padding:12px;margin:8px 0;border:1px solid #ffffff17;border-radius:9px;background:#ffffff08;color:#e9e5ec;font-size:11px}.mock-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#ff465722;color:#ff9ba8;font-size:17px}.mock-button{display:inline-block;padding:9px 12px;border-radius:7px;background:#ff4657;color:white;font-size:10px;font-weight:900}.mock-highlight{outline:2px solid #e8c15d!important;box-shadow:0 0 0 5px #e8c15d22,0 0 24px #e8c15d33!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{filter:brightness(1.3)}}.download-arrow{position:absolute;right:17%;top:47px;color:#ffe18a;font-size:38px;filter:drop-shadow(0 0 12px #e8c15d);animation:drop 1s ease-in-out infinite alternate}@keyframes drop{to{transform:translateY(9px)}}.download-visual{position:relative;width:100%;max-width:420px}.file-card{display:flex;align-items:center;gap:13px;padding:17px;border-radius:12px;background:#29222e;border:1px solid #ffffff1d;color:#eee;font-size:12px}.zip-icon{width:44px;height:50px;border-radius:8px;background:linear-gradient(145deg,#ff586b,#9c294b);display:grid;place-items:center;font-size:22px;font-weight:900}.ghost-side{padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #e8c15d45;border-radius:22px;background:linear-gradient(160deg,#2c202b,#17131d);position:relative;overflow:hidden}.ghost{width:105px;height:120px;position:relative;margin:8px auto 20px;animation:ghostFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff657b55)}@keyframes ghostFloat{50%{transform:translateY(-12px) rotate(3deg)}}.ghost-body{position:absolute;inset:8px 8px 0;background:linear-gradient(145deg,#fff9fb,#cbbdce);border-radius:48% 48% 22% 22%;clip-path:polygon(0 0,100% 0,100% 100%,80% 86%,62% 100%,43% 86%,22% 100%,0 86%)}.ghost-eye{position:absolute;top:48px;width:10px;height:15px;border-radius:50%;background:#342338;z-index:2}.ghost-eye.left{left:34px}.ghost-eye.right{right:34px}.ghost-mouth{position:absolute;z-index:2;top:70px;left:48px;width:10px;height:7px;border-radius:50%;background:#ff6679}.ghost-side strong{font-size:16px;color:#ffe6a1}.ghost-side p{font-size:12px;line-height:1.7;color:var(--muted);margin:10px 0 0}.ghost-bubble{margin-top:15px;padding:11px 12px;border-radius:12px;background:#ffffff0b;border:1px solid #ffffff16;color:#eee;font-size:12px;line-height:1.65}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px}.control-btn{min-width:116px;padding:13px 18px;border:1px solid #ffffff24;border-radius:11px;background:#ffffff0b;color:white;font-weight:900;cursor:pointer;transition:.2s}.control-btn:hover:not(:disabled){transform:translateY(-2px);border-color:#ff8997}.control-btn.next{border:0;background:linear-gradient(110deg,#ed3c58,#992747)}.control-btn:disabled{opacity:.3;cursor:not-allowed}.dots{display:flex;gap:7px;align-items:center}.dots button{width:8px;height:8px;padding:0;border:0;border-radius:20px;background:#ffffff3b;cursor:pointer;transition:.25s}.dots button.active{width:25px;background:#e8c15d}
+.tip,.finish{margin:22px 0;padding:18px 22px;border-radius:15px;line-height:1.8;font-size:13px}.tip{border-left:4px solid #42a5ff;background:#42a5ff12;color:#d3e5f4}.finish{text-align:center;border:1px solid #ff647744;background:linear-gradient(120deg,#3b1b2b,#1b1724)}.finish h2{font-size:23px;margin:0 0 8px}.finish p{color:var(--muted);line-height:1.8}.finish a{display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:#ff465722;border:1px solid #ff8997;color:white;text-decoration:none;font-weight:900}
+footer{text-align:center;padding:22px 0 35px;border-top:1px solid #ffffff16;color:#a999a9;font-size:12px}
+@media(max-width:850px){.tutorial{grid-template-columns:1fr}.ghost-side{display:grid;grid-template-columns:100px 1fr;gap:12px;text-align:left;padding:12px 18px}.ghost{width:80px;height:90px;margin:0}.ghost-eye{top:38px}.ghost-eye.left{left:27px}.ghost-eye.right{right:27px}.ghost-mouth{top:55px;left:37px}.ghost-bubble{grid-column:1/-1;margin:0}.step-layout{min-height:300px}}
+@media(max-width:620px){.hero{padding:34px 0 22px}.download-strip{align-items:stretch;flex-direction:column;padding:17px}.download-btn{text-align:center}.step-layout{grid-template-columns:1fr;gap:16px}.visual{min-height:220px}.step-copy h2{font-size:27px}.step-copy p,.step-copy li{font-size:14px}.controls{flex-wrap:wrap}.dots{order:3;width:100%;justify-content:center}.control-btn{flex:1}.ghost-side{grid-template-columns:75px 1fr}.guide-nav{height:64px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <div class="guide-shell">
-    <header class="guide-nav">
-      <a class="brand" href="index.html">FLAME <span>DRAGON</span></a>
-      <a class="back-link" href="index.html">← Back to Home</a>
-    </header>
-    <main>
-      <section class="hero">
-        <div class="eyebrow">FLAME DRAGON · SETUP CENTER</div>
-        <h1>Install the <span>Chrome Extension</span></h1>
-        <p class="intro">Follow these steps once to add FLAME DRAGON HUB to Chrome. This guide is for desktop Chrome on Windows, macOS, or Linux.</p>
-      </section>
-      <section class="download-strip" aria-label="Download extension">
-        <div><strong>Step zero: Get the latest version</strong><small>FLAME DRAGON HUB · Version 1.0.1 · ZIP file</small></div>
-        <a class="download-btn" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.1/FLAME_DRAGON_HUB_v1.0.1.zip">DOWNLOAD v1.0.1 ↓</a>
-      </section>
-      <section class="steps" aria-label="Installation steps">
-        <article class="step"><div class="number">01</div><div class="step-card"><h2>Download the ZIP file</h2><p>Press the download button above and wait for <strong>FLAME_DRAGON_HUB_v1.0.1.zip</strong> to finish downloading. You can find it in your computer's Downloads folder.</p></div></article>
-        <article class="step"><div class="number">02</div><div class="step-card"><h2>Extract the ZIP file</h2><p>Open your Downloads folder, right-click the ZIP file, then choose <strong>Extract All…</strong> and press <strong>Extract</strong>. Keep the extracted folder somewhere you can find later.</p></div></article>
-        <article class="step"><div class="number">03</div><div class="step-card"><h2>Open Chrome Extensions</h2><p>Open Google Chrome, type this address in the address bar, and press Enter:</p><div class="path">chrome://extensions</div></div></article>
-        <article class="step"><div class="number">04</div><div class="step-card"><h2>Turn on Developer mode</h2><p>Find the <strong>Developer mode</strong> switch near the top-right corner of the Extensions page and turn it on. This lets Chrome load the extension folder you extracted.</p></div></article>
-        <article class="step"><div class="number">05</div><div class="step-card"><h2>Load the extension folder</h2><p>Click <strong>Load unpacked</strong>. Select the extracted FLAME DRAGON HUB folder — choose the folder that contains <strong>manifest.json</strong>, then click <strong>Select Folder</strong>.</p></div></article>
-        <article class="step"><div class="number">06</div><div class="step-card"><h2>Pin it and start using it</h2><p>Find FLAME DRAGON HUB in Chrome's Extensions menu (the puzzle-piece icon). Press the pin icon to keep it on your toolbar, then open EvoWorld and use the extension.</p></div></article>
-      </section>
-      <aside class="tip"><strong>Quick check:</strong> If Chrome says it cannot find a manifest, you probably selected the wrong folder. Open the extracted folders until you see <strong>manifest.json</strong>, then select that folder itself. Do not select the ZIP file.</aside>
-      <section class="finish">
-        <h2>You're all set. Welcome to FLAME DRAGON HUB!</h2>
-        <p>The extension is now added to Chrome. Keep the extracted folder in place; Chrome loads the extension from that folder.</p>
-        <a href="index.html">Return to Home</a>
-      </section>
-    </main>
-    <footer>FLAME DRAGON HUB · Unofficial EvoWorld companion</footer>
-  </div>
-</body>
-</html>
+<div class="guide-shell">
+<header class="guide-nav"><a class="brand" href="index.html">FLAME <span>DRAGON</span></a><a class="back-link" href="index.html">← Back to Home</a></header>
+<main>
+<section class="hero"><div class="eyebrow">FLAME DRAGON · INSTALLATION EXPERIENCE</div><h1>Install the <span>Chrome Extension</span></h1><p class="intro">A visual walkthrough, one clear step at a time. Follow the guide and bring FLAME DRAGON HUB to your Chrome browser.</p></section>
+<section class="download-strip"><div><strong>Ready? Download the extension first</strong><small>FLAME DRAGON HUB · Version 1.0.1 · ZIP package</small></div><a class="download-btn" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.1/FLAME_DRAGON_HUB_v1.0.1.zip">DOWNLOAD v1.0.1 ↓</a></section>
+<section class="tutorial" aria-label="Animated installation tutorial">
+<div class="stage">
+<div class="progress-top"><span id="stepLabel">STEP 01 / 06</span><span id="stepPercent">17% COMPLETE</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div id="stepContent" aria-live="polite"></div>
+<div class="controls"><button class="control-btn" id="prevStep" disabled>← Previous</button><div class="dots" id="stepDots" aria-label="Choose a step"></div><button class="control-btn next" id="nextStep">Next step →</button></div>
+</div>
+<aside class="ghost-side"><div class="ghost" aria-hidden="true"><div class="ghost-body"></div><i class="ghost-eye left"></i><i class="ghost-eye right"></i><i class="ghost-mouth"></i></div><div><strong>DRAGON GHOST GUIDE</strong><p>Your little installation companion. I'll show you exactly where to click.</p></div><div class="ghost-bubble" id="ghostTip">Let's start by downloading the ZIP file. I'll guide you through the rest!</div></aside>
+</section>
+<aside class="tip"><strong>Need help?</strong> If Chrome says it cannot find a manifest, open the extracted folders until you see <strong>manifest.json</strong>, then select the folder containing that file. Never select the ZIP file itself.</aside>
+<section class="finish"><h2>You're ready to enter the hub!</h2><p>Keep the extracted extension folder where it is. Chrome loads FLAME DRAGON HUB directly from that folder.</p><a href="index.html">Return to FLAME DRAGON HUB</a></section>
+</main><footer>FLAME DRAGON HUB · Unofficial EvoWorld companion</footer>
+</div>
+<script>
+const steps=[
+{title:"Download the ZIP file",body:'Press the download button above. Wait until <strong>FLAME_DRAGON_HUB_v1.0.1.zip</strong> finishes downloading. You can find it in your computer\'s Downloads folder.',tip:"Look at the top-right of Chrome for the download arrow. Your ZIP file should appear there when the download finishes.",visual:'<div class="download-visual"><div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url">google.com</div><span style="font-size:19px;color:#ffe18a">⬇</span></div><div class="mock-body"><div class="mock-title">Downloads</div><div class="file-card"><div class="zip-icon">ZIP</div><div><strong>FLAME_DRAGON_HUB_v1.0.1.zip</strong><br><small style="color:#b9adbd">Download complete</small></div></div></div></div><div class="download-arrow">↗</div></div>'},
+{title:"Extract the ZIP file",body:'Open your <strong>Downloads</strong> folder. Right-click the ZIP file, choose <strong>Extract All…</strong>, then press <strong>Extract</strong>. Keep the new folder somewhere easy to find.',tip:"Important: Chrome needs the extracted folder, not the compressed ZIP file.",visual:'<div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url">File Explorer · Downloads</div></div><div class="mock-body"><div class="mock-title">Downloads</div><div class="mock-row"><span class="mock-icon">▣</span> FLAME_DRAGON_HUB_v1.0.1.zip</div><div class="mock-row mock-highlight"><span class="mock-icon">📂</span><strong>Extract All…</strong></div><div class="mock-row"><span class="mock-icon">📁</span> FLAME_DRAGON_HUB_v1.0.1</div></div></div>'},
+{title:"Open Chrome Extensions",body:'Open Google Chrome, click the address bar at the top, type this address, and press <strong>Enter</strong>.',tip:"You can also paste the address directly into Chrome's top address bar.",visual:'<div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url mock-highlight">chrome://extensions</div></div><div class="mock-body"><div class="mock-title">Extensions</div><div class="mock-row"><span class="mock-icon">🧩</span> Manage your extensions</div><div style="color:#b9adbd;font-size:11px;margin-top:15px">Your installed extensions appear here.</div></div></div>'},
+{title:"Turn on Developer mode",body:'On the Extensions page, find the <strong>Developer mode</strong> switch near the top-right corner and turn it <strong>ON</strong>.',tip:"When Developer mode is enabled, extra buttons appear at the top of the page.",visual:'<div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url">chrome://extensions</div></div><div class="mock-body"><div style="display:flex;justify-content:space-between;align-items:center"><div class="mock-title">Extensions</div><div class="mock-row mock-highlight" style="margin:0"><strong>Developer mode</strong><span style="color:#78d99a;font-size:17px">● ON</span></div></div><div class="mock-row" style="margin-top:18px">Load unpacked　　Pack extension　　Update</div></div></div>'},
+{title:"Load the extension folder",body:'Click <strong>Load unpacked</strong>. Select the extracted <strong>FLAME DRAGON HUB</strong> folder — the one that contains <strong>manifest.json</strong> — then click <strong>Select Folder</strong>.',tip:"Choose the folder that directly contains manifest.json. If you see another folder inside, open it and check.",visual:'<div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url">chrome://extensions</div></div><div class="mock-body"><div class="mock-row mock-highlight"><span class="mock-icon">📂</span><strong>Load unpacked</strong></div><div class="mock-row"><span class="mock-icon">📁</span> FLAME DRAGON HUB</div><div class="mock-row" style="border-color:#e8c15d66"><span class="mock-icon">📄</span><strong>manifest.json</strong></div><div class="mock-button">SELECT FOLDER</div></div></div>'},
+{title:"Pin it and start using it",body:'Click Chrome’s <strong>puzzle-piece</strong> Extensions icon. Find <strong>FLAME DRAGON HUB</strong>, press the pin icon, then open EvoWorld and enjoy!',tip:"That's it! The extension is installed. Keep its extracted folder in the same place so Chrome can keep loading it.",visual:'<div class="mock-window"><div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="mock-url">Chrome toolbar　　🧩</div></div><div class="mock-body"><div class="mock-title">Extensions</div><div class="mock-row"><span class="mock-icon">🔥</span><strong>FLAME DRAGON HUB</strong><span style="margin-left:auto;color:#e8c15d;font-size:19px">📌</span></div><div class="mock-row" style="color:#9ee6b4">✓ Added to Chrome</div></div></div>'}
+];
+let active=0;
+const content=document.getElementById("stepContent"),fill=document.getElementById("progressFill"),label=document.getElementById("stepLabel"),percent=document.getElementById("stepPercent"),prev=document.getElementById("prevStep"),next=document.getElementById("nextStep"),dots=document.getElementById("stepDots"),tip=document.getElementById("ghostTip");
+function render(){
+ const s=steps[active],n=active+1,p=Math.round(n/steps.length*100);
+ label.textContent="STEP "+String(n).padStart(2,"0")+" / 06";percent.textContent=p+"% COMPLETE";fill.style.width=p+"%";
+ content.innerHTML='<div class="step-layout" key="'+n+'"><div class="step-copy"><div class="step-kicker">INSTALLATION · STEP '+String(n).padStart(2,"0")+'</div><h2>'+s.title+'</h2><p>'+s.body+'</p></div><div class="visual">'+s.visual+'</div></div>';
+ tip.textContent=s.tip;prev.disabled=active===0;next.textContent=active===steps.length-1?"Finish ✓":"Next step →";
+ dots.innerHTML=steps.map((_,i)=>'<button type="button" aria-label="Go to step '+(i+1)+'" class="'+(i===active?"active":"")+'" data-step="'+i+'"></button>').join("");
+ dots.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{active=Number(b.dataset.step);render()}));
+}
+prev.addEventListener("click",()=>{if(active>0){active--;render()}});
+next.addEventListener("click",()=>{if(active<steps.length-1){active++;render()}else{document.querySelector(".finish").scrollIntoView({behavior:"smooth",block:"center"})}});
+render();
+</script>
+</body></html>
