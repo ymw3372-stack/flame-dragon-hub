@@ -331,6 +331,112 @@ main::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#e0a64d,#8d571
   body::before,body::after,.fdh-dragon { animation:none !important; }
 }
 
+
+/* FINAL GOLD POLISH — extension popup */
+:root{
+  --panel:rgba(48,34,15,.86);
+  --panel2:rgba(61,43,18,.82);
+  --line:rgba(238,190,99,.36);
+  --purple:#d59a3c;
+  --purple2:#f6d58e;
+  --blue:#a96b25;
+  --blue2:#e8b85f;
+  --orange:#df9d3e;
+  --orange2:#ffe0a0;
+}
+body{
+  background:
+    radial-gradient(ellipse at 50% 12%,rgba(236,183,83,.17),transparent 48%),
+    linear-gradient(145deg,#120d05,#2b1d0b 52%,#100b04);
+}
+body::before{
+  opacity:.82;
+  background-image:
+    radial-gradient(2px 3px at 5% 14%,rgba(255,226,159,.98) 50%,transparent 100%),
+    radial-gradient(1.5px 2px at 13% 61%,rgba(255,177,70,.95) 50%,transparent 100%),
+    radial-gradient(2px 3px at 24% 33%,rgba(255,211,125,.9) 50%,transparent 100%),
+    radial-gradient(1px 2px at 37% 82%,rgba(255,230,171,.95) 50%,transparent 100%),
+    radial-gradient(2px 3px at 49% 22%,rgba(255,183,76,.95) 50%,transparent 100%),
+    radial-gradient(1.5px 2px at 62% 68%,rgba(255,222,145,.95) 50%,transparent 100%),
+    radial-gradient(2px 3px at 75% 39%,rgba(255,187,82,.9) 50%,transparent 100%),
+    radial-gradient(1px 2px at 88% 79%,rgba(255,228,165,.95) 50%,transparent 100%),
+    radial-gradient(1.5px 2px at 96% 18%,rgba(255,177,70,.9) 50%,transparent 100%);
+  background-size:100% 100%;
+}
+body::after{
+  background:
+    radial-gradient(ellipse at 15% 28%,rgba(219,151,48,.28),transparent 43%),
+    radial-gradient(ellipse at 85% 65%,rgba(255,191,82,.22),transparent 45%),
+    radial-gradient(ellipse at 50% 8%,rgba(255,220,145,.16),transparent 40%),
+    radial-gradient(ellipse at 30% 92%,rgba(177,105,29,.18),transparent 40%);
+}
+.fdh-dragon{opacity:.30}
+.fdh-dragon defs linearGradient stop{stop-color:#d9a64e}
+.fdh-dragon defs linearGradient stop:first-child{stop-color:#ffe3a0}
+.fdh-dragon defs linearGradient stop:last-child{stop-color:#9c641f}
+header img{
+  border-color:rgba(245,207,128,.62);
+  box-shadow:0 0 16px rgba(224,170,78,.28),0 0 26px rgba(178,115,35,.18);
+}
+header::after{background:linear-gradient(90deg,transparent,#ffe0a0,#bd812d,transparent)}
+.section{
+  background:linear-gradient(145deg,rgba(58,41,17,.9),rgba(25,18,8,.94));
+  border-color:rgba(238,190,99,.31);
+  box-shadow:0 14px 38px rgba(0,0,0,.42),0 0 22px rgba(214,148,50,.08);
+}
+.tab.active,.btn,.auth-panel .auth-primary{
+  background:linear-gradient(115deg,#a86d27,#d49b42 55%,#f0c66e);
+  color:#211505;
+  box-shadow:0 0 17px rgba(221,166,77,.22);
+}
+.tab.active{border-color:#f3d28d}
+.btn:hover{box-shadow:0 0 22px rgba(238,190,99,.34)}
+.btn.secondary{background:rgba(91,62,24,.78);color:#ffe4ac;border:1px solid rgba(238,190,99,.3)}
+.btn.danger{background:rgba(91,39,24,.88);color:#ffd8b0}
+input[type=search],select,.auth-panel input,.custom-upload-panel input[type=text]{
+  border-color:rgba(238,190,99,.34);
+  background:rgba(19,14,7,.92);
+}
+input:focus,select:focus,.auth-panel input:focus{
+  border-color:#e8bb68;
+  box-shadow:0 0 0 2px rgba(220,166,76,.2);
+}
+select option{background:#211707;color:#fff5df}
+.preview{
+  background:linear-gradient(135deg,rgba(34,24,10,.9),rgba(62,43,16,.76));
+  border-color:rgba(238,190,99,.32);
+}
+#preview{background:radial-gradient(ellipse,rgba(132,91,34,.48),rgba(12,9,4,.94))}
+.tile{
+  border-color:rgba(238,190,99,.25);
+  background:rgba(25,18,8,.86);
+}
+.tile:hover{border-color:#e9c477;background:rgba(78,54,19,.88);box-shadow:0 8px 20px rgba(0,0,0,.4),0 0 16px rgba(218,163,72,.2)}
+.tile.selected{
+  border-color:#f0c66e;
+  background:linear-gradient(150deg,rgba(196,137,48,.34),rgba(111,73,24,.28));
+  box-shadow:0 0 18px rgba(230,179,91,.28);
+}
+.replace-card,.custom-upload-panel,.custom-preview-panel,.custom-list .bundle-preview{
+  background:rgba(29,21,9,.88);
+  border-color:rgba(238,190,99,.27);
+}
+#customPreview{background:radial-gradient(ellipse,rgba(132,91,34,.5),rgba(12,9,4,.95));border-color:rgba(238,190,99,.3)}
+.custom-badge{background:rgba(191,133,44,.2);color:#ffe1a0;border-color:rgba(238,190,99,.4)}
+.active-count{color:#f0c66e}
+.active-mapping{background:rgba(54,38,15,.8);border-color:rgba(238,190,99,.27)}
+.active-mapping .remove-mapping{border-color:rgba(220,151,75,.45);background:rgba(77,39,18,.85);color:#ffdbb0}
+.auth-panel{
+  background:linear-gradient(145deg,rgba(60,42,16,.96),rgba(24,18,8,.96));
+  border-color:rgba(238,190,99,.4);
+  box-shadow:0 18px 46px rgba(0,0,0,.55),0 0 34px rgba(218,164,75,.12);
+}
+.auth-panel .auth-kicker{color:#e3bd78}
+.auth-panel h2{background:linear-gradient(90deg,#fff8e8,#f5ce7b 55%,#e7a64a);-webkit-background-clip:text;background-clip:text;color:transparent}
+#authStatus{color:#f2dfb9;background:rgba(176,119,35,.13);border-color:rgba(226,166,73,.3)}
+#status{color:#f0d18e}
+.active-mapping .mapping-visual img{border-color:rgba(238,190,99,.28)}
+
 </style>
 </head>
 <body>
