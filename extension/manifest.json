@@ -1,36 +1,75 @@
-
 {
   "manifest_version": 3,
-  "name": "FLAME DRAGON HUB — Skin Bridge",
-  "version": "0.2.1",
-  "description": "FLAME DRAGON HUB skin bridge.",
-  "permissions": ["storage"],
-  "host_permissions": ["https://identitytoolkit.googleapis.com/*", "https://securetoken.googleapis.com/*"],
+  "name": "FLAME DRAGON HUB",
+  "version": "0.9.3",
+  "description": "FLAME DRAGON HUB EvoWorld skin selector with shared FLAME DRAGON HUB sign-in. Grim Reaper, Ghostly Reaper, Pumpkin Ghost and Ghosts collections, each keeping its own idle, flying and attack animation frames.",
+  "permissions": [
+    "storage",
+    "declarativeNetRequestWithHostAccess",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://identitytoolkit.googleapis.com/*",
+    "https://securetoken.googleapis.com/*",
+    "https://cdn.eu.evoworld.io/*",
+    "https://cdn.na.evoworld.io/*",
+    "https://cdn1.as.evoworld.io/*",
+    "https://cdn1.sa.evoworld.io/*",
+    "https://cdn1.aus.evoworld.io/*",
+    "https://evoworld.io/*",
+    "https://*.evoworld.io/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "FLAME DRAGON HUB"
+    "default_title": "FLAME DRAGON HUB",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
   },
   "content_scripts": [
     {
       "matches": [
-        "*://evoworld.io/*",
-        "*://*.evoworld.io/*"
+        "https://evoworld.io/*",
+        "https://*.evoworld.io/*"
       ],
-      "js": ["content.js"],
-      "run_at": "document_idle"
+      "js": [
+        "page-bridge.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://evoworld.io/*",
+        "https://*.evoworld.io/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
     }
   ],
-  "externally_connectable": {
-    "matches": [
-      "https://ymw3372-stack.github.io/*"
-    ]
-  }
-}
-
-      "https://ymw3372-stack.github.io/*"
-    ]
-  }
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "page-bridge.js",
+        "frames-catalog.json"
+      ],
+      "matches": [
+        "https://evoworld.io/*",
+        "https://*.evoworld.io/*"
+      ]
+    }
+  ]
 }
