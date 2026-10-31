@@ -32,7 +32,7 @@ function isAdminUser(user) {
 
 const MAX_USERS = 10000;
 // Activity is one read per user, run in parallel, so the sample stays capped.
-const ACTIVITY_SAMPLE = 200;
+const ACTIVITY_SAMPLE = 1000;
 let cachedUsers = [];
 
 function showGate(message, title = "Administrator access required") {
