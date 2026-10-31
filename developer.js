@@ -176,40 +176,60 @@ async function loadDashboard() {
     // account's activity, which is what previously made new sign-ins look missing.
     const sample = cachedUsers.slice(0, ACTIVITY_SAMPLE);
     const results = await Promise.allSettled(sample.map(user =>
-      getDocs(query(collection(db, "users", user.uid, "activity"), orderBy("createdAt", "desc"), limit(5)))
+      getDocs(collection(db, "users", user.uid, "activity"))
     ));
-    const events = [];
+    const accountStats = [];
     const failures = [];
     results.forEach((result, index) => {
       if (result.status !== "fulfilled") {
         failures.push(`${sample[index].email || sample[index].uid}: ${result.reason?.code || result.reason?.message || result.reason}`);
         return;
       }
+      let signIns = 0;
+      let signOuts = 0;
+      let latestTime = null;
       for (const item of result.value.docs) {
-        events.push({ ...item.data(), email: sample[index].email || sample[index].uid });
+        const event = item.data();
+        if (event.type === "sign_in") signIns += 1;
+        if (event.type === "sign_out") signOuts += 1;
+        if (event.createdAt?.toMillis && (!latestTime || event.createdAt.toMillis() > latestTime.toMillis())) {
+          latestTime = event.createdAt;
+        }
       }
+      accountStats.push({
+        email: sample[index].email || sample[index].uid,
+        provider: sample[index].provider || "-",
+        signIns,
+        signOuts,
+        latestTime
+      });
     });
     if (failures.length) {
       console.warn("Activity unreadable for some accounts:", failures);
       showReadError(`Activity could not be read for ${failures.length} of ${sample.length} loaded accounts. First reason: ${failures[0]}`);
     }
-    events.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
-    if ($("totalEvents")) $("totalEvents").textContent = String(events.length);
-    if ($("latestActivity")) $("latestActivity").textContent = events[0]?.createdAt?.toDate?.().toLocaleDateString() || "No events";
+    accountStats.sort((a, b) => (b.latestTime?.toMillis?.() || 0) - (a.latestTime?.toMillis?.() || 0));
+    const totalEvents = accountStats.reduce((sum, account) => sum + account.signIns + account.signOuts, 0);
+    if ($("totalEvents")) $("totalEvents").textContent = String(totalEvents);
+    if ($("latestActivity")) $("latestActivity").textContent = accountStats[0]?.latestTime?.toDate?.().toLocaleDateString() || "No events";
     const table = $("activityTable");
     if (!table) return;
     table.replaceChildren();
-    const latest = events.slice(0, 30);
-    if (!latest.length) {
+    if (!accountStats.length) {
       const row = document.createElement("tr");
       const td = cell("No activity records yet.");
       td.colSpan = 4;
       row.append(td);
       table.append(row);
     } else {
-      for (const event of latest) {
+      for (const account of accountStats) {
         const row = document.createElement("tr");
-        row.append(cell(event.email), cell(event.type), cell(event.provider), cell(formatDate(event.createdAt)));
+        row.append(
+          cell(account.email),
+          cell(account.signIns),
+          cell(account.signOuts),
+          cell(account.provider)
+        );
         table.append(row);
       }
     }
