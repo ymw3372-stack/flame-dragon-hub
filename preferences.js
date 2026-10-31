@@ -17,4 +17,20 @@ const hero=document.querySelector("main .hero");if(hero)hero.insertAdjacentEleme
 function apply(){const code=current(),t=L[code];document.documentElement.lang=code;document.documentElement.dir=t.dir;document.querySelectorAll(".nav-links a").forEach(a=>{const i=["index.html","evolutions.html","skins.html","favorites.html","settings.html"].indexOf(a.getAttribute("href"));if(i>=0)a.textContent=t.nav[i]});const guide=document.querySelector('[data-fdh="guide"]');if(guide)guide.textContent=t.guide;const login=document.querySelector('[data-fdh="login"]');if(login)login.textContent=t.login;const h=document.querySelector(".settings-hero h1");if(h)h.textContent=t.settings;const ah=document.querySelector(".account-settings-card .settings-title h2");if(ah)ah.textContent=t.account;const p=document.querySelector(".account-settings-card .settings-title p");if(p)p.textContent=t.desc;const a=document.querySelector(".account-open-button");if(a)a.textContent="♙ "+t.link;document.getElementById("fdhLanguage").value=code}
 const langSelect=document.getElementById("fdhLanguage");if(langSelect){langSelect.value=current();langSelect.addEventListener("change",e=>{localStorage.setItem(K,e.target.value);apply()});}apply();
 if(location.pathname.endsWith("settings.html")&&new URLSearchParams(location.search).get("account")==="1"){document.body.classList.add("fdh-account-focus");const card=document.querySelector(".account-settings-card");if(card)setTimeout(()=>card.scrollIntoView({behavior:"smooth",block:"center"}),180)}
+
+/* Floating language control + direct account creation shortcut */
+const dockStyle=document.createElement("style");
+dockStyle.textContent=".fdh-language-dock{position:fixed;z-index:99999;left:50%;bottom:14px;transform:translateX(-50%);width:min(430px,calc(100% - 24px));padding:8px 12px;border:1px solid rgba(232,193,93,.5);border-radius:14px;background:rgba(18,13,20,.96);box-shadow:0 8px 28px #0009,0 0 18px #e8c15d25;backdrop-filter:blur(14px)}.fdh-language-dock .fdh-language{display:flex;min-height:38px;padding:4px 8px;align-items:center;gap:12px;background:transparent;border:0;box-shadow:none}.fdh-language-dock select{flex:1;min-width:0;background:#17111d;color:#fff;border:1px solid #ffffff30;border-radius:8px;padding:8px}.fdh-language-dock option{color:#17111d;background:white}body{padding-bottom:78px}#fdh-quick-tools{grid-template-columns:1fr!important;width:min(520px,calc(100% - 32px))!important;margin-left:max(4%,calc((100% - 1150px)/2))!important;margin-right:auto!important}.fdh-quick-btn{min-height:48px!important}.fdh-language-dock .fdh-language-label{color:#e8c15d;font:800 11px Arial,sans-serif;white-space:nowrap}";
+document.head.appendChild(dockStyle);
+const oldLanguage=document.getElementById("fdhLanguage");
+if(oldLanguage){const oldLabel=oldLanguage.closest(".fdh-language");if(oldLabel)oldLabel.remove();}
+const dock=document.createElement("div");dock.className="fdh-language-dock";
+dock.innerHTML='<label class="fdh-language"><span class="fdh-language-label">🌐 SITE LANGUAGE</span><select id="fdhLanguage" aria-label="Select language"><option value="en">🇬🇧 English</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="ru">🇷🇺 Русский</option><option value="hi">🇮🇳 हिन्दी</option><option value="es">🇪🇸 Español</option></select></label>';
+document.body.appendChild(dock);
+const newLanguage=document.getElementById("fdhLanguage");
+newLanguage.value=current();
+newLanguage.addEventListener("change",event=>{localStorage.setItem(K,event.target.value);apply();});
+const accountShortcut=document.querySelector('#fdh-quick-tools .fdh-login');
+if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.innerHTML='✦ <span data-fdh="login">CREATE ACCOUNT — CLICK HERE</span>';}
+
 })();
