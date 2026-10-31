@@ -1,6 +1,6 @@
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { recordAuthEvent } from "./firebase-data.js";
+import { recordAuthEvent, ensureAccountRecord } from "./firebase-data.js";
 
 import {
   getAuth,
@@ -225,8 +225,24 @@ async function startAuth() {
     }
   }
 
-  onAuthStateChanged(auth, user => {
-    renderAccountState(user).catch(errorMessage);
+  onAuthStateChanged(auth, async user => {
+    try {
+      await renderAccountState(user);
+      // Backfill an account document for users whose session was already active
+      // when this synchronization fix was deployed.
+      if (user) {
+        try {
+          await ensureAccountRecord(user);
+        } catch (error) {
+          console.error("Could not sync signed-in account:", error);
+          const detail = [error?.code, error?.message].filter(Boolean).join(" — ");
+          showMessage("Signed in, but account sync failed: "
+            + (detail || "Check the Firestore Rules published in Firebase Console."));
+        }
+      }
+    } catch (error) {
+      errorMessage(error);
+    }
   });
 }
 
