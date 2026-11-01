@@ -137,3 +137,42 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     }
   });
 })();
+
+/* FLAME DRAGON HUB — unique browser visitor tracking.
+   One anonymous ID per browser profile; repeated visits to any page sharing
+   this script reuse the same Firestore document. No login is required. */
+(() => {
+  const VISITOR_KEY = "fdhUniqueProgramVisitorId";
+  const API_KEY = "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0";
+  const ENDPOINT = "https://firestore.googleapis.com/v1/projects/flame-dragon-hub/databases/(default)/documents/programVisitors";
+
+  function getVisitorId() {
+    try {
+      let id = localStorage.getItem(VISITOR_KEY);
+      if (!id) {
+        id = "v_" + (crypto.randomUUID
+          ? crypto.randomUUID().replace(/-/g, "")
+          : Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, "0")).join(""));
+        localStorage.setItem(VISITOR_KEY, id);
+      }
+      return id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  const visitorId = getVisitorId();
+  if (!visitorId) return;
+
+  const fields = {
+    firstSeenAt: { timestampValue: new Date().toISOString() },
+    entryPage: { stringValue: (location.pathname || "/").slice(0, 200) }
+  };
+
+  fetch(ENDPOINT + "?documentId=" + encodeURIComponent(visitorId) + "&key=" + API_KEY, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fields }),
+    keepalive: true
+  }).catch(() => {});
+})();
