@@ -630,6 +630,13 @@ a {
   .install-guide-button, .guide-button-icon { transition: none; }
 }
 
+
+/* v1.0.3 migration announcement */
+.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:22px;margin:8px auto 38px;padding:22px 24px;border:1px solid #ff647766;border-radius:18px;background:linear-gradient(110deg,#421b31,#211827 68%,#1b1725);box-shadow:0 14px 36px #0005;overflow:hidden}
+.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:220px;height:220px;border-radius:50%;background:#ff465722;filter:blur(35px);pointer-events:none}
+.update-announcement-copy{position:relative;min-width:0}.update-announcement-kicker{display:inline-block;margin-bottom:8px;color:#ffd27c;font-size:10px;font-weight:950;letter-spacing:2px}.update-announcement h2{margin:0 0 7px;color:#fff1f4;font-size:clamp(18px,2.5vw,23px)}
+.update-announcement p{margin:0;color:#d3c2d0;font-size:13px;line-height:1.7}.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:11px;background:linear-gradient(110deg,#ed3c58,#982747);color:white;text-decoration:none;font-size:11px;font-weight:950;letter-spacing:.5px;box-shadow:0 8px 22px #ed3c5833;transition:transform .2s,filter .2s}.update-announcement-button:hover{transform:translateY(-2px);filter:brightness(1.12)}
+@media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:0 auto 30px;padding:19px}.update-announcement-button{width:100%}}
 </style>
 </head>
 
@@ -665,6 +672,15 @@ a {
         and customize your experience.
       </p>
     </section>
+<section class="update-announcement" aria-labelledby="update-announcement-title">
+  <div class="update-announcement-copy">
+    <span class="update-announcement-kicker">🔥 IMPORTANT EXTENSION UPDATE · v1.0.3</span>
+    <h2 id="update-announcement-title">A new Network Only version is available</h2>
+    <p>The previous version is no longer the recommended version. Follow the update guide to learn what changed and how to install v1.0.3.</p>
+  </div>
+  <a class="update-announcement-button" href="extension-update.html">UPDATE NOW ↗</a>
+</section>
+
 <section class="orbit-section" aria-label="Quick navigation">
       <div class="orbit-stage">
 
