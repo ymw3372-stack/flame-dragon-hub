@@ -83,7 +83,7 @@ export async function onRequestPost({ request, env }) {
     : "The visitor selected " + LANGUAGE_NAMES[language] + ". Reply entirely in " + LANGUAGE_NAMES[language] + ", unless they explicitly ask you to translate or use another language.";
   const pageContext = String(body.pageContext || "").slice(0, 400);
   try {
-    const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+    const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fp8", {
       messages: [{ role: "system", content: SYSTEM_PROMPT + "\n" + languageInstruction + "\n" + pageContext }, ...messages],
       max_tokens: 650,
       temperature: 0.55,
