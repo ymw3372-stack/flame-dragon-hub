@@ -44,6 +44,22 @@ service cloud.firestore {
     allow update, delete: if false;
   }
 
+  // One anonymous record per browser profile. The website stores a random
+  // ID locally and uses it as the document ID, so repeat visits cannot add rows.
+  // Only the verified administrator can read the visitor collection.
+  match /programVisitors/{visitorId} {
+    allow create: if request.auth == null
+      && request.resource.data.keys().hasOnly(['firstSeenAt', 'entryPage'])
+      && request.resource.data.keys().hasAll(['firstSeenAt', 'entryPage'])
+      && request.resource.data.firstSeenAt is timestamp
+      && request.resource.data.firstSeenAt > request.time - duration.value(10, 'm')
+      && request.resource.data.firstSeenAt < request.time + duration.value(1, 'm')
+      && request.resource.data.entryPage is string
+      && request.resource.data.entryPage.size() <= 200;
+    allow read: if isAdmin();
+    allow update, delete: if false;
+  }
+
   match /users/{uid} {
       allow read: if isOwner(uid) || isAdmin();
 
