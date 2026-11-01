@@ -74,3 +74,19 @@
 /* Keep the header mascot at its intended compact size; override the shared mascot float rule. */
 #dragonGhostRoot .dg-head-mascot .ghost{width:112px;height:128px;margin:0;transform:scale(.42);transform-origin:top left;animation:dgHeadGhostFloat 2.8s ease-in-out infinite;}
 @keyframes dgHeadGhostFloat{50%{transform:scale(.42) translateY(-4px)}}
+
+
+/* Multilingual controls */
+.dg-head{gap:9px}
+.dg-language-label{display:flex;flex-direction:column;gap:3px;flex:0 0 auto;max-width:105px}
+.dg-language-caption{font-size:9px;color:#e8d6df;line-height:1}
+#dgLanguage{max-width:105px;height:30px;padding:0 7px;border:1px solid #e8c15d66;border-radius:8px;background:#211523;color:#ffe6a1;font-size:11px;outline:none}
+#dgLanguage:focus-visible{outline:2px solid #ffe6a1;outline-offset:2px}
+#dragonGhostRoot[dir="rtl"] .dg-head-copy,#dragonGhostRoot[dir="rtl"] .dg-message,#dragonGhostRoot[dir="rtl"] .dg-compose input{text-align:right}
+#dragonGhostRoot[dir="rtl"] .dg-message.bot{align-self:flex-end;border-top-left-radius:14px;border-top-right-radius:5px}
+#dragonGhostRoot[dir="rtl"] .dg-message.user{align-self:flex-start;border-top-right-radius:14px;border-top-left-radius:5px}
+#dragonGhostRoot[dir="rtl"] .dg-compose{flex-direction:row-reverse}
+#dragonGhostRoot[dir="rtl"] .dg-quick{direction:rtl}
+#dragonGhostRoot[dir="rtl"] .dg-head{direction:rtl}
+#dragonGhostRoot[dir="rtl"] .dg-language-label{align-items:flex-start}
+@media(max-width:390px){.dg-head{gap:6px;padding:11px}.dg-head-mascot{width:36px;flex-basis:36px}.dg-head-copy strong{font-size:13px}.dg-head-copy small{font-size:10px}.dg-language-label{max-width:86px}#dgLanguage{max-width:86px;font-size:10px}}
