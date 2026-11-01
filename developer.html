@@ -189,10 +189,10 @@ body:before {
 <div id="extensionAnalyticsContent" class="dev-hidden">
 <div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
 <article class="dev-card"><span>GitHub ZIP downloads</span><strong id="extensionGitHubDownloads">—</strong></article>
-<article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article>
+<article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article><article class="dev-card"><span>Extension installations</span><strong id="extensionInstalls">—</strong></article><article class="dev-card"><span>EvoWorld usage sessions</span><strong id="extensionUsageSessions">—</strong></article>
 <article class="dev-card"><span>Latest download click</span><strong id="extensionLastClick" style="font-size:15px">—</strong></article>
 </div>
-<div class="dev-message">Installations and actual extension usage are not counted yet. They require an updated extension build to send anonymous events; a ZIP download alone does not prove installation.</div>
+<div class="dev-message">Installations count fresh installs of the analytics-enabled build (updates are not counted). Usage sessions count one event per 30 minutes per browser profile while the main EvoWorld site is open. These are event totals, not unique-user counts. A ZIP download alone does not prove installation.</div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Event</th><th>Source</th><th>Date</th></tr></thead><tbody id="extensionEventsTable"><tr><td colspan="3">Loading extension events…</td></tr></tbody></table></div>
 </div>
 </section>
