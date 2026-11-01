@@ -1,0 +1,76 @@
+/* Dragon Ghost — shared assistant, reusing the mascot from install-guide.html */
+#dragonGhostRoot{position:fixed;right:22px;bottom:22px;z-index:99990;font-family:Arial,Helvetica,sans-serif;color:#fff5f7}
+#dragonGhostLauncher{width:76px;height:76px;border:1px solid #e8c15d99;border-radius:50%;background:radial-gradient(circle at 40% 30%,#563049,#1b1422 72%);box-shadow:0 8px 28px #0009,0 0 24px #ff465744;display:grid;place-items:center;cursor:pointer;transition:transform .2s,box-shadow .2s}
+#dragonGhostLauncher:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 12px 32px #000b,0 0 30px #ff465777}
+#dragonGhostLauncher .dg-mini-ghost{transform:scale(.43);width:100px;height:110px;position:relative;pointer-events:none}
+#dragonGhostLauncher .dg-mini-ghost .ghost{width:100px;height:110px;margin:0;filter:drop-shadow(0 0 13px #ff657b99)}
+#dragonGhostLauncher .dg-launch-label{position:absolute;bottom:-5px;right:-6px;background:linear-gradient(100deg,#ed3c58,#9a294b);border:1px solid #ffb0ba;border-radius:20px;padding:4px 7px;font-size:9px;font-weight:900;letter-spacing:.5px;white-space:nowrap}
+#dragonGhostPanel{position:absolute;right:0;bottom:88px;width:min(380px,calc(100vw - 28px));height:min(570px,calc(100vh - 135px));min-height:390px;display:none;flex-direction:column;overflow:hidden;border:1px solid #e8c15d70;border-radius:22px;background:linear-gradient(155deg,#261927,#110f19 70%);box-shadow:0 20px 65px #000b,0 0 32px #ff465722}
+#dragonGhostPanel.open{display:flex;animation:dgPanelIn .22s ease-out}
+@keyframes dgPanelIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.dg-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(100deg,#542038,#26182b);border-bottom:1px solid #e8c15d44}
+.dg-head-copy{flex:1;min-width:0;text-align:left}.dg-head-copy strong{display:block;font-size:15px;letter-spacing:.7px;color:#ffe6a1}.dg-head-copy small{display:block;margin-top:4px;color:#d8c4d2;font-size:11px}
+.dg-close{width:34px;height:34px;border:1px solid #ffffff30;border-radius:10px;background:#ffffff0d;color:#fff;font-size:20px;cursor:pointer}
+.dg-head-mascot{width:45px;height:48px;position:relative;flex:0 0 45px;overflow:visible}
+.dg-head-mascot .ghost{width:45px;height:48px;margin:0;transform:scale(.42);transform-origin:top left;filter:drop-shadow(0 0 9px #ff657b88)}
+.dg-head-mascot .ghost-wand,.dg-head-mascot .ghost-buddy,.dg-head-mascot .buddy-caption{display:none}
+.dg-head-mascot .ghost-eye{top:48px}.dg-head-mascot .ghost-mouth{top:70px}
+.dg-messages{flex:1;min-height:0;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:11px;scroll-behavior:smooth}
+.dg-message{max-width:88%;padding:11px 13px;border-radius:14px;font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;text-align:left}
+.dg-message.bot{align-self:flex-start;background:#ffffff0d;border:1px solid #e8c15d35;color:#fff1d8;border-top-left-radius:5px}
+.dg-message.user{align-self:flex-end;background:linear-gradient(120deg,#8f2946,#57213d);border:1px solid #ff849544;color:white;border-top-right-radius:5px}
+.dg-quick{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}
+.dg-quick button{border:1px solid #e8c15d55;border-radius:20px;padding:7px 10px;background:#e8c15d12;color:#ffe6a1;font-size:11px;font-weight:700;cursor:pointer}
+.dg-quick button:hover{background:#e8c15d25}
+.dg-compose{display:flex;gap:8px;padding:12px;border-top:1px solid #ffffff18;background:#0d0c14}
+.dg-compose input{min-width:0;flex:1;height:43px;border:1px solid #ffffff24;border-radius:12px;background:#211a28;color:white;padding:0 12px;outline:none;font-size:13px}
+.dg-compose input:focus{border-color:#e8c15d88}
+.dg-compose button{width:46px;border:0;border-radius:12px;background:linear-gradient(130deg,#ed3c58,#982747);color:white;font-size:19px;font-weight:900;cursor:pointer}
+.dg-compose button:disabled{opacity:.55;cursor:wait}
+.dg-privacy{padding:0 14px 9px;text-align:center;color:#a99aaa;font-size:10px;background:#0d0c14}
+.dg-typing{display:inline-flex;gap:4px;align-items:center}.dg-typing i{width:5px;height:5px;border-radius:50%;background:#e8c15d;animation:dgDot .8s infinite alternate}.dg-typing i:nth-child(2){animation-delay:.2s}.dg-typing i:nth-child(3){animation-delay:.4s}
+@keyframes dgDot{to{opacity:.25;transform:translateY(-3px)}}
+#dragonGhostRoot .ghost{width:112px;height:128px;position:relative;margin:8px 22px 18px 0;animation:dgGhostFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff657b55)}
+#dragonGhostRoot .ghost-body{position:absolute;inset:8px 8px 0;background:linear-gradient(145deg,#fff9fb,#cbbdce);border-radius:48% 48% 22% 22%;clip-path:polygon(0 0,100% 0,100% 100%,80% 86%,62% 100%,43% 86%,22% 100%,0 86%)}
+#dragonGhostRoot .ghost-eye{position:absolute;top:48px;width:10px;height:15px;border-radius:50%;background:#342338;z-index:2}
+#dragonGhostRoot .ghost-eye.left{left:34px}.dg-head-mascot .ghost-eye.left{left:34px}
+#dragonGhostRoot .ghost-eye.right{right:34px}.dg-head-mascot .ghost-eye.right{right:34px}
+#dragonGhostRoot .ghost-mouth{position:absolute;z-index:2;top:70px;left:48px;width:10px;height:7px;border-radius:50%;background:#ff6679}
+#dragonGhostRoot .ghost-wand{position:absolute;z-index:4;left:-112px;top:-24px;width:196px;height:7px;border-radius:8px;background:linear-gradient(180deg,#e3b77d,#a66b40 48%,#68432e);border:1px solid #edc995;box-shadow:0 2px 6px #0009;transform:rotate(42deg);transform-origin:right center;pointer-events:none}
+#dragonGhostRoot .ghost-wand:before{content:"";position:absolute;right:-6px;top:-5px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0d09b,#9b6039 70%);border:1px solid #e5b77b;box-shadow:0 0 0 3px #fff2}
+#dragonGhostRoot .ghost-buddy{position:absolute;width:100%;height:100%;left:-90%;bottom:0;transform:scale(.7);transform-origin:bottom right;z-index:3;filter:drop-shadow(0 0 13px #ff657b66);animation:dgBuddyFloat 2.4s ease-in-out infinite alternate;pointer-events:none}
+#dragonGhostRoot .ghost-buddy .ghost-body{background:linear-gradient(145deg,#fff,#b8a9c2)}
+#dragonGhostRoot .ghost-buddy .ghost-eye{top:48px;transform:translateX(3px)}
+#dragonGhostRoot .ghost-buddy .ghost-mouth{display:block;top:69px;left:48px;width:13px;height:2px;border-radius:2px;background:#342338;box-shadow:none}
+#dragonGhostRoot .buddy-caption{position:absolute;left:-116%;bottom:-17px;width:90%;z-index:5;color:#ffe6a1;font-size:9px;font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 2px 7px #000;white-space:nowrap;pointer-events:none}
+@keyframes dgGhostFloat{50%{transform:translateY(-9px) rotate(2deg)}}@keyframes dgBuddyFloat{to{transform:translateY(-7px) scale(.7) rotate(-4deg)}}
+#dragonGhostRoot .ghost.talking .ghost-mouth{animation:dgGhostTalk .18s ease-in-out infinite alternate}
+@keyframes dgGhostTalk{to{transform:scaleY(2.1);border-radius:40%}}
+/* Bigger, clearer account sign-in guide */
+.account-login-help{margin:20px 0 22px;padding:22px 24px;border:1px solid #e8c15d88;border-radius:19px;background:linear-gradient(145deg,#422333aa,#201827);box-shadow:0 10px 28px #0004;color:#fff4e5;font-size:15px;line-height:1.8}
+.account-login-help>p:first-child{font-size:16px;color:#ffe6a1;margin:0 0 10px}
+.account-login-help ul{padding-left:23px;margin:10px 0}
+.account-login-help li{margin:10px 0;padding-left:3px}
+.account-login-help strong{color:#ffe6a1}
+.account-login-help .account-help-note{margin:14px 0 0;padding:11px 13px;border-left:3px solid #e8c15d;background:#e8c15d12;border-radius:0 9px 9px 0;font-size:13px}
+.login-ghost-row{display:flex;align-items:center;gap:18px;margin:0 0 16px;padding:14px 16px;border-radius:15px;background:#100d18aa;border:1px solid #e8c15d44}
+.login-ghost-row .login-ghost-art{width:94px;height:94px;flex:0 0 94px;position:relative;transform:scale(.72);transform-origin:center}
+.login-ghost-row .login-ghost-copy{text-align:left;flex:1}
+.login-ghost-row .login-ghost-copy strong{display:block;color:#ffe6a1;font-size:16px;margin-bottom:5px}
+.login-ghost-row .login-ghost-copy p{margin:0;color:#e8dce6;font-size:13px;line-height:1.65}
+@media(max-width:600px){#dragonGhostRoot{right:13px;bottom:14px}#dragonGhostLauncher{width:66px;height:66px}#dragonGhostPanel{right:-3px;bottom:77px;height:min(560px,calc(100vh - 110px));min-height:350px}.account-login-help{padding:17px 15px;font-size:14px}.login-ghost-row{gap:7px;padding:10px}.login-ghost-row .login-ghost-art{width:72px;flex-basis:72px;transform:scale(.58)}}
+@media(prefers-reduced-motion:reduce){#dragonGhostRoot *,#dragonGhostRoot *:before{animation:none!important;transition:none!important}}
+
+/* Same Dragon Ghost mascot in the account explanation card */
+.login-ghost-art .ghost{width:112px;height:128px;position:relative;margin:8px 22px 18px 0;animation:dgGhostFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff657b55)}
+.login-ghost-art .ghost-body{position:absolute;inset:8px 8px 0;background:linear-gradient(145deg,#fff9fb,#cbbdce);border-radius:48% 48% 22% 22%;clip-path:polygon(0 0,100% 0,100% 100%,80% 86%,62% 100%,43% 86%,22% 100%,0 86%)}
+.login-ghost-art .ghost-eye{position:absolute;top:48px;width:10px;height:15px;border-radius:50%;background:#342338;z-index:2}
+.login-ghost-art .ghost-eye.left{left:34px}.login-ghost-art .ghost-eye.right{right:34px}
+.login-ghost-art .ghost-mouth{position:absolute;z-index:2;top:70px;left:48px;width:10px;height:7px;border-radius:50%;background:#ff6679}
+.login-ghost-art .ghost-wand{position:absolute;z-index:4;left:-112px;top:-24px;width:196px;height:7px;border-radius:8px;background:linear-gradient(180deg,#e3b77d,#a66b40 48%,#68432e);border:1px solid #edc995;box-shadow:0 2px 6px #0009;transform:rotate(42deg);transform-origin:right center;pointer-events:none}
+.login-ghost-art .ghost-wand:before{content:"";position:absolute;right:-6px;top:-5px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0d09b,#9b6039 70%);border:1px solid #e5b77b;box-shadow:0 0 0 3px #fff2}
+.login-ghost-art .ghost-buddy{position:absolute;width:100%;height:100%;left:-90%;bottom:0;transform:scale(.7);transform-origin:bottom right;z-index:3;filter:drop-shadow(0 0 13px #ff657b66);animation:dgBuddyFloat 2.4s ease-in-out infinite alternate;pointer-events:none}
+.login-ghost-art .ghost-buddy .ghost-body{background:linear-gradient(145deg,#fff,#b8a9c2)}
+.login-ghost-art .ghost-buddy .ghost-eye{top:48px;transform:translateX(3px)}
+.login-ghost-art .ghost-buddy .ghost-mouth{top:69px;left:48px;width:13px;height:2px;border-radius:2px;background:#342338;box-shadow:none}
+.login-ghost-art .buddy-caption{position:absolute;left:-116%;bottom:-17px;width:90%;z-index:5;color:#ffe6a1;font-size:9px;font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 2px 7px #000;white-space:nowrap;pointer-events:none}

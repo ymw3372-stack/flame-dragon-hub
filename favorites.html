@@ -159,7 +159,8 @@ body::after {
     rgba(255, 55, 75, .11) 32%,
     rgba(255, 45, 65, 0) 72%);
 }
-</style></head><body>
+</style>  <link rel="stylesheet" href="dragon-ghost.css">
+</head><body>
 <aside class="bonus-codes" aria-label="Bonus codes"><strong>ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p></aside>
 <header class="navbar"><a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home"><img src="assets/logo.png" alt=""><span>FLAME DRAGON HUB</span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="favorites.html" class="active" aria-current="page">Favorites</a><a href="settings.html">Settings</a>    <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
   </nav></header><main class="fav-page"><section class="fav-hero"><span class="eyebrow">YOUR PERSONAL COLLECTION</span><h1>Favorites</h1><p>All the Reaper designs you saved, with their original image files and your custom display names.</p></section><div id="favSummary" class="fav-summary"></div><div id="favGrid" class="fav-grid"></div><section id="favEmpty" class="fav-empty fav-hidden"><div class="heart">♡</div><h2>Your vault is waiting</h2><p>Save a few Reaper designs from the Skins page and they’ll appear here with their pictures.</p><a href="skins.html">Explore Reaper Vault →</a></section></main><script src="skins-data.js"></script><script>
@@ -171,4 +172,5 @@ body::after {
  function render(){let fav=read(favKey,[]);if(!Array.isArray(fav))fav=[];const grid=document.getElementById('favGrid');grid.replaceChildren();const items=fav.map(info).filter(Boolean);document.getElementById('favSummary').innerHTML=`<span><strong>${items.length}</strong> saved design${items.length===1?'':'s'}</span><span>Saved on this browser</span>`;document.getElementById('favEmpty').classList.toggle('fav-hidden',items.length>0);for(const x of items){const card=document.createElement('article');card.className='fav-card';const img=document.createElement('img');img.src=x.src;img.alt=x.name;img.loading='lazy';img.onerror=()=>{img.alt='Image unavailable';img.style.display='none';const msg=document.createElement('p');msg.textContent='Image unavailable';card.insertBefore(msg,card.firstChild)};const inf=document.createElement('div');inf.className='fav-card-info';const h=document.createElement('h3');h.textContent=x.name;const p=document.createElement('p');p.textContent=x.c.title;const b=document.createElement('button');b.textContent='♥ Remove from Favorites';b.addEventListener('click',()=>{localStorage.setItem(favKey,JSON.stringify(read(favKey,[]).filter(id=>id!==x.id)));render()});inf.append(h,p,b);card.append(img,inf);grid.append(card)}}render();
 })();
 </script><script src="script.js"></script><script src="preferences.js"></script>    <script src="cursor-glow.js"></script>
+  <script src="dragon-ghost.js"></script>
 </body></html>
