@@ -86,7 +86,20 @@
   launcher.addEventListener("click",()=>panel.classList.contains("open")?closePanel():openPanel());
   close.addEventListener("click",closePanel);
   form.addEventListener("submit",e=>{e.preventDefault();const q=input.value.trim();if(q)ask(q);});
-  root.querySelectorAll("[data-question]").forEach(b=>b.addEventListener("click",()=>{const key=b.dataset.question;const prompts={en:{account:"How do I create an account and verify my email?",install:"How do I install the Chrome extension?",skins:"How do I find evolutions and skins?"},ar:{account:"إزاي أعمل حساب وأأكد البريد الإلكتروني؟",install:"إزاي أثبت إضافة Chrome؟",skins:"ألاقي التطورات والسكنات فين؟"}};ask((prompts[activeLang()]||prompts.en)[key]);}));
+  root.querySelectorAll("[data-question]").forEach(b=>b.addEventListener("click",()=>{const key=b.dataset.question;const prompts={
+    en:{account:"How do I create an account and verify my email?",install:"How do I install the Chrome extension?",skins:"How do I find evolutions and skins?"},
+    ar:{account:"إزاي أعمل حساب وأأكد البريد الإلكتروني؟",install:"إزاي أثبت إضافة Chrome؟",skins:"ألاقي التطورات والسكنات فين؟"},
+    de:{account:"Wie erstelle ich ein Konto und bestätige meine E-Mail?",install:"Wie installiere ich die Chrome-Erweiterung?",skins:"Wo finde ich Entwicklungen und Skins?"},
+    fr:{account:"Comment créer un compte et vérifier mon e-mail ?",install:"Comment installer l’extension Chrome ?",skins:"Où trouver les évolutions et les skins ?"},
+    es:{account:"¿Cómo creo una cuenta y verifico mi correo?",install:"¿Cómo instalo la extensión de Chrome?",skins:"¿Dónde encuentro las evoluciones y los skins?"},
+    pt:{account:"Como crio uma conta e verifico meu e-mail?",install:"Como instalo a extensão do Chrome?",skins:"Onde encontro evoluções e skins?"},
+    tr:{account:"Nasıl hesap oluşturup e-postamı doğrularım?",install:"Chrome eklentisini nasıl yüklerim?",skins:"Evrimleri ve kostümleri nerede bulabilirim?"},
+    ru:{account:"Как создать аккаунт и подтвердить почту?",install:"Как установить расширение Chrome?",skins:"Где найти эволюции и скины?"},
+    hi:{account:"मैं अकाउंट कैसे बनाऊँ और ईमेल सत्यापित कैसे करूँ?",install:"Chrome extension कैसे इंस्टॉल करूँ?",skins:"Evolutions और skins कहाँ मिलेंगे?"},
+    zh:{account:"如何创建账户并验证电子邮件？",install:"如何安装 Chrome 扩展程序？",skins:"在哪里可以找到进化和皮肤？"},
+    ja:{account:"アカウントを作成してメールを確認するには？",install:"Chrome 拡張機能をインストールするには？",skins:"進化とスキンはどこで見つかりますか？"},
+    ko:{account:"계정을 만들고 이메일을 인증하려면 어떻게 하나요?",install:"Chrome 확장 프로그램을 어떻게 설치하나요?",skins:"진화와 스킨은 어디에서 찾을 수 있나요?"}
+  };ask((prompts[activeLang()]||prompts.en)[key]);}));
   langSelect.addEventListener("change",()=>{selectedLang=langSelect.value;renderLanguage();});
   document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
   renderLanguage();
