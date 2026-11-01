@@ -156,15 +156,24 @@ body:before {
 <div class="dev-head"><div><span class="dev-kicker">PRIVATE CONTROL CENTER</span><h1>Developer Dashboard</h1><p>Quick overview of registered accounts and sign-up details.</p></div><span class="dev-pill">🛡️ Verified owner access</span></div>
 <section id="devGate" class="dev-panel"><h2>Checking administrator access…</h2><p class="muted" id="devStatus">Connecting securely to Firebase Authentication.</p></section>
 <section id="devContent" class="dev-hidden">
-<div class="dev-grid">
-<article class="dev-card"><span>Registered accounts</span><strong id="totalUsers">—</strong></article>
-</div>
-
-<div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Email / Account</th><th>Registration date</th><th>Sign-in method</th><th>Email status</th><th>Last sign-in</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
-</section>
-
-
-<p class="dev-foot">Account suspension, deletion and role changes remain disabled until a trusted server-side Firebase Admin SDK service is configured.</p>
+  <div class="dev-grid">
+    <article class="dev-card"><span>Registered accounts</span><strong id="totalUsers">—</strong></article>
+  </div>
+  <section class="dev-panel">
+    <h2>Registered accounts</h2>
+    <p class="muted">Search accounts and view email, registration date, sign-in method, verification and last sign-in. Passwords are never displayed.</p>
+    <div class="dev-toolbar">
+      <input id="userSearch" type="search" placeholder="Search by email, name or UID…" autocomplete="off">
+      <button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button>
+    </div>
+    <div class="dev-table-wrap">
+      <table class="dev-table">
+        <thead><tr><th>Email / Account</th><th>Registration date</th><th>Sign-in method</th><th>Email status</th><th>Last sign-in</th></tr></thead>
+        <tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody>
+      </table>
+    </div>
+    <p id="userCount" class="dev-foot"></p>
+  </section>
 </section>
 </main>
 <script type="module" src="developer.js"></script>
