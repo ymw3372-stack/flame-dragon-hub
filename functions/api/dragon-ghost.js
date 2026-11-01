@@ -66,8 +66,8 @@ export async function onRequestPost({ request, env }) {
   }
   let body;
   try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON" }, { status: 400 }); }
-  if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 8) {
-    return Response.json({ error: "Send between 1 and 8 messages" }, { status: 400 });
+  if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 12) {
+    return Response.json({ error: "Send between 1 and 12 messages" }, { status: 400 });
   }
   const messages = body.messages.map(m => ({
     role: m.role === "assistant" ? "assistant" : "user",

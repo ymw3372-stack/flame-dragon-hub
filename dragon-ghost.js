@@ -76,11 +76,11 @@
     addMessage(question,"user");history.push({role:"user",content:question});input.value="";send.disabled=true;
     const typing=addMessage(t("thinking"),"bot");
     try{
-      const response=await fetch("/api/dragon-ghost",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:history.slice(-8),pageContext,language:selectedLang==="auto"?"auto":selectedLang})});
+      const response=await fetch("/api/dragon-ghost",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:history.slice(-12),pageContext,language:selectedLang==="auto"?"auto":selectedLang})});
       if(!response.ok)throw new Error("Assistant endpoint unavailable");
       const data=await response.json(),answer=String(data.response||data.answer||"").trim();if(!answer)throw new Error("Empty assistant response");
       typing.textContent=answer;history.push({role:"assistant",content:answer});
-    }catch(error){typing.textContent=localAnswer(question)+"\n\n"+(activeLang()==="ar"?"(وضع المساعدة السريعة — قد لا تكون إجابة الذكاء الاصطناعي متاحة حالياً.)":"(Quick help mode — AI responses may be temporarily unavailable.)");}
+    }catch(error){const unavailable={ar:"مش قادر أوصل لخدمة الذكاء الاصطناعي دلوقتي. جرّب تبعت سؤالك بعد شوية؛ مش هديك إجابة جاهزة ممكن تكون بعيدة عن سؤالك.",en:"I can’t reach the AI service right now. Please try again shortly; I don’t want to give you a canned answer that may not fit your question.",de:"Der KI-Dienst ist gerade nicht erreichbar. Bitte versuche es später erneut.",fr:"Le service IA est momentanément indisponible. Réessayez dans un instant.",es:"El servicio de IA no está disponible ahora. Inténtalo de nuevo en un momento.",pt:"O serviço de IA está indisponível agora. Tente novamente em instantes.",tr:"Yapay zekâ hizmetine şu anda ulaşılamıyor. Lütfen biraz sonra tekrar dene.",ru:"Сейчас не удаётся подключиться к ИИ. Попробуйте ещё раз позже.",hi:"अभी AI सेवा से कनेक्ट नहीं हो पा रहा है। कृपया थोड़ी देर बाद फिर कोशिश करें।",zh:"目前无法连接 AI 服务，请稍后重试。",ja:"現在 AI サービスに接続できません。しばらくしてから再試行してください。",ko:"현재 AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요."};typing.textContent=unavailable[activeLang()]||unavailable.en;}
     finally{send.disabled=false;input.focus();messages.scrollTop=messages.scrollHeight;}
   }
   launcher.addEventListener("click",()=>panel.classList.contains("open")?closePanel():openPanel());
