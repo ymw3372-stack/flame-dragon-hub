@@ -70,3 +70,7 @@
 .login-ghost-art .buddy-caption{position:absolute;left:-116%;bottom:-17px;width:90%;z-index:5;color:#ffe6a1;font-size:9px;font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 2px 7px #000;white-space:nowrap;pointer-events:none}
 @media(max-width:600px){#dragonGhostRoot{right:13px;bottom:14px}#dragonGhostLauncher{width:62px;height:62px}#dragonGhostPanel{right:-3px;bottom:73px;height:min(560px,calc(100vh - 105px));min-height:350px}.account-login-help{padding:17px 15px;font-size:14px}.login-ghost-row{gap:7px;padding:10px}.login-ghost-row .login-ghost-art{width:72px;flex-basis:72px;transform:scale(.58)}}
 @media(prefers-reduced-motion:reduce){#dragonGhostRoot *,#dragonGhostRoot *:before{animation:none!important;transition:none!important}}
+
+/* Keep the header mascot at its intended compact size; override the shared mascot float rule. */
+#dragonGhostRoot .dg-head-mascot .ghost{width:112px;height:128px;margin:0;transform:scale(.42);transform-origin:top left;animation:dgHeadGhostFloat 2.8s ease-in-out infinite;}
+@keyframes dgHeadGhostFloat{50%{transform:scale(.42) translateY(-4px)}}
