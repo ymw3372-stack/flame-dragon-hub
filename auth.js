@@ -41,6 +41,7 @@ const resetButton = document.getElementById("resetPassword");
 const signOutButton = document.getElementById("signOut");
 const resendVerificationButton = document.getElementById("resendVerification");
 const refreshVerificationButton = document.getElementById("refreshVerification");
+const loginHelp = document.getElementById("loginHelp");
 
 async function startAuth() {
   await setPersistence(auth, browserLocalPersistence);
@@ -121,9 +122,13 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
-      const saveWarning = await recordAuthEventSafely(credential.user, "register");
+      const registerWarning = await recordAuthEventSafely(credential.user, "register");
+      // Firebase signs the new user in immediately after account creation.
+      // Record that session too, so the dashboard does not show 0 sign-ins.
+      const signInWarning = await recordAuthEventSafely(credential.user, "sign_in");
       await sendEmailVerification(credential.user);
-      showMessage(saveWarning || ("Account created! We sent a verification link to " + credential.user.email + ". Check your inbox and spam folder."));
+      const saveWarning = [registerWarning, signInWarning].filter(Boolean).join(" ");
+      showMessage(saveWarning || ("Account created! We sent a verification link to " + credential.user.email + ". Open the link in your email, then return here. Check Spam/Junk if needed."));
     } catch (error) {
       errorMessage(error);
     }
@@ -199,7 +204,8 @@ async function startAuth() {
     const verified = Boolean(user && user.emailVerified);
 
     if (!signedIn) {
-      showMessage("Sign in or create your account");
+      showMessage("Choose Email and password or Continue with Google. Use the same method you used when you registered.");
+      if (loginHelp) loginHelp.hidden = false;
       form.hidden = false;
       googleButton.hidden = false;
       resetButton.hidden = false;
@@ -210,6 +216,7 @@ async function startAuth() {
       return;
     }
 
+    if (loginHelp) loginHelp.hidden = true;
     form.hidden = true;
     googleButton.hidden = true;
     resetButton.hidden = true;
