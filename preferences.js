@@ -1,3 +1,15 @@
+/* Apply the saved site theme on every regular hub page.
+   Developer Dashboard intentionally keeps its own gold-only appearance. */
+(() => {
+  const validThemes = new Set(["ember", "night", "void", "frost"]);
+  let theme = "ember";
+  try {
+    const saved = localStorage.getItem("flameDragonTheme") || "ember";
+    if (validThemes.has(saved)) theme = saved;
+  } catch (_) {}
+  if (document.body) document.body.dataset.theme = theme;
+})();
+
 (() => {
 const L={
 en:{dir:"ltr",nav:["Home","Evolutions","Skins Library","Favorites","Settings"],guide:"INSTALL GUIDE",login:"SIGN IN",account:"Your Account",desc:"Manage your player profile, profile photo, and sign-in details in one place.",link:"YOUR ACCOUNT",settings:"Settings"},
