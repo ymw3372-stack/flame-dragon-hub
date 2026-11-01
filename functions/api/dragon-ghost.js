@@ -17,7 +17,13 @@ If unsure about a feature, say so honestly and guide the visitor to the relevant
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
   const host = request.headers.get("Host") || "";
-  if (origin) {\n    try { if (new URL(origin).host !== host) return Response.json({ error: "Origin not allowed" }, { status: 403 }); }\n    catch { return Response.json({ error: "Invalid origin" }, { status: 403 }); }\n  }
+  if (origin) {
+    try {
+      if (new URL(origin).host !== host) return Response.json({ error: "Origin not allowed" }, { status: 403 });
+    } catch {
+      return Response.json({ error: "Invalid origin" }, { status: 403 });
+    }
+  }
   if (!env.AI || typeof env.AI.run !== "function") {
     return Response.json({ error: "AI binding is not configured" }, { status: 503 });
   }
