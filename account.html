@@ -222,6 +222,13 @@
 @media(max-width:800px){.navbar{align-items:flex-start;flex-direction:column;justify-content:center;padding:14px 0;gap:10px}.nav-links{justify-content:flex-start;width:100%}}
 @media(max-width:760px){.account-page{width:92%;margin:22px auto 45px;padding:0}.account-layout{grid-template-columns:1fr}.account-profile-card,.account-card{padding:20px}}
 
+      .account-login-help{margin:14px 0;padding:15px 17px;border:1px solid rgba(255,80,100,.22);border-radius:13px;background:rgba(255,65,85,.055);color:#e8dce2;font-size:13px;line-height:1.65}
+    .account-login-help p{margin:0 0 9px}
+    .account-login-help ul{margin:8px 0;padding-left:20px}
+    .account-login-help li{margin:7px 0}
+    .account-login-help strong{color:#ffb5bd}
+    .account-login-help em{color:#ffd0a8;font-style:normal}
+    .account-login-help .account-help-note{margin:9px 0 0;color:#b8aab8;font-size:12px}
   </style>
 
 <style>
@@ -274,6 +281,15 @@ body::after{content:"";display:block!important;position:fixed;inset:-30%;z-index
       <section id="account" class="account-card" aria-labelledby="accountHeading">
         <h1 id="accountHeading">🐉 Your Account</h1>
         <p class="account-subtitle">Sign in or create an account to join the hub.</p>
+        <div id="loginHelp" class="account-login-help">
+          <p><strong>Already have an account?</strong> Choose the same sign-in method you used when you registered.</p>
+          <ul>
+            <li><strong>Email:</strong> Enter your email and password, then select <em>Sign in</em>. You do not need a new verification email every time.</li>
+            <li><strong>New email account:</strong> Select <em>Create account</em>. We will send a verification link to your inbox. Open the link, then return here and select <em>I've verified my email</em>. Check Spam/Junk if you cannot find it.</li>
+            <li><strong>Google:</strong> Select <em>Continue with Google</em> and choose your Google account.</li>
+          </ul>
+          <p class="account-help-note">Forgot your email-account password? Enter your email above and select <em>Forgot password?</em>.</p>
+        </div>
         <p id="authStatus" aria-live="polite">Checking account...</p>
         <form id="authForm">
           <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
