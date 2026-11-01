@@ -63,7 +63,14 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   }
   const visits = Number(localStorage.getItem(visitKey) || "0");
   const pending = localStorage.getItem(pendingKey) === "1";
-  const dueAt = Number(localStorage.getItem(nextPromptKey) || "4");
+  const scheduleVersionKey = "fdhYtScheduleVersion";
+  if (localStorage.getItem(scheduleVersionKey) !== "2") {
+    if (localStorage.getItem(optedInKey) !== "1" && !pending) {
+      localStorage.setItem(nextPromptKey, "1");
+    }
+    localStorage.setItem(scheduleVersionKey, "2");
+  }
+  const dueAt = Number(localStorage.getItem(nextPromptKey) || "1");
 
   // A user's own confirmation suppresses future reminders on this browser.
   if (localStorage.getItem(optedInKey) === "1") return;
@@ -118,8 +125,8 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     });
     overlay.querySelector("#fdh-yt-no").addEventListener("click", snooze);
   } else {
-    overlay.querySelector("#fdh-yt-sub").addEventListener("click", () => openChannel(subscribeUrl));
-    overlay.querySelector("#fdh-yt-watch").addEventListener("click", () => openChannel(channel));
+    overlay.querySelector("#fdh-yt-sub").addEventListener("click", event => { event.preventDefault(); openChannel(subscribeUrl); });
+    overlay.querySelector("#fdh-yt-watch").addEventListener("click", event => { event.preventDefault(); openChannel(channel); });
     overlay.querySelector("#fdh-yt-later").addEventListener("click", snooze);
   }
 
