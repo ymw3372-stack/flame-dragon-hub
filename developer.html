@@ -145,6 +145,8 @@ body:before {
 .dev-item { border-color:rgba(235,190,104,.22); background:rgba(45,32,13,.38); }
 
  .dev-account-toggle{padding:7px 11px;min-width:88px;font-size:12px;white-space:nowrap}.dev-account-detail-row td{padding:0 10px 14px!important}.dev-account-detail{padding:15px 18px;border:1px solid rgba(239,194,105,.28);border-radius:12px;background:rgba(10,8,5,.48);color:#f5e6c5}.dev-account-detail p{margin:10px 0 6px;color:#d5c49e}.dev-account-event-list{margin:8px 0 0;padding-left:22px;color:#e8d9b7;line-height:1.9}.dev-account-event-list li{font-size:13px}
+.dev-master-toggle{margin:14px 0 4px;min-width:160px}
+#accountsContent{margin-top:8px}
 </style>
   <link rel="stylesheet" href="dragon-ghost.css">
 </head>
@@ -167,8 +169,11 @@ body:before {
 </div>
 <section class="dev-panel">
 <h2>Accounts</h2><p class="muted">Read-only account overview. Passwords and authentication secrets are never visible here.</p>
+<button id="toggleAllAccounts" class="dev-button gold" type="button" aria-expanded="false" aria-controls="accountsContent">⌄ Show Accounts</button>
+<div id="accountsContent" class="dev-hidden">
 <div class="dev-toolbar"><input id="userSearch" type="search" placeholder="Search by email, display name or UID…" autocomplete="off"><button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button></div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Provider</th><th>Email status</th><th>Created</th><th>Last activity</th><th>Details</th></tr></thead><tbody id="usersTable"><tr><td colspan="6">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
+</div>
 </section>
 <section class="dev-panel">
 <h2>Login &amp; logout counts</h2><p class="muted">Total recorded sign-ins and sign-outs for each loaded account (up to 1,000 accounts). Counts include the activity records currently stored for that account.</p>
