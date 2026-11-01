@@ -33,7 +33,7 @@ newLanguage.addEventListener("change",event=>{localStorage.setItem(K,event.targe
 const accountShortcut=document.querySelector('#fdh-quick-tools .fdh-login');
 if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.innerHTML='✦ <span data-fdh="login">CREATE ACCOUNT — CLICK HERE</span>';}
 
-}
+})();
 
 /* FLAME DRAGON YouTube welcome prompt — gentle reminders across visits */
 (() => {
@@ -120,8 +120,4 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
       document.removeEventListener("keydown", onEscape);
     }
   });
-})();
-
-})();
-
 })();
