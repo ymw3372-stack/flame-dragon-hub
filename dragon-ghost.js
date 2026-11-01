@@ -2,15 +2,19 @@
   if (window.__dragonGhostLoaded) return;
   window.__dragonGhostLoaded = true;
   const mascot = '<div class="ghost" aria-hidden="true"><div class="ghost-body"></div><i class="ghost-eye left"></i><i class="ghost-eye right"></i><i class="ghost-mouth"></i><div class="ghost-wand"></div><div class="ghost-buddy"><div class="ghost-body"></div><i class="ghost-eye left"></i><i class="ghost-eye right"></i><i class="ghost-mouth"></i></div><span class="buddy-caption">YOU LISTEN</span></div>';
+  const brandMark = '<svg class="dg-brand-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M20 3.5 24.2 14l10.3 6-10.3 6L20 36.5 15.8 26 5.5 20l10.3-6L20 3.5Z" fill="none" stroke="#ffe6a1" stroke-width="2.2" stroke-linejoin="round"/><path d="m20 11 3.1 7.1L30 20l-6.9 1.9L20 29l-3.1-7.1L10 20l6.9-1.9L20 11Z" fill="#ffe6a1" opacity=".9"/></svg>';
   const root = document.createElement("div");
   root.id = "dragonGhostRoot";
-  root.innerHTML = '<section id="dragonGhostPanel" role="dialog" aria-label="Dragon Ghost Assistant" aria-modal="false"><header class="dg-head"><div class="dg-head-mascot">'+mascot+'</div><div class="dg-head-copy"><strong>DRAGON GHOST</strong><small>Your FLAME DRAGON HUB helper</small></div><button class="dg-close" type="button" aria-label="Close chat">×</button></header><div class="dg-messages" id="dgMessages" aria-live="polite"><div class="dg-message bot">Hey! 👻🔥 I’m Dragon Ghost. Ask me about accounts, EvoWorld evolutions, skins, favorites, or installing the extension.</div></div><div class="dg-quick"><button type="button" data-question="How do I create an account and verify my email?">Account help</button><button type="button" data-question="How do I install the Chrome extension?">Install extension</button><button type="button" data-question="How do I find evolutions and skins?">Evolutions & skins</button></div><form class="dg-compose" id="dgForm"><input id="dgInput" maxlength="1200" autocomplete="off" placeholder="Ask Dragon Ghost..." aria-label="Your question"><button type="submit" aria-label="Send message">➤</button></form><div class="dg-privacy">Don’t share passwords, verification codes, or private information.</div></section><button id="dragonGhostLauncher" type="button" aria-label="Open Dragon Ghost Assistant"><div class="dg-mini-ghost">'+mascot+'</div><span class="dg-launch-label">ASK ME</span></button>';
+  root.innerHTML = '<section id="dragonGhostPanel" role="dialog" aria-label="Dragon Ghost Assistant" aria-modal="false"><header class="dg-head"><div class="dg-head-mascot">'+mascot+'</div><div class="dg-head-copy"><strong>DRAGON GHOST</strong><small>Your FLAME DRAGON HUB helper</small></div><button class="dg-close" type="button" aria-label="Close chat">×</button></header><div class="dg-messages" id="dgMessages" aria-live="polite"><div class="dg-message bot">Hey! 👻🔥 I’m Dragon Ghost. Ask me about accounts, EvoWorld evolutions, skins, favorites, or installing the extension.</div></div><div class="dg-quick"><button type="button" data-question="How do I create an account and verify my email?">Account help</button><button type="button" data-question="How do I install the Chrome extension?">Install extension</button><button type="button" data-question="How do I find evolutions and skins?">Evolutions & skins</button></div><form class="dg-compose" id="dgForm"><input id="dgInput" maxlength="1200" autocomplete="off" placeholder="Ask Dragon Ghost..." aria-label="Your question"><button type="submit" aria-label="Send message">➤</button></form><div class="dg-privacy">Don’t share passwords, verification codes, or private information.</div></section><button id="dragonGhostLauncher" type="button" aria-label="Open Dragon Ghost Assistant" aria-expanded="false">'+brandMark+'<span class="dg-launch-label">AI SUPPORT</span></button>';
   document.body.appendChild(root);
   const panel=root.querySelector("#dragonGhostPanel"), launcher=root.querySelector("#dragonGhostLauncher"), close=root.querySelector(".dg-close"), messages=root.querySelector("#dgMessages"), form=root.querySelector("#dgForm"), input=root.querySelector("#dgInput"), send=form.querySelector("button");
   let history=[];
   const page=location.pathname.split("/").pop()||"index.html";
   const pageContext="Current page: "+page+". Site: FLAME DRAGON HUB, an unofficial EvoWorld companion. Main pages: Home, Evolutions, Skins, Favorites, Account, Profile, Settings, New Player Guide, Installation Guide.";
   function addMessage(text,role){const el=document.createElement("div");el.className="dg-message "+role;el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight;return el;}
+  function openPanel(){panel.classList.remove("closing");panel.classList.add("open");launcher.setAttribute("aria-expanded","true");input.focus();}
+  function closePanel(){if(!panel.classList.contains("open"))return;panel.classList.remove("open");panel.classList.add("closing");launcher.setAttribute("aria-expanded","false");}
+  panel.addEventListener("animationend",e=>{if(e.target!==panel)return;if(e.animationName==="dgPanelOut")panel.classList.remove("closing");});
   function localAnswer(q){
     const s=q.toLowerCase();
     if(/account|sign.?in|login|log in|google|password|verify|verification|email|حساب|تسجيل|دخول|كلمه|كلمة|بريد|تحقق/.test(s))return "For an existing account, use the same method you registered with: email + password, or Continue with Google. For a new email account, choose Create account, open the verification link sent to your inbox, then return to Account. Check Spam/Junk too. Never share your password or verification link with me. Open Account: account.html";
@@ -35,9 +39,9 @@
       typing.textContent=localAnswer(question)+"\n\n(Quick help mode — the AI connection will be enabled after the site’s Cloudflare AI binding is configured.)";
     }finally{send.disabled=false;input.focus();messages.scrollTop=messages.scrollHeight;}
   }
-  launcher.addEventListener("click",()=>{panel.classList.toggle("open");if(panel.classList.contains("open"))input.focus();});
-  close.addEventListener("click",()=>panel.classList.remove("open"));
+  launcher.addEventListener("click",()=>{if(panel.classList.contains("open"))closePanel();else openPanel();});
+  close.addEventListener("click",closePanel);
   form.addEventListener("submit",e=>{e.preventDefault();const q=input.value.trim();if(q)ask(q);});
   root.querySelectorAll("[data-question]").forEach(b=>b.addEventListener("click",()=>ask(b.dataset.question)));
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")panel.classList.remove("open");});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
 })();
