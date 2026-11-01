@@ -148,40 +148,8 @@ body:before {
 .dev-master-toggle{margin:14px 0 4px;min-width:160px}
 #accountsContent{margin-top:8px}
 
-/* Respect the visitor's saved hub theme on the Developer page. */
-body[data-theme="ember"] {
-  background: radial-gradient(ellipse at 50% 35%, rgba(130,22,45,.20), transparent 45%), #100b10 !important;
-  background-attachment: fixed !important;
-}
-body[data-theme="night"] {
-  background: radial-gradient(circle at 50% 45%, rgba(80,90,120,.25) 0%, rgba(30,35,55,.12) 25%, transparent 50%), linear-gradient(135deg,#05070d 0%,#101522 45%,#070910 100%) !important;
-  background-attachment: fixed !important;
-}
-body[data-theme="void"] {
-  background: radial-gradient(circle at 50% 45%, rgba(150,60,255,.28) 0%, rgba(80,30,160,.12) 25%, transparent 50%), linear-gradient(135deg,#0c0414 0%,#210b35 45%,#08030d 100%) !important;
-  background-attachment: fixed !important;
-}
-body[data-theme="frost"] {
-  background: radial-gradient(circle at 50% 45%, rgba(100,210,255,.25) 0%, rgba(50,130,190,.10) 25%, transparent 50%), linear-gradient(135deg,#041016 0%,#0b2530 45%,#03090d 100%) !important;
-  background-attachment: fixed !important;
-}
-body[data-theme="night"]:before, body[data-theme="night"]:after,
-body[data-theme="void"]:before, body[data-theme="void"]:after,
-body[data-theme="frost"]:before, body[data-theme="frost"]:after {
-  display: none !important;
-}
 </style>
-<script>
-(() => {
-  const allowed = new Set(["ember", "night", "void", "frost"]);
-  let saved = "ember";
-  try { saved = localStorage.getItem("flameDragonTheme") || "ember"; } catch (_) {}
-  document.documentElement.dataset.theme = allowed.has(saved) ? saved : "ember";
-  document.addEventListener("DOMContentLoaded", () => {
-    document.body.dataset.theme = document.documentElement.dataset.theme;
-  }, { once: true });
-})();
-</script>
+
 </head>
 <body>
 <header style="width:min(1180px,92%);margin:auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.08)">
