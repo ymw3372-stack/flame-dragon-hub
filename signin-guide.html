@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100b10">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <title>Sign-in Help | FLAME DRAGON HUB</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dragon-ghost.css">
+  <style>
+    .signin-guide{width:min(1050px,92%);margin:38px auto 70px}
+    .signin-hero{position:relative;display:flex;align-items:center;gap:30px;min-height:245px;padding:30px 34px;overflow:hidden;border:1px solid #e8c15d55;border-radius:24px;background:linear-gradient(115deg,#21121f 0%,#17172b 60%,#241323 100%);box-shadow:0 18px 55px #0006}
+    .signin-hero:before{content:"";position:absolute;width:330px;height:330px;right:-70px;top:-160px;border-radius:50%;background:#e33b5b22;filter:blur(25px)}
+    .signin-ghost-stage{position:relative;flex:0 0 185px;height:175px;display:grid;place-items:center}
+    .signin-ghost{position:relative;width:128px;height:145px;animation:signinFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 24px #ff668866)}
+    .signin-ghost-body{position:absolute;inset:7px 6px 0;border-radius:49% 49% 20% 20%;background:linear-gradient(145deg,#fff,#c9bdd8);clip-path:polygon(0 0,100% 0,100% 100%,80% 86%,62% 100%,43% 86%,22% 100%,0 86%)}
+    .signin-ghost-eye{position:absolute;top:51px;width:12px;height:17px;border-radius:50%;background:#302337;z-index:2}
+    .signin-ghost-eye.left{left:38px}.signin-ghost-eye.right{right:38px}
+    .signin-ghost-mouth{position:absolute;z-index:3;top:78px;left:57px;width:13px;height:7px;border-radius:50%;background:#ed637a;transform-origin:center;animation:signinTalk .38s ease-in-out infinite alternate}
+    .signin-speech{position:absolute;left:142px;top:2px;width:210px;padding:12px 14px;border:1px solid #e8c15d77;border-radius:15px 15px 15px 4px;background:#130f1feF;color:#ffe9bd;font-size:13px;line-height:1.55;box-shadow:0 8px 25px #0006;animation:speechAppear .7s ease both}
+    .signin-speech:after{content:"";position:absolute;left:-8px;bottom:17px;width:14px;height:14px;background:#130f1f;border-left:1px solid #e8c15d77;border-bottom:1px solid #e8c15d77;transform:rotate(45deg)}
+    .signin-speech strong{display:block;margin-bottom:4px;color:#ffe08d;font-size:14px}
+    .signin-hero-copy{position:relative;z-index:1;max-width:590px}
+    .signin-kicker{color:#f3c879;font-size:11px;font-weight:900;letter-spacing:2px}
+    .signin-hero h1{margin:9px 0 10px;color:#fff;font-size:clamp(27px,4vw,39px);line-height:1.12}
+    .signin-hero p{margin:0;color:#d3c6d6;font-size:15px;line-height:1.7}
+    .signin-section-title{margin:32px 0 14px;color:#ffe0a1;font-size:22px}
+    .signin-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+    .signin-step{padding:20px;border:1px solid #ffffff1c;border-radius:17px;background:linear-gradient(145deg,#1c1725,#12131e);box-shadow:0 10px 30px #0003}
+    .signin-step-number{display:inline-grid;place-items:center;width:34px;height:34px;margin-bottom:11px;border-radius:10px;background:#e8c15d18;border:1px solid #e8c15d55;color:#ffe0a1;font-weight:900}
+    .signin-step h2{margin:0 0 8px;color:#fff;font-size:17px}
+    .signin-step p,.signin-step li{color:#c9bfce;font-size:14px;line-height:1.75}
+    .signin-step p{margin:0}
+    .signin-step ol{margin:8px 0 0;padding-left:21px}
+    .signin-step li{margin:5px 0}
+    .signin-tip{margin-top:24px;padding:17px 20px;border-left:3px solid #e8c15d;border-radius:0 13px 13px 0;background:#e8c15d12;color:#e4d9e6;font-size:14px;line-height:1.75}
+    .signin-tip strong{color:#ffe0a1}
+    .signin-back{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:10px 15px;border:1px solid #e8c15d55;border-radius:11px;color:#ffe0a1;text-decoration:none;background:#e8c15d10}
+    @keyframes signinFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+    @keyframes signinTalk{from{transform:scaleY(.35)}to{transform:scaleY(1.65)}}
+    @keyframes speechAppear{from{opacity:0;transform:translateY(9px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:700px){.signin-hero{padding:22px 18px;gap:8px;align-items:flex-start;flex-direction:column}.signin-ghost-stage{height:155px;width:100%;flex-basis:auto}.signin-speech{left:calc(50% + 15px);top:0;width:min(205px,54vw)}.signin-steps{grid-template-columns:1fr}.signin-guide{margin-top:22px}}
+    @media(prefers-reduced-motion:reduce){.signin-ghost,.signin-ghost-mouth,.signin-speech{animation:none}}
+  </style>
+</head>
+<body>
+  <aside class="bonus-codes" aria-label="Bonus codes"><strong>ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p></aside>
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home"><img src="assets/logo.png" alt=""><span>FLAME DRAGON HUB</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a><a href="evolutions.html">Evolutions</a><a href="skins.html">Skins</a><a href="favorites.html">Favorites</a><a href="settings.html">Settings</a><a href="account.html">Account</a><a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
+    </nav>
+  </header>
+  <main class="signin-guide">
+    <a class="signin-back" href="account.html">← Back to Account</a>
+    <section class="signin-hero" aria-labelledby="signinTitle">
+      <div class="signin-ghost-stage" aria-label="Animated Dragon Ghost speaking">
+        <div class="signin-ghost"><div class="signin-ghost-body"></div><i class="signin-ghost-eye left"></i><i class="signin-ghost-eye right"></i><i class="signin-ghost-mouth"></i></div>
+        <div class="signin-speech"><strong>DRAGON GHOST</strong>Hi! I'll walk you through signing in, creating an account, and getting back in if you forget your password.</div>
+      </div>
+      <div class="signin-hero-copy">
+        <span class="signin-kicker">FLAME DRAGON HUB · HELP CENTER</span>
+        <h1 id="signinTitle">How to sign in</h1>
+        <p>Choose the method that matches your account. Follow the steps below and you'll be ready to explore the Hub.</p>
+      </div>
+    </section>
+
+    <h2 class="signin-section-title">Choose what you need help with</h2>
+    <section class="signin-steps">
+      <article class="signin-step"><span class="signin-step-number">01</span><h2>Sign in with email</h2><ol><li>Open the <a href="account.html">Account page</a>.</li><li>Enter the email address you registered with.</li><li>Enter your password and press <strong>Sign in</strong>.</li></ol><p>You do not need a new verification email every time you sign in.</p></article>
+      <article class="signin-step"><span class="signin-step-number">02</span><h2>Create a new account</h2><ol><li>Enter your email and choose a password of at least 6 characters.</li><li>Press <strong>Create account</strong>.</li><li>Open the verification email we send you, then return to the Account page.</li><li>Press <strong>I've verified my email</strong>.</li></ol><p>Check Spam or Junk if the email does not appear.</p></article>
+      <article class="signin-step"><span class="signin-step-number">03</span><h2>Continue with Google</h2><ol><li>On the Account page, press <strong>Continue with Google</strong>.</li><li>Choose the Google account you want to use.</li><li>Complete Google's sign-in window.</li></ol><p>Next time, use Google again for the same account.</p></article>
+      <article class="signin-step"><span class="signin-step-number">04</span><h2>Forgot your password?</h2><ol><li>Return to the Account page.</li><li>Type your account email in the email field.</li><li>Press <strong>Forgot password?</strong>.</li><li>Follow the password-reset email instructions.</li></ol></article>
+    </section>
+    <div class="signin-tip"><strong>Having trouble?</strong> Make sure the email address is correct and that you are using the same sign-in method you used when creating the account. If you still need help, open Dragon Ghost from the chat button in the corner.</div>
+  </main>
+  <script src="preferences.js"></script>
+  <script src="cursor-glow.js"></script>
+  <script src="dragon-ghost.js"></script>
+</body>
+</html>
