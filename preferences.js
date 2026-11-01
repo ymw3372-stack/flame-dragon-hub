@@ -43,7 +43,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   const countedKey = "fdhYtCountedThisSession";
   const nextPromptKey = "fdhYtNextPromptAt";
   const pendingKey = "fdhYtPendingWatch";
-  const optedInKey = "fdhYtSubscribed";
+  const optedInKey = "fdhYtConfirmedSubscribed";
   const language = localStorage.getItem("flameDragonLanguage") || "en";
   const copy = {
     en: {tag:"FLAME DRAGON ON YOUTUBE",title:"Enjoying FLAME DRAGON HUB?",desc:"Check out FLAME DRAGON EVOWORLD and support the channel on YouTube.",sub:"SUBSCRIBE ON YOUTUBE",watch:"VISIT THE CHANNEL",later:"NOT NOW",confirmTitle:"Did you subscribe?",confirmDesc:"Choose one option so we know whether to show this reminder again.",yes:"YES, I SUBSCRIBED",no:"NO, NOT THIS TIME",close:"Close"},
@@ -91,6 +91,16 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   function openChannel(url) {
     localStorage.setItem(pendingKey, "1");
     dismiss();
+    let leftForChannel = false;
+    const returnFromChannel = () => {
+      if (document.hidden) {
+        leftForChannel = true;
+      } else if (leftForChannel && localStorage.getItem(pendingKey) === "1") {
+        document.removeEventListener("visibilitychange", returnFromChannel);
+        location.reload();
+      }
+    };
+    document.addEventListener("visibilitychange", returnFromChannel);
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
