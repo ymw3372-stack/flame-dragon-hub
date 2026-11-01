@@ -182,6 +182,20 @@ body:before {
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Sign-ins</th><th>Sign-outs</th><th>Provider</th></tr></thead><tbody id="activityTable"><tr><td colspan="4">Loading activity…</td></tr></tbody></table></div>
 </div>
 </section>
+<section class="dev-panel">
+<h2>Extension Analytics</h2>
+<p class="muted">Anonymous extension download statistics. GitHub reports completed ZIP downloads; website clicks are counted separately. No visitor names, emails or device details are collected.</p>
+<button id="toggleExtensionAnalytics" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="extensionAnalyticsContent">⌄ Show Extension Analytics</button>
+<div id="extensionAnalyticsContent" class="dev-hidden">
+<div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+<article class="dev-card"><span>GitHub ZIP downloads</span><strong id="extensionGitHubDownloads">—</strong></article>
+<article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article>
+<article class="dev-card"><span>Latest download click</span><strong id="extensionLastClick" style="font-size:15px">—</strong></article>
+</div>
+<div class="dev-message">Installations and actual extension usage are not counted yet. They require an updated extension build to send anonymous events; a ZIP download alone does not prove installation.</div>
+<div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Event</th><th>Source</th><th>Date</th></tr></thead><tbody id="extensionEventsTable"><tr><td colspan="3">Loading extension events…</td></tr></tbody></table></div>
+</div>
+</section>
 <section class="dev-panel"><h2>Analytics connection</h2><p class="muted">Google Analytics is installed on the Home page. Live visitor totals and traffic reports are not exposed here yet because they require a secure Google Analytics Data API connection. This dashboard will not guess or invent visitor counts.</p></section>
 <p class="dev-foot">Account suspension, deletion and role changes remain disabled until a trusted server-side Firebase Admin SDK service is configured.</p>
 </section>
