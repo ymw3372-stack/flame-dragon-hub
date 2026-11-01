@@ -308,6 +308,73 @@ async function loadDashboard() {
   }
 }
 
+
+async function loadExtensionAnalytics() {
+  const clicksEl = $("extensionDownloadClicks");
+  const downloadsEl = $("extensionGitHubDownloads");
+  const latestEl = $("extensionLastClick");
+  const table = $("extensionEventsTable");
+  if (!clicksEl || !downloadsEl || !latestEl || !table) return;
+
+  const results = await Promise.allSettled([
+    getDocs(query(collection(db, "extensionAnalytics"), limit(2000))),
+    fetch("https://api.github.com/repos/ymw3372-stack/flame-dragon-hub/releases/latest", {
+      headers: { "Accept": "application/vnd.github+json" },
+      cache: "no-store"
+    }).then(response => {
+      if (!response.ok) throw new Error("GitHub release stats unavailable");
+      return response.json();
+    })
+  ]);
+
+  let events = [];
+  if (results[0].status === "fulfilled") {
+    events = results[0].value.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(event => event.type === "download_click")
+      .sort((a, b) => {
+        const at = a.createdAt?.toMillis?.() || 0;
+        const bt = b.createdAt?.toMillis?.() || 0;
+        return bt - at;
+      });
+    clicksEl.textContent = String(events.length);
+    latestEl.textContent = events[0]?.createdAt?.toDate
+      ? events[0].createdAt.toDate().toLocaleString()
+      : "No clicks yet";
+  } else {
+    clicksEl.textContent = "Unavailable";
+    latestEl.textContent = "—";
+    console.warn("Extension click analytics could not be loaded:", results[0].reason);
+  }
+
+  if (results[1].status === "fulfilled") {
+    const asset = (results[1].value.assets || [])
+      .find(item => item.name === "FLAME_DRAGON_HUB_v1.0.1.zip");
+    downloadsEl.textContent = asset ? String(asset.download_count ?? 0) : "Unavailable";
+  } else {
+    downloadsEl.textContent = "Unavailable";
+    console.warn("GitHub download count could not be loaded:", results[1].reason);
+  }
+
+  table.replaceChildren();
+  if (!events.length) {
+    const row = document.createElement("tr");
+    const td = cell(results[0].status === "fulfilled" ? "No download clicks recorded yet." : "Click events could not be loaded.");
+    td.colSpan = 3;
+    row.append(td);
+    table.append(row);
+    return;
+  }
+  for (const event of events.slice(0, 50)) {
+    const row = document.createElement("tr");
+    row.append(
+      cell("Download button click"),
+      cell(event.source || "Website"),
+      cell(event.createdAt?.toDate ? event.createdAt.toDate().toLocaleString() : "-")
+    );
+    table.append(row);
+  }
+}
+
 const toggleAllAccounts = $("toggleAllAccounts");
 const accountsContent = $("accountsContent");
 toggleAllAccounts?.addEventListener("click", () => {
@@ -316,6 +383,19 @@ toggleAllAccounts?.addEventListener("click", () => {
   toggleAllAccounts.setAttribute("aria-expanded", String(nextExpanded));
   accountsContent?.classList.toggle("dev-hidden", !nextExpanded);
   toggleAllAccounts.textContent = nextExpanded ? "⌃ Hide Accounts" : "⌄ Show Accounts";
+});
+
+const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
+const extensionAnalyticsContent = $("extensionAnalyticsContent");
+toggleExtensionAnalytics?.addEventListener("click", () => {
+  const isExpanded = toggleExtensionAnalytics.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+  toggleExtensionAnalytics.setAttribute("aria-expanded", String(nextExpanded));
+  extensionAnalyticsContent?.classList.toggle("dev-hidden", !nextExpanded);
+  toggleExtensionAnalytics.textContent = nextExpanded
+    ? "⌃ Hide Extension Analytics"
+    : "⌄ Show Extension Analytics";
+  if (nextExpanded) loadExtensionAnalytics();
 });
 
 const toggleLoginCounts = $("toggleLoginCounts");
