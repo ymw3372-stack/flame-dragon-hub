@@ -308,6 +308,16 @@ async function loadDashboard() {
   }
 }
 
+const toggleAllAccounts = $("toggleAllAccounts");
+const accountsContent = $("accountsContent");
+toggleAllAccounts?.addEventListener("click", () => {
+  const isExpanded = toggleAllAccounts.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+  toggleAllAccounts.setAttribute("aria-expanded", String(nextExpanded));
+  accountsContent?.classList.toggle("dev-hidden", !nextExpanded);
+  toggleAllAccounts.textContent = nextExpanded ? "⌃ Hide Accounts" : "⌄ Show Accounts";
+});
+
 $("userSearch")?.addEventListener("input", renderUsers);
 $("refreshUsers")?.addEventListener("click", () => { loadDashboard(); });
 
