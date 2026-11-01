@@ -51,30 +51,57 @@ const LANGUAGE_NAMES = {
   ko: "Korean"
 };
 
+const ALLOWED_ORIGINS = new Set([
+  "https://flamedragonhub.pages.dev",
+  "https://ymw3372-stack.github.io"
+]);
+
+function corsHeaders(origin) {
+  const headers = new Headers({
+    "Vary": "Origin",
+    "Cache-Control": "no-store"
+  });
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    headers.set("Access-Control-Allow-Origin", origin);
+    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type");
+  }
+  return headers;
+}
+
+function jsonResponse(data, status, origin) {
+  return Response.json(data, { status, headers: corsHeaders(origin) });
+}
+
+export async function onRequestOptions({ request }) {
+  const origin = request.headers.get("Origin");
+  if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+    return new Response(null, { status: 403 });
+  }
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
-  const host = request.headers.get("Host") || "";
-  if (origin) {
-    try {
-      if (new URL(origin).host !== host) return Response.json({ error: "Origin not allowed" }, { status: 403 });
-    } catch {
-      return Response.json({ error: "Invalid origin" }, { status: 403 });
-    }
+  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    return jsonResponse({ error: "Origin not allowed" }, 403, null);
   }
   if (!env.AI || typeof env.AI.run !== "function") {
-    return Response.json({ error: "AI binding is not configured" }, { status: 503 });
+    return jsonResponse({ error: "AI binding is not configured. Add a Workers AI binding named AI to this Cloudflare Pages project, then redeploy." }, 503, origin);
   }
   let body;
-  try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON" }, { status: 400 }); }
+  try { body = await request.json(); } catch {
+    return jsonResponse({ error: "Invalid JSON request" }, 400, origin);
+  }
   if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 12) {
-    return Response.json({ error: "Send between 1 and 12 messages" }, { status: 400 });
+    return jsonResponse({ error: "Send between 1 and 12 messages" }, 400, origin);
   }
   const messages = body.messages.map(m => ({
     role: m.role === "assistant" ? "assistant" : "user",
     content: String(m.content || "").slice(0, 1200)
   })).filter(m => m.content);
   if (!messages.length || messages[messages.length - 1].role !== "user") {
-    return Response.json({ error: "A user message is required" }, { status: 400 });
+    return jsonResponse({ error: "A user message is required" }, 400, origin);
   }
   const requestedLanguage = String(body.language || "auto").toLowerCase();
   const language = Object.prototype.hasOwnProperty.call(LANGUAGE_NAMES, requestedLanguage) ? requestedLanguage : "auto";
@@ -93,9 +120,13 @@ export async function onRequestPost({ request, env }) {
       presence_penalty: 0.1
     });
     const response = String(result?.response || result?.output_text || "").trim();
-    if (!response) throw new Error("The model returned an empty response");
-    return Response.json({ response }, { headers: { "Cache-Control": "no-store" } });
+    if (!response) {
+      return jsonResponse({ error: "The AI model returned an empty response. Check the Workers AI model availability and binding." }, 502, origin);
+    }
+    return jsonResponse({ response }, 200, origin);
   } catch (error) {
-    return Response.json({ error: "Dragon Ghost is temporarily unavailable" }, { status: 502 });
+    // Keep technical details in server logs only; never expose provider internals to visitors.
+    console.error("Dragon Ghost AI request failed:", error?.message || error);
+    return jsonResponse({ error: "Workers AI request failed. Check the Cloudflare Pages Functions logs and Workers AI availability." }, 502, origin);
   }
 }
