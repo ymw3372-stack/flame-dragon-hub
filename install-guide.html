@@ -21,7 +21,6 @@ footer{text-align:center;padding:22px 0 35px;border-top:1px solid #ffffff16;colo
 @media(max-width:620px){.hero{padding:34px 0 22px}.download-strip{align-items:stretch;flex-direction:column;padding:17px}.download-btn{text-align:center}.step-layout{grid-template-columns:1fr;gap:16px}.visual{min-height:220px}.step-copy h2{font-size:27px}.step-copy p,.step-copy li{font-size:14px}.controls{flex-wrap:wrap}.dots{order:3;width:100%;justify-content:center}.control-btn{flex:1}.ghost-side{grid-template-columns:75px 1fr}.guide-nav{height:64px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
-  <link rel="stylesheet" href="dragon-ghost.css">
 </head>
 <body>
 <div class="guide-shell">
@@ -73,5 +72,4 @@ prev.addEventListener("click",()=>{if(active>0){active--;render()}});
 next.addEventListener("click",()=>{if(active<steps.length-1){active++;render()}else{document.querySelector(".finish").scrollIntoView({behavior:"smooth",block:"center"})}});
 render();
 </script>
-  <script src="dragon-ghost.js"></script>
 </body></html>
