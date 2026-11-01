@@ -390,6 +390,19 @@ async function loadExtensionAnalytics() {
   }
 }
 
+async function loadUniqueProgramVisitors() {
+  const countEl = $("uniqueProgramVisitors");
+  if (!countEl) return;
+  countEl.textContent = "Loading…";
+  try {
+    const snapshot = await getDocs(collection(db, "programVisitors"));
+    countEl.textContent = snapshot.size.toLocaleString();
+  } catch (error) {
+    countEl.textContent = "Unavailable";
+    console.warn("Unique program visitors could not be loaded:", error);
+  }
+}
+
 const toggleAllAccounts = $("toggleAllAccounts");
 const accountsContent = $("accountsContent");
 toggleAllAccounts?.addEventListener("click", () => {
@@ -398,6 +411,19 @@ toggleAllAccounts?.addEventListener("click", () => {
   toggleAllAccounts.setAttribute("aria-expanded", String(nextExpanded));
   accountsContent?.classList.toggle("dev-hidden", !nextExpanded);
   toggleAllAccounts.textContent = nextExpanded ? "⌃ Hide Accounts" : "⌄ Show Accounts";
+});
+
+const toggleUniqueVisitors = $("toggleUniqueVisitors");
+const uniqueVisitorsContent = $("uniqueVisitorsContent");
+toggleUniqueVisitors?.addEventListener("click", () => {
+  const isExpanded = toggleUniqueVisitors.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+  toggleUniqueVisitors.setAttribute("aria-expanded", String(nextExpanded));
+  uniqueVisitorsContent?.classList.toggle("dev-hidden", !nextExpanded);
+  toggleUniqueVisitors.textContent = nextExpanded
+    ? "⌃ Hide Unique Program Visitors"
+    : "⌄ Show Unique Program Visitors";
+  if (nextExpanded) loadUniqueProgramVisitors();
 });
 
 const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
