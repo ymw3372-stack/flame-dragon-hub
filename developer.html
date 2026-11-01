@@ -177,7 +177,10 @@ body:before {
 </section>
 <section class="dev-panel">
 <h2>Login &amp; logout counts</h2><p class="muted">Total recorded sign-ins and sign-outs for each loaded account (up to 1,000 accounts). Counts include the activity records currently stored for that account.</p>
+<button id="toggleLoginCounts" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="loginCountsContent">⌄ Show Login &amp; Logout Counts</button>
+<div id="loginCountsContent" class="dev-hidden">
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Sign-ins</th><th>Sign-outs</th><th>Provider</th></tr></thead><tbody id="activityTable"><tr><td colspan="4">Loading activity…</td></tr></tbody></table></div>
+</div>
 </section>
 <section class="dev-panel"><h2>Analytics connection</h2><p class="muted">Google Analytics is installed on the Home page. Live visitor totals and traffic reports are not exposed here yet because they require a secure Google Analytics Data API connection. This dashboard will not guess or invent visitor counts.</p></section>
 <p class="dev-foot">Account suspension, deletion and role changes remain disabled until a trusted server-side Firebase Admin SDK service is configured.</p>
