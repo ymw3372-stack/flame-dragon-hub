@@ -28,11 +28,15 @@ service cloud.firestore {
 
     // Anonymous extension download clicks. No names, emails, IPs or device IDs are stored.
   match /extensionAnalytics/{eventId} {
+    // Store only the event type, source and timestamp; no account or device identifier.
     allow create: if request.auth == null
       && request.resource.data.keys().hasOnly(['type', 'source', 'createdAt'])
       && request.resource.data.keys().hasAll(['type', 'source', 'createdAt'])
-      && request.resource.data.type == 'download_click'
-      && request.resource.data.source == 'website'
+      && request.resource.data.type in ['download_click', 'install', 'usage_session']
+      && (
+        (request.resource.data.type == 'download_click' && request.resource.data.source == 'website')
+        || (request.resource.data.type in ['install', 'usage_session'] && request.resource.data.source == 'extension')
+      )
       && request.resource.data.createdAt is timestamp
       && request.resource.data.createdAt > request.time - duration.value(10, 'm')
       && request.resource.data.createdAt < request.time + duration.value(1, 'm');
