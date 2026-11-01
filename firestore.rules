@@ -26,7 +26,21 @@ service cloud.firestore {
         && data.emailVerified == (request.auth.token.email_verified == true);
     }
 
-    match /users/{uid} {
+    // Anonymous extension download clicks. No names, emails, IPs or device IDs are stored.
+  match /extensionAnalytics/{eventId} {
+    allow create: if request.auth == null
+      && request.resource.data.keys().hasOnly(['type', 'source', 'createdAt'])
+      && request.resource.data.keys().hasAll(['type', 'source', 'createdAt'])
+      && request.resource.data.type == 'download_click'
+      && request.resource.data.source == 'website'
+      && request.resource.data.createdAt is timestamp
+      && request.resource.data.createdAt > request.time - duration.value(10, 'm')
+      && request.resource.data.createdAt < request.time + duration.value(1, 'm');
+    allow read: if isAdmin();
+    allow update, delete: if false;
+  }
+
+  match /users/{uid} {
       allow read: if isOwner(uid) || isAdmin();
 
       allow create: if isOwner(uid)
