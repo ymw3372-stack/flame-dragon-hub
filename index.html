@@ -680,11 +680,12 @@ a {
 
           <div class="orbit-position">
             <a class="orbit-card"
+               id="extensionDownloadButton"
                href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.1/FLAME_DRAGON_HUB_v1.0.1.zip"
                download>
               <span class="card-icon">⬇</span>
               <strong>DOWNLOAD EXTENSION</strong>
-              <small>Get the Chrome extension</small>
+              <small>Get the Chrome extension · anonymous stats</small>
             </a>
           </div>
 
@@ -739,6 +740,29 @@ a {
 </div>
 
 <script>
+
+/* FDH anonymous download click analytics — no personal or device identifiers */
+(() => {
+  const button = document.getElementById("extensionDownloadButton");
+  if (!button) return;
+  button.addEventListener("click", () => {
+    const eventId = "download_" + crypto.randomUUID().replace(/-/g, "");
+    const apiKey = "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0";
+    const endpoint = "https://firestore.googleapis.com/v1/projects/flame-dragon-hub/databases/(default)/documents/extensionAnalytics";
+    const fields = {
+      type: { stringValue: "download_click" },
+      source: { stringValue: "website" },
+      createdAt: { timestampValue: new Date().toISOString() }
+    };
+    fetch(endpoint + "?documentId=" + encodeURIComponent(eventId) + "&key=" + apiKey, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fields }),
+      keepalive: true
+    }).catch(() => {});
+  });
+})();
+
 /* Active navigation */
 
 (() => {
