@@ -312,9 +312,11 @@ async function loadDashboard() {
 async function loadExtensionAnalytics() {
   const clicksEl = $("extensionDownloadClicks");
   const downloadsEl = $("extensionGitHubDownloads");
+  const installsEl = $("extensionInstalls");
+  const usageEl = $("extensionUsageSessions");
   const latestEl = $("extensionLastClick");
   const table = $("extensionEventsTable");
-  if (!clicksEl || !downloadsEl || !latestEl || !table) return;
+  if (!clicksEl || !downloadsEl || !installsEl || !usageEl || !latestEl || !table) return;
 
   const results = await Promise.allSettled([
     getDocs(query(collection(db, "extensionAnalytics"), limit(2000))),
@@ -330,20 +332,25 @@ async function loadExtensionAnalytics() {
   let events = [];
   if (results[0].status === "fulfilled") {
     events = results[0].value.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      .filter(event => event.type === "download_click")
+      .filter(event => ["download_click", "install", "usage_session"].includes(event.type))
       .sort((a, b) => {
         const at = a.createdAt?.toMillis?.() || 0;
         const bt = b.createdAt?.toMillis?.() || 0;
         return bt - at;
       });
-    clicksEl.textContent = String(events.length);
-    latestEl.textContent = events[0]?.createdAt?.toDate
-      ? events[0].createdAt.toDate().toLocaleString()
+    const clicks = events.filter(event => event.type === "download_click");
+    installsEl.textContent = String(events.filter(event => event.type === "install").length);
+    usageEl.textContent = String(events.filter(event => event.type === "usage_session").length);
+    clicksEl.textContent = String(clicks.length);
+    latestEl.textContent = clicks[0]?.createdAt?.toDate
+      ? clicks[0].createdAt.toDate().toLocaleString()
       : "No clicks yet";
   } else {
     clicksEl.textContent = "Unavailable";
+    installsEl.textContent = "Unavailable";
+    usageEl.textContent = "Unavailable";
     latestEl.textContent = "—";
-    console.warn("Extension click analytics could not be loaded:", results[0].reason);
+    console.warn("Extension analytics could not be loaded:", results[0].reason);
   }
 
   if (results[1].status === "fulfilled") {
@@ -356,19 +363,27 @@ async function loadExtensionAnalytics() {
   }
 
   table.replaceChildren();
-  if (!events.length) {
+  if (results[0].status !== "fulfilled" || !events.length) {
     const row = document.createElement("tr");
-    const td = cell(results[0].status === "fulfilled" ? "No download clicks recorded yet." : "Click events could not be loaded.");
+    const td = cell(results[0].status === "fulfilled"
+      ? "No extension events recorded yet."
+      : "Extension events could not be loaded.");
     td.colSpan = 3;
     row.append(td);
     table.append(row);
     return;
   }
+
+  const labels = {
+    download_click: "Download button click",
+    install: "Extension installation",
+    usage_session: "EvoWorld usage session"
+  };
   for (const event of events.slice(0, 50)) {
     const row = document.createElement("tr");
     row.append(
-      cell("Download button click"),
-      cell(event.source || "Website"),
+      cell(labels[event.type] || event.type),
+      cell(event.source || "—"),
       cell(event.createdAt?.toDate ? event.createdAt.toDate().toLocaleString() : "-")
     );
     table.append(row);
