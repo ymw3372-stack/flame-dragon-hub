@@ -182,6 +182,17 @@ body:before {
 </div>
 </section>
 <section class="dev-panel">
+<h2>Program Visitors</h2>
+<p class="muted">Counts unique browser profiles that have opened any main FLAME DRAGON HUB page. No sign-in is required. Repeat visits from the same browser count once; another browser or device counts separately.</p>
+<button id="toggleUniqueVisitors" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="uniqueVisitorsContent">⌄ Show Unique Program Visitors</button>
+<div id="uniqueVisitorsContent" class="dev-hidden">
+<div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+<article class="dev-card"><span>Unique visitors</span><strong id="uniqueProgramVisitors">—</strong></article>
+</div>
+<div class="dev-message">A visitor is counted once per browser profile, whether they open Home, Favorites, Evolutions, Skins Library, Settings or another page that loads the shared site script. Clearing browser data or using another device/browser may create another count.</div>
+</div>
+</section>
+<section class="dev-panel">
 <h2>Extension Analytics</h2>
 <p class="muted">Anonymous extension download statistics. GitHub reports completed ZIP downloads; website clicks are counted separately. No visitor names, emails or device details are collected.</p>
 <button id="toggleExtensionAnalytics" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="extensionAnalyticsContent">⌄ Show Extension Analytics</button>
