@@ -95,6 +95,15 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     watchButton.addEventListener("click", () => {
       localStorage.setItem(pendingWatchKey, "1");
       dismiss();
+      let leftForChannel = false;
+      document.addEventListener("visibilitychange", function returnFromChannel() {
+        if (document.hidden) {
+          leftForChannel = true;
+        } else if (leftForChannel && localStorage.getItem(pendingWatchKey) === "1") {
+          document.removeEventListener("visibilitychange", returnFromChannel);
+          location.reload();
+        }
+      });
     });
   }
   overlay.addEventListener("click", event => {
