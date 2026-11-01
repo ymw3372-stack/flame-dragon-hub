@@ -34,78 +34,80 @@ const accountShortcut=document.querySelector('#fdh-quick-tools .fdh-login');
 if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.innerHTML='✦ <span data-fdh="login">CREATE ACCOUNT — CLICK HERE</span>';}
 
 
-/* FLAME DRAGON YouTube welcome prompt — shown once per browser tab session */
+/* FLAME DRAGON YouTube welcome prompt — gentle reminders across visits */
 (() => {
-  const seenKey = "fdhYouTubePromptSeen";
-  if (sessionStorage.getItem(seenKey) === "1") return;
-
   const channel = "https://www.youtube.com/@FLAME.DRAGON-evoworld";
   const subscribe = channel + "?sub_confirmation=1";
+  const visitKey = "fdhYtVisitCount";
+  const countedKey = "fdhYtCountedThisSession";
+  const nextPromptKey = "fdhYtNextPromptAt";
+  const pendingWatchKey = "fdhYtPendingWatch";
+  const lang = current();
   const copy = {
-    en: {tag:"SUPPORT THE CREATOR",title:"Enjoying FLAME DRAGON HUB?",desc:"Support the project and join the FLAME DRAGON EVOWORLD community on YouTube.",sub:"SUBSCRIBE NOW",watch:"WATCH THE CHANNEL",later:"MAYBE LATER",close:"Close"},
-    ar: {tag:"ادعم صانع الموقع",title:"مبسوط بتجربتك في FLAME DRAGON HUB؟",desc:"ادعم المشروع وانضم لمجتمع FLAME DRAGON EVOWORLD على يوتيوب.",sub:"اشترك الآن",watch:"مشاهدة القناة",later:"الاشتراك لاحقًا",close:"إغلاق"},
-    de: {tag:"UNTERSTÜTZE DEN CREATOR",title:"Gefällt dir FLAME DRAGON HUB?",desc:"Unterstütze das Projekt und werde Teil der FLAME DRAGON EVOWORLD-Community auf YouTube.",sub:"JETZT ABONNIEREN",watch:"KANAL ANSEHEN",later:"VIELLEICHT SPÄTER",close:"Schließen"},
-    ru: {tag:"ПОДДЕРЖИ АВТОРА",title:"Нравится FLAME DRAGON HUB?",desc:"Поддержи проект и присоединяйся к сообществу FLAME DRAGON EVOWORLD на YouTube.",sub:"ПОДПИСАТЬСЯ",watch:"ОТКРЫТЬ КАНАЛ",later:"ПОЗЖЕ",close:"Закрыть"},
-    hi: {tag:"क्रिएटर का समर्थन करें",title:"क्या FLAME DRAGON HUB पसंद आया?",desc:"प्रोजेक्ट का समर्थन करें और YouTube पर FLAME DRAGON EVOWORLD समुदाय से जुड़ें।",sub:"अभी सदस्यता लें",watch:"चैनल देखें",later:"बाद में",close:"बंद करें"},
-    es: {tag:"APOYA AL CREADOR",title:"¿Te gusta FLAME DRAGON HUB?",desc:"Apoya el proyecto y únete a la comunidad FLAME DRAGON EVOWORLD en YouTube.",sub:"SUSCRIBIRSE",watch:"VER EL CANAL",later:"MÁS TARDE",close:"Cerrar"},
-    tr: {tag:"İÇERİK ÜRETİCİSİNİ DESTEKLE",title:"FLAME DRAGON HUB hoşuna gitti mi?",desc:"Projeyi destekle ve YouTube'da FLAME DRAGON EVOWORLD topluluğuna katıl.",sub:"ŞİMDİ ABONE OL",watch:"KANALI İZLE",later:"DAHA SONRA",close:"Kapat"}
+    en: {tag:"SUPPORT THE CREATOR",title:"Enjoying FLAME DRAGON HUB?",desc:"Support the project and join the FLAME DRAGON EVOWORLD community on YouTube.",sub:"SUBSCRIBE NOW",watch:"WATCH THE CHANNEL",later:"MAYBE LATER",followTitle:"So, not subscribing?",followDesc:"Did you get a chance to check out the channel? We'd love your support!",close:"Close"},
+    ar: {tag:"ادعم صانع الموقع",title:"مبسوط بتجربتك في FLAME DRAGON HUB؟",desc:"ادعم المشروع وانضم لمجتمع FLAME DRAGON EVOWORLD على يوتيوب.",sub:"اشترك الآن",watch:"مشاهدة القناة",later:"الاشتراك لاحقًا",followTitle:"يعني مش هتشترك؟",followDesc:"شوفت القناة؟ يسعدنا دعمك واشتراكك في FLAME DRAGON EVOWORLD.",close:"إغلاق"},
+    de: {tag:"UNTERSTÜTZE DEN CREATOR",title:"Gefällt dir FLAME DRAGON HUB?",desc:"Unterstütze das Projekt und werde Teil der FLAME DRAGON EVOWORLD-Community auf YouTube.",sub:"JETZT ABONNIEREN",watch:"KANAL ANSEHEN",later:"VIELLEICHT SPÄTER",followTitle:"Möchtest du nicht abonnieren?",followDesc:"Hast du dir den Kanal angesehen? Wir freuen uns über deine Unterstützung!",close:"Schließen"},
+    ru: {tag:"ПОДДЕРЖИ АВТОРА",title:"Нравится FLAME DRAGON HUB?",desc:"Поддержи проект и присоединяйся к сообществу FLAME DRAGON EVOWORLD на YouTube.",sub:"ПОДПИСАТЬСЯ",watch:"ОТКРЫТЬ КАНАЛ",later:"ПОЗЖЕ",followTitle:"Не хочешь подписаться?",followDesc:"Удалось посмотреть канал? Будем рады твоей поддержке!",close:"Закрыть"},
+    hi: {tag:"क्रिएटर का समर्थन करें",title:"क्या FLAME DRAGON HUB पसंद आया?",desc:"प्रोजेक्ट का समर्थन करें और YouTube पर FLAME DRAGON EVOWORLD समुदाय से जुड़ें।",sub:"अभी सदस्यता लें",watch:"चैनल देखें",later:"बाद में",followTitle:"क्या आप सदस्यता नहीं लेंगे?",followDesc:"क्या आपने चैनल देखा? आपका समर्थन हमारे लिए मायने रखता है।",close:"बंद करें"},
+    es: {tag:"APOYA AL CREADOR",title:"¿Te gusta FLAME DRAGON HUB?",desc:"Apoya el proyecto y únete a la comunidad FLAME DRAGON EVOWORLD en YouTube.",sub:"SUSCRIBIRSE",watch:"VER EL CANAL",later:"MÁS TARDE",followTitle:"¿No te vas a suscribir?",followDesc:"¿Pudiste ver el canal? ¡Agradecemos mucho tu apoyo!",close:"Cerrar"},
+    tr: {tag:"İÇERİK ÜRETİCİSİNİ DESTEKLE",title:"FLAME DRAGON HUB hoşuna gitti mi?",desc:"Projeyi destekle ve YouTube'da FLAME DRAGON EVOWORLD topluluğuna katıl.",sub:"ŞİMDİ ABONE OL",watch:"KANALI İZLE",later:"DAHA SONRA",followTitle:"Abone olmayacak mısın?",followDesc:"Kanalı inceleyebildin mi? Desteğin bizim için değerli!",close:"Kapat"}
   };
-  const t = copy[current()] || copy.en;
+  const t = copy[lang] || copy.en;
+
+  if (sessionStorage.getItem(countedKey) !== "1") {
+    const visits = Number(localStorage.getItem(visitKey) || "0") + 1;
+    localStorage.setItem(visitKey, String(visits));
+    sessionStorage.setItem(countedKey, "1");
+  }
+  const visits = Number(localStorage.getItem(visitKey) || "1");
+  const due = Number(localStorage.getItem(nextPromptKey) || "0");
+  const pendingWatch = localStorage.getItem(pendingWatchKey) === "1";
+  if (!pendingWatch && visits < due) return;
 
   const style = document.createElement("style");
-  style.textContent = `
-    #fdh-yt-overlay{position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;padding:18px;background:rgba(5,4,9,.78);backdrop-filter:blur(9px);animation:fdhYtFade .22s ease}
-    #fdh-yt-modal{position:relative;isolation:isolate;overflow:hidden;width:min(490px,100%);padding:34px 26px 25px;text-align:center;border:1px solid rgba(255,103,120,.58);border-radius:23px;background:radial-gradient(ellipse at 50% 0%,rgba(185,35,63,.24),transparent 58%),linear-gradient(145deg,#24131f,#11121d 75%);box-shadow:0 25px 90px #000b,0 0 38px rgba(255,55,80,.2);color:#fff4f6;font-family:Arial,Helvetica,sans-serif}
-    #fdh-yt-modal:before{content:"";position:absolute;z-index:-1;inset:auto 15% -110px;height:170px;border-radius:50%;background:rgba(255,45,65,.18);filter:blur(45px)}
-    #fdh-yt-close{position:absolute;top:12px;right:13px;width:33px;height:33px;border:1px solid #ffffff25;border-radius:50%;background:#ffffff0b;color:#fff;font-size:19px;cursor:pointer}
-    #fdh-yt-mark{width:70px;height:70px;margin:0 auto 17px;display:grid;place-items:center;border:1px solid rgba(255,110,125,.55);border-radius:21px;background:linear-gradient(145deg,#a92842,#43172d);box-shadow:0 0 28px rgba(255,55,80,.23);font-size:32px}
-    #fdh-yt-tag{color:#ff9ba6;font-size:10px;font-weight:900;letter-spacing:2.6px}
-    #fdh-yt-modal h2{margin:11px 0 10px;font-size:clamp(21px,5vw,27px);line-height:1.25}
-    #fdh-yt-modal p{max-width:390px;margin:0 auto 22px;color:#c7b8c7;font-size:13px;line-height:1.8}
-    .fdh-yt-action{width:100%;min-height:49px;margin-top:10px;padding:12px 16px;display:flex;align-items:center;justify-content:center;border-radius:12px;text-decoration:none;font:900 11px Arial,sans-serif;letter-spacing:.7px;cursor:pointer;transition:transform .18s,filter .18s}
-    .fdh-yt-action:hover{transform:translateY(-2px);filter:brightness(1.13)}
-    #fdh-yt-sub{border:1px solid #ff9aa5;color:#fff;background:linear-gradient(110deg,#e53952,#a71f4c);box-shadow:0 8px 23px #d52d4a40}
-    #fdh-yt-watch{border:1px solid rgba(110,175,255,.65);color:#eaf4ff;background:linear-gradient(110deg,#183c65,#18233d)}
-    #fdh-yt-later{border:1px solid #ffffff27;color:#c9bdc9;background:#ffffff08}
-    @keyframes fdhYtFade{from{opacity:0}to{opacity:1}}
-    @media(max-width:420px){#fdh-yt-modal{padding:31px 19px 21px}#fdh-yt-mark{width:62px;height:62px}}
-    @media(prefers-reduced-motion:reduce){#fdh-yt-overlay{animation:none}.fdh-yt-action{transition:none}}
-  `;
+  style.textContent = "#fdh-yt-overlay{position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;padding:18px;background:rgba(5,4,9,.78);backdrop-filter:blur(9px);animation:fdhYtFade .22s ease}#fdh-yt-modal{position:relative;isolation:isolate;overflow:hidden;width:min(490px,100%);padding:34px 26px 25px;text-align:center;border:1px solid rgba(255,103,120,.58);border-radius:23px;background:radial-gradient(ellipse at 50% 0%,rgba(185,35,63,.24),transparent 58%),linear-gradient(145deg,#24131f,#11121d 75%);box-shadow:0 25px 90px #000b,0 0 38px rgba(255,55,80,.2);color:#fff4f6;font-family:Arial,Helvetica,sans-serif}#fdh-yt-modal:before{content:'';position:absolute;z-index:-1;inset:auto 15% -110px;height:170px;border-radius:50%;background:rgba(255,45,65,.18);filter:blur(45px)}#fdh-yt-close{position:absolute;top:12px;right:13px;width:33px;height:33px;border:1px solid #ffffff25;border-radius:50%;background:#ffffff0b;color:#fff;font-size:19px;cursor:pointer}#fdh-yt-mark{width:70px;height:70px;margin:0 auto 17px;display:grid;place-items:center;border:1px solid rgba(255,110,125,.55);border-radius:21px;background:linear-gradient(145deg,#a92842,#43172d);box-shadow:0 0 28px rgba(255,55,80,.23);font-size:32px}#fdh-yt-tag{color:#ff9ba6;font-size:10px;font-weight:900;letter-spacing:2.6px}#fdh-yt-modal h2{margin:11px 0 10px;font-size:clamp(21px,5vw,27px);line-height:1.25}#fdh-yt-modal p{max-width:390px;margin:0 auto 22px;color:#c7b8c7;font-size:13px;line-height:1.8}.fdh-yt-action{width:100%;min-height:49px;margin-top:10px;padding:12px 16px;display:flex;align-items:center;justify-content:center;border-radius:12px;text-decoration:none;font:900 11px Arial,sans-serif;letter-spacing:.7px;cursor:pointer;transition:transform .18s,filter .18s}.fdh-yt-action:hover{transform:translateY(-2px);filter:brightness(1.13)}#fdh-yt-sub{border:1px solid #ff9aa5;color:#fff;background:linear-gradient(110deg,#e53952,#a71f4c);box-shadow:0 8px 23px #d52d4a40}#fdh-yt-watch{border:1px solid rgba(110,175,255,.65);color:#eaf4ff;background:linear-gradient(110deg,#183c65,#18233d)}#fdh-yt-later{border:1px solid #ffffff27;color:#c9bdc9;background:#ffffff08}@keyframes fdhYtFade{from{opacity:0}to{opacity:1}}@media(max-width:420px){#fdh-yt-modal{padding:31px 19px 21px}#fdh-yt-mark{width:62px;height:62px}}@media(prefers-reduced-motion:reduce){#fdh-yt-overlay{animation:none}.fdh-yt-action{transition:none}}";
   document.head.appendChild(style);
 
+  const followUp = pendingWatch;
   const overlay = document.createElement("div");
   overlay.id = "fdh-yt-overlay";
-  overlay.innerHTML = `
-    <section id="fdh-yt-modal" role="dialog" aria-modal="true" aria-labelledby="fdh-yt-title" aria-describedby="fdh-yt-desc">
-      <button id="fdh-yt-close" type="button" aria-label="${t.close}">×</button>
-      <div id="fdh-yt-mark" aria-hidden="true">▶</div>
-      <div id="fdh-yt-tag">${t.tag}</div>
-      <h2 id="fdh-yt-title">${t.title}</h2>
-      <p id="fdh-yt-desc">${t.desc}</p>
-      <a class="fdh-yt-action" id="fdh-yt-sub" href="${subscribe}" target="_blank" rel="noopener noreferrer">▶ &nbsp; ${t.sub}</a>
-      <a class="fdh-yt-action" id="fdh-yt-watch" href="${channel}" target="_blank" rel="noopener noreferrer">▣ &nbsp; ${t.watch}</a>
-      <button class="fdh-yt-action" id="fdh-yt-later" type="button">${t.later}</button>
-    </section>`;
+  overlay.innerHTML = '<section id="fdh-yt-modal" role="dialog" aria-modal="true" aria-labelledby="fdh-yt-title" aria-describedby="fdh-yt-desc"><button id="fdh-yt-close" type="button" aria-label="' + t.close + '">×</button><div id="fdh-yt-mark" aria-hidden="true">▶</div><div id="fdh-yt-tag">' + t.tag + '</div><h2 id="fdh-yt-title">' + (followUp ? t.followTitle : t.title) + '</h2><p id="fdh-yt-desc">' + (followUp ? t.followDesc : t.desc) + '</p><a class="fdh-yt-action" id="fdh-yt-sub" href="' + subscribe + '" target="_blank" rel="noopener noreferrer">▶ &nbsp; ' + t.sub + '</a>' + (followUp ? '' : '<a class="fdh-yt-action" id="fdh-yt-watch" href="' + channel + '" target="_blank" rel="noopener noreferrer">▣ &nbsp; ' + t.watch + '</a>') + '<button class="fdh-yt-action" id="fdh-yt-later" type="button">' + t.later + '</button></section>';
   document.body.appendChild(overlay);
 
   function dismiss() {
-    sessionStorage.setItem(seenKey, "1");
     overlay.remove();
     style.remove();
   }
-  overlay.querySelector("#fdh-yt-close").addEventListener("click", dismiss);
-  overlay.querySelector("#fdh-yt-later").addEventListener("click", dismiss);
-  overlay.querySelector("#fdh-yt-sub").addEventListener("click", dismiss);
-  overlay.querySelector("#fdh-yt-watch").addEventListener("click", dismiss);
+  function chooseLater() {
+    localStorage.removeItem(pendingWatchKey);
+    localStorage.setItem(nextPromptKey, String(visits + 3));
+    dismiss();
+  }
+  overlay.querySelector("#fdh-yt-close").addEventListener("click", chooseLater);
+  overlay.querySelector("#fdh-yt-later").addEventListener("click", chooseLater);
+  overlay.querySelector("#fdh-yt-sub").addEventListener("click", () => {
+    localStorage.removeItem(pendingWatchKey);
+    localStorage.setItem(nextPromptKey, String(visits + 3));
+    dismiss();
+  });
+  const watchButton = overlay.querySelector("#fdh-yt-watch");
+  if (watchButton) {
+    watchButton.addEventListener("click", () => {
+      localStorage.setItem(pendingWatchKey, "1");
+      dismiss();
+    });
+  }
   overlay.addEventListener("click", event => {
-    if (event.target === overlay) dismiss();
+    if (event.target === overlay) chooseLater();
   });
   document.addEventListener("keydown", function onEscape(event) {
     if (event.key === "Escape" && document.getElementById("fdh-yt-overlay")) {
-      dismiss();
+      chooseLater();
       document.removeEventListener("keydown", onEscape);
     }
   });
+})();
+
 })();
 
 })();
