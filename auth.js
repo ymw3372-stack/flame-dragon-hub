@@ -234,6 +234,11 @@ async function startAuth() {
 
   onAuthStateChanged(auth, async user => {
     try {
+      try {
+        if (user) localStorage.setItem("fdhHasAccountSession", "1");
+        else localStorage.removeItem("fdhHasAccountSession");
+      } catch (_) {}
+
       // Keep this listener focused on rendering. Successful sign-in handlers
       // write the account and activity event once; writing here as well caused
       // two simultaneous first-login writes to the same users/{uid} document.
