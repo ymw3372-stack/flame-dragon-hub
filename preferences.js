@@ -42,6 +42,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   const countedKey = "fdhYtCountedThisSession";
   const nextPromptKey = "fdhYtNextPromptAt";
   const pendingWatchKey = "fdhYtPendingWatch";
+  const subscribedKey = "fdhYtSubscribed";
   const lang = current();
   const copy = {
     en: {tag:"SUPPORT THE CREATOR",title:"Enjoying FLAME DRAGON HUB?",desc:"Support the project and join the FLAME DRAGON EVOWORLD community on YouTube.",sub:"SUBSCRIBE NOW",watch:"WATCH THE CHANNEL",later:"MAYBE LATER",followTitle:"So, not subscribing?",followDesc:"Did you get a chance to check out the channel? We'd love your support!",close:"Close"},
@@ -62,6 +63,8 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   const visits = Number(localStorage.getItem(visitKey) || "1");
   const due = Number(localStorage.getItem(nextPromptKey) || "0");
   const pendingWatch = localStorage.getItem(pendingWatchKey) === "1";
+  // A visitor who clicked Subscribe should never see this prompt again on this browser.
+  if (localStorage.getItem(subscribedKey) === "1") return;
   if (!pendingWatch && visits < due) return;
 
   const style = document.createElement("style");
@@ -86,8 +89,9 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   overlay.querySelector("#fdh-yt-close").addEventListener("click", chooseLater);
   overlay.querySelector("#fdh-yt-later").addEventListener("click", chooseLater);
   overlay.querySelector("#fdh-yt-sub").addEventListener("click", () => {
+    localStorage.setItem(subscribedKey, "1");
     localStorage.removeItem(pendingWatchKey);
-    localStorage.setItem(nextPromptKey, String(visits + 3));
+    localStorage.removeItem(nextPromptKey);
     dismiss();
   });
   const watchButton = overlay.querySelector("#fdh-yt-watch");
