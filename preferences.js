@@ -169,6 +169,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
   };
   function invite() {
     if (localStorage.getItem(sessionKey) === "1") return;
+    localStorage.removeItem(reminderKey);
     if (window.confirm(messages[language] || messages.en)) {
       location.href = "account.html#account";
     } else {
@@ -176,8 +177,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     }
   }
   const due = Number(localStorage.getItem(reminderKey) || "0");
-  if (due && visits >= due) {
-    localStorage.removeItem(reminderKey);
+  if (due && visits >= due && !document.getElementById("fdh-yt-overlay")) {
     invite();
   }
   window.fdhShowAccountInvite = invite;
