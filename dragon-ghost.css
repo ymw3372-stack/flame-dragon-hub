@@ -53,22 +53,28 @@
 .account-login-help>p:first-child{font-size:16px;color:#ffe6a1;margin:0 0 10px}
 .account-login-help ul{padding-left:23px;margin:10px 0}.account-login-help li{margin:10px 0;padding-left:3px}.account-login-help strong{color:#ffe6a1}
 .account-login-help .account-help-note{margin:14px 0 0;padding:11px 13px;border-left:3px solid #e8c15d;background:#e8c15d12;border-radius:0 9px 9px 0;font-size:13px}
-.login-ghost-row{display:flex;align-items:center;gap:18px;margin:0 0 16px;padding:14px 16px;border-radius:15px;background:#100d18aa;border:1px solid #e8c15d44}
-.login-ghost-row .login-ghost-art{width:94px;height:94px;flex:0 0 94px;position:relative;transform:scale(.72);transform-origin:center}
-.login-ghost-row .login-ghost-copy{text-align:left;flex:1}.login-ghost-row .login-ghost-copy strong{display:block;color:#ffe6a1;font-size:16px;margin-bottom:5px}.login-ghost-row .login-ghost-copy p{margin:0;color:#e8dce6;font-size:13px;line-height:1.65}
-.login-ghost-art .ghost{width:112px;height:128px;position:relative;margin:8px 22px 18px 0;animation:dgGhostFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff657b55)}
+.account-login-help{font-size:15px;line-height:1.8}
+.account-login-help p{font-size:15px;line-height:1.8}
+.account-login-help ul{padding-left:25px;margin:12px 0}
+.account-login-help li{margin:12px 0;padding-left:4px;font-size:15px;line-height:1.75}
+.account-login-help strong{color:#ffe6a1}
+.account-login-help .account-help-note{margin:15px 0 0;padding:13px 15px;border-left:3px solid #e8c15d;background:#e8c15d12;border-radius:0 9px 9px 0;font-size:14px;line-height:1.7}
+.login-help-title{margin:4px 0 12px;color:#ffe6a1;font-size:16px;font-weight:900;letter-spacing:1.8px}
+.login-ghost-row{display:flex;align-items:center;gap:18px;margin:0 0 18px;padding:16px 18px;border-radius:16px;background:#100d18aa;border:1px solid #e8c15d44}
+.login-ghost-row .login-ghost-art{width:154px;height:132px;flex:0 0 154px;position:relative;transform:none;transform-origin:center}
+.login-ghost-row .login-ghost-copy{text-align:left;flex:1}
+.login-ghost-row .login-ghost-copy strong{display:block;color:#ffe6a1;font-size:18px;margin-bottom:8px}
+.login-ghost-row .login-ghost-copy p{margin:0;color:#e8dce6;font-size:15px;line-height:1.75}
+.login-ghost-art .ghost{width:112px;height:128px;position:absolute;left:0;top:0;margin:0;animation:dgGhostFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff657b55)}
 .login-ghost-art .ghost-body{position:absolute;inset:8px 8px 0;background:linear-gradient(145deg,#fff9fb,#cbbdce);border-radius:48% 48% 22% 22%;clip-path:polygon(0 0,100% 0,100% 100%,80% 86%,62% 100%,43% 86%,22% 100%,0 86%)}
 .login-ghost-art .ghost-eye{position:absolute;top:48px;width:10px;height:15px;border-radius:50%;background:#342338;z-index:2}
 .login-ghost-art .ghost-eye.left{left:34px}.login-ghost-art .ghost-eye.right{right:34px}
 .login-ghost-art .ghost-mouth{position:absolute;z-index:2;top:70px;left:48px;width:10px;height:7px;border-radius:50%;background:#ff6679}
-.login-ghost-art .ghost-wand{position:absolute;z-index:4;left:-112px;top:-24px;width:196px;height:7px;border-radius:8px;background:linear-gradient(180deg,#e3b77d,#a66b40 48%,#68432e);border:1px solid #edc995;box-shadow:0 2px 6px #0009;transform:rotate(42deg);transform-origin:right center;pointer-events:none}
-.login-ghost-art .ghost-wand:before{content:"";position:absolute;right:-6px;top:-5px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0d09b,#9b6039 70%);border:1px solid #e5b77b;box-shadow:0 0 0 3px #fff2}
-.login-ghost-art .ghost-buddy{position:absolute;width:100%;height:100%;left:-90%;bottom:0;transform:scale(.7);transform-origin:bottom right;z-index:3;filter:drop-shadow(0 0 13px #ff657b66);animation:dgBuddyFloat 2.4s ease-in-out infinite alternate;pointer-events:none}
-.login-ghost-art .ghost-buddy .ghost-body{background:linear-gradient(145deg,#fff,#b8a9c2)}
-.login-ghost-art .ghost-buddy .ghost-eye{top:48px;transform:translateX(3px)}
-.login-ghost-art .ghost-buddy .ghost-mouth{top:69px;left:48px;width:13px;height:2px;border-radius:2px;background:#342338;box-shadow:none}
-.login-ghost-art .buddy-caption{position:absolute;left:-116%;bottom:-17px;width:90%;z-index:5;color:#ffe6a1;font-size:9px;font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 2px 7px #000;white-space:nowrap;pointer-events:none}
-@media(max-width:600px){#dragonGhostRoot{right:13px;bottom:14px}#dragonGhostLauncher{width:62px;height:62px}#dragonGhostPanel{right:-3px;bottom:73px;height:min(560px,calc(100vh - 105px));min-height:350px}.account-login-help{padding:17px 15px;font-size:14px}.login-ghost-row{gap:7px;padding:10px}.login-ghost-row .login-ghost-art{width:72px;flex-basis:72px;transform:scale(.58)}}
+.login-ghost-art .ghost-buddy{left:55px;top:8px;transform:scale(.82);transform-origin:bottom left;z-index:3;animation:dgBuddyFloat 2.4s ease-in-out infinite alternate;animation-delay:-1.2s;filter:drop-shadow(0 0 13px #ff657b66);pointer-events:none}
+.login-ghost-art .ghost-buddy .ghost-body{background:linear-gradient(145deg,#fff9fb,#cbbdce)}
+.login-ghost-art .ghost-buddy .ghost-eye{top:48px;transform:none}
+.login-ghost-art .ghost-buddy .ghost-mouth{top:70px;left:48px;width:10px;height:7px;border-radius:50%;background:#ff6679;box-shadow:none}
+@media(max-width:600px){#dragonGhostRoot{right:13px;bottom:14px}#dragonGhostLauncher{width:62px;height:62px}#dragonGhostPanel{right:-3px;bottom:73px;height:min(560px,calc(100vh - 105px));min-height:350px}.account-login-help{padding:17px 15px;font-size:14px}.account-login-help p,.account-login-help li{font-size:14px}.login-ghost-row{gap:9px;padding:11px}.login-ghost-row .login-ghost-art{width:116px;height:112px;flex-basis:116px;transform:scale(.76);transform-origin:left center}.login-ghost-row .login-ghost-copy strong{font-size:16px}.login-ghost-row .login-ghost-copy p{font-size:14px}}
 @media(prefers-reduced-motion:reduce){#dragonGhostRoot *,#dragonGhostRoot *:before{animation:none!important;transition:none!important}}
 
 /* Keep the header mascot at its intended compact size; override the shared mascot float rule. */
