@@ -106,6 +106,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     localStorage.removeItem(pendingKey);
     localStorage.setItem(nextPromptKey, String(visits + 4));
     dismiss();
+    if (window.fdhShowAccountInvite) window.fdhShowAccountInvite();
   }
   function openChannel(url) {
     localStorage.setItem(pendingKey, "1");
@@ -134,6 +135,7 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
       localStorage.removeItem(pendingKey);
       localStorage.removeItem(nextPromptKey);
       dismiss();
+      if (window.fdhShowAccountInvite) window.fdhShowAccountInvite();
     });
     overlay.querySelector("#fdh-yt-no").addEventListener("click", snooze);
   } else {
@@ -148,6 +150,37 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
       document.removeEventListener("keydown", onEscape);
     }
   });
+})();
+
+/* Optional account invitation after the YouTube prompt. */
+(() => {
+  const reminderKey = "fdhAccountInviteNextAt";
+  const sessionKey = "fdhHasAccountSession";
+  const visits = Number(localStorage.getItem("fdhYtVisitCount") || "0");
+  const language = localStorage.getItem("flameDragonLanguage") || "en";
+  const messages = {
+    en: "Create a FLAME DRAGON HUB account or sign in to save your player profile.\n\nOK: Sign in / create account\nCancel: Remind me later",
+    ar: "اعمل حساب في FLAME DRAGON HUB أو سجّل الدخول للاحتفاظ بملف اللاعب.\n\nموافق: تسجيل الدخول / إنشاء حساب\nإلغاء: ذكّرني لاحقًا",
+    de: "Melde dich an oder erstelle ein Konto, um dein Spielerprofil zu speichern.\n\nOK: Anmelden / Konto erstellen\nAbbrechen: Später erinnern",
+    ru: "Войди или создай аккаунт, чтобы сохранить профиль игрока.\n\nОК: Войти / создать аккаунт\nОтмена: Напомнить позже",
+    hi: "अपनी खिलाड़ी प्रोफ़ाइल सेव करने के लिए साइन इन करें या खाता बनाएँ।\n\nOK: साइन इन / खाता बनाएँ\nCancel: बाद में याद दिलाएँ",
+    es: "Inicia sesión o crea una cuenta para guardar tu perfil.\n\nAceptar: Iniciar sesión / crear cuenta\nCancelar: Recordar más tarde",
+    tr: "Oyuncu profilini kaydetmek için giriş yap veya hesap oluştur.\n\nTamam: Giriş yap / hesap oluştur\nİptal: Daha sonra hatırlat"
+  };
+  function invite() {
+    if (localStorage.getItem(sessionKey) === "1") return;
+    if (window.confirm(messages[language] || messages.en)) {
+      location.href = "account.html#account";
+    } else {
+      localStorage.setItem(reminderKey, String(visits + 3));
+    }
+  }
+  const due = Number(localStorage.getItem(reminderKey) || "0");
+  if (due && visits >= due) {
+    localStorage.removeItem(reminderKey);
+    invite();
+  }
+  window.fdhShowAccountInvite = invite;
 })();
 
 /* FLAME DRAGON HUB — unique browser visitor tracking.
