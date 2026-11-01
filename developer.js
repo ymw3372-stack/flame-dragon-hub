@@ -318,6 +318,18 @@ toggleAllAccounts?.addEventListener("click", () => {
   toggleAllAccounts.textContent = nextExpanded ? "⌃ Hide Accounts" : "⌄ Show Accounts";
 });
 
+const toggleLoginCounts = $("toggleLoginCounts");
+const loginCountsContent = $("loginCountsContent");
+toggleLoginCounts?.addEventListener("click", () => {
+  const isExpanded = toggleLoginCounts.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+  toggleLoginCounts.setAttribute("aria-expanded", String(nextExpanded));
+  loginCountsContent?.classList.toggle("dev-hidden", !nextExpanded);
+  toggleLoginCounts.textContent = nextExpanded
+    ? "⌃ Hide Login & Logout Counts"
+    : "⌄ Show Login & Logout Counts";
+});
+
 $("userSearch")?.addEventListener("input", renderUsers);
 $("refreshUsers")?.addEventListener("click", () => { loadDashboard(); });
 
