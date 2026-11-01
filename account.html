@@ -243,6 +243,18 @@ body::after{content:"";display:block!important;position:fixed;inset:-30%;z-index
 .account-card .account-primary:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 0 28px rgba(255,55,85,.3),0 0 30px rgba(45,95,255,.2)}
 @media(prefers-reduced-motion:reduce){body::before,body::after{animation:none!important}}
 </style>  <link rel="stylesheet" href="dragon-ghost.css">
+<style>
+.account-login-help{margin:18px 0}
+.login-help-card{display:flex;align-items:center;gap:14px;width:100%;padding:15px 17px;border:1px solid rgba(255,138,36,.38);border-radius:15px;background:linear-gradient(115deg,rgba(255,80,60,.12),rgba(70,70,160,.12));color:#fff;text-decoration:none;transition:transform .2s,border-color .2s,background .2s;cursor:pointer}
+.login-help-card:hover{transform:translateY(-2px);border-color:rgba(255,190,100,.8);background:linear-gradient(115deg,rgba(255,80,60,.19),rgba(70,70,160,.18))}
+.login-help-card-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#ff634f,#a52d72);font-size:25px;font-weight:900;box-shadow:0 5px 18px #ff3d5533}
+.login-help-card-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.login-help-card-copy strong{color:#ffe0a8;font-size:16px}
+.login-help-card-copy small{color:#c9bdca;font-size:12px;line-height:1.5}
+.login-help-card-arrow{margin-left:auto;color:#ffd18c;font-size:24px}
+@media(prefers-reduced-motion:reduce){.login-help-card{transition:none}}
+</style>
+
 </head>
 <body>
   <aside class="bonus-codes" aria-label="Bonus codes">
@@ -283,15 +295,12 @@ body::after{content:"";display:block!important;position:fixed;inset:-30%;z-index
         <h1 id="accountHeading">🐉 Your Account</h1>
         <p class="account-subtitle">Sign in or create an account to join the hub.</p>
         <div id="loginHelp" class="account-login-help">
-          <div class="login-ghost-row"><div class="login-ghost-art" aria-hidden="true"><div class="ghost"><div class="ghost-body"></div><i class="ghost-eye left"></i><i class="ghost-eye right"></i><i class="ghost-mouth"></i></div><div class="ghost ghost-buddy"><div class="ghost-body"></div><i class="ghost-eye left"></i><i class="ghost-eye right"></i><i class="ghost-mouth"></i></div></div><div class="login-ghost-copy"><strong>👻 DRAGON GHOST IS HERE!</strong><p>Need help signing in? Follow the simple guide below, or open the Dragon Ghost chat in the corner to ask a question.</p></div></div>
-          <h3 class="login-help-title">HOW TO SIGN IN</h3><p><strong>Already have an account?</strong> Choose the same sign-in method you used when you registered.</p>
-          <ul>
-            <li><strong>Email:</strong> Enter your email and password, then select <em>Sign in</em>. You do not need a new verification email every time.</li>
-            <li><strong>New email account:</strong> Select <em>Create account</em>. We will send a verification link to your inbox. Open the link, then return here and select <em>I've verified my email</em>. Check Spam/Junk if you cannot find it.</li>
-            <li><strong>Google:</strong> Select <em>Continue with Google</em> and choose your Google account.</li>
-          </ul>
-          <p class="account-help-note">Forgot your email-account password? Enter your email above and select <em>Forgot password?</em>.</p>
-        </div>
+          <a class="login-help-card" href="signin-guide.html" aria-label="Open the complete sign-in guide">
+            <span class="login-help-card-icon" aria-hidden="true">?</span>
+            <span class="login-help-card-copy"><strong>Need help signing in?</strong><small>Open the step-by-step guide for email, Google, account creation and password recovery.</small></span>
+            <span class="login-help-card-arrow" aria-hidden="true">→</span>
+          </a>
+        </div> </div>
         <p id="authStatus" aria-live="polite">Checking account...</p>
         <form id="authForm">
           <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
