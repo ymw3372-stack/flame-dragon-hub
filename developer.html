@@ -153,27 +153,17 @@ body:before {
 <a href="index.html" class="dev-button" style="text-decoration:none">← Back to Hub</a>
 </header>
 <main class="dev-wrap">
-<div class="dev-head"><div><span class="dev-kicker">PRIVATE CONTROL CENTER</span><h1>Developer Dashboard</h1><p>Manage your hub, review accounts, publish news and track recorded activity.</p></div><span class="dev-pill">🛡️ Verified owner access</span></div>
+<div class="dev-head"><div><span class="dev-kicker">PRIVATE CONTROL CENTER</span><h1>Developer Dashboard</h1><p>Quick overview of registered accounts and sign-up details.</p></div><span class="dev-pill">🛡️ Verified owner access</span></div>
 <section id="devGate" class="dev-panel"><h2>Checking administrator access…</h2><p class="muted" id="devStatus">Connecting securely to Firebase Authentication.</p></section>
 <section id="devContent" class="dev-hidden">
 <div class="dev-grid">
-<article class="dev-card"><span>Accounts loaded (max 1000)</span><strong id="totalUsers">—</strong></article>
-<article class="dev-card"><span>Email accounts</span><strong id="emailUsers">—</strong></article>
-<article class="dev-card"><span>Google accounts</span><strong id="googleUsers">—</strong></article>
-<article class="dev-card"><span>Verified emails</span><strong id="verifiedUsers">—</strong></article>
-<article class="dev-card"><span>Recent events loaded</span><strong id="totalEvents">—</strong></article>
-<article class="dev-card"><span>Latest account activity</span><strong id="latestActivity" style="font-size:16px">—</strong></article>
+<article class="dev-card"><span>Registered accounts</span><strong id="totalUsers">—</strong></article>
 </div>
-<section class="dev-panel">
-<h2>Accounts</h2><p class="muted">Read-only account overview. Passwords and authentication secrets are never visible here.</p>
-<div class="dev-toolbar"><input id="userSearch" type="search" placeholder="Search by email, display name or UID…" autocomplete="off"><button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button></div>
-<div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Provider</th><th>Email status</th><th>Created</th><th>Last activity</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
+
+<div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Email / Account</th><th>Registration date</th><th>Sign-in method</th><th>Email status</th><th>Last sign-in</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
 </section>
-<section class="dev-panel">
-<h2>Login &amp; logout counts</h2><p class="muted">Total recorded sign-ins and sign-outs for each loaded account (up to 1,000 accounts). Counts include the activity records currently stored for that account.</p>
-<div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Sign-ins</th><th>Sign-outs</th><th>Provider</th></tr></thead><tbody id="activityTable"><tr><td colspan="4">Loading activity…</td></tr></tbody></table></div>
-</section>
-<section class="dev-panel"><h2>Analytics connection</h2><p class="muted">Google Analytics is installed on the Home page. Live visitor totals and traffic reports are not exposed here yet because they require a secure Google Analytics Data API connection. This dashboard will not guess or invent visitor counts.</p></section>
+
+
 <p class="dev-foot">Account suspension, deletion and role changes remain disabled until a trusted server-side Firebase Admin SDK service is configured.</p>
 </section>
 </main>
