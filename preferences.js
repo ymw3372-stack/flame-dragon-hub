@@ -1,3 +1,11 @@
+/* Load anonymous one-per-browser visitor counting on regular hub pages. */
+(() => {
+  const tracker = document.createElement("script");
+  tracker.src = "visitor-analytics.js";
+  tracker.async = true;
+  document.head.appendChild(tracker);
+})();
+
 /* Apply the saved site theme on every regular hub page.
    Developer Dashboard intentionally keeps its own gold-only appearance. */
 (() => {

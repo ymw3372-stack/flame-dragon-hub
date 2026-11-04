@@ -196,15 +196,15 @@ body:before {
 </section>
 <section class="dev-panel">
 <h2>Extension Analytics</h2>
-<p class="muted">Anonymous extension download statistics. GitHub reports completed ZIP downloads; website clicks are counted separately. No visitor names, emails or device details are collected.</p>
+<p class="muted">Anonymous extension statistics. GitHub reports completed ZIP downloads; website clicks are counted separately. The current v1.0.3 network-only package does not send install or EvoWorld-session telemetry, so those values are shown as Not tracked instead of a misleading zero.</p>
 <button id="toggleExtensionAnalytics" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="extensionAnalyticsContent">⌄ Show Extension Analytics</button>
 <div id="extensionAnalyticsContent" class="dev-hidden">
 <div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
 <article class="dev-card"><span>GitHub ZIP downloads</span><strong id="extensionGitHubDownloads">—</strong></article>
-<article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article><article class="dev-card"><span>Extension installations</span><strong id="extensionInstalls">—</strong></article><article class="dev-card"><span>EvoWorld usage sessions</span><strong id="extensionUsageSessions">—</strong></article>
+<article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article><article class="dev-card"><span>Installation events recorded</span><strong id="extensionInstalls">—</strong></article><article class="dev-card"><span>Usage sessions recorded</span><strong id="extensionUsageSessions">—</strong></article>
 <article class="dev-card"><span>Latest download click</span><strong id="extensionLastClick" style="font-size:15px">—</strong></article>
 </div>
-<div class="dev-message">Installations count fresh installs of the analytics-enabled build (updates are not counted). Usage sessions count one event per 30 minutes per browser profile while the main EvoWorld site is open. These are event totals, not unique-user counts. A ZIP download alone does not prove installation.</div>
+<div class="dev-message">The current v1.0.3 network-only extension does not report installation or EvoWorld gameplay sessions. These two metrics will remain Not tracked until telemetry is deliberately added to a future extension build. A ZIP download alone does not prove installation or gameplay.</div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Event</th><th>Source</th><th>Date</th></tr></thead><tbody id="extensionEventsTable"><tr><td colspan="3">Loading extension events…</td></tr></tbody></table></div>
 </div>
 </section>

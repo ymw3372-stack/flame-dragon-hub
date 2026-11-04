@@ -339,8 +339,10 @@ async function loadExtensionAnalytics() {
         return bt - at;
       });
     const clicks = events.filter(event => event.type === "download_click");
-    installsEl.textContent = String(events.filter(event => event.type === "install").length);
-    usageEl.textContent = String(events.filter(event => event.type === "usage_session").length);
+    const installEvents = events.filter(event => event.type === "install").length;
+    const usageEvents = events.filter(event => event.type === "usage_session").length;
+    installsEl.textContent = installEvents ? String(installEvents) : "Not tracked";
+    usageEl.textContent = usageEvents ? String(usageEvents) : "Not tracked";
     clicksEl.textContent = String(clicks.length);
     latestEl.textContent = clicks[0]?.createdAt?.toDate
       ? clicks[0].createdAt.toDate().toLocaleString()
@@ -354,8 +356,10 @@ async function loadExtensionAnalytics() {
   }
 
   if (results[1].status === "fulfilled") {
-    const asset = (results[1].value.assets || [])
-      .find(item => item.name === "FLAME_DRAGON_HUB_v1.0.1.zip");
+    const latestRelease = results[1].value;
+    const expectedAssetName = `FLAME_DRAGON_HUB_${latestRelease.tag_name}.zip`;
+    const asset = (latestRelease.assets || [])
+      .find(item => item.name === expectedAssetName);
     downloadsEl.textContent = asset ? String(asset.download_count ?? 0) : "Unavailable";
   } else {
     downloadsEl.textContent = "Unavailable";
