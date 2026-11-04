@@ -148,6 +148,29 @@ body:before {
 .dev-master-toggle{margin:14px 0 4px;min-width:160px}
 #accountsContent{margin-top:8px}
 
+
+/* Compact spacing for the developer dashboard only */
+.dev-wrap { margin: 22px auto 44px; }
+.dev-head { margin-bottom: 14px; gap: 12px; }
+.dev-head h1 { margin: 5px 0; }
+.dev-head p { margin: 4px 0 0; }
+.dev-grid { gap: 10px; margin: 12px 0; }
+.dev-card { padding: 15px; }
+.dev-card strong { margin-top: 5px; }
+.dev-panel { padding: 17px; margin-top: 11px; }
+.dev-panel > .muted { margin: 4px 0 8px; line-height: 1.45; }
+.dev-master-toggle { margin: 8px 0 2px; }
+.dev-toolbar, .dev-form-actions { margin: 10px 0; }
+.dev-message { margin: 8px 0; padding: 10px 12px; line-height: 1.45; }
+#accountsContent { margin-top: 6px; }
+.dev-table th, .dev-table td { padding: 10px 9px; }
+@media (max-width: 480px) {
+  .dev-wrap { width: 94%; margin: 16px auto 30px; }
+  .dev-head { margin-bottom: 10px; }
+  .dev-panel { padding: 13px; margin-top: 9px; }
+  .dev-card { padding: 12px; }
+  .dev-grid { gap: 8px; margin: 10px 0; }
+}
 </style>
 
 </head>
@@ -161,7 +184,7 @@ body:before {
 <section id="devGate" class="dev-panel"><h2>Checking administrator access…</h2><p class="muted" id="devStatus">Connecting securely to Firebase Authentication.</p></section>
 <section id="devContent" class="dev-hidden">
 <div class="dev-grid">
-<article class="dev-card"><span>Accounts loaded (max 1000)</span><strong id="totalUsers">—</strong></article>
+<article class="dev-card"><span>Accounts loaded</span><strong id="totalUsers">—</strong></article>
 <article class="dev-card"><span>Email accounts</span><strong id="emailUsers">—</strong></article>
 <article class="dev-card"><span>Google accounts</span><strong id="googleUsers">—</strong></article>
 <article class="dev-card"><span>Verified emails</span><strong id="verifiedUsers">—</strong></article>
@@ -169,7 +192,7 @@ body:before {
 <article class="dev-card"><span>Latest account activity</span><strong id="latestActivity" style="font-size:16px">—</strong></article>
 </div>
 <section class="dev-panel">
-<h2>Accounts</h2><p class="muted">Read-only account overview. Passwords and authentication secrets are never visible here.</p>
+<h2>Accounts</h2><p class="muted">Read-only account list. Passwords and authentication secrets are never shown.</p>
 <button id="toggleAllAccounts" class="dev-button gold" type="button" aria-expanded="false" aria-controls="accountsContent">⌄ Show Accounts</button>
 <div id="accountsContent" class="dev-hidden">
 <div class="dev-toolbar"><input id="userSearch" type="search" placeholder="Search by email, display name or UID…" autocomplete="off"><button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button></div>
@@ -185,18 +208,18 @@ body:before {
 </section>
 <section class="dev-panel">
 <h2>Program Visitors</h2>
-<p class="muted">Counts unique browser profiles that have opened any main FLAME DRAGON HUB page. No sign-in is required. Repeat visits from the same browser count once; another browser or device counts separately.</p>
+<p class="muted">Unique browser profiles that opened the hub. No sign-in required; another browser or device counts separately.</p>
 <button id="toggleUniqueVisitors" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="uniqueVisitorsContent">⌄ Show Unique Program Visitors</button>
 <div id="uniqueVisitorsContent" class="dev-hidden">
 <div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
 <article class="dev-card"><span>Unique visitors</span><strong id="uniqueProgramVisitors">—</strong></article>
 </div>
-<div class="dev-message">A visitor is counted once per browser profile, whether they open Home, Favorites, Evolutions, Skins Library, Settings or another page that loads the shared site script. Clearing browser data or using another device/browser may create another count.</div>
+<div class="dev-message">Each browser profile counts once. Clearing browser data or switching devices may create another count.</div>
 </div>
 </section>
 <section class="dev-panel">
 <h2>Extension Analytics</h2>
-<p class="muted">Anonymous extension statistics. GitHub reports completed ZIP downloads; website clicks are counted separately. The current v1.0.3 network-only package does not send install or EvoWorld-session telemetry, so those values are shown as Not tracked instead of a misleading zero.</p>
+<p class="muted">Anonymous extension stats. ZIP downloads and website clicks are separate; install and gameplay tracking are not available in v1.0.3.</p>
 <button id="toggleExtensionAnalytics" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="extensionAnalyticsContent">⌄ Show Extension Analytics</button>
 <div id="extensionAnalyticsContent" class="dev-hidden">
 <div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
@@ -204,12 +227,12 @@ body:before {
 <article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article><article class="dev-card"><span>Installation events recorded</span><strong id="extensionInstalls">—</strong></article><article class="dev-card"><span>Usage sessions recorded</span><strong id="extensionUsageSessions">—</strong></article>
 <article class="dev-card"><span>Latest download click</span><strong id="extensionLastClick" style="font-size:15px">—</strong></article>
 </div>
-<div class="dev-message">The current v1.0.3 network-only extension does not report installation or EvoWorld gameplay sessions. These two metrics will remain Not tracked until telemetry is deliberately added to a future extension build. A ZIP download alone does not prove installation or gameplay.</div>
+<div class="dev-message">Installations and gameplay sessions are not tracked by v1.0.3. A ZIP download does not confirm either.</div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Event</th><th>Source</th><th>Date</th></tr></thead><tbody id="extensionEventsTable"><tr><td colspan="3">Loading extension events…</td></tr></tbody></table></div>
 </div>
 </section>
-<section class="dev-panel"><h2>Analytics connection</h2><p class="muted">Google Analytics is installed on the Home page. Live visitor totals and traffic reports are not exposed here yet because they require a secure Google Analytics Data API connection. This dashboard will not guess or invent visitor counts.</p></section>
-<p class="dev-foot">Account suspension, deletion and role changes remain disabled until a trusted server-side Firebase Admin SDK service is configured.</p>
+
+
 </section>
 </main>
 <script type="module" src="developer.js"></script>
