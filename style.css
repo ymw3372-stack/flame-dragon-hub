@@ -2674,31 +2674,6 @@ body.performance-mode *::after {
 @media (max-width:600px) { .skins-tools { gap:8px; } .skins-tools input { flex-basis:100%; } .skins-tools select { flex:1 1 42%; } .skin-result-count { width:100%; margin-left:0; } }
 
 
-/* FLAME DRAGON HUB — animated pointer glow */
-.cursor-glow {
-    position: fixed;
-    left: 95px;
-    top: 95px;
-    width: 190px;
-    height: 190px;
-    max-width: 190px;
-    max-height: 190px;
-    contain: strict;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0);
-    background: radial-gradient(circle, rgba(255, 132, 43, .22) 0%, rgba(255, 76, 20, .11) 32%, rgba(255, 64, 10, 0) 72%);
-    filter: blur(5px);
-    transition: opacity .22s ease;
-    mix-blend-mode: screen;
-    will-change: left, top;
-}
-body.pointer-glow-active .cursor-glow { opacity: 1; }
-@media (hover: none), (prefers-reduced-motion: reduce) {
-    .cursor-glow { display: none; }
-}
 .evolution-grid-single {
     grid-template-columns: minmax(280px, 720px);
     justify-content: center;

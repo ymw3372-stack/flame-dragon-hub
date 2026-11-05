@@ -34,39 +34,6 @@
     document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
   }
 
-  function addCursorGlow(){
-    if(reduceMotion || window.matchMedia?.("(hover: none)").matches || document.querySelector(".cursor-glow"))return;
-    const glow=document.createElement("div");
-    glow.className="cursor-glow";
-    glow.setAttribute("aria-hidden","true");
-    document.body.appendChild(glow);
-    let frame=0,x=-300,y=-300;
-    const radius=95;
-    window.addEventListener("mousemove",event=>{
-      x=Math.max(radius,Math.min(window.innerWidth-radius,event.clientX));
-      y=Math.max(radius,Math.min(window.innerHeight-radius,event.clientY));
-      document.body.classList.add("pointer-glow-active");
-      if(!frame)frame=requestAnimationFrame(()=>{
-        glow.style.left=x+"px";
-        glow.style.top=y+"px";
-        frame=0;
-      });
-    },{passive:true});
-    document.addEventListener("mouseleave",()=>document.body.classList.remove("pointer-glow-active"));
-    document.addEventListener("mouseenter",()=>document.body.classList.add("pointer-glow-active"));
-  }
-
-  function addBonusPanel(){
-    if(document.querySelector(".fdh-bonus-codes"))return;
-    const header=document.querySelector("header.navbar");
-    if(!header)return;
-    const bonus=document.createElement("aside");
-    bonus.className="fdh-bonus-codes";
-    bonus.setAttribute("aria-label","Bonus codes");
-    bonus.innerHTML='<strong>✦ ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>';
-    header.insertAdjacentElement("afterend",bonus);
-  }
-
   function addPointerTilt(){
     if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
     const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
@@ -147,7 +114,6 @@
     addScrollProgress();
     removeExtraBottomUI();
     addBonusPanel();
-    addCursorGlow();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
