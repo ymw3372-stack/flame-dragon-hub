@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -36,6 +36,9 @@ const ACTIVITY_SAMPLE = 1000;
 let cachedUsers = [];
 let activityByUser = new Map();
 const expandedAccounts = new Set();
+const banByUser = new Map();
+const loadedBanUsers = new Set();
+const moderationBusy = new Set();
 
 function showGate(message, title = "Administrator access required") {
   $("devContent")?.classList.add("dev-hidden");
@@ -113,8 +116,7 @@ function renderUsers() {
         cell(user.displayName || user.email || user.uid),
         cell(user.provider),
         cell(user.emailVerified ? "Verified" : "Not verified"),
-        cell(formatDate(user.createdAt)),
-        cell(formatDate(user.lastSignInAt))
+        cell(formatDate(user.createdAt))
       );
       const actionCell = document.createElement("td");
       const toggle = document.createElement("button");
@@ -135,7 +137,7 @@ function renderUsers() {
         const detailRow = document.createElement("tr");
         detailRow.className = "dev-account-detail-row";
         const detailCell = document.createElement("td");
-        detailCell.colSpan = 6;
+        detailCell.colSpan = 5;
         const panel = document.createElement("div");
         panel.className = "dev-account-detail";
         const email = document.createElement("strong");
@@ -271,7 +273,6 @@ async function loadDashboard() {
     renderUsers();
     const totalEvents = accountStats.reduce((sum, account) => sum + account.signIns + account.signOuts, 0);
     if ($("totalEvents")) $("totalEvents").textContent = String(totalEvents);
-    if ($("latestActivity")) $("latestActivity").textContent = (accountStats[0]?.latestTime?.toDate ? new Intl.DateTimeFormat("en-GB").format(accountStats[0].latestTime.toDate()) : "No events");
     const table = $("activityTable");
     if (!table) return;
     table.replaceChildren();
