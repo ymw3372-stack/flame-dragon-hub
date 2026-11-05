@@ -54,22 +54,15 @@
     document.addEventListener("mouseenter",()=>document.body.classList.add("pointer-glow-active"));
   }
 
-  function addBonusAndMarquee(){
-    if(document.querySelector(".fdh-marquee"))return;
+  function addBonusPanel(){
+    if(document.querySelector(".fdh-bonus-codes"))return;
     const header=document.querySelector("header.navbar");
     if(!header)return;
-    const strip=document.createElement("div");
-    strip.className="fdh-marquee";
-    strip.setAttribute("aria-label","FLAME DRAGON HUB announcements");
-    strip.innerHTML='<div class="fdh-marquee-track"><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span></div>';
-    header.insertAdjacentElement("afterend",strip);
-    if(!document.querySelector(".fdh-bonus-codes")){
-      const bonus=document.createElement("aside");
-      bonus.className="fdh-bonus-codes";
-      bonus.setAttribute("aria-label","Bonus codes");
-      bonus.innerHTML='<strong>✦ ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>';
-      header.insertAdjacentElement("afterend",bonus);
-    }
+    const bonus=document.createElement("aside");
+    bonus.className="fdh-bonus-codes";
+    bonus.setAttribute("aria-label","Bonus codes");
+    bonus.innerHTML='<strong>✦ ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>';
+    header.insertAdjacentElement("afterend",bonus);
   }
 
   function addPointerTilt(){
@@ -151,7 +144,7 @@
   function init(){
     addScrollProgress();
     removeExtraBottomUI();
-    addBonusAndMarquee();
+    addBonusPanel();
     addCursorGlow();
     addReveal();
     addPointerTilt();
