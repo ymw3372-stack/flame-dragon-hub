@@ -3026,3 +3026,8 @@ a:hover img{filter:drop-shadow(0 0 10px rgba(255,135,58,.2))}
   .fdh-word{opacity:1!important;transform:none!important;animation:none!important}
   .fdh-page-transition{display:none!important}
 }
+
+/* Slight size lift for clearer reading and more substantial cards */
+.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step{font-size:1.015em}
+.hub-card h2,.evolution-card h2,.guide-card h2,.skin-card h2,.welcome-card h2,.signin-step h2{font-size:1.045em}
+.hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover{scale:1.012}
