@@ -349,6 +349,20 @@ body:after{
 <div class="dev-message">Each browser profile counts once. Clearing browser data or switching devices may create another count.</div>
 </div>
 </section>
+<section class="dev-panel" id="contactInboxPanel">
+<h2>Contact Inbox</h2>
+<p class="muted">Review incoming support messages, open attached images and update each message status.</p>
+<button id="toggleContactInbox" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="contactInboxContent">⌄ Show Contact Inbox</button>
+<div id="contactInboxContent" class="dev-hidden">
+<div class="dev-toolbar">
+<select id="contactStatusFilter" aria-label="Filter contact messages">
+<option value="all">All messages</option><option value="New">New</option><option value="In Progress">In Progress</option><option value="Resolved">Resolved</option>
+</select>
+<button id="refreshContactInbox" class="dev-button" type="button">↻ Refresh inbox</button>
+</div>
+<div id="contactInboxList" aria-live="polite"><p class="dev-section-note">Open the inbox to load messages.</p></div>
+</div>
+</section>
 <section class="dev-panel">
 <h2>Extension Analytics</h2>
 <p class="muted">Anonymous extension stats. ZIP downloads and website clicks are separate; install and gameplay tracking are not available in v1.0.3.</p>
