@@ -941,16 +941,22 @@ a {
 <script>
 (() => {
   const announcement = document.querySelector(".update-announcement");
-  if (!announcement) return;
+  const updateButton = document.getElementById("extensionDownloadButton");
+  if (!announcement && !updateButton) return;
 
   function hideDownloadedUpdate(event) {
     const state = event?.detail;
     const alreadyDownloaded =
       document.documentElement.getAttribute("data-fdh-v103-downloaded") === "true";
-    if (alreadyDownloaded || (state?.downloaded && state.version === "1.0.3")) {
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.0.3")) return;
+
+    if (announcement) {
       announcement.hidden = true;
       announcement.setAttribute("aria-hidden", "true");
     }
+
+    const orbitPosition = updateButton?.closest(".orbit-position");
+    if (orbitPosition) orbitPosition.hidden = true;
   }
 
   hideDownloadedUpdate();
