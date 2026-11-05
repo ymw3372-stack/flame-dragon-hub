@@ -200,6 +200,7 @@ async function runModerationAction(uid, action, reason, duration) {
     banByUser.set(uid, localRecord);
     loadedBanUsers.add(uid);
     banLoadErrors.delete(uid);
+    let auditSaved = true;
     try {
       await addDoc(collection(db, "moderationLogs"), {
         action,
@@ -211,10 +212,13 @@ async function runModerationAction(uid, action, reason, duration) {
         createdAt: serverTimestamp()
       });
     } catch (logError) {
+      auditSaved = false;
       console.warn("Moderation succeeded but its audit entry could not be saved:", logError);
-      showReadError("The account action succeeded, but its audit entry was not saved. Publish the latest firestore.rules to enable the Admin Activity log.");
     }
     clearReadError();
+    if (!auditSaved) {
+      showReadError("The account action succeeded, but its audit entry was not saved. Publish the latest firestore.rules to enable the Admin Activity log.");
+    }
     renderBanManagement();
     loadModerationActivity();
   } catch (error) {
@@ -454,6 +458,7 @@ async function loadBanManagementData() {
   try {
     const snapshot = await getDocs(query(collection(db, "userBans"), limit(MAX_USERS)));
     banByUser.clear();
+    loadedBanUsers.clear();
     for (const item of snapshot.docs) {
       banByUser.set(item.id, item.data());
       loadedBanUsers.add(item.id);
