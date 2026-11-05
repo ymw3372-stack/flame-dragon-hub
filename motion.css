@@ -62,110 +62,131 @@ body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track){position:relative;z-in
 @media(prefers-reduced-motion:reduce){.fdh-flying-dragon{animation:none!important}.fdh-dragon-words span{animation:none!important;opacity:.55!important}.fdh-word,.fdh-reveal,.fdh-image-reveal,.fdh-footer-logo,.fdh-footer-wordmark span,.fdh-footer-wordmark i,.fdh-global-footer:before{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}}
 
 
-/* ===== Final layout corrections (Nov 2026) ===== */
-/* Keep the marquee inside the page width and prevent it from drifting. */
+/* ===== Unified page spacing, glass footer and language dock ===== */
+
+/* Keep every page centered and remove the large blank bands around the footer. */
+html,body{max-width:100%;overflow-x:hidden}
+main{
+  margin-top:0!important;
+  margin-bottom:0!important;
+  padding-top:10px!important;
+  padding-bottom:12px!important;
+}
+main.page{padding-top:10px!important;padding-bottom:12px!important}
+main.reaper-vault{padding:10px 22px 12px!important}
+main.fav-page,main.settings-page{padding-top:10px!important;padding-bottom:12px!important}
+main>*:last-child{margin-bottom:0}
 .fdh-marquee{
-  position:relative!important;
-  inset:auto!important;
-  display:block!important;
-  width:100%!important;
-  max-width:100%!important;
-  margin:12px auto 0!important;
-  padding:14px 0!important;
-  overflow:hidden!important;
-  overflow:clip!important;
-  box-sizing:border-box!important;
-  isolation:isolate;
-  transform:none!important;
+  display:block!important;position:relative!important;inset:auto!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:12px 0!important;box-sizing:border-box!important;
+  overflow:hidden!important;direction:ltr!important;text-align:left!important;
+  background:transparent!important;transform:none!important;
+  border-top:1px solid rgba(255,255,255,.24)!important;
+  border-bottom:1px solid rgba(255,255,255,.24)!important;
 }
 .fdh-marquee-track{
-  position:relative!important;
-  inset:auto!important;
-  display:flex!important;
-  width:max-content!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  flex-wrap:nowrap!important;
-  direction:ltr!important;
-  transform:translate3d(0,0,0);
-  animation:fdh-marquee-scroll 54s linear infinite!important;
+  display:flex!important;position:relative!important;inset:auto!important;
+  width:max-content!important;max-width:none!important;min-width:max-content!important;
+  margin:0!important;padding:0!important;flex-wrap:nowrap!important;
+  direction:ltr!important;justify-content:flex-start!important;
+  animation:fdh-marquee-scroll 64s linear infinite!important;
+  will-change:transform;
 }
 .fdh-marquee-group{
-  flex:0 0 auto!important;
-  width:max-content!important;
-  max-width:none!important;
-  white-space:nowrap!important;
+  display:flex!important;flex:0 0 auto!important;width:max-content!important;
+  max-width:none!important;white-space:nowrap!important;
 }
-.fdh-marquee+.fdh-global-footer,
+@keyframes fdh-marquee-scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+/* One consistent, translucent footer on every page. No opaque inner cards. */
 .fdh-global-footer{
-  margin-top:0!important;
+  display:block!important;position:relative!important;width:100%!important;
+  max-width:100%!important;box-sizing:border-box!important;
+  margin:0!important;padding:30px clamp(16px,4vw,42px) 18px!important;
+  border-top:1px solid rgba(255,178,132,.24)!important;
+  background:linear-gradient(180deg,rgba(22,14,18,.42),rgba(10,8,13,.54))!important;
+  -webkit-backdrop-filter:blur(18px)!important;backdrop-filter:blur(18px)!important;
 }
-main.reaper-vault,
-main.fav-page,
-main.settings-page{
-  padding-bottom:24px!important;
+.fdh-global-footer:before{
+  opacity:.45!important;
+  background:linear-gradient(115deg,transparent 25%,rgba(255,190,150,.035) 50%,transparent 72%)!important;
 }
-@media(max-width:600px){
-  .fdh-marquee{margin-top:8px!important;padding:12px 0!important}
-  .fdh-marquee-track{animation-duration:46s!important}
+.fdh-footer-inner{width:min(1180px,100%)!important;max-width:100%!important;margin:0 auto!important}
+.fdh-footer-top{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.4fr) minmax(130px,.65fr) minmax(170px,.85fr)!important;
+  align-items:start!important;gap:clamp(18px,3.5vw,40px)!important;
+  width:100%!important;min-width:0!important;
 }
-
-
-/* ===== Consolidated layout + language dock repair ===== */
-body{padding-bottom:0!important}
+.fdh-footer-brand,.fdh-footer-column{min-width:0!important;background:transparent!important}
+.fdh-footer-brandline{display:flex;align-items:center;gap:14px;min-width:0}
+.fdh-footer-brandtext{min-width:0}
+.fdh-footer-brandtext strong{font-size:clamp(20px,2.5vw,30px)!important}
+.fdh-footer-brand p{max-width:440px;margin:14px 0 0!important;line-height:1.75!important;overflow-wrap:anywhere}
+.fdh-footer-column{gap:10px!important}
+.fdh-footer-column a{max-width:100%;overflow-wrap:anywhere}
+.fdh-footer-wordmark{
+  display:flex!important;width:100%!important;min-width:0!important;
+  align-items:center!important;justify-content:center!important;text-align:center!important;
+  gap:12px!important;margin:28px auto 18px!important;padding:12px 0 18px!important;
+  white-space:normal!important;border-bottom:1px solid rgba(255,190,150,.12)!important;
+}
+.fdh-footer-wordmark span{
+  display:block!important;max-width:100%!important;
+  font-size:clamp(34px,7.5vw,82px)!important;line-height:1!important;
+  color:transparent!important;background:none!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-text-stroke:1px rgba(255,205,170,.42)!important;
+  text-shadow:0 0 22px rgba(255,145,95,.10)!important;
+  animation:none!important;
+}
+.fdh-footer-wordmark i{font-size:clamp(18px,3vw,30px)!important;color:rgba(255,174,125,.58)!important}
+.fdh-footer-bottom{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  flex-wrap:wrap!important;gap:10px 22px!important;text-align:center!important;
+}
 .fdh-language-dock{
   position:fixed!important;left:50%!important;right:auto!important;bottom:12px!important;
   z-index:100000!important;width:min(390px,calc(100% - 24px))!important;
-  margin:0!important;padding:7px 12px!important;box-sizing:border-box!important;
+  margin:0!important;padding:6px 10px!important;box-sizing:border-box!important;
   transform:translateX(-50%)!important;
-  border:1px solid rgba(255,255,255,.24)!important;border-radius:13px!important;
-  background:rgba(18,13,20,.62)!important;
-  box-shadow:0 7px 24px rgba(0,0,0,.24)!important;
-  -webkit-backdrop-filter:blur(16px)!important;backdrop-filter:blur(16px)!important;
+  border:1px solid rgba(255,255,255,.20)!important;border-radius:13px!important;
+  background:rgba(18,13,20,.34)!important;
+  box-shadow:0 6px 20px rgba(0,0,0,.16)!important;
+  -webkit-backdrop-filter:blur(18px)!important;backdrop-filter:blur(18px)!important;
 }
 .fdh-language-dock .fdh-language{
   display:flex!important;align-items:center!important;gap:10px!important;
   min-height:34px!important;margin:0!important;padding:2px 4px!important;
   border:0!important;background:transparent!important;box-shadow:none!important;
 }
-.fdh-language-dock .fdh-language-label{color:rgba(255,220,170,.9)!important;font:800 12px Arial,sans-serif!important}
+.fdh-language-dock .fdh-language-label{color:rgba(255,220,190,.86)!important;font:800 12px Arial,sans-serif!important}
 .fdh-language-dock select{
   flex:1!important;min-width:0!important;padding:7px 9px!important;
-  color:#fff!important;background:rgba(20,15,23,.38)!important;
-  border:1px solid rgba(255,255,255,.22)!important;border-radius:8px!important;
+  color:#fff!important;background:rgba(20,15,23,.20)!important;
+  border:1px solid rgba(255,255,255,.18)!important;border-radius:8px!important;
 }
 .fdh-language-dock option{color:#17111d;background:#fff}
-.fdh-marquee{
-  display:block!important;position:relative!important;inset:auto!important;
-  width:100%!important;max-width:100%!important;min-width:0!important;
-  margin:0!important;padding:12px 0!important;box-sizing:border-box!important;
-  overflow:hidden!important;overflow:clip!important;
-  direction:ltr!important;text-align:left!important;
-  background:transparent!important;transform:none!important;
-  border-top:1px solid rgba(255,255,255,.28)!important;
-  border-bottom:1px solid rgba(255,255,255,.28)!important;
+@media(max-width:700px){
+  .fdh-footer-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:24px!important}
+  .fdh-footer-brand{grid-column:1/-1}
+  .fdh-footer-brandline{justify-content:center}
+  .fdh-footer-brand p{text-align:center;margin-left:auto!important;margin-right:auto!important}
+  .fdh-footer-column{align-items:center!important;text-align:center!important}
+  .fdh-footer-bottom{flex-direction:column!important;align-items:center!important}
 }
-.fdh-marquee-track{
-  display:flex!important;position:relative!important;inset:auto!important;
-  width:max-content!important;max-width:none!important;min-width:0!important;
-  margin:0!important;padding:0!important;flex-wrap:nowrap!important;
-  direction:ltr!important;justify-content:flex-start!important;
-  animation:fdh-marquee-scroll 58s linear infinite!important;
-}
-.fdh-marquee-group{display:flex!important;flex:0 0 auto!important;width:max-content!important;max-width:none!important;white-space:nowrap!important}
-.fdh-global-footer{margin:0!important;padding-top:34px!important}
-main,main.page,main.reaper-vault,main.fav-page,main.settings-page{
-  margin-bottom:0!important;padding-bottom:24px!important;
-}
-main{padding-top:0!important}
-main.page{padding-top:12px!important}
-main.reaper-vault{padding-top:24px!important}
-main.fav-page{padding-top:24px!important}
-main.settings-page{padding-top:24px!important}
-@media(max-width:600px){
+@media(max-width:420px){
+  .fdh-footer-top{grid-template-columns:minmax(0,1fr)!important}
+  .fdh-footer-brand{grid-column:auto}
+  .fdh-footer-column{align-items:center!important}
+  .fdh-footer-wordmark{gap:6px!important}
+  .fdh-footer-wordmark span{font-size:clamp(30px,9vw,42px)!important}
+  .fdh-global-footer{padding:24px 16px 16px!important}
   .fdh-marquee{padding:10px 0!important}
-  .fdh-marquee-track{animation-duration:48s!important}
-  .fdh-global-footer{padding-top:28px!important}
-  main,main.page,main.reaper-vault,main.fav-page,main.settings-page{padding-bottom:18px!important}
+  .fdh-marquee-track{animation-duration:54s!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .fdh-marquee-track{animation:none!important}
+  .fdh-footer-wordmark span,.fdh-global-footer:before{animation:none!important}
 }
