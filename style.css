@@ -2930,3 +2930,99 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   body::before, body::after { animation: none !important; }
 }
+
+
+/* ===== FLAME DRAGON MOTION SYSTEM ===== */
+:root{
+  --fdh-motion-fast:180ms;
+  --fdh-motion-base:420ms;
+  --fdh-motion-slow:680ms;
+  --fdh-ember-glow:rgba(255,132,58,.34);
+}
+html{scroll-behavior:smooth}
+.fdh-reveal{
+  opacity:0;
+  transform:translate3d(0,22px,0) scale(.99);
+  transition:opacity var(--fdh-motion-slow) cubic-bezier(.2,.7,.2,1),
+             transform var(--fdh-motion-slow) cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--fdh-stagger,0ms);
+  will-change:opacity,transform;
+}
+.fdh-reveal.fdh-visible{opacity:1;transform:translate3d(0,0,0) scale(1);will-change:auto}
+.fdh-word{
+  display:inline-block;
+  opacity:0;
+  transform:translate3d(0,13px,0);
+  animation:fdhWordIn .48s cubic-bezier(.2,.7,.2,1) forwards;
+  animation-delay:var(--fdh-word-delay,0ms);
+}
+@keyframes fdhWordIn{to{opacity:1;transform:translate3d(0,0,0)}}
+.fdh-image-reveal{opacity:0;transform:translate3d(0,16px,0) scale(.975);transition:opacity .62s ease,transform .62s cubic-bezier(.2,.7,.2,1)}
+.fdh-image-reveal.fdh-visible{opacity:1;transform:translate3d(0,0,0) scale(1)}
+/* Slightly larger, clearer interactive surfaces without changing page layouts */
+.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step,.contact-section,.contact-panel{
+  transition:transform .26s ease,box-shadow .3s ease,border-color .3s ease,filter .3s ease;
+}
+.hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover,.contact-section:hover,.contact-panel:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 38px rgba(0,0,0,.22),0 0 22px var(--fdh-ember-glow);
+}
+button,.btn,.download-btn,.navigation a,.nav-links a,.back-link,.settings-profile-link{
+  transition:transform .2s ease,box-shadow .25s ease,filter .25s ease,border-color .25s ease;
+}
+button:hover,.btn:hover,.download-btn:hover,.navigation a:hover,.nav-links a:hover,.settings-profile-link:hover{
+  filter:brightness(1.07);
+}
+img:not(.welcome-logo):not(.brand img){transition:filter .35s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+a:hover img{filter:drop-shadow(0 0 10px rgba(255,135,58,.2))}
+.fdh-global-footer{
+  width:min(1160px,92%);
+  margin:42px auto 0;
+  padding:20px 0 28px;
+  border-top:1px solid rgba(255,157,91,.38);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 22px;
+  color:rgba(240,218,202,.68);
+  font-size:12px;
+  text-align:center;
+}
+.fdh-global-footer:before{
+  content:"";
+  position:absolute;
+  width:min(240px,40vw);
+  height:1px;
+  margin-top:-41px;
+  background:linear-gradient(90deg,transparent,rgba(255,151,76,.72),transparent);
+  pointer-events:none;
+}
+.fdh-global-footer a{
+  color:#ffbd91;
+  text-decoration:none;
+  font-weight:800;
+  padding:5px 8px;
+  border-radius:8px;
+}
+.fdh-global-footer a:hover{color:#fff2e8;background:rgba(255,132,58,.1);text-shadow:0 0 12px rgba(255,132,58,.3)}
+.fdh-global-footer .fdh-footer-separator{color:rgba(255,174,124,.45)}
+.fdh-page-transition{
+  position:fixed;inset:0;z-index:1000000;pointer-events:none;
+  opacity:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,126,48,.13),rgba(12,8,10,.2) 68%,rgba(12,8,10,.34));
+  transition:opacity .18s ease;
+}
+.fdh-page-transition.fdh-transition-in{opacity:1;animation:fdhTransitionOut .42s ease forwards}
+.fdh-page-transition.fdh-transition-out{opacity:1}
+@keyframes fdhTransitionOut{to{opacity:0}}
+@media(hover:none){
+  .hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover,.contact-section:hover,.contact-panel:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .fdh-reveal,.fdh-image-reveal{opacity:1!important;transform:none!important}
+  .fdh-word{opacity:1!important;transform:none!important;animation:none!important}
+  .fdh-page-transition{display:none!important}
+}
