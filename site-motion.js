@@ -118,32 +118,27 @@
     targets.forEach(el=>observer.observe(el));
   }
 
-  function addTransitions(){
-    if(reduceMotion)return;
-    const overlay=document.createElement("div");
-    overlay.className="fdh-page-transition fdh-transition-in";
-    overlay.setAttribute("aria-hidden","true");
-    document.body.appendChild(overlay);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>overlay.classList.remove("fdh-transition-in")));
-    document.addEventListener("click",event=>{
-      const link=event.target.closest("a[href]");
-      if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-      if(link.target==="_blank"||link.hasAttribute("download")||link.closest("form"))return;
-      const raw=link.getAttribute("href");
-      if(!raw||raw.startsWith("#")||/^(mailto:|tel:|javascript:)/i.test(raw))return;
-      let dest;try{dest=new URL(raw,location.href);}catch(_){return;}
-      if(dest.origin!==location.origin||(dest.pathname===location.pathname&&dest.search===location.search))return;
-      event.preventDefault();
-      overlay.classList.add("fdh-transition-out");
-      window.setTimeout(()=>{location.href=dest.href;},430);
-    });
+  function addDragonAtmosphere(){
+    if(document.querySelector(".fdh-dragon-atmosphere"))return;
+    const layer=document.createElement("div");
+    layer.className="fdh-dragon-atmosphere";
+    layer.setAttribute("aria-hidden","true");
+    layer.innerHTML=`
+      <div class="fdh-dragon-words">
+        <span>FLAME DRAGON</span><span>SKINS EDITOR</span><nobr></nobr>
+        <span>EVOWORLD</span><span>YOUR SKIN · YOUR STYLE</span>
+      </div>
+      <img class="fdh-flying-dragon" src="assets/skins/evolution-creatures/dragon.webp" alt="" loading="lazy">
+    `;
+    layer.querySelector("nobr")?.remove();
+    document.body.prepend(layer);
   }
 
   function init(){
     addScrollProgress();
     addFooter();
     addReveal();
-    addTransitions();
+    addDragonAtmosphere();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
