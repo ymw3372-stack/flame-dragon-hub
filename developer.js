@@ -73,10 +73,9 @@ function describeReadError(error) {
   const code = error?.code || "";
   const raw = error?.message || String(error);
   if (code === "permission-denied" || /insufficient permissions/i.test(raw)) {
-    return "Authorized as owner, but Firestore denied the read. The rules deployed in "
-      + "Firebase Console still contain the old placeholder UID. Open Firebase Console, "
-      + "project flame-dragon-hub, Firestore Database, Rules, paste the updated "
-      + "firestore.rules from this repo and press Publish.";
+    return "Firestore denied this read. Open Firebase Console, project flame-dragon-hub, "
+      + "Firestore Database, Rules, and publish the latest firestore.rules file from this repository. "
+      + "The account moderation controls will not work until those rules are published.";
   }
   if (code === "failed-precondition") {
     return "Authorized as owner, but the query needs a Firestore index. Open the browser "
