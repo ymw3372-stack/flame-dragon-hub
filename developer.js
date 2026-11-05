@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -167,7 +167,7 @@ function renderUsers() {
   if (!filtered.length) {
     const row = document.createElement("tr");
     const td = cell("No matching accounts.");
-    td.colSpan = 6;
+    td.colSpan = 5;
     row.append(td);
     table.append(row);
   } else {
@@ -220,29 +220,6 @@ function renderUsers() {
           counts.append(card);
         }
         panel.append(counts);
-        const heading = document.createElement("p");
-        heading.className = "dev-section-note";
-        heading.textContent = "Sign-in / sign-out history";
-        panel.append(heading);
-        if (!events) {
-          const loading = document.createElement("p");
-          loading.textContent = "Loading account activity…";
-          panel.append(loading);
-        } else if (!events.length) {
-          const empty = document.createElement("p");
-          empty.textContent = "No recorded sign-in or sign-out events.";
-          panel.append(empty);
-        } else {
-          const list = document.createElement("ul");
-          list.className = "dev-account-event-list";
-          for (const event of events) {
-            const item = document.createElement("li");
-            item.textContent = (event.type === "sign_in" ? "Sign-in" : "Sign-out")
-              + " — " + formatDate(event.createdAt);
-            list.append(item);
-          }
-          panel.append(list);
-        }
         const moderation = document.createElement("div");
         moderation.className = "dev-moderation";
         const moderationHeading = document.createElement("h3");
@@ -333,20 +310,10 @@ function renderUsers() {
   if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} accounts).`;
 }
 
-// Firestore drops documents that lack the field used in orderBy, which hides any
-// account whose document has no lastSignInAt yet. An unordered read is used first
-// and the ordering is applied here, so no stored account can go missing.
+// Read stored accounts without sorting or displaying their last sign-in timestamps.
 async function readUsers() {
-  let snapshot;
-  try {
-    snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
-  } catch (error) {
-    if (error?.code === "permission-denied") throw error;
-    snapshot = await getDocs(query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS)));
-  }
-  return snapshot.docs
-    .map(item => ({ uid: item.id, ...item.data() }))
-    .sort((a, b) => (b.lastSignInAt?.toMillis?.() || 0) - (a.lastSignInAt?.toMillis?.() || 0));
+  const snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
+  return snapshot.docs.map(item => ({ uid: item.id, ...item.data() }));
 }
 
 async function loadDashboard() {
@@ -402,7 +369,6 @@ async function loadDashboard() {
       }
       let signIns = 0;
       let signOuts = 0;
-      let latestTime = null;
       const userEvents = result.value.docs.map(item => ({ id: item.id, ...item.data() }))
         .filter(event => event.type === "sign_in" || event.type === "sign_out")
         .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
@@ -410,23 +376,18 @@ async function loadDashboard() {
       for (const event of userEvents) {
         if (event.type === "sign_in") signIns += 1;
         if (event.type === "sign_out") signOuts += 1;
-        if (event.createdAt?.toMillis && (!latestTime || event.createdAt.toMillis() > latestTime.toMillis())) {
-          latestTime = event.createdAt;
-        }
       }
       accountStats.push({
         email: sample[index].email || sample[index].uid,
         provider: sample[index].provider || "-",
         signIns,
-        signOuts,
-        latestTime
+        signOuts
       });
     });
     if (failures.length) {
       console.warn("Activity unreadable for some accounts:", failures);
       showReadError(`Activity could not be read for ${failures.length} of ${sample.length} loaded accounts. First reason: ${failures[0]}`);
     }
-    accountStats.sort((a, b) => (b.latestTime?.toMillis?.() || 0) - (a.latestTime?.toMillis?.() || 0));
     renderUsers();
     const totalEvents = accountStats.reduce((sum, account) => sum + account.signIns + account.signOuts, 0);
     if ($("totalEvents")) $("totalEvents").textContent = String(totalEvents);
