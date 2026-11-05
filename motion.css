@@ -155,10 +155,10 @@ body{padding-bottom:0!important}
 }
 .fdh-marquee-group{display:flex!important;flex:0 0 auto!important;width:max-content!important;max-width:none!important;white-space:nowrap!important}
 .fdh-global-footer{margin:0!important;padding-top:34px!important}
-main.home,main.page,main.reaper-vault,main.fav-page,main.settings-page{
+main,main.page,main.reaper-vault,main.fav-page,main.settings-page{
   margin-bottom:0!important;padding-bottom:24px!important;
 }
-main.home{padding-top:42px!important}
+main{padding-top:0!important}
 main.page{padding-top:12px!important}
 main.reaper-vault{padding-top:24px!important}
 main.fav-page{padding-top:24px!important}
@@ -167,5 +167,5 @@ main.settings-page{padding-top:24px!important}
   .fdh-marquee{padding:10px 0!important}
   .fdh-marquee-track{animation-duration:48s!important}
   .fdh-global-footer{padding-top:28px!important}
-  main.home,main.page,main.reaper-vault,main.fav-page,main.settings-page{padding-bottom:18px!important}
+  main,main.page,main.reaper-vault,main.fav-page,main.settings-page{padding-bottom:18px!important}
 }
