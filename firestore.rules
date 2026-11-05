@@ -146,5 +146,65 @@ service cloud.firestore {
         allow update, delete: if false;
       }
     }
+
+    // Public support submissions are append-only. Only the verified owner can
+    // read them or change their workflow status.
+    match /contactMessages/{messageId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          'reference','name','email','topic','message','attachmentData',
+          'attachmentName','attachmentType','status','createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'reference','name','email','topic','message','attachmentData',
+          'attachmentName','attachmentType','status','createdAt'
+        ])
+        && request.resource.data.reference is string
+        && request.resource.data.reference.size() >= 8
+        && request.resource.data.reference.size() <= 40
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 70
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 120
+        && request.resource.data.topic in ['Bug Report','Suggestion','Account Help','General Contact']
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 5
+        && request.resource.data.message.size() <= 3000
+        && request.resource.data.status == 'New'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.attachmentData is string
+        && request.resource.data.attachmentData.size() <= 700000
+        && request.resource.data.attachmentName is string
+        && request.resource.data.attachmentName.size() <= 180
+        && request.resource.data.attachmentType in ['', 'image/png', 'image/jpeg', 'image/webp']
+        && (
+          request.resource.data.attachmentData == ''
+          || request.resource.data.attachmentType in ['image/png','image/jpeg','image/webp']
+        );
+      allow read: if isAdmin();
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt'])
+        && request.resource.data.status in ['New','In Progress','Resolved']
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+
+    // Queue one notification email for the matching contact message. The
+    // recipient is fixed so public clients cannot use this as a mail relay.
+    match /mail/{mailId} {
+      allow create: if request.resource.data.keys().hasOnly(['reference','to','message'])
+        && request.resource.data.keys().hasAll(['reference','to','message'])
+        && request.resource.data.reference is string
+        && request.resource.data.to == ['flame.dragon.hub@gmail.com']
+        && request.resource.data.message is map
+        && request.resource.data.message.keys().hasOnly(['subject','text'])
+        && request.resource.data.message.subject is string
+        && request.resource.data.message.subject.size() <= 180
+        && request.resource.data.message.text is string
+        && request.resource.data.message.text.size() <= 5000
+        && existsAfter(/databases/$(database)/documents/contactMessages/$(request.resource.data.reference))
+        && getAfter(/databases/$(database)/documents/contactMessages/$(request.resource.data.reference)).data.reference == request.resource.data.reference;
+      allow read, update, delete: if isAdmin();
+    }
   }
 }
