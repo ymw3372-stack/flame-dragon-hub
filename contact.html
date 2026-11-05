@@ -152,35 +152,62 @@
             <textarea id="contactMessage" name="message" maxlength="3000" placeholder="Tell us what happened or what you have in mind..." required></textarea>
             <div class="contact-field-hint"><span>Be clear and include useful details.</span><span id="contactCount">0 / 3000</span></div>
           </div>
-          <button class="contact-submit" type="submit"><span>✦</span> Copy message</button>
+          <div class="contact-field">
+            <label for="contactAttachment">Attach an image <span style="color:#a99280;font-weight:500">(optional · PNG, JPG, WEBP · up to 500 KB)</span></label>
+            <input id="contactAttachment" name="attachment" type="file" accept="image/png,image/jpeg,image/webp">
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+            <label for="contactWebsite">Leave this field empty</label>
+            <input id="contactWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <button class="contact-submit" id="contactSubmit" type="submit"><span>✦</span> Send Message</button>
           <p class="contact-status" id="contactStatus" role="status" aria-live="polite"></p>
         </form>
-        <div class="contact-bottom"><strong>Message delivery is being set up.</strong><br>For now, this page prepares and copies your message. It does not send or store submissions yet.</div>
+        <div class="contact-bottom"><strong>Your message will be saved securely for the support team.</strong><br>Email notifications are queued for the support inbox when the mail delivery service is enabled.</div>
       </section>
     </div>
   </main>
 
-  <script>
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getFirestore, collection, doc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
+      authDomain: "flame-dragon-hub.firebaseapp.com",
+      projectId: "flame-dragon-hub",
+      storageBucket: "flame-dragon-hub.firebasestorage.app",
+      messagingSenderId: "1056871902074",
+      appId: "1:105687190207:web:302726ca17cdf2dc6644c3",
+      measurementId: "G-D96H7FXTTL"
+    };
+
     (() => {
       const page = document.querySelector(".contact-page");
       const form = document.getElementById("contactForm");
       if (!page || !form) return;
       document.documentElement.classList.add("js-ready");
 
+      const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+      const db = getFirestore(app);
       const topic = document.getElementById("contactTopic");
       const message = document.getElementById("contactMessage");
       const count = document.getElementById("contactCount");
       const status = document.getElementById("contactStatus");
+      const attachment = document.getElementById("contactAttachment");
+      const submit = document.getElementById("contactSubmit");
       const options = [...document.querySelectorAll(".contact-option")];
+      const MAX_IMAGE_BYTES = 500 * 1024;
 
       function selectTopic(value) {
         topic.value = value;
         options.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.topic === value)));
-        document.getElementById("contactFormTitle").textContent = value === "Bug Report" ? "Report a bug" : value === "Suggestion" ? "Share an idea" : value;
+        document.getElementById("contactFormTitle").textContent =
+          value === "Bug Report" ? "Report a bug" : value === "Suggestion" ? "Share an idea" : value;
       }
       options.forEach(button => button.addEventListener("click", () => {
         selectTopic(button.dataset.topic);
-        document.getElementById("contactForm").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",block:"center"});
+        form.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",block:"center"});
         message.focus({preventScroll:true});
       }));
       topic.addEventListener("change", () => selectTopic(topic.value));
@@ -201,32 +228,88 @@
         revealItems.forEach(item => item.classList.add("is-visible"));
       }
 
+      function readImage(file) {
+        return new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ""));
+          reader.onerror = () => reject(new Error("The selected image could not be read."));
+          reader.readAsDataURL(file);
+        });
+      }
+
       form.addEventListener("submit", async event => {
         event.preventDefault();
         if (!form.reportValidity()) return;
+        if (document.getElementById("contactWebsite").value.trim()) return;
+        const lastSent = Number(sessionStorage.getItem("fdhContactLastSent") || 0);
+        if (Date.now() - lastSent < 30000) {
+          status.textContent = "Please wait a little before sending another message.";
+          return;
+        }
+
+        const file = attachment.files?.[0] || null;
+        if (file && (!["image/png","image/jpeg","image/webp"].includes(file.type) || file.size > MAX_IMAGE_BYTES)) {
+          status.textContent = "Please choose a PNG, JPG or WEBP image smaller than 500 KB.";
+          return;
+        }
+
         const data = new FormData(form);
-        const report = [
-          "FLAME DRAGON HUB — Contact message",
-          "-----------------------------------",
-          "Name: " + data.get("name"),
-          "Email: " + (data.get("email") || "Not provided"),
-          "Topic: " + data.get("topic"),
-          "",
-          String(data.get("message"))
-        ].join("\n");
+        const reference = "FDH-" + new Date().toISOString().slice(0,10).replaceAll("-","") + "-" +
+          Math.random().toString(36).slice(2,8).toUpperCase();
+        const messageText = String(data.get("message") || "").trim();
+        const name = String(data.get("name") || "").trim();
+        const email = String(data.get("email") || "").trim();
+        const selectedTopic = String(data.get("topic") || "General Contact");
+        const allowedTopics = ["Bug Report","Suggestion","Account Help","General Contact"];
+        if (!allowedTopics.includes(selectedTopic) || messageText.length < 5) {
+          status.textContent = "Please check the topic and write a little more detail.";
+          return;
+        }
+
+        submit.disabled = true;
+        submit.innerHTML = "<span>⏳</span> Sending…";
+        status.textContent = "Saving your message securely…";
         try {
-          await navigator.clipboard.writeText(report);
-          status.textContent = "Message copied. Keep it ready — direct delivery is not connected yet.";
-        } catch {
-          const helper = document.createElement("textarea");
-          helper.value = report;
-          helper.style.position = "fixed";
-          helper.style.opacity = "0";
-          document.body.appendChild(helper);
-          helper.select();
-          const copied = document.execCommand("copy");
-          helper.remove();
-          status.textContent = copied ? "Message copied. Direct delivery is not connected yet." : "Copy was blocked by your browser. Please select and copy your message manually.";
+          const imageData = file ? await readImage(file) : "";
+          const messageRef = doc(collection(db,"contactMessages"));
+          const mailRef = doc(collection(db,"mail"));
+          const report = [
+            "FLAME DRAGON HUB — Contact message",
+            "Reference: " + reference,
+            "Name: " + name,
+            "Email: " + (email || "Not provided"),
+            "Topic: " + selectedTopic,
+            "",
+            messageText,
+            file ? "Attachment: " + file.name : "No attachment"
+          ].join("\n");
+
+          const batch = writeBatch(db);
+          batch.set(messageRef, {
+            reference, name, email, topic: selectedTopic, message: messageText,
+            attachmentData: imageData, attachmentName: file?.name || "",
+            attachmentType: file?.type || "", status: "New", createdAt: serverTimestamp()
+          });
+          batch.set(mailRef, {
+            reference,
+            to: ["flame.dragon.hub@gmail.com"],
+            message: {
+              subject: "[FLAME DRAGON HUB] " + selectedTopic + " · " + reference,
+              text: report
+            }
+          });
+          await batch.commit();
+          sessionStorage.setItem("fdhContactLastSent", String(Date.now()));
+          status.textContent = "Message received! Your reference number is " + reference + ". Keep it for follow-up.";
+          form.reset();
+          count.textContent = "0 / 3000";
+          selectTopic("Bug Report");
+        } catch (error) {
+          console.error("Contact submission failed:",error);
+          status.textContent = "We couldn't submit your message. Please try again in a moment.";
+        } finally {
+          submit.disabled = false;
+          submit.innerHTML = "<span>✦</span> Send Message";
         }
       });
     })();
