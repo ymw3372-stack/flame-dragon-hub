@@ -75,6 +75,41 @@
     footer.dataset.fdhBuilt="true";
   }
 
+
+  function addMarquee(){
+    if(document.querySelector(".fdh-marquee"))return;
+    const strip=document.createElement("div");
+    strip.className="fdh-marquee";
+    strip.setAttribute("aria-label","FLAME DRAGON HUB");
+    const group='<div class="fdh-marquee-group"><span>EVOWORLD DRAGON</span><i>✦</i><span>FLAME DRAGON</span><i>✦</i><span>SKINS EDITOR</span><i>✦</i><span>CUSTOM SKINS</span><i>✦</i><span>DRAGON POWER</span><i>✦</i></div>';
+    strip.innerHTML='<div class="fdh-marquee-track" aria-hidden="true">'+group+group+'</div>';
+    const footer=document.querySelector(".fdh-global-footer");
+    if(footer&&footer.parentNode)footer.parentNode.insertBefore(strip,footer);
+    else document.body.appendChild(strip);
+  }
+
+  function addPointerTilt(){
+    if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
+    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,.contact-layout > *";
+    document.querySelectorAll(selector).forEach(card=>{
+      if(card.classList.contains("fdh-tilt"))return;
+      card.classList.add("fdh-tilt");
+      card.addEventListener("pointermove",event=>{
+        const rect=card.getBoundingClientRect();
+        const x=(event.clientX-rect.left)/rect.width;
+        const y=(event.clientY-rect.top)/rect.height;
+        const tiltX=(.5-y)*8;
+        const tiltY=(x-.5)*8;
+        card.style.setProperty("--fdh-tilt-x",tiltX.toFixed(2)+"deg");
+        card.style.setProperty("--fdh-tilt-y",tiltY.toFixed(2)+"deg");
+      });
+      card.addEventListener("pointerleave",()=>{
+        card.style.setProperty("--fdh-tilt-x","0deg");
+        card.style.setProperty("--fdh-tilt-y","0deg");
+      });
+    });
+  }
+
   function splitHeading(heading){
     if(heading.dataset.fdhSplit || heading.closest("a,button,form,.brand,.no-motion,.fdh-global-footer")) return;
     const text=heading.textContent.trim();
@@ -136,7 +171,9 @@
   function init(){
     addScrollProgress();
     addFooter();
+    addMarquee();
     addReveal();
+    addPointerTilt();
     addDragonAtmosphere();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
