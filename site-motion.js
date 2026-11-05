@@ -8,7 +8,7 @@
     const dock=document.createElement("div");
     dock.className="fdh-language-dock";
     dock.setAttribute("aria-label","Site language");
-    dock.innerHTML='<label class="fdh-language"><span class="fdh-language-label">🌐</span><select id="fdhLanguage" aria-label="Select language"><option value="en">🇬🇧 English</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="ru">🇷🇺 Русский</option><option value="hi">🇮🇳 हिन्दी</option><option value="es">🇪🇸 Español</option><option value="tr">🇹🇷 Türkçe</option></select></label>';
+    dock.innerHTML='<label class="fdh-language"><span class="fdh-language-label">🌐</span><select id="fdhDockLanguage" aria-label="Select language"><option value="en">🇬🇧 English</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="ru">🇷🇺 Русский</option><option value="hi">🇮🇳 हिन्दी</option><option value="es">🇪🇸 Español</option><option value="tr">🇹🇷 Türkçe</option></select></label>';
     document.body.appendChild(dock);
     const select=dock.querySelector("select");
     let saved="en";
