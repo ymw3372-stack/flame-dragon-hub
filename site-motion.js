@@ -77,6 +77,40 @@
 
 
 
+
+  function addMarquee(){
+    if(document.querySelector(".fdh-marquee"))return;
+    const strip=document.createElement("div");
+    strip.className="fdh-marquee";
+    strip.setAttribute("aria-label","FLAME DRAGON HUB");
+    const group='<div class="fdh-marquee-group"><span>EVOWORLD DRAGON</span><i>✦</i><span>FLAME DRAGON</span><i>✦</i><span>SKINS EDITOR</span><i>✦</i><span>CUSTOM SKINS</span><i>✦</i><span>DRAGON POWER</span><i>✦</i></div>';
+    strip.innerHTML='<div class="fdh-marquee-track" aria-hidden="true">'+group+group+'</div>';
+    const footer=document.querySelector(".fdh-global-footer");
+    if(footer&&footer.parentNode)footer.parentNode.insertBefore(strip,footer);
+    else document.body.appendChild(strip);
+  }
+
+  function addPointerTilt(){
+    if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
+    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
+    document.querySelectorAll(selector).forEach(card=>{
+      if(card.classList.contains("fdh-tilt"))return;
+      card.classList.add("fdh-tilt");
+      card.addEventListener("pointermove",event=>{
+        const rect=card.getBoundingClientRect();
+        if(!rect.width||!rect.height)return;
+        const x=(event.clientX-rect.left)/rect.width;
+        const y=(event.clientY-rect.top)/rect.height;
+        card.style.setProperty("--fdh-tilt-x",((.5-y)*5).toFixed(2)+"deg");
+        card.style.setProperty("--fdh-tilt-y",((x-.5)*5).toFixed(2)+"deg");
+      },{passive:true});
+      card.addEventListener("pointerleave",()=>{
+        card.style.setProperty("--fdh-tilt-x","0deg");
+        card.style.setProperty("--fdh-tilt-y","0deg");
+      },{passive:true});
+    });
+  }
+
   function splitHeading(heading){
     if(heading.dataset.fdhSplit || heading.closest("a,button,form,.brand,.no-motion,.fdh-global-footer")) return;
     const text=heading.textContent.trim();
@@ -101,22 +135,18 @@
   function addReveal(){
     if(reduceMotion)return;
     document.querySelectorAll("main h1,main h2,main h3,.hero h1,.contact-hero h1,.signin-hero h1").forEach(splitHeading);
-    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,.contact-layout > *,main .hero p";
+    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
     const items=[...document.querySelectorAll(selector)];
     items.forEach((el,i)=>{
       if(el.closest("form,.auth-card,.login-card,.contact-form-card,.no-motion,.fdh-global-footer")||el.matches("form")||el.classList.contains("fdh-reveal"))return;
       el.classList.add("fdh-reveal");
-      el.dataset.fdhDirection=(i%2===0?"left":"right");
-      el.style.setProperty("--fdh-delay",Math.min((i%6)*105,525)+"ms");
+      el.style.setProperty("--fdh-delay",Math.min((i%3)*65,130)+"ms");
     });
-    document.querySelectorAll("main img,.guide-card img,.skin-card img,.welcome-logo").forEach(img=>{
-      if(!img.closest("form,.auth-card,.login-card,.no-motion")&&!img.classList.contains("fdh-image-reveal"))img.classList.add("fdh-image-reveal");
-    });
-    const targets=document.querySelectorAll(".fdh-reveal,.fdh-image-reveal");
+    const targets=document.querySelectorAll(".fdh-reveal");
     if(!("IntersectionObserver" in window)){targets.forEach(el=>el.classList.add("fdh-visible"));return;}
     const observer=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("fdh-visible");observer.unobserve(entry.target);}});
-    },{threshold:.10,rootMargin:"0px 0px -45px 0px"});
+    },{threshold:.06,rootMargin:"0px 0px -24px 0px"});
     targets.forEach(el=>observer.observe(el));
   }
 
@@ -138,7 +168,9 @@
   function init(){
     addScrollProgress();
     addFooter();
+    addMarquee();
     addReveal();
+    addPointerTilt();
     addDragonAtmosphere();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
