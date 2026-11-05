@@ -67,7 +67,14 @@ async function startAuth() {
   }
 
   async function getAccountAccessState(user) {
-    const snapshot = await getDoc(doc(db, "userBans", user.uid));
+    let snapshot;
+    try {
+      snapshot = await getDoc(doc(db, "userBans", user.uid));
+    } catch (error) {
+      // Keep ordinary sign-in working until the owner publishes the new Firestore Rules.
+      console.warn("Account moderation status is not available yet:", error);
+      return { blocked: false, unavailable: true };
+    }
     if (!snapshot.exists()) return { blocked: false };
     const data = snapshot.data();
     const activeBan = data.active === true &&
