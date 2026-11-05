@@ -179,6 +179,7 @@ body:before {
 .dev-account-count{padding:15px 18px;border:1px solid rgba(239,194,105,.34);border-radius:12px;background:linear-gradient(135deg,rgba(176,123,39,.19),rgba(22,16,8,.6))}
 .dev-account-count span{display:block;color:#d7c18f;font-size:12px;font-weight:700;letter-spacing:.5px}
 .dev-account-count strong{display:block;color:#ffe1a0;font-size:30px;line-height:1.2;margin-top:5px}
+#activityTable td:nth-child(2),#activityTable td:nth-child(3){font-size:17px;font-weight:800;color:#ffe1a0}
 .dev-moderation{margin-top:16px;padding-top:14px;border-top:1px solid rgba(239,194,105,.2)}
 .dev-moderation h3{margin:0 0 9px;color:#f1d18c;font-size:15px}
 .dev-moderation-controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
@@ -215,7 +216,7 @@ body:before {
 <div class="dev-toolbar"><input id="userSearch" type="search" placeholder="Search by email, display name or UID…" autocomplete="off"><button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button></div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Provider</th><th>Email status</th><th>Created</th><th>Details</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
 <div class="dev-panel dev-accounts-counts">
-<h2>Login &amp; logout counts</h2><p class="muted">Recorded sign-ins and sign-outs for the loaded accounts. The totals are shown in each account's details below.</p>
+<h2>Login &amp; logout counts</h2><p class="muted">Recorded sign-ins and sign-outs for up to 1,000 accounts. The totals are also shown in each account's details below.</p>
 <button id="toggleLoginCounts" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="loginCountsContent">⌄ Show Login &amp; Logout Counts</button>
 <div id="loginCountsContent" class="dev-hidden">
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Sign-ins</th><th>Sign-outs</th><th>Provider</th></tr></thead><tbody id="activityTable"><tr><td colspan="4">Loading activity…</td></tr></tbody></table></div>
