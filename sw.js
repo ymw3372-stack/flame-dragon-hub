@@ -22,6 +22,7 @@ const FILES_TO_CACHE = [
   "./favorites.js",
   "./skins-data.js",
   "./auth.js",
+  "./ban-guard.js",
   "./cursor-glow.js",
   "./manifest.json",
   "./assets/logo.png"
