@@ -25,14 +25,51 @@
     update();
   }
 
-  // Remove the later-added global footer and floating language dock while
-  // keeping the site's motion and animation systems active.
+  // Keep the clean layout while restoring the announcement ticker and bonus panel.
   function removeExtraBottomUI(){
     const style=document.createElement("style");
     style.id="fdh-clean-bottom-ui";
     style.textContent=".fdh-global-footer,.fdh-language-dock{display:none!important}body{padding-bottom:0!important}";
     document.head.appendChild(style);
     document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
+  }
+
+  function addCursorGlow(){
+    if(reduceMotion || window.matchMedia?.("(hover: none)").matches || document.querySelector(".cursor-glow"))return;
+    const glow=document.createElement("div");
+    glow.className="cursor-glow";
+    glow.setAttribute("aria-hidden","true");
+    document.body.appendChild(glow);
+    let frame=0,x=-300,y=-300;
+    window.addEventListener("mousemove",event=>{
+      x=event.clientX;y=event.clientY;
+      document.body.classList.add("pointer-glow-active");
+      if(!frame)frame=requestAnimationFrame(()=>{
+        glow.style.left=x+"px";
+        glow.style.top=y+"px";
+        frame=0;
+      });
+    },{passive:true});
+    document.addEventListener("mouseleave",()=>document.body.classList.remove("pointer-glow-active"));
+    document.addEventListener("mouseenter",()=>document.body.classList.add("pointer-glow-active"));
+  }
+
+  function addBonusAndMarquee(){
+    if(document.querySelector(".fdh-marquee"))return;
+    const header=document.querySelector("header.navbar");
+    if(!header)return;
+    const strip=document.createElement("div");
+    strip.className="fdh-marquee";
+    strip.setAttribute("aria-label","FLAME DRAGON HUB announcements");
+    strip.innerHTML='<div class="fdh-marquee-track"><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span></div>';
+    header.insertAdjacentElement("afterend",strip);
+    if(!document.querySelector(".fdh-bonus-codes")){
+      const bonus=document.createElement("aside");
+      bonus.className="fdh-bonus-codes";
+      bonus.setAttribute("aria-label","Bonus codes");
+      bonus.innerHTML='<strong>✦ ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>';
+      header.insertAdjacentElement("afterend",bonus);
+    }
   }
 
   function addPointerTilt(){
@@ -114,6 +151,8 @@
   function init(){
     addScrollProgress();
     removeExtraBottomUI();
+    addBonusAndMarquee();
+    addCursorGlow();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
