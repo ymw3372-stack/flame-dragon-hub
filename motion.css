@@ -1,9 +1,42 @@
-/* FLAME DRAGON HUB motion styles */
-.fdh-reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
-.fdh-reveal.fdh-visible{opacity:1;transform:none}
-.fdh-global-footer{border-top:1px solid rgba(255,157,91,.4);margin:40px auto 0;padding:20px;text-align:center}
-.fdh-global-footer a{color:#ffbd91;text-decoration:none;font-weight:800}
-
-.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step{font-size:1.015em}
-.hub-card h2,.evolution-card h2,.guide-card h2,.skin-card h2,.welcome-card h2,.signin-step h2{font-size:1.045em}
-.hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover{scale:1.012}
+/* FLAME DRAGON HUB — Ember motion + shared footer */
+.fdh-scroll-track{position:fixed;z-index:99999;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.045);pointer-events:none}
+.fdh-scroll-progress{display:block;width:0;height:100%;background:linear-gradient(90deg,#ff553d,#ffad65,#ffe0a1);box-shadow:0 0 10px rgba(255,112,61,.72);transition:width .09s linear}
+.fdh-word{display:inline-block;opacity:0;transform:translateY(16px) rotateX(-35deg);filter:blur(3px);animation:fdh-word-in .95s cubic-bezier(.2,.75,.2,1) forwards;animation-delay:var(--fdh-word-delay,0ms)}
+@keyframes fdh-word-in{to{opacity:1;transform:translateY(0) rotateX(0);filter:blur(0)}}
+.fdh-reveal{opacity:0;transition:opacity 1.05s ease,transform 1.15s cubic-bezier(.18,.72,.18,1);transition-delay:var(--fdh-delay,0ms);will-change:opacity,transform}
+.fdh-reveal[data-fdh-direction="left"]{transform:translate3d(-54px,20px,0)}
+.fdh-reveal[data-fdh-direction="right"]{transform:translate3d(54px,20px,0)}
+.fdh-reveal.fdh-visible{opacity:1;transform:translate3d(0,0,0)}
+.fdh-image-reveal{opacity:0;transform:translateY(22px) scale(.975);transition:opacity 1.1s ease,transform 1.25s cubic-bezier(.18,.72,.18,1)}
+.fdh-image-reveal.fdh-visible{opacity:1;transform:translateY(0) scale(1)}
+.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step,.fav-card{transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s ease,border-color .4s ease}
+.hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover,.fav-card:hover{transform:translateY(-5px);box-shadow:0 16px 38px rgba(0,0,0,.24),0 0 22px rgba(255,115,57,.10)}
+.fdh-page-transition{position:fixed;inset:0;z-index:99998;pointer-events:none;background:linear-gradient(110deg,rgba(14,8,10,.98),rgba(75,23,17,.97),rgba(255,112,48,.94));transform:translateX(-105%);transition:transform .44s cubic-bezier(.72,0,.22,1)}
+.fdh-page-transition.fdh-transition-in{transform:translateX(0)}
+.fdh-page-transition.fdh-transition-out{transform:translateX(0)}
+.fdh-global-footer{position:relative;isolation:isolate;overflow:hidden;margin:64px 0 0;padding:48px max(4vw,18px) 18px;border-top:1px solid rgba(255,154,91,.38);background:radial-gradient(ellipse at 15% 0%,rgba(255,104,48,.13),transparent 42%),linear-gradient(180deg,rgba(24,13,14,.97),rgba(10,8,12,.99));color:#f8e9df}
+.fdh-global-footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 25%,rgba(255,165,93,.045) 50%,transparent 72%);background-size:220% 100%;animation:fdh-footer-glow 12s ease-in-out infinite}
+@keyframes fdh-footer-glow{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.fdh-footer-inner{width:min(1180px,100%);margin:auto}
+.fdh-footer-top{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(130px,.7fr) minmax(190px,.9fr);gap:42px}
+.fdh-footer-brandline{display:flex;align-items:center;gap:16px}
+.fdh-footer-logo{width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 0 15px rgba(255,119,57,.3));animation:fdh-logo-turn 24s linear infinite}
+@keyframes fdh-logo-turn{to{transform:rotate(360deg)}}
+.fdh-footer-brandtext{display:grid;gap:5px}
+.fdh-footer-brandtext strong{font-size:clamp(22px,3vw,34px);font-weight:950;letter-spacing:.045em;color:#fff3e8;text-shadow:0 0 22px rgba(255,119,57,.2)}
+.fdh-footer-brandtext span{font-size:10px;letter-spacing:.22em;color:#ffb47f;font-weight:800}
+.fdh-footer-brand p{max-width:430px;margin:17px 0 0;color:#bca99d;font-size:13px;line-height:1.85}
+.fdh-footer-column{display:flex;flex-direction:column;align-items:flex-start;gap:11px}
+.fdh-footer-column h3{margin:4px 0 7px;color:#ffbd8c;font-size:14px;letter-spacing:.08em}
+.fdh-footer-column a{color:#d7c4b8;text-decoration:none;font-size:13px;transition:color .3s ease,transform .3s ease}
+.fdh-footer-column a:hover{color:#fff;transform:translateX(4px)}
+.fdh-footer-wordmark{display:flex;align-items:center;justify-content:center;gap:18px;margin:42px 0 25px;padding:14px 0 22px;border-bottom:1px solid rgba(255,171,118,.16);white-space:nowrap}
+.fdh-footer-wordmark span{font-size:clamp(32px,8vw,92px);font-weight:1000;letter-spacing:.045em;line-height:1;background:linear-gradient(100deg,#fff0df,#ff9a58,#ffe0b1,#fff0df);background-size:220% auto;color:transparent;background-clip:text;-webkit-background-clip:text;animation:fdh-wordmark-shine 9s ease-in-out infinite}
+.fdh-footer-wordmark i{font-style:normal;font-size:clamp(22px,4vw,42px);color:#ff9a58;animation:fdh-star-turn 14s linear infinite}
+@keyframes fdh-wordmark-shine{0%,100%{background-position:0% center}50%{background-position:100% center}}
+@keyframes fdh-star-turn{to{transform:rotate(360deg)}}
+.fdh-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#9f8e84;font-size:11px}
+.fdh-footer-bottom a{color:#ffbd91;text-decoration:none;font-weight:800}
+@media(max-width:700px){.fdh-footer-top{grid-template-columns:1fr 1fr;gap:28px}.fdh-footer-brand{grid-column:1/-1}.fdh-footer-logo{width:64px;height:64px}.fdh-footer-wordmark{margin:30px 0 20px}.fdh-footer-bottom{flex-direction:column;align-items:flex-start;gap:9px}}
+@media(max-width:420px){.fdh-footer-top{grid-template-columns:1fr}.fdh-footer-brand{grid-column:auto}.fdh-footer-wordmark{gap:8px}.fdh-footer-wordmark span{font-size:clamp(27px,9vw,38px)}}
+@media(prefers-reduced-motion:reduce){.fdh-word,.fdh-reveal,.fdh-image-reveal,.fdh-footer-logo,.fdh-footer-wordmark span,.fdh-footer-wordmark i,.fdh-global-footer:before{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}.fdh-page-transition{display:none}}
