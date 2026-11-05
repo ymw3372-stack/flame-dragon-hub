@@ -1,138 +1,149 @@
-/* FLAME DRAGON HUB — shared motion, page transitions and footer */
+/* FLAME DRAGON HUB — slow cinematic motion system */
 (() => {
-  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const currentFile = (location.pathname.split("/").pop() || "index.html").toLowerCase();
 
+  function addScrollProgress() {
+    if (document.querySelector(".fdh-scroll-track")) return;
+    const track=document.createElement("div");
+    track.className="fdh-scroll-track";
+    track.setAttribute("aria-hidden","true");
+    const bar=document.createElement("span");
+    bar.className="fdh-scroll-progress";
+    track.appendChild(bar);
+    document.body.appendChild(track);
+    let queued=false;
+    const update=()=>{
+      const max=document.documentElement.scrollHeight-window.innerHeight;
+      const amount=max>0?Math.min(100,Math.max(0,(window.scrollY/max)*100)):0;
+      bar.style.width=amount+"%";
+      queued=false;
+    };
+    const request=()=>{if(!queued){queued=true;requestAnimationFrame(update);}};
+    window.addEventListener("scroll",request,{passive:true});
+    window.addEventListener("resize",request);
+    update();
+  }
+
   function addFooter() {
-    let footer = document.querySelector(".fdh-global-footer");
-    if (!footer) {
-      footer = document.querySelector("footer");
-      if (!footer) {
-        footer = document.createElement("footer");
-        document.body.appendChild(footer);
-      }
-      footer.classList.add("fdh-global-footer");
+    let footer=document.querySelector(".fdh-global-footer");
+    if(!footer){
+      footer=document.createElement("footer");
+      document.body.appendChild(footer);
     }
-    if (!footer.querySelector(".fdh-footer-nav")) {
-      const nav = document.createElement("div");
-      nav.className = "fdh-footer-nav";
-      nav.setAttribute("aria-label", "Quick links");
-      const home = document.createElement("a");
-      home.href = "index.html";
-      home.textContent = "Back to Home";
-      const separator = document.createElement("span");
-      separator.className = "fdh-footer-separator";
-      separator.textContent = "•";
-      const contact = document.createElement("a");
-      contact.href = "contact.html";
-      contact.textContent = "Contact";
-      nav.append(home, separator, contact);
-      footer.appendChild(nav);
-    }
+    footer.classList.add("fdh-global-footer");
+    if(footer.dataset.fdhBuilt==="true") return;
+    footer.innerHTML=`
+      <div class="fdh-footer-inner">
+        <div class="fdh-footer-top">
+          <div class="fdh-footer-brand">
+            <div class="fdh-footer-brandline">
+              <img class="fdh-footer-logo" src="assets/logo.png" alt="FLAME DRAGON HUB logo" loading="lazy">
+              <div class="fdh-footer-brandtext">
+                <strong>FLAME DRAGON</strong>
+                <span>HUB · EVOWORLD COMMUNITY</span>
+              </div>
+            </div>
+            <p>Custom skins, tools and useful resources for EvoWorld players. Fan-made and not affiliated with EvoWorld.io.</p>
+          </div>
+          <nav class="fdh-footer-column" aria-label="Pages">
+            <h3>Pages</h3>
+            <a href="index.html">Home</a>
+            <a href="evolutions.html">Evolutions</a>
+            <a href="skins.html">Skins Library</a>
+            <a href="skin-studio.html">Skin Studio</a>
+            <a href="favorites.html">Favorites</a>
+          </nav>
+          <div class="fdh-footer-column">
+            <h3>Support</h3>
+            <a href="contact.html">Contact</a>
+            <a href="mailto:flame.dragon.hub@gmail.com">flame.dragon.hub@gmail.com</a>
+            <a href="developer.html">Developer</a>
+          </div>
+        </div>
+        <div class="fdh-footer-wordmark" aria-label="FLAME DRAGON">
+          <span>FLAME DRAGON</span>
+          <i aria-hidden="true">✦</i>
+        </div>
+        <div class="fdh-footer-bottom">
+          <span>© <span class="fdh-year"></span> FLAME DRAGON HUB</span>
+          <span>Made for the EvoWorld community</span>
+          <a href="index.html">Back to Home ↑</a>
+        </div>
+      </div>`;
+    footer.querySelector(".fdh-year").textContent=new Date().getFullYear();
+    footer.dataset.fdhBuilt="true";
   }
 
-  function splitHeadingWords(heading) {
-    if (heading.dataset.fdhWords || heading.closest("a,button,form,.brand,.no-motion")) return;
-    const original = heading.textContent.trim();
-    if (!original || original.length > 150) return;
-    heading.setAttribute("aria-label", heading.getAttribute("aria-label") || original);
-    const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-      }
+  function splitHeading(heading){
+    if(heading.dataset.fdhSplit || heading.closest("a,button,form,.brand,.no-motion,.fdh-global-footer")) return;
+    const text=heading.textContent.trim();
+    if(!text || text.length>120) return;
+    heading.setAttribute("aria-label",heading.getAttribute("aria-label")||text);
+    const parts=text.split(/(\s+)/);
+    heading.textContent="";
+    let n=0;
+    parts.forEach(part=>{
+      if(!part)return;
+      if(/^\s+$/.test(part)){heading.appendChild(document.createTextNode(part));return;}
+      const span=document.createElement("span");
+      span.className="fdh-word";
+      span.style.setProperty("--fdh-word-delay",Math.min(n*95,760)+"ms");
+      span.textContent=part;
+      heading.appendChild(span);
+      n++;
     });
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node => {
-      const fragment = document.createDocumentFragment();
-      const parts = node.nodeValue.split(/(\s+)/);
-      let wordIndex = 0;
-      parts.forEach(part => {
-        if (!part) return;
-        if (/^\s+$/.test(part)) {
-          fragment.appendChild(document.createTextNode(part));
-        } else {
-          const word = document.createElement("span");
-          word.className = "fdh-word";
-          word.style.setProperty("--fdh-word-delay", Math.min(wordIndex * 65, 520) + "ms");
-          word.textContent = part;
-          fragment.appendChild(word);
-          wordIndex++;
-        }
-      });
-      node.parentNode.replaceChild(fragment, node);
-    });
-    heading.dataset.fdhWords = "true";
+    heading.dataset.fdhSplit="true";
   }
 
-  function addMotion() {
-    if (reduceMotion) return;
-    document.querySelectorAll("main h1, main h2, .hero h1, .contact-hero h1, .signin-hero h1").forEach(splitHeadingWords);
-
-    const candidates = document.querySelectorAll(
-      "main > section, main > article, .hub-card, .evolution-card, .guide-card, .skin-card, .welcome-card, .signin-step, .contact-layout > *, .vault-video, .download-strip, .tutorial .stage, .hero p"
-    );
-    let index = 0;
-    candidates.forEach(element => {
-      if (element.closest("form,.auth-card,.login-card,.no-motion") || element.matches("form")) return;
-      if (element.classList.contains("fdh-reveal")) return;
-      element.classList.add("fdh-reveal");
-      element.style.setProperty("--fdh-stagger", Math.min((index % 7) * 75, 450) + "ms");
-      index++;
+  function addReveal(){
+    if(reduceMotion)return;
+    document.querySelectorAll("main h1,main h2,main h3,.hero h1,.contact-hero h1,.signin-hero h1").forEach(splitHeading);
+    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,.contact-layout > *,main .hero p";
+    const items=[...document.querySelectorAll(selector)];
+    items.forEach((el,i)=>{
+      if(el.closest("form,.auth-card,.login-card,.contact-form-card,.no-motion,.fdh-global-footer")||el.matches("form")||el.classList.contains("fdh-reveal"))return;
+      el.classList.add("fdh-reveal");
+      el.dataset.fdhDirection=(i%2===0?"left":"right");
+      el.style.setProperty("--fdh-delay",Math.min((i%6)*105,525)+"ms");
     });
-
-    document.querySelectorAll("main img, .guide-card img, .skin-card img, .welcome-logo").forEach(img => {
-      if (!img.closest("form,.auth-card,.login-card") && !img.classList.contains("fdh-image-reveal")) {
-        img.classList.add("fdh-image-reveal");
-      }
+    document.querySelectorAll("main img,.guide-card img,.skin-card img,.welcome-logo").forEach(img=>{
+      if(!img.closest("form,.auth-card,.login-card,.no-motion")&&!img.classList.contains("fdh-image-reveal"))img.classList.add("fdh-image-reveal");
     });
-
-    const revealTargets = document.querySelectorAll(".fdh-reveal,.fdh-image-reveal");
-    if (!("IntersectionObserver" in window)) {
-      revealTargets.forEach(el => el.classList.add("fdh-visible"));
-      return;
-    }
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("fdh-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -35px 0px" });
-    revealTargets.forEach(el => observer.observe(el));
+    const targets=document.querySelectorAll(".fdh-reveal,.fdh-image-reveal");
+    if(!("IntersectionObserver" in window)){targets.forEach(el=>el.classList.add("fdh-visible"));return;}
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("fdh-visible");observer.unobserve(entry.target);}});
+    },{threshold:.10,rootMargin:"0px 0px -45px 0px"});
+    targets.forEach(el=>observer.observe(el));
   }
 
-  function addPageTransitions() {
-    if (reduceMotion) return;
-    const overlay = document.createElement("div");
-    overlay.className = "fdh-page-transition fdh-transition-in";
-    overlay.setAttribute("aria-hidden", "true");
+  function addTransitions(){
+    if(reduceMotion)return;
+    const overlay=document.createElement("div");
+    overlay.className="fdh-page-transition fdh-transition-in";
+    overlay.setAttribute("aria-hidden","true");
     document.body.appendChild(overlay);
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.remove("fdh-transition-in")));
-    window.addEventListener("pageshow", () => overlay.classList.remove("fdh-transition-out"));
-
-    document.addEventListener("click", event => {
-      const link = event.target.closest("a[href]");
-      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      if (link.target === "_blank" || link.hasAttribute("download") || link.closest("form")) return;
-      const raw = link.getAttribute("href");
-      if (!raw || raw.startsWith("#") || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("javascript:")) return;
-      let destination;
-      try { destination = new URL(raw, location.href); } catch (_) { return; }
-      if (destination.origin !== location.origin || destination.pathname === location.pathname && destination.search === location.search) return;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>overlay.classList.remove("fdh-transition-in")));
+    document.addEventListener("click",event=>{
+      const link=event.target.closest("a[href]");
+      if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      if(link.target==="_blank"||link.hasAttribute("download")||link.closest("form"))return;
+      const raw=link.getAttribute("href");
+      if(!raw||raw.startsWith("#")||/^(mailto:|tel:|javascript:)/i.test(raw))return;
+      let dest;try{dest=new URL(raw,location.href);}catch(_){return;}
+      if(dest.origin!==location.origin||(dest.pathname===location.pathname&&dest.search===location.search))return;
       event.preventDefault();
       overlay.classList.add("fdh-transition-out");
-      window.setTimeout(() => { location.href = destination.href; }, 170);
+      window.setTimeout(()=>{location.href=dest.href;},430);
     });
   }
 
-  function init() {
+  function init(){
+    addScrollProgress();
     addFooter();
-    addMotion();
-    addPageTransitions();
+    addReveal();
+    addTransitions();
   }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
-  else init();
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
