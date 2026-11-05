@@ -82,7 +82,7 @@ async function startAuth() {
     const token = await user.getIdTokenResult();
     const authTime = Date.parse(token.authTime || "") || 0;
     const kickTime = data.kickAt?.toMillis?.() || 0;
-    const wasKicked = kickTime > authTime;
+    const wasKicked = kickTime > authTime + 1000;
     if (activeBan) {
       return {
         blocked: true,
