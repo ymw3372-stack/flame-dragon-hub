@@ -938,6 +938,31 @@ a {
   start();
 })();
 </script>
+<script>
+(() => {
+  const announcement = document.querySelector(".update-announcement");
+  const updateButton = document.getElementById("extensionDownloadButton");
+  if (!announcement && !updateButton) return;
+
+  function hideDownloadedUpdate(event) {
+    const state = event?.detail;
+    const alreadyDownloaded =
+      document.documentElement.getAttribute("data-fdh-v103-downloaded") === "true";
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.0.3")) return;
+
+    if (announcement) {
+      announcement.hidden = true;
+      announcement.setAttribute("aria-hidden", "true");
+    }
+
+    const orbitPosition = updateButton?.closest(".orbit-position");
+    if (orbitPosition) orbitPosition.hidden = true;
+  }
+
+  hideDownloadedUpdate();
+  window.addEventListener("fdh-update-download-state", hideDownloadedUpdate);
+})();
+</script>
 <script src="preferences.js"></script>
 </body>
 </html>

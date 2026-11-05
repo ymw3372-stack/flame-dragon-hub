@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "FLAME DRAGON HUB",
-  "version": "1.0.2",
+  "version": "1.0.2.1",
   "description": "FLAME DRAGON HUB EvoWorld skin selector with shared FLAME DRAGON HUB sign-in. Grim Reaper, Ghostly Reaper, Pumpkin Ghost and Ghosts collections, each keeping its own idle, flying and attack animation frames.",
   "permissions": [
     "storage",
     "declarativeNetRequestWithHostAccess",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "downloads"
   ],
   "host_permissions": [
     "https://identitytoolkit.googleapis.com/*",
@@ -51,6 +52,16 @@
       ],
       "js": [
         "content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://flamedragonhub.pages.dev/*",
+        "https://ymw3372-stack.github.io/*"
+      ],
+      "js": [
+        "site-download-bridge.js"
       ],
       "run_at": "document_start"
     }
