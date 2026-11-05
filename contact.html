@@ -271,7 +271,7 @@
         status.textContent = "Saving your message securely…";
         try {
           const imageData = file ? await readImage(file) : "";
-          const messageRef = doc(collection(db,"contactMessages"));
+          const messageRef = doc(db,"contactMessages",reference);
           const mailRef = doc(collection(db,"mail"));
           const report = [
             "FLAME DRAGON HUB — Contact message",
