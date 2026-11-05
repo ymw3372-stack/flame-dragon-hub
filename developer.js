@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, addDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, addDoc, Timestamp, serverTimestamp, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -818,6 +818,94 @@ async function loadExtensionAnalytics() {
   }
 }
 
+async function loadContactInbox() {
+  const list = $("contactInboxList");
+  if (!list || !isAdminUser(auth.currentUser)) return;
+  list.textContent = "Loading messages…";
+  try {
+    const snapshot = await getDocs(query(collection(db,"contactMessages"),orderBy("createdAt","desc"),limit(100)));
+    const selected = $("contactStatusFilter")?.value || "all";
+    const messages = snapshot.docs.map(item => ({id:item.id,...item.data()}))
+      .filter(item => selected === "all" || item.status === selected);
+    list.replaceChildren();
+    if (!messages.length) {
+      const empty = document.createElement("p");
+      empty.className = "dev-section-note";
+      empty.textContent = "No messages found for this filter.";
+      list.append(empty);
+      return;
+    }
+    for (const item of messages) {
+      const card = document.createElement("article");
+      card.className = "dev-item";
+      const top = document.createElement("div");
+      top.className = "dev-item-top";
+      const heading = document.createElement("strong");
+      heading.textContent = item.topic + " · " + item.reference;
+      const status = document.createElement("span");
+      status.className = "dev-status";
+      status.textContent = item.status || "New";
+      top.append(heading,status);
+      const details = document.createElement("p");
+      details.textContent = [
+        "From: " + (item.name || "—"),
+        "Email: " + (item.email || "Not provided"),
+        "Received: " + formatDate(item.createdAt),
+        "",
+        item.message || ""
+      ].join("\\n");
+      card.append(top,details);
+      if (item.attachmentData) {
+        const image = document.createElement("a");
+        image.href = item.attachmentData;
+        image.target = "_blank";
+        image.rel = "noopener noreferrer";
+        image.textContent = "View attachment: " + (item.attachmentName || "image");
+        image.className = "dev-button";
+        image.style.display = "inline-block";
+        image.style.textDecoration = "none";
+        card.append(image);
+      }
+      const controls = document.createElement("div");
+      controls.className = "dev-inline-actions";
+      const select = document.createElement("select");
+      select.setAttribute("aria-label","Message status");
+      for (const value of ["New","In Progress","Resolved"]) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        select.append(option);
+      }
+      select.value = item.status || "New";
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "dev-button";
+      save.textContent = "Save status";
+      save.addEventListener("click",async () => {
+        save.disabled = true;
+        try {
+          await updateDoc(doc(db,"contactMessages",item.id),{
+            status:select.value,updatedAt:serverTimestamp()
+          });
+          status.textContent = select.value;
+          save.textContent = "Saved";
+        } catch (error) {
+          console.error("Contact status update failed:",error);
+          save.textContent = "Retry";
+        } finally {
+          save.disabled = false;
+        }
+      });
+      controls.append(select,save);
+      card.append(controls);
+      list.append(card);
+    }
+  } catch (error) {
+    console.error("Contact inbox could not be loaded:",error);
+    list.textContent = "Inbox unavailable. Check Firestore Rules and the connection.";
+  }
+}
+
 async function loadUniqueProgramVisitors() {
   const countEl = $("uniqueProgramVisitors");
   if (!countEl) return;
@@ -853,6 +941,19 @@ toggleUniqueVisitors?.addEventListener("click", () => {
     : "⌄ Show Unique Program Visitors";
   if (nextExpanded) loadUniqueProgramVisitors();
 });
+
+const toggleContactInbox = $("toggleContactInbox");
+const contactInboxContent = $("contactInboxContent");
+toggleContactInbox?.addEventListener("click", () => {
+  const open = toggleContactInbox.getAttribute("aria-expanded") === "true";
+  const next = !open;
+  toggleContactInbox.setAttribute("aria-expanded",String(next));
+  contactInboxContent?.classList.toggle("dev-hidden",!next);
+  toggleContactInbox.textContent = next ? "⌃ Hide Contact Inbox" : "⌄ Show Contact Inbox";
+  if (next) loadContactInbox();
+});
+$("refreshContactInbox")?.addEventListener("click",loadContactInbox);
+$("contactStatusFilter")?.addEventListener("change",loadContactInbox);
 
 const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
 const extensionAnalyticsContent = $("extensionAnalyticsContent");
