@@ -95,6 +95,15 @@
 
 
 
+  function placeBonusCodes(){
+    const bonus=document.querySelector(".bonus-codes");
+    const main=document.querySelector("main");
+    if(!bonus||!main)return;
+    const hero=main.querySelector(".vault-hero,.fav-hero,.settings-hero");
+    if(hero)hero.insertAdjacentElement("afterend",bonus);
+    else main.insertAdjacentElement("afterbegin",bonus);
+  }
+
   function addMarquee(){
     if(document.querySelector(".fdh-marquee"))return;
     const strip=document.createElement("div");
@@ -187,6 +196,7 @@
     addLanguageDock();
     addScrollProgress();
     addFooter();
+    placeBonusCodes();
     addMarquee();
     addReveal();
     addPointerTilt();
