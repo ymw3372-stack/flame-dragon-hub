@@ -41,8 +41,10 @@
     glow.setAttribute("aria-hidden","true");
     document.body.appendChild(glow);
     let frame=0,x=-300,y=-300;
+    const radius=95;
     window.addEventListener("mousemove",event=>{
-      x=event.clientX;y=event.clientY;
+      x=Math.max(radius,Math.min(window.innerWidth-radius,event.clientX));
+      y=Math.max(radius,Math.min(window.innerHeight-radius,event.clientY));
       document.body.classList.add("pointer-glow-active");
       if(!frame)frame=requestAnimationFrame(()=>{
         glow.style.left=x+"px";
