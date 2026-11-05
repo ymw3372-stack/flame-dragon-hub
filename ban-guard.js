@@ -42,7 +42,7 @@ async function getBlockedMessage(user, data) {
       ? "This FLAME DRAGON HUB account is suspended until " + data.expiresAt.toDate().toLocaleString() + "."
       : "This FLAME DRAGON HUB account has been permanently banned.";
   }
-  if (kickTime > authTime) {
+  if (kickTime > authTime + 1000) {
     return "The site owner signed this account out. You can sign in again.";
   }
   return "";
