@@ -229,3 +229,11 @@ if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.
     keepalive: true
   }).catch(() => {});
 })();
+
+
+/* Enforce account kicks and bans on regular hub pages as well as the Account page. */
+if (!location.pathname.endsWith("/account.html") && !location.pathname.endsWith("account.html")) {
+  import("./ban-guard.js").catch(error => {
+    console.warn("Account access monitor could not start:", error);
+  });
+}
