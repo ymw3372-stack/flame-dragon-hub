@@ -68,19 +68,14 @@ body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track){position:relative;z-in
 main.reaper-vault,
 main.fav-page,
 main.settings-page{
-  padding-bottom:24px!important;
+  padding-bottom:0!important;
 }
 @media(max-width:600px){
 }
 
-/* Restored centered announcement ticker and correctly anchored bonus panel. */
-.fdh-marquee{position:relative;z-index:4;width:min(1150px,92%);height:30px;margin:7px auto 0;overflow:hidden;border:1px solid rgba(255,125,75,.18);border-radius:999px;background:linear-gradient(90deg,rgba(255,91,53,.07),rgba(255,177,105,.035),rgba(255,91,53,.07));mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-.fdh-marquee-track{display:flex;align-items:center;gap:46px;width:max-content;height:100%;animation:fdh-marquee-run 34s linear infinite}
-.fdh-marquee-track span{color:rgba(255,204,166,.78);font-size:9px;font-weight:850;letter-spacing:.19em;white-space:nowrap}
-@keyframes fdh-marquee-run{to{transform:translateX(-50%)}}
-.fdh-marquee:hover .fdh-marquee-track{animation-play-state:paused}
-.fdh-bonus-codes{position:fixed;z-index:40;top:116px;right:max(14px,calc((100vw - 1180px)/2));left:auto;width:184px;max-width:calc(100vw - 28px);padding:10px 12px;border:1px solid rgba(255,132,83,.38);border-radius:13px;background:rgba(18,12,19,.88);box-shadow:0 10px 28px rgba(0,0,0,.24),0 0 22px rgba(255,102,65,.08);backdrop-filter:blur(12px);text-align:center}
-.fdh-bonus-codes strong{display:block;margin:0 0 5px;color:#ffb47f;font-size:10px;letter-spacing:.09em}
-.fdh-bonus-codes p{margin:0;color:#ead9d0;font-size:10px;line-height:1.55;overflow-wrap:anywhere}
-@media(max-width:800px){.fdh-marquee{margin-top:5px}.fdh-bonus-codes{position:relative;top:auto;right:auto;left:auto;width:min(420px,92%);margin:8px auto 0}}
-@media(prefers-reduced-motion:reduce){.fdh-marquee-track{animation:none!important}.fdh-flying-dragon{animation:none!important}}
+/* Compact bonus panel: directly below the navbar, never floating at a screen edge. */
+.fdh-bonus-codes{position:relative;top:auto;right:auto;left:auto;z-index:40;width:fit-content;max-width:min(720px,92%);margin:5px max(4%,calc((100vw - 1150px)/2)) 0 auto;padding:7px 12px;border:1px solid rgba(255,132,83,.32);border-radius:12px;background:rgba(18,12,19,.82);box-shadow:0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(10px);text-align:center}
+.fdh-bonus-codes strong{display:block;margin:0 0 3px;color:#ffb47f;font-size:10px;letter-spacing:.09em}
+.fdh-bonus-codes p{margin:0;color:#ead9d0;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+@media(max-width:800px){.fdh-bonus-codes{width:min(620px,92%);margin:5px auto 0}}
+.fdh-flying-dragon{animation:none!important}}
