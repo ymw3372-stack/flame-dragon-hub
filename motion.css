@@ -3,3 +3,7 @@
 .fdh-reveal.fdh-visible{opacity:1;transform:none}
 .fdh-global-footer{border-top:1px solid rgba(255,157,91,.4);margin:40px auto 0;padding:20px;text-align:center}
 .fdh-global-footer a{color:#ffbd91;text-decoration:none;font-weight:800}
+
+.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step{font-size:1.015em}
+.hub-card h2,.evolution-card h2,.guide-card h2,.skin-card h2,.welcome-card h2,.signin-step h2{font-size:1.045em}
+.hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover{scale:1.012}
