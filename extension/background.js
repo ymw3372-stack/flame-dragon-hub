@@ -5,10 +5,29 @@ const FDH_UPDATE_STORAGE_KEY = "fdhCompletedUpdateDownload_1_0_3";
 
 function isTargetUpdateDownload(item) {
   if (!item || item.state !== "complete") return false;
-  const source = [item.url, item.finalUrl].filter(Boolean).join(" ");
   const filename = String(item.filename || "").replace(/\\/g, "/").split("/").pop() || "";
-  return source.includes(FDH_UPDATE_URL_PART) &&
-    (filename === FDH_UPDATE_FILE || filename.startsWith("FLAME_DRAGON_HUB_v1.0.3 (") && filename.endsWith(".zip"));
+  const correctFilename = filename === FDH_UPDATE_FILE ||
+    (filename.startsWith("FLAME_DRAGON_HUB_v1.0.3 (") && filename.endsWith(".zip"));
+  if (!correctFilename) return false;
+
+  // Accept the exact tagged release URL and GitHub's "latest/download" alias.
+  // Chrome may retain the original URL while finalUrl points at a signed asset host.
+  const urls = [item.url, item.finalUrl].filter(Boolean);
+  return urls.some(raw => {
+    try {
+      const parsed = new URL(raw);
+      const path = decodeURIComponent(parsed.pathname);
+      const isGitHubHost = parsed.hostname === "github.com" ||
+        parsed.hostname.endsWith(".githubusercontent.com");
+      return isGitHubHost && (
+        path.includes(FDH_UPDATE_URL_PART) ||
+        path.endsWith("/releases/latest/download/" + FDH_UPDATE_FILE) ||
+        path.endsWith("/releases/download/v1.0.3/" + FDH_UPDATE_FILE)
+      );
+    } catch (_) {
+      return raw.includes(FDH_UPDATE_URL_PART);
+    }
+  });
 }
 
 async function findCompletedUpdateDownload() {
@@ -16,7 +35,7 @@ async function findCompletedUpdateDownload() {
     const items = await chrome.downloads.search({
       query: [FDH_UPDATE_FILE],
       orderBy: ["-startTime"],
-      limit: 100
+      limit: 1000
     });
     return items.find(isTargetUpdateDownload) || null;
   } catch (_) {

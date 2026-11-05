@@ -38,6 +38,7 @@ let activityByUser = new Map();
 const expandedAccounts = new Set();
 const banByUser = new Map();
 const loadedBanUsers = new Set();
+const banLoadErrors = new Map();
 const moderationBusy = new Set();
 
 function showGate(message, title = "Administrator access required") {
@@ -101,16 +102,30 @@ function isBanActive(record) {
 }
 
 async function loadBanStatus(uid) {
-  if (loadedBanUsers.has(uid)) return;
+  // Do not automatically retry a denied read on every render. That caused a
+  // render -> read -> error -> render loop and made Details appear impossible to close.
+  if (loadedBanUsers.has(uid) || banLoadErrors.has(uid)) return;
   loadedBanUsers.add(uid);
   try {
     const snapshot = await getDoc(doc(db, "userBans", uid));
     banByUser.set(uid, snapshot.exists() ? snapshot.data() : null);
+    banLoadErrors.delete(uid);
   } catch (error) {
     loadedBanUsers.delete(uid);
-    showReadError("Could not load moderation status for one account: " + (error?.message || error));
+    banLoadErrors.set(uid, error);
+    showReadError("Could not load moderation status. Publish the latest firestore.rules, then retry. " + (error?.message || error));
   }
   if (expandedAccounts.has(uid)) renderUsers();
+}
+
+function waitForModeration(promise, label) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(label + " timed out after 15 seconds. Check your connection and Firestore Rules.")), 15000);
+    })
+  ]).finally(() => clearTimeout(timer));
 }
 
 async function runModerationAction(uid, action, reason, duration) {
@@ -124,31 +139,41 @@ async function runModerationAction(uid, action, reason, duration) {
   try {
     const ref = doc(db, "userBans", uid);
     const base = { updatedAt: serverTimestamp(), updatedBy: auth.currentUser.uid };
+    let localRecord;
+
     if (action === "kick") {
-      await setDoc(ref, {
+      await waitForModeration(setDoc(ref, {
         ...base, active: false, reason: "", expiresAt: null, kickAt: serverTimestamp()
-      }, { merge: true });
+      }, { merge: true }), "Kick");
+      localRecord = { active: false, reason: "", expiresAt: null, kickAt: Timestamp.fromDate(new Date()) };
     } else if (action === "ban") {
       const durations = { "1d": 1, "7d": 7, "30d": 30 };
       const expiresAt = duration === "permanent"
         ? null
-        : Timestamp.fromDate(new Date(Date.now() + durations[duration] * 86400000));
-      await setDoc(ref, {
+        : Timestamp.fromDate(new Date(Date.now() + (durations[duration] || 1) * 86400000));
+      await waitForModeration(setDoc(ref, {
         ...base, active: true, reason: String(reason || "").slice(0, 300),
         expiresAt, kickAt: serverTimestamp()
-      }, { merge: true });
+      }, { merge: true }), "Ban");
+      localRecord = { active: true, reason: String(reason || "").slice(0, 300), expiresAt };
     } else if (action === "unban") {
-      await setDoc(ref, {
+      await waitForModeration(setDoc(ref, {
         ...base, active: false, reason: "", expiresAt: null
-      }, { merge: true });
+      }, { merge: true }), "Unban");
+      localRecord = { active: false, reason: "", expiresAt: null };
+    } else {
+      throw new Error("Unknown moderation action.");
     }
-    const fresh = await getDoc(ref);
-    banByUser.set(uid, fresh.exists() ? fresh.data() : null);
+
+    // Update the UI from the confirmed write; do not make a second read that
+    // can leave the interface stuck if that read is denied or the network drops.
+    banByUser.set(uid, localRecord);
     loadedBanUsers.add(uid);
+    banLoadErrors.delete(uid);
     clearReadError();
   } catch (error) {
     console.error("Account moderation failed:", error);
-    showReadError("Could not update this account. Check the published Firestore Rules. " + (error?.message || error));
+    showReadError("Could not update this account. Publish the latest firestore.rules and check the connection. " + (error?.message || error));
   } finally {
     moderationBusy.delete(uid);
     if (expandedAccounts.has(uid)) renderUsers();
@@ -233,16 +258,34 @@ function renderUsers() {
 
         if (auth.currentUser?.uid === user.uid) {
           statusLine.textContent = "Owner account protected — moderation actions are disabled.";
-        } else if (!loadedBanUsers.has(user.uid)) {
-          statusLine.textContent = "Checking account status…";
-          loadBanStatus(user.uid);
         } else {
+          const banStatusLoaded = loadedBanUsers.has(user.uid);
+          const banLoadError = banLoadErrors.get(user.uid);
           const banRecord = banByUser.get(user.uid) || null;
           const banned = isBanActive(banRecord);
-          statusLine.textContent = banned
-            ? "BANNED" + (banRecord.expiresAt?.toDate ? " until " + formatDate(banRecord.expiresAt) : " permanently")
-              + (banRecord.reason ? " · Reason: " + banRecord.reason : "")
-            : "Account is active.";
+
+          if (moderationBusy.has(user.uid)) {
+            statusLine.textContent = "Changing account status…";
+          } else if (banLoadError) {
+            statusLine.textContent = "Status unavailable — check Firestore Rules or connection.";
+            const retryButton = document.createElement("button");
+            retryButton.type = "button";
+            retryButton.className = "dev-button";
+            retryButton.textContent = "Retry status check";
+            retryButton.addEventListener("click", () => {
+              banLoadErrors.delete(user.uid);
+              loadBanStatus(user.uid);
+            });
+            controls.append(retryButton);
+          } else if (!banStatusLoaded) {
+            statusLine.textContent = "Checking account status…";
+            loadBanStatus(user.uid);
+          } else {
+            statusLine.textContent = banned
+              ? "BANNED" + (banRecord.expiresAt?.toDate ? " until " + formatDate(banRecord.expiresAt) : " permanently")
+                + (banRecord.reason ? " · Reason: " + banRecord.reason : "")
+              : "Account is active.";
+          }
           if (banned) statusLine.classList.add("is-banned");
 
           const reasonInput = document.createElement("input");
@@ -284,11 +327,12 @@ function renderUsers() {
             if (!confirm("Ban this account " + labels[duration] + "? The account will be signed out.")) return;
             await runModerationAction(user.uid, "ban", reasonInput.value.trim(), duration);
           });
+
           controls.append(reasonInput, durationSelect);
-          if (!banned) controls.append(kickButton);
+          if (!banned || !banStatusLoaded) controls.append(kickButton);
           controls.append(banButton);
 
-          if (banned) {
+          if (banned || !banStatusLoaded || banLoadError) {
             const unbanButton = document.createElement("button");
             unbanButton.type = "button";
             unbanButton.className = "dev-button unban";
@@ -319,6 +363,7 @@ async function readUsers() {
 }
 
 async function loadDashboard() {
+  lastLoad = Date.now();
   const user = auth.currentUser;
   if (!user) {
     showGate("Please sign in first, then return to this page.");
@@ -342,7 +387,6 @@ async function loadDashboard() {
   try {
     cachedUsers = await readUsers();
     activityByUser = new Map();
-    expandedAccounts.clear();
     if ($("totalUsers")) $("totalUsers").textContent = String(cachedUsers.length);
     if ($("emailUsers")) $("emailUsers").textContent = String(cachedUsers.filter(u => u.provider === "password").length);
     if ($("googleUsers")) $("googleUsers").textContent = String(cachedUsers.filter(u => u.provider === "google.com").length);
