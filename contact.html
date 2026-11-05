@@ -170,7 +170,7 @@
 
   <script type="module">
     import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, doc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -272,35 +272,34 @@
         try {
           const imageData = file ? await readImage(file) : "";
           const messageRef = doc(db,"contactMessages",reference);
-          const mailRef = doc(collection(db,"mail"));
-          const report = [
-            "FLAME DRAGON HUB — Contact message",
-            "Reference: " + reference,
-            "Name: " + name,
-            "Email: " + (email || "Not provided"),
-            "Topic: " + selectedTopic,
-            "",
-            messageText,
-            file ? "Attachment: " + file.name : "No attachment"
-          ].join("\n");
-
-          const batch = writeBatch(db);
-          batch.set(messageRef, {
+          await setDoc(messageRef, {
             reference, name, email, topic: selectedTopic, message: messageText,
             attachmentData: imageData, attachmentName: file?.name || "",
             attachmentType: file?.type || "", status: "New", createdAt: serverTimestamp()
           });
-          batch.set(mailRef, {
-            reference,
-            to: ["flame.dragon.hub@gmail.com"],
-            message: {
-              subject: "[FLAME DRAGON HUB] " + selectedTopic + " · " + reference,
-              text: report
-            }
-          });
-          await batch.commit();
+
+          // Email is sent server-side through the Pages Function; no secret is exposed in the browser.
+          let emailSent = false;
+          try {
+            const emailResponse = await fetch("/api/contact-email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                reference, name, email, topic: selectedTopic, message: messageText,
+                attachmentData: imageData, attachmentName: file?.name || "",
+                website: String(data.get("website") || "")
+              })
+            });
+            const emailResult = await emailResponse.json();
+            emailSent = emailResponse.ok && emailResult.ok === true;
+          } catch (emailError) {
+            console.warn("Contact email notification was not sent:", emailError);
+          }
+
           sessionStorage.setItem("fdhContactLastSent", String(Date.now()));
-          status.textContent = "Message received! Your reference number is " + reference + ". Keep it for follow-up.";
+          status.textContent = emailSent
+            ? "Message received and email notification sent! Your reference number is " + reference + "."
+            : "Your message was saved! Reference: " + reference + ". Email notification is not configured yet, but the message is available in the Developer inbox.";
           form.reset();
           count.textContent = "0 / 3000";
           selectTopic("Bug Report");
