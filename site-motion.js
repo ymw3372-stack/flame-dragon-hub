@@ -34,6 +34,26 @@
     document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
   }
 
+  function addCursorGlow(){
+    if(reduceMotion || window.matchMedia?.("(hover: none)").matches || document.querySelector(".cursor-glow"))return;
+    const glow=document.createElement("div");
+    glow.className="cursor-glow";
+    glow.setAttribute("aria-hidden","true");
+    document.body.appendChild(glow);
+    let frame=0,x=-300,y=-300;
+    window.addEventListener("mousemove",event=>{
+      x=event.clientX;y=event.clientY;
+      document.body.classList.add("pointer-glow-active");
+      if(!frame)frame=requestAnimationFrame(()=>{
+        glow.style.left=x+"px";
+        glow.style.top=y+"px";
+        frame=0;
+      });
+    },{passive:true});
+    document.addEventListener("mouseleave",()=>document.body.classList.remove("pointer-glow-active"));
+    document.addEventListener("mouseenter",()=>document.body.classList.add("pointer-glow-active"));
+  }
+
   function addBonusAndMarquee(){
     if(document.querySelector(".fdh-marquee"))return;
     const header=document.querySelector("header.navbar");
@@ -132,6 +152,7 @@
     addScrollProgress();
     removeExtraBottomUI();
     addBonusAndMarquee();
+    addCursorGlow();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
