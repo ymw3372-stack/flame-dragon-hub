@@ -25,54 +25,14 @@
     update();
   }
 
-  function addFooter() {
-    let footer=document.querySelector(".fdh-global-footer");
-    if(!footer){
-      footer=document.createElement("footer");
-      document.body.appendChild(footer);
-    }
-    footer.classList.add("fdh-global-footer");
-    if(footer.dataset.fdhBuilt==="true") return;
-    footer.innerHTML=`
-      <div class="fdh-footer-inner">
-        <div class="fdh-footer-top">
-          <div class="fdh-footer-brand">
-            <div class="fdh-footer-brandline">
-              <img class="fdh-footer-logo" src="assets/logo.png" alt="FLAME DRAGON HUB logo" loading="lazy">
-              <div class="fdh-footer-brandtext">
-                <strong>FLAME DRAGON</strong>
-                <span>HUB · EVOWORLD COMMUNITY</span>
-              </div>
-            </div>
-            <p>Custom skins, tools and useful resources for EvoWorld players. Fan-made and not affiliated with EvoWorld.io.</p>
-          </div>
-          <nav class="fdh-footer-column" aria-label="Pages">
-            <h3>Pages</h3>
-            <a href="index.html">Home</a>
-            <a href="evolutions.html">Evolutions</a>
-            <a href="skins.html">Skins Library</a>
-            <a href="skin-studio.html">Skin Studio</a>
-            <a href="favorites.html">Favorites</a>
-          </nav>
-          <div class="fdh-footer-column">
-            <h3>Support</h3>
-            <a href="contact.html">Contact</a>
-            <a href="mailto:flame.dragon.hub@gmail.com">flame.dragon.hub@gmail.com</a>
-            <a href="developer.html">Developer</a>
-          </div>
-        </div>
-        <div class="fdh-footer-wordmark" aria-label="FLAME DRAGON">
-          <span>FLAME DRAGON</span>
-          <i aria-hidden="true">✦</i>
-        </div>
-        <div class="fdh-footer-bottom">
-          <span>© <span class="fdh-year"></span> FLAME DRAGON HUB</span>
-          <span>Made for the EvoWorld community</span>
-          <a href="index.html">Back to Home ↑</a>
-        </div>
-      </div>`;
-    footer.querySelector(".fdh-year").textContent=new Date().getFullYear();
-    footer.dataset.fdhBuilt="true";
+  // Remove the later-added global footer and floating language dock while
+  // keeping the site's motion and animation systems active.
+  function removeExtraBottomUI(){
+    const style=document.createElement("style");
+    style.id="fdh-clean-bottom-ui";
+    style.textContent=".fdh-global-footer,.fdh-language-dock{display:none!important}body{padding-bottom:0!important}";
+    document.head.appendChild(style);
+    document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
   }
 
   function addPointerTilt(){
@@ -153,7 +113,7 @@
 
   function init(){
     addScrollProgress();
-    addFooter();
+    removeExtraBottomUI();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
