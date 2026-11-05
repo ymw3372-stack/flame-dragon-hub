@@ -1,19 +1,8 @@
 /* FLAME DRAGON HUB — Ember motion + shared footer */
 
-/* Full-width seamless marquee, kept centered and locked to leftward flow */
-.fdh-marquee{position:relative;direction:ltr;display:block;width:100%;max-width:100%;margin:26px 0 0;padding:19px 0;overflow:hidden;overflow:clip;border-top:1px solid rgba(255,255,255,.42);border-bottom:1px solid rgba(255,255,255,.38);background:transparent;box-sizing:border-box}
-.fdh-marquee-track{display:flex;direction:ltr;flex-wrap:nowrap;width:max-content;align-items:center;animation:fdh-marquee-scroll 46s linear infinite;will-change:transform}
-.fdh-marquee-group{display:flex;flex:0 0 auto;flex-wrap:nowrap;align-items:center;gap:clamp(25px,4vw,62px);padding-right:clamp(25px,4vw,62px);white-space:nowrap}
-.fdh-marquee-group span{display:inline-block;white-space:nowrap;font-size:clamp(32px,5vw,62px);line-height:1.12;font-weight:950;letter-spacing:.065em;color:rgba(255,255,255,.9);text-shadow:0 0 16px rgba(255,135,77,.17)}
-.fdh-marquee-group i{flex:0 0 auto;font-style:normal;font-size:clamp(19px,2.5vw,30px);color:rgba(255,255,255,.5)}
-@keyframes fdh-marquee-scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-.fdh-marquee+.fdh-global-footer{margin-top:0}
-body:has(.install-guide-callout) .fdh-marquee{margin-top:18px}
-body:has(.install-guide-callout) .install-guide-callout{margin-bottom:14px}
 .fdh-tilt{transform-style:preserve-3d;transition:transform .22s ease-out,box-shadow .4s ease,border-color .35s ease}
 .fdh-tilt:hover{transform:perspective(1000px) rotateX(var(--fdh-tilt-x,0deg)) rotateY(var(--fdh-tilt-y,0deg)) translateY(-2px)}
-@media(max-width:600px){.fdh-marquee{padding:15px 0}.fdh-marquee-track{animation-duration:40s}.fdh-marquee-group span{font-size:clamp(27px,7vw,40px)}}
-@media(prefers-reduced-motion:reduce){.fdh-marquee-track{animation:none!important}.fdh-tilt,.fdh-tilt:hover{transition:none!important;transform:none!important}}
+@media(prefers-reduced-motion:reduce){.fdh-tilt,.fdh-tilt:hover{transition:none!important;transform:none!important}}
 
 
 .fdh-scroll-track{position:fixed;z-index:99999;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.045);pointer-events:none}
@@ -63,41 +52,6 @@ body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track){position:relative;z-in
 
 
 /* ===== Final layout corrections (Nov 2026) ===== */
-/* Keep the marquee inside the page width and prevent it from drifting. */
-.fdh-marquee{
-  position:relative!important;
-  inset:auto!important;
-  display:block!important;
-  width:100%!important;
-  max-width:100%!important;
-  margin:12px auto 0!important;
-  padding:14px 0!important;
-  overflow:hidden!important;
-  overflow:clip!important;
-  box-sizing:border-box!important;
-  isolation:isolate;
-  transform:none!important;
-}
-.fdh-marquee-track{
-  position:relative!important;
-  inset:auto!important;
-  display:flex!important;
-  width:max-content!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  flex-wrap:nowrap!important;
-  direction:ltr!important;
-  transform:translate3d(0,0,0);
-  animation:fdh-marquee-scroll 54s linear infinite!important;
-}
-.fdh-marquee-group{
-  flex:0 0 auto!important;
-  width:max-content!important;
-  max-width:none!important;
-  white-space:nowrap!important;
-}
-.fdh-marquee+.fdh-global-footer,
 .fdh-global-footer{
   margin-top:0!important;
 }
@@ -107,6 +61,4 @@ main.settings-page{
   padding-bottom:24px!important;
 }
 @media(max-width:600px){
-  .fdh-marquee{margin-top:8px!important;padding:12px 0!important}
-  .fdh-marquee-track{animation-duration:46s!important}
 }

@@ -75,21 +75,6 @@
     footer.dataset.fdhBuilt="true";
   }
 
-
-
-
-  function addMarquee(){
-    if(document.querySelector(".fdh-marquee"))return;
-    const strip=document.createElement("div");
-    strip.className="fdh-marquee";
-    strip.setAttribute("aria-label","FLAME DRAGON HUB");
-    const group='<div class="fdh-marquee-group"><span>EVOWORLD DRAGON</span><i>✦</i><span>FLAME DRAGON</span><i>✦</i><span>SKINS EDITOR</span><i>✦</i><span>CUSTOM SKINS</span><i>✦</i><span>DRAGON POWER</span><i>✦</i></div>';
-    strip.innerHTML='<div class="fdh-marquee-track" aria-hidden="true">'+group+group+'</div>';
-    const footer=document.querySelector(".fdh-global-footer");
-    if(footer&&footer.parentNode)footer.parentNode.insertBefore(strip,footer);
-    else document.body.appendChild(strip);
-  }
-
   function addPointerTilt(){
     if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
     const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
@@ -169,7 +154,6 @@
   function init(){
     addScrollProgress();
     addFooter();
-    addMarquee();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
