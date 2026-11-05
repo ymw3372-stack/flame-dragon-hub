@@ -1434,8 +1434,7 @@ body::after {
    ========================= */
 
 .settings-page {
-    min-height: calc(100vh - 76px);
-    padding: 70px 25px 90px;
+    padding: 12px 25px 24px;
 }
 
 .settings-hero {
@@ -1680,7 +1679,7 @@ body::after {
 @media (max-width: 600px) {
 
     .settings-page {
-        padding: 45px 18px 60px;
+        padding: 10px 18px 20px;
     }
 
     .settings-card {
