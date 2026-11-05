@@ -1,0 +1,5 @@
+/* FLAME DRAGON HUB motion styles */
+.fdh-reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.fdh-reveal.fdh-visible{opacity:1;transform:none}
+.fdh-global-footer{border-top:1px solid rgba(255,157,91,.4);margin:40px auto 0;padding:20px;text-align:center}
+.fdh-global-footer a{color:#ffbd91;text-decoration:none;font-weight:800}
