@@ -25,14 +25,31 @@
     update();
   }
 
-  // Remove the later-added global footer and floating language dock while
-  // keeping the site's motion and animation systems active.
+  // Keep the clean layout while restoring the announcement ticker and bonus panel.
   function removeExtraBottomUI(){
     const style=document.createElement("style");
     style.id="fdh-clean-bottom-ui";
     style.textContent=".fdh-global-footer,.fdh-language-dock{display:none!important}body{padding-bottom:0!important}";
     document.head.appendChild(style);
     document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
+  }
+
+  function addBonusAndMarquee(){
+    if(document.querySelector(".fdh-marquee"))return;
+    const header=document.querySelector("header.navbar");
+    if(!header)return;
+    const strip=document.createElement("div");
+    strip.className="fdh-marquee";
+    strip.setAttribute("aria-label","FLAME DRAGON HUB announcements");
+    strip.innerHTML='<div class="fdh-marquee-track"><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span><span>✦ FLAME DRAGON HUB</span><span>✦ EVO WORLD SKIN STUDIO</span><span>✦ EXPLORE · SAVE · CUSTOMIZE</span></div>';
+    header.insertAdjacentElement("afterend",strip);
+    if(!document.querySelector(".fdh-bonus-codes")){
+      const bonus=document.createElement("aside");
+      bonus.className="fdh-bonus-codes";
+      bonus.setAttribute("aria-label","Bonus codes");
+      bonus.innerHTML='<strong>✦ ALL BONUS CODES</strong><p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>';
+      header.insertAdjacentElement("afterend",bonus);
+    }
   }
 
   function addPointerTilt(){
@@ -114,6 +131,7 @@
   function init(){
     addScrollProgress();
     removeExtraBottomUI();
+    addBonusAndMarquee();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
