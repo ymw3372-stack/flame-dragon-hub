@@ -1,6 +1,7 @@
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { recordAuthEvent } from "./firebase-data.js";
+import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 import {
   getAuth,
@@ -29,6 +30,9 @@ const firebaseConfig = {
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+let accessUnsubscribe = null;
+let blockedNotice = "";
 const googleProvider = new GoogleAuthProvider();
 
 const form = document.getElementById("authForm");
@@ -60,6 +64,62 @@ async function startAuth() {
     !refreshVerificationButton
   ) {
     return;
+  }
+
+  async function getAccountAccessState(user) {
+    let snapshot;
+    try {
+      snapshot = await getDoc(doc(db, "userBans", user.uid));
+    } catch (error) {
+      // Keep ordinary sign-in working until the owner publishes the new Firestore Rules.
+      console.warn("Account moderation status is not available yet:", error);
+      return { blocked: false, unavailable: true };
+    }
+    if (!snapshot.exists()) return { blocked: false };
+    const data = snapshot.data();
+    const activeBan = data.active === true &&
+      (!data.expiresAt?.toMillis || data.expiresAt.toMillis() > Date.now());
+    const token = await user.getIdTokenResult();
+    const authTime = Date.parse(token.authTime || "") || 0;
+    const kickTime = data.kickAt?.toMillis?.() || 0;
+    const wasKicked = kickTime > authTime + 1000;
+    if (activeBan) {
+      return {
+        blocked: true,
+        message: data.expiresAt?.toDate
+          ? "This FLAME DRAGON HUB account is suspended until " + data.expiresAt.toDate().toLocaleString() + "."
+          : "This FLAME DRAGON HUB account has been permanently banned."
+      };
+    }
+    if (wasKicked) {
+      return { blocked: true, message: "The site owner signed this account out. You can sign in again." };
+    }
+    return { blocked: false };
+  }
+
+  async function enforceAccountAccess(user) {
+    const state = await getAccountAccessState(user);
+    if (!state.blocked) return false;
+    blockedNotice = state.message;
+    await signOut(auth);
+    showMessage(blockedNotice);
+    return true;
+  }
+
+  function watchAccountAccess(user) {
+    accessUnsubscribe?.();
+    accessUnsubscribe = onSnapshot(doc(db, "userBans", user.uid), async () => {
+      try {
+        if (auth.currentUser?.uid !== user.uid) return;
+        const state = await getAccountAccessState(user);
+        if (state.blocked && auth.currentUser?.uid === user.uid) {
+          blockedNotice = state.message;
+          await signOut(auth);
+        }
+      } catch (error) {
+        console.error("Could not check account moderation status:", error);
+      }
+    }, error => console.warn("Account moderation listener error:", error));
   }
 
   function showMessage(message) {
@@ -106,6 +166,7 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
+      if (await enforceAccountAccess(credential.user)) return;
       const saveWarning = await recordAuthEventSafely(credential.user, "sign_in");
       if (saveWarning) showMessage(saveWarning);
     } catch (error) {
@@ -122,6 +183,7 @@ async function startAuth() {
         emailInput.value.trim(),
         passwordInput.value
       );
+      if (await enforceAccountAccess(credential.user)) return;
       const registerWarning = await recordAuthEventSafely(credential.user, "register");
       // Firebase signs the new user in immediately after account creation.
       // Record that session too, so the dashboard does not show 0 sign-ins.
@@ -137,6 +199,7 @@ async function startAuth() {
   googleButton.addEventListener("click", async () => {
     try {
       const credential = await signInWithPopup(auth, googleProvider);
+      if (await enforceAccountAccess(credential.user)) return;
       const saveWarning = await recordAuthEventSafely(credential.user, "sign_in");
       if (saveWarning) showMessage(saveWarning);
     } catch (error) {
@@ -204,7 +267,8 @@ async function startAuth() {
     const verified = Boolean(user && user.emailVerified);
 
     if (!signedIn) {
-      showMessage("Choose Email and password or Continue with Google. Use the same method you used when you registered.");
+      showMessage(blockedNotice || "Choose Email and password or Continue with Google. Use the same method you used when you registered.");
+      blockedNotice = "";
       if (loginHelp) loginHelp.hidden = false;
       form.hidden = false;
       googleButton.hidden = false;
@@ -234,6 +298,17 @@ async function startAuth() {
 
   onAuthStateChanged(auth, async user => {
     try {
+      accessUnsubscribe?.();
+      accessUnsubscribe = null;
+      if (user) {
+        const access = await getAccountAccessState(user);
+        if (access.blocked) {
+          blockedNotice = access.message;
+          await signOut(auth);
+          return;
+        }
+        watchAccountAccess(user);
+      }
       try {
         if (user) localStorage.setItem("fdhHasAccountSession", "1");
         else localStorage.removeItem("fdhHasAccountSession");

@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -36,6 +36,9 @@ const ACTIVITY_SAMPLE = 1000;
 let cachedUsers = [];
 let activityByUser = new Map();
 const expandedAccounts = new Set();
+const banByUser = new Map();
+const loadedBanUsers = new Set();
+const moderationBusy = new Set();
 
 function showGate(message, title = "Administrator access required") {
   $("devContent")?.classList.add("dev-hidden");
@@ -70,10 +73,9 @@ function describeReadError(error) {
   const code = error?.code || "";
   const raw = error?.message || String(error);
   if (code === "permission-denied" || /insufficient permissions/i.test(raw)) {
-    return "Authorized as owner, but Firestore denied the read. The rules deployed in "
-      + "Firebase Console still contain the old placeholder UID. Open Firebase Console, "
-      + "project flame-dragon-hub, Firestore Database, Rules, paste the updated "
-      + "firestore.rules from this repo and press Publish.";
+    return "Firestore denied this read. Open Firebase Console, project flame-dragon-hub, "
+      + "Firestore Database, Rules, and publish the latest firestore.rules file from this repository. "
+      + "The account moderation controls will not work until those rules are published.";
   }
   if (code === "failed-precondition") {
     return "Authorized as owner, but the query needs a Firestore index. Open the browser "
@@ -92,6 +94,67 @@ function cell(value) {
   td.textContent = safeText(value);
   return td;
 }
+function isBanActive(record) {
+  if (!record?.active) return false;
+  if (!record.expiresAt?.toMillis) return true;
+  return record.expiresAt.toMillis() > Date.now();
+}
+
+async function loadBanStatus(uid) {
+  if (loadedBanUsers.has(uid)) return;
+  loadedBanUsers.add(uid);
+  try {
+    const snapshot = await getDoc(doc(db, "userBans", uid));
+    banByUser.set(uid, snapshot.exists() ? snapshot.data() : null);
+  } catch (error) {
+    loadedBanUsers.delete(uid);
+    showReadError("Could not load moderation status for one account: " + (error?.message || error));
+  }
+  if (expandedAccounts.has(uid)) renderUsers();
+}
+
+async function runModerationAction(uid, action, reason, duration) {
+  if (!auth.currentUser || !isAdminUser(auth.currentUser) || uid === auth.currentUser.uid) {
+    showReadError("This moderation action is not allowed.");
+    return;
+  }
+  if (moderationBusy.has(uid)) return;
+  moderationBusy.add(uid);
+  renderUsers();
+  try {
+    const ref = doc(db, "userBans", uid);
+    const base = { updatedAt: serverTimestamp(), updatedBy: auth.currentUser.uid };
+    if (action === "kick") {
+      await setDoc(ref, {
+        ...base, active: false, reason: "", expiresAt: null, kickAt: serverTimestamp()
+      }, { merge: true });
+    } else if (action === "ban") {
+      const durations = { "1d": 1, "7d": 7, "30d": 30 };
+      const expiresAt = duration === "permanent"
+        ? null
+        : Timestamp.fromDate(new Date(Date.now() + durations[duration] * 86400000));
+      await setDoc(ref, {
+        ...base, active: true, reason: String(reason || "").slice(0, 300),
+        expiresAt, kickAt: serverTimestamp()
+      }, { merge: true });
+    } else if (action === "unban") {
+      await setDoc(ref, {
+        ...base, active: false, reason: "", expiresAt: null
+      }, { merge: true });
+    }
+    const fresh = await getDoc(ref);
+    banByUser.set(uid, fresh.exists() ? fresh.data() : null);
+    loadedBanUsers.add(uid);
+    clearReadError();
+  } catch (error) {
+    console.error("Account moderation failed:", error);
+    showReadError("Could not update this account. Check the published Firestore Rules. " + (error?.message || error));
+  } finally {
+    moderationBusy.delete(uid);
+    if (expandedAccounts.has(uid)) renderUsers();
+  }
+}
+
 function renderUsers() {
   const table = $("usersTable");
   if (!table) return;
@@ -103,7 +166,7 @@ function renderUsers() {
   if (!filtered.length) {
     const row = document.createElement("tr");
     const td = cell("No matching accounts.");
-    td.colSpan = 6;
+    td.colSpan = 5;
     row.append(td);
     table.append(row);
   } else {
@@ -113,8 +176,7 @@ function renderUsers() {
         cell(user.displayName || user.email || user.uid),
         cell(user.provider),
         cell(user.emailVerified ? "Verified" : "Not verified"),
-        cell(formatDate(user.createdAt)),
-        cell(formatDate(user.lastSignInAt))
+        cell(formatDate(user.createdAt))
       );
       const actionCell = document.createElement("td");
       const toggle = document.createElement("button");
@@ -135,36 +197,112 @@ function renderUsers() {
         const detailRow = document.createElement("tr");
         detailRow.className = "dev-account-detail-row";
         const detailCell = document.createElement("td");
-        detailCell.colSpan = 6;
+        detailCell.colSpan = 5;
         const panel = document.createElement("div");
         panel.className = "dev-account-detail";
         const email = document.createElement("strong");
         email.textContent = "Email: " + (user.email || "Not available");
         panel.append(email);
         const events = activityByUser.get(user.uid);
-        const heading = document.createElement("p");
-        heading.className = "dev-section-note";
-        heading.textContent = "Sign-in / sign-out history";
-        panel.append(heading);
-        if (!events) {
-          const loading = document.createElement("p");
-          loading.textContent = "Loading account activity…";
-          panel.append(loading);
-        } else if (!events.length) {
-          const empty = document.createElement("p");
-          empty.textContent = "No recorded sign-in or sign-out events.";
-          panel.append(empty);
-        } else {
-          const list = document.createElement("ul");
-          list.className = "dev-account-event-list";
-          for (const event of events) {
-            const item = document.createElement("li");
-            item.textContent = (event.type === "sign_in" ? "Sign-in" : "Sign-out")
-              + " — " + formatDate(event.createdAt);
-            list.append(item);
-          }
-          panel.append(list);
+        const counts = document.createElement("div");
+        counts.className = "dev-account-count-grid";
+        const signIns = events ? events.filter(event => event.type === "sign_in").length : "—";
+        const signOuts = events ? events.filter(event => event.type === "sign_out").length : "—";
+        for (const [label, value] of [["Sign-ins", signIns], ["Sign-outs", signOuts]]) {
+          const card = document.createElement("div");
+          card.className = "dev-account-count";
+          const caption = document.createElement("span");
+          caption.textContent = label;
+          const number = document.createElement("strong");
+          number.textContent = String(value);
+          card.append(caption, number);
+          counts.append(card);
         }
+        panel.append(counts);
+        const moderation = document.createElement("div");
+        moderation.className = "dev-moderation";
+        const moderationHeading = document.createElement("h3");
+        moderationHeading.textContent = "Account access";
+        moderation.append(moderationHeading);
+        const statusLine = document.createElement("p");
+        statusLine.className = "dev-moderation-status";
+        moderation.append(statusLine);
+        const controls = document.createElement("div");
+        controls.className = "dev-moderation-controls";
+        moderation.append(controls);
+
+        if (auth.currentUser?.uid === user.uid) {
+          statusLine.textContent = "Owner account protected — moderation actions are disabled.";
+        } else if (!loadedBanUsers.has(user.uid)) {
+          statusLine.textContent = "Checking account status…";
+          loadBanStatus(user.uid);
+        } else {
+          const banRecord = banByUser.get(user.uid) || null;
+          const banned = isBanActive(banRecord);
+          statusLine.textContent = banned
+            ? "BANNED" + (banRecord.expiresAt?.toDate ? " until " + formatDate(banRecord.expiresAt) : " permanently")
+              + (banRecord.reason ? " · Reason: " + banRecord.reason : "")
+            : "Account is active.";
+          if (banned) statusLine.classList.add("is-banned");
+
+          const reasonInput = document.createElement("input");
+          reasonInput.type = "text";
+          reasonInput.maxLength = 300;
+          reasonInput.placeholder = "Reason (optional)";
+          reasonInput.value = banRecord?.reason || "";
+          reasonInput.setAttribute("aria-label", "Moderation reason");
+
+          const durationSelect = document.createElement("select");
+          durationSelect.setAttribute("aria-label", "Ban duration");
+          for (const [value, label] of [
+            ["1d", "1 day"], ["7d", "7 days"], ["30d", "30 days"], ["permanent", "Permanent"]
+          ]) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            durationSelect.append(option);
+          }
+
+          const kickButton = document.createElement("button");
+          kickButton.type = "button";
+          kickButton.className = "dev-button kick";
+          kickButton.textContent = "↪ Kick (sign out)";
+          kickButton.disabled = moderationBusy.has(user.uid);
+          kickButton.addEventListener("click", async () => {
+            if (!confirm("Sign this account out? They can sign in again unless you also ban them.")) return;
+            await runModerationAction(user.uid, "kick", "", null);
+          });
+
+          const banButton = document.createElement("button");
+          banButton.type = "button";
+          banButton.className = "dev-button danger";
+          banButton.textContent = banned ? "Update ban" : "Ban account";
+          banButton.disabled = moderationBusy.has(user.uid);
+          banButton.addEventListener("click", async () => {
+            const duration = durationSelect.value;
+            const labels = { "1d": "1 day", "7d": "7 days", "30d": "30 days", permanent: "permanently" };
+            if (!confirm("Ban this account " + labels[duration] + "? The account will be signed out.")) return;
+            await runModerationAction(user.uid, "ban", reasonInput.value.trim(), duration);
+          });
+          controls.append(reasonInput, durationSelect);
+          if (!banned) controls.append(kickButton);
+          controls.append(banButton);
+
+          if (banned) {
+            const unbanButton = document.createElement("button");
+            unbanButton.type = "button";
+            unbanButton.className = "dev-button unban";
+            unbanButton.textContent = "Unban account";
+            unbanButton.disabled = moderationBusy.has(user.uid);
+            unbanButton.addEventListener("click", async () => {
+              if (!confirm("Remove the ban for this account?")) return;
+              await runModerationAction(user.uid, "unban", "", null);
+            });
+            controls.append(unbanButton);
+          }
+        }
+        panel.append(moderation);
+
         detailCell.append(panel);
         detailRow.append(detailCell);
         table.append(detailRow);
@@ -174,20 +312,10 @@ function renderUsers() {
   if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} accounts).`;
 }
 
-// Firestore drops documents that lack the field used in orderBy, which hides any
-// account whose document has no lastSignInAt yet. An unordered read is used first
-// and the ordering is applied here, so no stored account can go missing.
+// Read stored accounts without sorting or displaying their last sign-in timestamps.
 async function readUsers() {
-  let snapshot;
-  try {
-    snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
-  } catch (error) {
-    if (error?.code === "permission-denied") throw error;
-    snapshot = await getDocs(query(collection(db, "users"), orderBy("lastSignInAt", "desc"), limit(MAX_USERS)));
-  }
-  return snapshot.docs
-    .map(item => ({ uid: item.id, ...item.data() }))
-    .sort((a, b) => (b.lastSignInAt?.toMillis?.() || 0) - (a.lastSignInAt?.toMillis?.() || 0));
+  const snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
+  return snapshot.docs.map(item => ({ uid: item.id, ...item.data() }));
 }
 
 async function loadDashboard() {
@@ -243,7 +371,6 @@ async function loadDashboard() {
       }
       let signIns = 0;
       let signOuts = 0;
-      let latestTime = null;
       const userEvents = result.value.docs.map(item => ({ id: item.id, ...item.data() }))
         .filter(event => event.type === "sign_in" || event.type === "sign_out")
         .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
@@ -251,27 +378,21 @@ async function loadDashboard() {
       for (const event of userEvents) {
         if (event.type === "sign_in") signIns += 1;
         if (event.type === "sign_out") signOuts += 1;
-        if (event.createdAt?.toMillis && (!latestTime || event.createdAt.toMillis() > latestTime.toMillis())) {
-          latestTime = event.createdAt;
-        }
       }
       accountStats.push({
         email: sample[index].email || sample[index].uid,
         provider: sample[index].provider || "-",
         signIns,
-        signOuts,
-        latestTime
+        signOuts
       });
     });
     if (failures.length) {
       console.warn("Activity unreadable for some accounts:", failures);
       showReadError(`Activity could not be read for ${failures.length} of ${sample.length} loaded accounts. First reason: ${failures[0]}`);
     }
-    accountStats.sort((a, b) => (b.latestTime?.toMillis?.() || 0) - (a.latestTime?.toMillis?.() || 0));
     renderUsers();
     const totalEvents = accountStats.reduce((sum, account) => sum + account.signIns + account.signOuts, 0);
     if ($("totalEvents")) $("totalEvents").textContent = String(totalEvents);
-    if ($("latestActivity")) $("latestActivity").textContent = (accountStats[0]?.latestTime?.toDate ? new Intl.DateTimeFormat("en-GB").format(accountStats[0].latestTime.toDate()) : "No events");
     const table = $("activityTable");
     if (!table) return;
     table.replaceChildren();

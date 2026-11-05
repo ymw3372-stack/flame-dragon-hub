@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "flame-dragon-hub-v11";
+const CACHE_NAME = "flame-dragon-hub-v12";
 
 const FILES_TO_CACHE = [
   "./",
@@ -22,6 +22,7 @@ const FILES_TO_CACHE = [
   "./favorites.js",
   "./skins-data.js",
   "./auth.js",
+  "./ban-guard.js",
   "./cursor-glow.js",
   "./manifest.json",
   "./assets/logo.png"

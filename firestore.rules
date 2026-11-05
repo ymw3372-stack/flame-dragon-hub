@@ -19,6 +19,19 @@ service cloud.firestore {
       return signedIn() && request.auth.uid == uid;
     }
 
+    function userBanPath(uid) {
+      return /databases/$(database)/documents/userBans/$(uid);
+    }
+
+    function isBanned(uid) {
+      return exists(userBanPath(uid))
+        && get(userBanPath(uid)).data.active == true
+        && (
+          get(userBanPath(uid)).data.expiresAt == null
+          || get(userBanPath(uid)).data.expiresAt > request.time
+        );
+    }
+
     function validAuthMetadata(data, uid) {
       return data.uid == uid
         && data.email == request.auth.token.email
@@ -60,10 +73,19 @@ service cloud.firestore {
     allow update, delete: if false;
   }
 
-  match /users/{uid} {
-      allow read: if isOwner(uid) || isAdmin();
+  // Moderation records are readable by the owner of that account and by the admin.
+  // Only the verified admin can write them, and the admin cannot target their own UID.
+  match /userBans/{uid} {
+    allow get: if isAdmin() || isOwner(uid);
+    allow list: if isAdmin();
+    allow create, update: if isAdmin() && request.auth.uid != uid;
+    allow delete: if false;
+  }
 
-      allow create: if isOwner(uid)
+  match /users/{uid} {
+      allow read: if isAdmin() || (isOwner(uid) && !isBanned(uid));
+
+      allow create: if isOwner(uid) && !isBanned(uid)
         && request.resource.data.keys().hasOnly([
           'uid', 'email', 'displayName', 'provider', 'emailVerified',
           'createdAt', 'lastSignInAt', 'updatedAt'
@@ -75,7 +97,7 @@ service cloud.firestore {
         && request.resource.data.lastSignInAt == request.time
         && request.resource.data.updatedAt == request.time;
 
-      allow update: if isOwner(uid)
+      allow update: if isOwner(uid) && !isBanned(uid)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'email', 'displayName', 'provider', 'emailVerified',
           'lastSignInAt', 'updatedAt'
@@ -88,9 +110,9 @@ service cloud.firestore {
       allow delete: if false;
 
       match /activity/{eventId} {
-        allow read: if isOwner(uid) || isAdmin();
+        allow read: if isAdmin() || (isOwner(uid) && !isBanned(uid));
 
-        allow create: if isOwner(uid)
+        allow create: if isOwner(uid) && !isBanned(uid)
           && request.resource.data.keys().hasOnly(['type', 'provider', 'createdAt'])
           && request.resource.data.type in ['register', 'sign_in', 'sign_out']
           && request.resource.data.provider == request.auth.token.firebase.sign_in_provider
