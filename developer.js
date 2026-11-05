@@ -182,6 +182,87 @@ function renderUsers() {
           }
           panel.append(list);
         }
+        const moderation = document.createElement("div");
+        moderation.className = "dev-moderation";
+        const moderationHeading = document.createElement("h3");
+        moderationHeading.textContent = "Account access";
+        moderation.append(moderationHeading);
+        const statusLine = document.createElement("p");
+        statusLine.className = "dev-moderation-status";
+        moderation.append(statusLine);
+        const controls = document.createElement("div");
+        controls.className = "dev-moderation-controls";
+        moderation.append(controls);
+
+        if (auth.currentUser?.uid === user.uid) {
+          statusLine.textContent = "Owner account protected — moderation actions are disabled.";
+        } else if (!loadedBanUsers.has(user.uid)) {
+          statusLine.textContent = "Checking account status…";
+          loadBanStatus(user.uid);
+        } else {
+          const banRecord = banByUser.get(user.uid) || null;
+          const banned = isBanActive(banRecord);
+          statusLine.textContent = banned
+            ? "BANNED" + (banRecord.expiresAt?.toDate ? " until " + formatDate(banRecord.expiresAt) : " permanently")
+              + (banRecord.reason ? " · Reason: " + banRecord.reason : "")
+            : "Account is active.";
+          if (banned) statusLine.classList.add("is-banned");
+
+          const reasonInput = document.createElement("input");
+          reasonInput.type = "text";
+          reasonInput.maxLength = 300;
+          reasonInput.placeholder = "Reason (optional)";
+          reasonInput.setAttribute("aria-label", "Moderation reason");
+
+          const durationSelect = document.createElement("select");
+          durationSelect.setAttribute("aria-label", "Ban duration");
+          for (const [value, label] of [
+            ["1d", "1 day"], ["7d", "7 days"], ["30d", "30 days"], ["permanent", "Permanent"]
+          ]) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            durationSelect.append(option);
+          }
+
+          const kickButton = document.createElement("button");
+          kickButton.type = "button";
+          kickButton.className = "dev-button kick";
+          kickButton.textContent = "↪ Kick (sign out)";
+          kickButton.disabled = moderationBusy.has(user.uid);
+          kickButton.addEventListener("click", async () => {
+            if (!confirm("Sign this account out? They can sign in again unless you also ban them.")) return;
+            await runModerationAction(user.uid, "kick", "", null);
+          });
+
+          const banButton = document.createElement("button");
+          banButton.type = "button";
+          banButton.className = "dev-button danger";
+          banButton.textContent = banned ? "Update ban" : "Ban account";
+          banButton.disabled = moderationBusy.has(user.uid);
+          banButton.addEventListener("click", async () => {
+            const duration = durationSelect.value;
+            const labels = { "1d": "1 day", "7d": "7 days", "30d": "30 days", permanent: "permanently" };
+            if (!confirm("Ban this account " + labels[duration] + "? The account will be signed out.")) return;
+            await runModerationAction(user.uid, "ban", reasonInput.value.trim(), duration);
+          });
+          controls.append(reasonInput, durationSelect, kickButton, banButton);
+
+          if (banned) {
+            const unbanButton = document.createElement("button");
+            unbanButton.type = "button";
+            unbanButton.className = "dev-button unban";
+            unbanButton.textContent = "Unban account";
+            unbanButton.disabled = moderationBusy.has(user.uid);
+            unbanButton.addEventListener("click", async () => {
+              if (!confirm("Remove the ban for this account?")) return;
+              await runModerationAction(user.uid, "unban", "", null);
+            });
+            controls.append(unbanButton);
+          }
+        }
+        panel.append(moderation);
+
         detailCell.append(panel);
         detailRow.append(detailCell);
         table.append(detailRow);
