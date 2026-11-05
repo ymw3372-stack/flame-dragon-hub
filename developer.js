@@ -144,6 +144,21 @@ function renderUsers() {
         email.textContent = "Email: " + (user.email || "Not available");
         panel.append(email);
         const events = activityByUser.get(user.uid);
+        const counts = document.createElement("div");
+        counts.className = "dev-account-count-grid";
+        const signIns = events ? events.filter(event => event.type === "sign_in").length : "—";
+        const signOuts = events ? events.filter(event => event.type === "sign_out").length : "—";
+        for (const [label, value] of [["Sign-ins", signIns], ["Sign-outs", signOuts]]) {
+          const card = document.createElement("div");
+          card.className = "dev-account-count";
+          const caption = document.createElement("span");
+          caption.textContent = label;
+          const number = document.createElement("strong");
+          number.textContent = String(value);
+          card.append(caption, number);
+          counts.append(card);
+        }
+        panel.append(counts);
         const heading = document.createElement("p");
         heading.className = "dev-section-note";
         heading.textContent = "Sign-in / sign-out history";
