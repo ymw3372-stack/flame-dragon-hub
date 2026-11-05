@@ -125,12 +125,11 @@
     layer.setAttribute("aria-hidden","true");
     layer.innerHTML=`
       <div class="fdh-dragon-words">
-        <span>FLAME DRAGON</span><span>SKINS EDITOR</span><nobr></nobr>
+        <span>FLAME DRAGON</span><span>SKINS EDITOR</span>
         <span>EVOWORLD</span><span>YOUR SKIN · YOUR STYLE</span>
       </div>
       <img class="fdh-flying-dragon" src="assets/skins/evolution-creatures/dragon.webp" alt="" loading="lazy">
     `;
-    layer.querySelector("nobr")?.remove();
     document.body.prepend(layer);
   }
 
