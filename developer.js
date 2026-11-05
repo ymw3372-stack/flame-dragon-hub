@@ -249,6 +249,7 @@ function renderUsers() {
           reasonInput.type = "text";
           reasonInput.maxLength = 300;
           reasonInput.placeholder = "Reason (optional)";
+          reasonInput.value = banRecord?.reason || "";
           reasonInput.setAttribute("aria-label", "Moderation reason");
 
           const durationSelect = document.createElement("select");
@@ -283,7 +284,9 @@ function renderUsers() {
             if (!confirm("Ban this account " + labels[duration] + "? The account will be signed out.")) return;
             await runModerationAction(user.uid, "ban", reasonInput.value.trim(), duration);
           });
-          controls.append(reasonInput, durationSelect, kickButton, banButton);
+          controls.append(reasonInput, durationSelect);
+          if (!banned) controls.append(kickButton);
+          controls.append(banButton);
 
           if (banned) {
             const unbanButton = document.createElement("button");
