@@ -95,6 +95,67 @@ function cell(value) {
   td.textContent = safeText(value);
   return td;
 }
+function isBanActive(record) {
+  if (!record?.active) return false;
+  if (!record.expiresAt?.toMillis) return true;
+  return record.expiresAt.toMillis() > Date.now();
+}
+
+async function loadBanStatus(uid) {
+  if (loadedBanUsers.has(uid)) return;
+  loadedBanUsers.add(uid);
+  try {
+    const snapshot = await getDoc(doc(db, "userBans", uid));
+    banByUser.set(uid, snapshot.exists() ? snapshot.data() : null);
+  } catch (error) {
+    loadedBanUsers.delete(uid);
+    showReadError("Could not load moderation status for one account: " + (error?.message || error));
+  }
+  if (expandedAccounts.has(uid)) renderUsers();
+}
+
+async function runModerationAction(uid, action, reason, duration) {
+  if (!auth.currentUser || !isAdminUser(auth.currentUser) || uid === auth.currentUser.uid) {
+    showReadError("This moderation action is not allowed.");
+    return;
+  }
+  if (moderationBusy.has(uid)) return;
+  moderationBusy.add(uid);
+  renderUsers();
+  try {
+    const ref = doc(db, "userBans", uid);
+    const base = { updatedAt: serverTimestamp(), updatedBy: auth.currentUser.uid };
+    if (action === "kick") {
+      await setDoc(ref, {
+        ...base, active: false, reason: "", expiresAt: null, kickAt: serverTimestamp()
+      }, { merge: true });
+    } else if (action === "ban") {
+      const durations = { "1d": 1, "7d": 7, "30d": 30 };
+      const expiresAt = duration === "permanent"
+        ? null
+        : Timestamp.fromDate(new Date(Date.now() + durations[duration] * 86400000));
+      await setDoc(ref, {
+        ...base, active: true, reason: String(reason || "").slice(0, 300),
+        expiresAt, kickAt: serverTimestamp()
+      }, { merge: true });
+    } else if (action === "unban") {
+      await setDoc(ref, {
+        ...base, active: false, reason: "", expiresAt: null
+      }, { merge: true });
+    }
+    const fresh = await getDoc(ref);
+    banByUser.set(uid, fresh.exists() ? fresh.data() : null);
+    loadedBanUsers.add(uid);
+    clearReadError();
+  } catch (error) {
+    console.error("Account moderation failed:", error);
+    showReadError("Could not update this account. Check the published Firestore Rules. " + (error?.message || error));
+  } finally {
+    moderationBusy.delete(uid);
+    if (expandedAccounts.has(uid)) renderUsers();
+  }
+}
+
 function renderUsers() {
   const table = $("usersTable");
   if (!table) return;
