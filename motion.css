@@ -120,6 +120,7 @@ main>*:last-child{margin-bottom:0}
   width:100%!important;min-width:0!important;
 }
 .fdh-footer-brand,.fdh-footer-column{min-width:0!important;background:transparent!important}
+.fdh-footer-brand{display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important}
 .fdh-footer-brandline{display:flex;align-items:center;gap:14px;min-width:0}
 .fdh-footer-brandtext{min-width:0}
 .fdh-footer-brandtext strong{font-size:clamp(20px,2.5vw,30px)!important}
