@@ -190,6 +190,94 @@ body:before {
 .dev-button.unban{border-color:rgba(119,210,153,.42);color:#a9e7bc;background:rgba(65,150,90,.12)}
 @media(max-width:480px){.dev-account-count-grid{gap:8px}.dev-account-count{padding:12px}.dev-account-count strong{font-size:26px}.dev-moderation-controls>*{min-width:100%}}
 
+
+/* FLAME DRAGON — calm ember dashboard refresh */
+:root{color-scheme:dark}
+body{
+  color:#fff1ed!important;
+  background:
+    radial-gradient(ellipse at 12% 18%,rgba(179,35,39,.24),transparent 38%),
+    radial-gradient(ellipse at 88% 72%,rgba(255,91,36,.13),transparent 42%),
+    linear-gradient(135deg,#10090b 0%,#1d0c10 48%,#0d090b 100%)!important;
+  background-attachment:fixed!important;
+}
+body:before,body:after{z-index:0!important;pointer-events:none!important}
+body:before{
+  opacity:.56!important;
+  background-image:
+    radial-gradient(2px 6px at 8% 78%,rgba(255,126,72,.9) 45%,transparent 100%),
+    radial-gradient(1px 4px at 19% 36%,rgba(255,76,56,.85) 45%,transparent 100%),
+    radial-gradient(2px 5px at 34% 88%,rgba(255,177,104,.8) 45%,transparent 100%),
+    radial-gradient(1px 5px at 51% 21%,rgba(255,93,54,.85) 45%,transparent 100%),
+    radial-gradient(2px 6px at 68% 69%,rgba(255,145,75,.85) 45%,transparent 100%),
+    radial-gradient(1px 4px at 83% 32%,rgba(255,82,53,.9) 45%,transparent 100%),
+    radial-gradient(2px 5px at 94% 86%,rgba(255,176,104,.8) 45%,transparent 100%)!important;
+  animation:dragonEmbers 19s ease-in-out infinite alternate!important;
+}
+body:after{
+  opacity:.45!important;
+  background:
+    radial-gradient(ellipse at 18% 68%,rgba(173,29,36,.13),transparent 38%),
+    radial-gradient(ellipse at 84% 22%,rgba(255,90,46,.10),transparent 38%)!important;
+  animation:dragonGlow 16s ease-in-out infinite alternate!important;
+}
+@keyframes dragonEmbers{from{transform:translate3d(-5px,10px,0)}to{transform:translate3d(10px,-22px,0)}}
+@keyframes dragonGlow{from{opacity:.24}to{opacity:.52}}
+.dev-wrap{position:relative;z-index:1;width:min(1160px,93%);margin:26px auto 54px}
+.dev-head{align-items:center;margin-bottom:18px}
+.dev-head h1{letter-spacing:-.7px;text-shadow:0 0 24px rgba(255,75,52,.2)}
+.dev-kicker,.dev-table th{color:#ff9a82}
+.dev-pill{color:#ffd1b5;border-color:rgba(255,125,83,.35);background:rgba(166,48,34,.12)}
+.dev-grid{gap:12px;margin:14px 0}
+.dev-card,.dev-panel{
+  background:linear-gradient(145deg,rgba(42,19,22,.88),rgba(19,12,15,.94))!important;
+  border:1px solid rgba(255,104,78,.20)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,205,175,.025)!important;
+  backdrop-filter:blur(12px);
+}
+.dev-card{padding:16px}
+.dev-card strong{color:#ff987f;text-shadow:0 0 16px rgba(255,84,58,.16)}
+.dev-panel{padding:19px;margin-top:13px}
+.dev-panel h2{letter-spacing:-.2px}
+.dev-button{
+  border-color:rgba(255,111,83,.34)!important;
+  background:linear-gradient(135deg,rgba(153,40,34,.22),rgba(69,23,24,.22))!important;
+  color:#ffd0c2!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.dev-button:hover{transform:translateY(-1px);border-color:rgba(255,137,104,.62)!important;box-shadow:0 5px 18px rgba(179,45,36,.13)}
+.dev-button.gold,.dev-pill{border-color:rgba(232,167,111,.36)!important;color:#ffd9ad!important;background:rgba(143,82,42,.13)!important}
+.dev-button.danger{color:#ffaaa7!important;border-color:rgba(255,89,89,.48)!important}
+.dev-field,.dev-toolbar input,.dev-toolbar select,.dev-moderation-controls select,.dev-moderation-controls input{
+  background:rgba(13,9,11,.82)!important;color:#fff0eb!important;border-color:rgba(255,110,84,.25)!important;
+}
+.dev-table th,.dev-table td{border-bottom-color:rgba(255,150,120,.10)!important}
+.dev-table td{color:#f0ded8}
+.dev-item{border-color:rgba(255,120,89,.17)!important;background:rgba(20,11,13,.48)!important}
+.dev-account-banned td{background:rgba(105,23,28,.20);color:#ffb0a8!important}
+.dev-account-active td:first-child{border-left:2px solid rgba(255,135,100,.32)}
+.dev-toolbar select{min-width:150px;padding:12px;border-radius:10px;font:inherit;border:1px solid rgba(255,110,84,.25)}
+.dev-inline-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.dev-copy{padding:6px 9px;font-size:11px}
+.dev-ban-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.dev-ban-stat{padding:13px;border:1px solid rgba(255,115,86,.18);border-radius:12px;background:rgba(17,10,12,.52)}
+.dev-ban-stat span{display:block;color:#c8aaa2;font-size:11px}
+.dev-ban-stat strong{display:block;color:#ffad91;font-size:23px;margin-top:4px}
+.dev-log-item{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid rgba(255,140,110,.12)}
+.dev-log-item:last-child{border-bottom:0}
+.dev-log-time{font-size:11px;color:#c79b8d}
+.dev-log-title{font-weight:700;color:#ffe0d6}
+.dev-log-meta{font-size:12px;color:#bba39d;margin-top:4px;overflow-wrap:anywhere}
+.dev-banned-badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:rgba(180,36,42,.2);border:1px solid rgba(255,92,92,.32);color:#ffaaa7;font-size:10px;font-weight:800;letter-spacing:.5px}
+.dev-toolbar{align-items:center}
+.dev-account-detail{border-color:rgba(255,125,91,.22)!important;background:rgba(12,8,10,.52)!important;color:#ffe9e1!important}
+.dev-account-detail p{color:#d4b5aa!important}
+.dev-account-event-list{color:#e7c9bd!important}
+.dev-account-count{border-color:rgba(255,125,91,.2)!important;background:linear-gradient(135deg,rgba(132,43,36,.17),rgba(18,11,13,.6))!important}
+.dev-account-count span{color:#d4aaa0!important}
+.dev-account-count strong{color:#ffb19a!important}
+@media(max-width:650px){.dev-ban-summary{grid-template-columns:1fr 1fr}.dev-log-item{grid-template-columns:1fr;gap:5px}.dev-head{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){body:before,body:after{animation:none!important}.dev-button{transition:none}}
+
 </style>
 
 </head>
@@ -210,10 +298,16 @@ body:before {
 <article class="dev-card"><span>Recent events loaded</span><strong id="totalEvents">—</strong></article>
 </div>
 <section class="dev-panel">
-<h2>Accounts</h2><p class="muted">Review account details, login counts and account access controls. Passwords and authentication secrets are never shown.</p>
+<h2>Accounts</h2><p class="muted">Search, filter and sort accounts. Copy account identifiers instantly, inspect activity, and manage access from the Ban Management center.</p>
 <button id="toggleAllAccounts" class="dev-button gold" type="button" aria-expanded="false" aria-controls="accountsContent">⌄ Show Accounts</button>
 <div id="accountsContent" class="dev-hidden">
-<div class="dev-toolbar"><input id="userSearch" type="search" placeholder="Search by email, display name or UID…" autocomplete="off"><button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button></div>
+<div class="dev-toolbar">
+<input id="userSearch" type="search" placeholder="Search by name, email or UID…" autocomplete="off" aria-label="Search accounts">
+<select id="accountStatusFilter" aria-label="Filter accounts by status"><option value="all">All statuses</option><option value="active">Active accounts</option><option value="banned">Banned accounts</option><option value="unverified">Unverified email</option></select>
+<select id="accountSortOrder" aria-label="Sort accounts"><option value="newest">Newest registration</option><option value="oldest">Oldest registration</option></select>
+<button id="exportAccounts" class="dev-button" type="button">↓ Export CSV</button>
+<button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button>
+</div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Provider</th><th>Email status</th><th>Created</th><th>Details</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
 <div class="dev-panel dev-accounts-counts">
 <h2>Login &amp; logout counts</h2><p class="muted">Recorded sign-ins and sign-outs for up to 1,000 accounts. The totals are also shown in each account's details below.</p>
@@ -223,6 +317,26 @@ body:before {
 </div>
 </div>
 </div>
+</section>
+<section class="dev-panel" id="banManagementPanel">
+<h2>Ban Management</h2>
+<p class="muted">Manage current and expired restrictions in one place. Your owner account is protected.</p>
+<div class="dev-ban-summary">
+<div class="dev-ban-stat"><span>Active bans</span><strong id="activeBanCount">—</strong></div>
+<div class="dev-ban-stat"><span>Expired bans</span><strong id="expiredBanCount">—</strong></div>
+<div class="dev-ban-stat"><span>Recorded moderation actions</span><strong id="moderationLogCount">—</strong></div>
+</div>
+<div class="dev-toolbar">
+<select id="banManagementFilter" aria-label="Filter ban records"><option value="active">Active bans</option><option value="expired">Expired bans</option><option value="all">All ban records</option></select>
+<button id="refreshBanManagement" class="dev-button" type="button">↻ Refresh bans</button>
+</div>
+<div id="banManagementList" aria-live="polite"><p class="dev-section-note">Loading moderation records…</p></div>
+</section>
+<section class="dev-panel" id="securityActivityPanel">
+<h2>Security Center &amp; Admin Activity</h2>
+<p class="muted">A protected record of moderation actions performed by the verified owner.</p>
+<div class="dev-message" id="securityStatus">Owner protection is active. The owner account cannot be kicked or banned from this dashboard.</div>
+<div id="moderationActivityList"><p class="dev-section-note">Loading activity log…</p></div>
 </section>
 <section class="dev-panel">
 <h2>Program Visitors</h2>

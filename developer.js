@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, limit, doc, getDoc, setDoc, addDoc, Timestamp, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -40,6 +40,7 @@ const banByUser = new Map();
 const loadedBanUsers = new Set();
 const banLoadErrors = new Map();
 const moderationBusy = new Set();
+let moderationLogEntries = [];
 
 function showGate(message, title = "Administrator access required") {
   $("devContent")?.classList.add("dev-hidden");
@@ -94,6 +95,35 @@ function cell(value) {
   const td = document.createElement("td");
   td.textContent = safeText(value);
   return td;
+}
+function timestampMillis(value) {
+  return value?.toMillis?.() || 0;
+}
+function createCopyButton(value, label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "dev-button dev-copy";
+  button.textContent = "Copy " + label;
+  button.addEventListener("click", async () => {
+    const text = String(value || "");
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Copied";
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = text;
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.append(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      button.textContent = copied ? "Copied" : "Select manually";
+    }
+    setTimeout(() => { button.textContent = "Copy " + label; }, 1400);
+  });
+  return button;
 }
 function isBanActive(record) {
   if (!record?.active) return false;
@@ -170,7 +200,27 @@ async function runModerationAction(uid, action, reason, duration) {
     banByUser.set(uid, localRecord);
     loadedBanUsers.add(uid);
     banLoadErrors.delete(uid);
+    let auditSaved = true;
+    try {
+      await addDoc(collection(db, "moderationLogs"), {
+        action,
+        targetUid: uid,
+        targetEmail: cachedUsers.find(user => user.uid === uid)?.email || "",
+        actorUid: auth.currentUser.uid,
+        reason: String(reason || "").slice(0, 300),
+        duration: String(duration || ""),
+        createdAt: serverTimestamp()
+      });
+    } catch (logError) {
+      auditSaved = false;
+      console.warn("Moderation succeeded but its audit entry could not be saved:", logError);
+    }
     clearReadError();
+    if (!auditSaved) {
+      showReadError("The account action succeeded, but its audit entry was not saved. Publish the latest firestore.rules to enable the Admin Activity log.");
+    }
+    renderBanManagement();
+    loadModerationActivity();
   } catch (error) {
     console.error("Account moderation failed:", error);
     showReadError("Could not update this account. Publish the latest firestore.rules and check the connection. " + (error?.message || error));
@@ -184,9 +234,21 @@ function renderUsers() {
   const table = $("usersTable");
   if (!table) return;
   const term = ($("userSearch")?.value || "").trim().toLowerCase();
-  const filtered = cachedUsers.filter(user =>
-    [user.email, user.displayName, user.uid].some(value => String(value || "").toLowerCase().includes(term))
-  );
+  const statusFilter = $("accountStatusFilter")?.value || "all";
+  const sortOrder = $("accountSortOrder")?.value || "newest";
+  const filtered = cachedUsers.filter(user => {
+    const matchesTerm = [user.email, user.displayName, user.uid]
+      .some(value => String(value || "").toLowerCase().includes(term));
+    const banned = isBanActive(banByUser.get(user.uid));
+    const matchesStatus = statusFilter === "all"
+      || (statusFilter === "banned" && banned)
+      || (statusFilter === "active" && !banned)
+      || (statusFilter === "unverified" && user.emailVerified !== true);
+    return matchesTerm && matchesStatus;
+  }).sort((a, b) => {
+    const difference = timestampMillis(a.createdAt) - timestampMillis(b.createdAt);
+    return sortOrder === "oldest" ? difference : -difference;
+  });
   table.replaceChildren();
   if (!filtered.length) {
     const row = document.createElement("tr");
@@ -196,9 +258,18 @@ function renderUsers() {
     table.append(row);
   } else {
     for (const user of filtered) {
+      const banned = isBanActive(banByUser.get(user.uid));
       const row = document.createElement("tr");
+      row.className = banned ? "dev-account-banned" : "dev-account-active";
+      const accountCell = cell(user.displayName || user.email || user.uid);
+      if (banned) {
+        const badge = document.createElement("span");
+        badge.className = "dev-banned-badge";
+        badge.textContent = "BANNED";
+        accountCell.append(document.createTextNode(" "), badge);
+      }
       row.append(
-        cell(user.displayName || user.email || user.uid),
+        accountCell,
         cell(user.provider),
         cell(user.emailVerified ? "Verified" : "Not verified"),
         cell(formatDate(user.createdAt))
@@ -228,6 +299,11 @@ function renderUsers() {
         const email = document.createElement("strong");
         email.textContent = "Email: " + (user.email || "Not available");
         panel.append(email);
+        const identityActions = document.createElement("div");
+        identityActions.className = "dev-inline-actions";
+        identityActions.append(createCopyButton(user.uid, "UID"));
+        if (user.email) identityActions.append(createCopyButton(user.email, "Email"));
+        panel.append(identityActions);
         const events = activityByUser.get(user.uid);
         const counts = document.createElement("div");
         counts.className = "dev-account-count-grid";
@@ -244,6 +320,25 @@ function renderUsers() {
           counts.append(card);
         }
         panel.append(counts);
+        const timelineHeading = document.createElement("p");
+        timelineHeading.style.fontWeight = "700";
+        timelineHeading.textContent = "Recent account activity";
+        panel.append(timelineHeading);
+        const timeline = document.createElement("ul");
+        timeline.className = "dev-account-event-list";
+        if (events?.length) {
+          for (const event of events.slice(0, 8)) {
+            const item = document.createElement("li");
+            const eventName = event.type === "sign_in" ? "Signed in" : "Signed out";
+            item.textContent = eventName + " · " + formatDate(event.createdAt);
+            timeline.append(item);
+          }
+        } else {
+          const item = document.createElement("li");
+          item.textContent = "No recorded sign-in activity available.";
+          timeline.append(item);
+        }
+        panel.append(timeline);
         const moderation = document.createElement("div");
         moderation.className = "dev-moderation";
         const moderationHeading = document.createElement("h3");
@@ -356,6 +451,168 @@ function renderUsers() {
   if ($("userCount")) $("userCount").textContent = `Showing ${filtered.length} of ${cachedUsers.length} stored account records (up to ${MAX_USERS} accounts).`;
 }
 
+
+// Load the moderation collection once so account filters and the Ban Management
+// center use the same verified data rather than issuing one read per row.
+async function loadBanManagementData() {
+  try {
+    const snapshot = await getDocs(query(collection(db, "userBans"), limit(MAX_USERS)));
+    banByUser.clear();
+    loadedBanUsers.clear();
+    for (const item of snapshot.docs) {
+      banByUser.set(item.id, item.data());
+      loadedBanUsers.add(item.id);
+    }
+    for (const user of cachedUsers) loadedBanUsers.add(user.uid);
+    renderUsers();
+    renderBanManagement();
+  } catch (error) {
+    console.warn("Ban records could not be loaded:", error);
+    const list = $("banManagementList");
+    if (list) list.textContent = "Ban records unavailable. Check Firestore Rules and your connection.";
+  }
+}
+
+function renderBanManagement() {
+  const list = $("banManagementList");
+  if (!list) return;
+  const records = [...banByUser.entries()].map(([uid, record]) => ({
+    uid, record,
+    user: cachedUsers.find(item => item.uid === uid)
+  })).filter(item => item.record && (
+    item.record.active === true || item.record.updatedAt || item.record.kickAt || item.record.reason
+  ));
+  const now = Date.now();
+  const active = records.filter(item => isBanActive(item.record));
+  const expired = records.filter(item => item.record.active === true
+    && item.record.expiresAt?.toMillis && item.record.expiresAt.toMillis() <= now);
+  if ($("activeBanCount")) $("activeBanCount").textContent = String(active.length);
+  if ($("expiredBanCount")) $("expiredBanCount").textContent = String(expired.length);
+  if ($("moderationLogCount")) $("moderationLogCount").textContent = String(moderationLogEntries.length);
+  const filter = $("banManagementFilter")?.value || "active";
+  const visible = records.filter(item => {
+    if (filter === "active") return isBanActive(item.record);
+    if (filter === "expired") return item.record.active === true
+      && item.record.expiresAt?.toMillis && item.record.expiresAt.toMillis() <= now;
+    return true;
+  }).sort((a,b) => timestampMillis(b.record.updatedAt) - timestampMillis(a.record.updatedAt));
+  list.replaceChildren();
+  if (!visible.length) {
+    const empty = document.createElement("p");
+    empty.className = "dev-section-note";
+    empty.textContent = filter === "active" ? "There are no active bans." :
+      filter === "expired" ? "There are no expired bans." : "No moderation records found.";
+    list.append(empty);
+    return;
+  }
+  for (const item of visible) {
+    const card = document.createElement("article");
+    card.className = "dev-item";
+    const top = document.createElement("div");
+    top.className = "dev-item-top";
+    const title = document.createElement("strong");
+    title.textContent = item.user?.displayName || item.user?.email || item.uid;
+    const activeNow = isBanActive(item.record);
+    const status = document.createElement("span");
+    status.className = activeNow ? "dev-banned-badge" : "dev-status";
+    status.textContent = activeNow ? "ACTIVE BAN" :
+      (item.record.active === true ? "EXPIRED" : "NOT ACTIVE");
+    top.append(title, status);
+    const detail = document.createElement("p");
+    detail.textContent = [
+      "UID: " + item.uid,
+      item.user?.email ? "Email: " + item.user.email : "",
+      item.record.reason ? "Reason: " + item.record.reason : "No reason supplied",
+      item.record.expiresAt?.toDate ? "Expires: " + formatDate(item.record.expiresAt) :
+        (item.record.active ? "Permanent ban" : "No active expiry")
+    ].filter(Boolean).join(" · ");
+    card.append(top, detail);
+    if (activeNow && item.uid !== auth.currentUser?.uid) {
+      const actions = document.createElement("div");
+      actions.className = "dev-inline-actions";
+      const unban = document.createElement("button");
+      unban.type = "button";
+      unban.className = "dev-button";
+      unban.textContent = "Unban account";
+      unban.addEventListener("click", async () => {
+        if (!confirm("Remove the ban for this account?")) return;
+        await runModerationAction(item.uid, "unban", "", null);
+      });
+      actions.append(unban);
+      card.append(actions);
+    }
+    list.append(card);
+  }
+}
+
+async function loadModerationActivity() {
+  const list = $("moderationActivityList");
+  if (!list) return;
+  try {
+    const snapshot = await getDocs(query(collection(db, "moderationLogs"), limit(200)));
+    moderationLogEntries = snapshot.docs.map(item => ({ id: item.id, ...item.data() }))
+      .sort((a,b) => timestampMillis(b.createdAt) - timestampMillis(a.createdAt));
+    if ($("moderationLogCount")) $("moderationLogCount").textContent = String(moderationLogEntries.length);
+    list.replaceChildren();
+    if (!moderationLogEntries.length) {
+      const empty = document.createElement("p");
+      empty.className = "dev-section-note";
+      empty.textContent = "No moderation actions have been recorded yet.";
+      list.append(empty);
+      return;
+    }
+    const labels = { ban: "Account banned", unban: "Ban removed", kick: "Account signed out" };
+    for (const entry of moderationLogEntries.slice(0, 40)) {
+      const row = document.createElement("div");
+      row.className = "dev-log-item";
+      const time = document.createElement("span");
+      time.className = "dev-log-time";
+      time.textContent = formatDate(entry.createdAt);
+      const body = document.createElement("div");
+      const heading = document.createElement("div");
+      heading.className = "dev-log-title";
+      heading.textContent = labels[entry.action] || "Moderation action";
+      const meta = document.createElement("div");
+      meta.className = "dev-log-meta";
+      meta.textContent = [
+        entry.targetEmail || entry.targetUid || "Unknown account",
+        "Target UID: " + (entry.targetUid || "—"),
+        "Admin UID: " + (entry.actorUid || "—"),
+        entry.reason ? "Reason: " + entry.reason : ""
+      ].filter(Boolean).join(" · ");
+      body.append(heading, meta);
+      row.append(time, body);
+      list.append(row);
+    }
+  } catch (error) {
+    console.warn("Moderation activity could not be loaded:", error);
+    list.textContent = "Admin Activity is unavailable. Publish the latest firestore.rules to enable this protected log.";
+  }
+}
+
+function exportAccountsCsv() {
+  if (!isAdminUser(auth.currentUser)) return;
+  const rows = [["UID","Email","Display name","Provider","Email verified","Created","Ban status","Ban reason"]];
+  for (const user of cachedUsers) {
+    const ban = banByUser.get(user.uid) || null;
+    rows.push([
+      user.uid, user.email || "", user.displayName || "", user.provider || "",
+      user.emailVerified === true ? "yes" : "no", formatDate(user.createdAt),
+      isBanActive(ban) ? "banned" : "active", ban?.reason || ""
+    ]);
+  }
+  const csv = rows.map(row => row.map(value =>
+    '"' + String(value ?? "").replace(/"/g, '""') + '"'
+  ).join(",")).join("\r\n");
+  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "flame-dragon-accounts-" + new Date().toISOString().slice(0,10) + ".csv";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 // Read stored accounts without sorting or displaying their last sign-in timestamps.
 async function readUsers() {
   const snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
@@ -387,6 +644,8 @@ async function loadDashboard() {
   try {
     cachedUsers = await readUsers();
     activityByUser = new Map();
+    await loadBanManagementData();
+    await loadModerationActivity();
     if ($("totalUsers")) $("totalUsers").textContent = String(cachedUsers.length);
     if ($("emailUsers")) $("emailUsers").textContent = String(cachedUsers.filter(u => u.provider === "password").length);
     if ($("googleUsers")) $("googleUsers").textContent = String(cachedUsers.filter(u => u.provider === "google.com").length);
@@ -621,6 +880,14 @@ toggleLoginCounts?.addEventListener("click", () => {
 });
 
 $("userSearch")?.addEventListener("input", renderUsers);
+$("accountStatusFilter")?.addEventListener("change", renderUsers);
+$("accountSortOrder")?.addEventListener("change", renderUsers);
+$("banManagementFilter")?.addEventListener("change", renderBanManagement);
+$("refreshBanManagement")?.addEventListener("click", async () => {
+  await loadBanManagementData();
+  await loadModerationActivity();
+});
+$("exportAccounts")?.addEventListener("click", exportAccountsCsv);
 $("refreshUsers")?.addEventListener("click", () => { loadDashboard(); });
 
 // New sign-ins happen on other tabs and on the site itself, so the dashboard
