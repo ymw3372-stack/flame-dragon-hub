@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        body:has(main.settings-page){min-height:0!important}
+
         .settings-grid {
             max-width: 1050px;
-            margin: 24px auto;
+            margin: 10px auto 0;
             padding: 0 16px;
             box-sizing: border-box;
         }
@@ -259,10 +261,10 @@
         }
 
 /* Definitive compact page start: content sits directly below the navigation. */
-main.settings-page{margin:0 auto!important;padding:0 25px 8px!important;min-height:0!important;}
+main.settings-page{margin:0 auto!important;padding:0 25px 0!important;min-height:0!important;}
 main.settings-page>:first-child{margin-top:0!important;}
-main.settings-page>.settings-grid:last-child{margin-bottom:8px!important;}
-main.settings-page>.settings-grid{margin-top:14px!important;margin-bottom:8px!important;}
+main.settings-page>.settings-grid:last-child{margin-bottom:0!important;}
+main.settings-page>.settings-grid{margin-top:10px!important;margin-bottom:0!important;}
 </style>
 <link rel="stylesheet" href="motion.css">
 </head>
