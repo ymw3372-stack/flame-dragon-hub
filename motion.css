@@ -1,4 +1,20 @@
 /* FLAME DRAGON HUB — Ember motion + shared footer */
+
+/* Full-width animated brand marquee directly above the footer */
+.fdh-marquee{position:relative;width:100vw;max-width:100vw;margin:48px 0 0;margin-left:calc(50% - 50vw);padding:22px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,.48);border-bottom:1px solid rgba(255,255,255,.42);background:transparent}
+.fdh-marquee-track{display:flex;width:max-content;align-items:center;animation:fdh-marquee-scroll 42s linear infinite;will-change:transform}
+.fdh-marquee-group{display:flex;flex:0 0 auto;align-items:center;gap:clamp(25px,4vw,62px);padding-right:clamp(25px,4vw,62px)}
+.fdh-marquee-group span{display:inline-block;white-space:nowrap;font-size:clamp(30px,4.8vw,58px);line-height:1.15;font-weight:950;letter-spacing:.065em;color:#fff;text-shadow:0 0 18px rgba(255,135,77,.22)}
+.fdh-marquee-group i{flex:0 0 auto;font-style:normal;font-size:clamp(19px,2.5vw,30px);color:rgba(255,255,255,.62)}
+@keyframes fdh-marquee-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.fdh-marquee+.fdh-global-footer{margin-top:0}
+
+/* Subtle cursor-following 3D tilt on cards, disabled on the skins library */
+.fdh-tilt{transform-style:preserve-3d;transition:transform .18s ease-out,box-shadow .45s ease,border-color .35s ease}
+.fdh-tilt:hover{transform:perspective(900px) rotateX(var(--fdh-tilt-x,0deg)) rotateY(var(--fdh-tilt-y,0deg)) translateY(-4px)}
+@media(max-width:600px){.fdh-marquee{padding:17px 0}.fdh-marquee-track{animation-duration:36s}.fdh-marquee-group span{font-size:clamp(27px,7vw,39px)}}
+@media(prefers-reduced-motion:reduce){.fdh-marquee-track{animation:none!important}.fdh-tilt,.fdh-tilt:hover{transition:none!important;transform:none!important}}
+
 .fdh-scroll-track{position:fixed;z-index:99999;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.045);pointer-events:none}
 .fdh-scroll-progress{display:block;width:0;height:100%;background:linear-gradient(90deg,#ff553d,#ffad65,#ffe0a1);box-shadow:0 0 10px rgba(255,112,61,.72);transition:width .09s linear}
 .fdh-word{display:inline-block;opacity:0;transform:translateY(16px) rotateX(-35deg);filter:blur(3px);animation:fdh-word-in 1.2s cubic-bezier(.2,.75,.2,1) forwards;animation-delay:var(--fdh-word-delay,0ms)}
