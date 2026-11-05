@@ -153,6 +153,8 @@
             border-color: rgba(255, 80, 100, .45);
             background: rgba(20, 10, 18, .96);
         }
+/* Floating bonus panel intentionally disabled on this page. */
+.bonus-codes{display:none!important;}
 
         .bonus-codes strong { color: #ff9da7; }
 
@@ -256,15 +258,16 @@
                 rgba(255, 55, 75, .11) 32%,
                 rgba(255, 45, 65, 0) 72%);
         }
+
+/* Definitive compact page start: content sits directly below the navigation. */
+main.settings-page{margin-top:0!important;padding-top:0!important;}
+main.settings-page>:first-child{margin-top:0!important;}
 </style>
 <link rel="stylesheet" href="motion.css">
 </head>
 
 <body>
-    <aside class="bonus-codes" aria-label="Bonus codes">
-        <strong>ALL BONUS CODES</strong>
-        <p>Xxo · Apic · CO0ld · Trudeso · Dark · passdream · No1r · omarfire · Pepo</p>
-    </aside>
+    
 
     <header class="navbar">
         <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
