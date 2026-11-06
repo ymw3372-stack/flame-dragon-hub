@@ -586,7 +586,7 @@ async function loadModerationActivity() {
       const empty = document.createElement("p");
       empty.className = "dev-section-note";
       empty.textContent = moderationLogEntries.length
-        ? "All moderation notifications are hidden. The audit records are still محفوظة."
+        ? "All moderation notifications are hidden. The audit records are still saved."
         : "No moderation actions have been recorded yet.";
       list.append(empty);
       return;
@@ -621,7 +621,7 @@ async function loadModerationActivity() {
         if (!list.querySelector(".dev-log-item")) {
           const empty = document.createElement("p");
           empty.className = "dev-section-note";
-          empty.textContent = "All moderation notifications are hidden. The audit records are still محفوظة.";
+          empty.textContent = "All moderation notifications are hidden. The audit records are still saved.";
           list.append(empty);
         }
       });
@@ -993,7 +993,7 @@ $("dismissAllModerationNotices")?.addEventListener("click", () => {
   if (list) {
     const empty = document.createElement("p");
     empty.className = "dev-section-note";
-    empty.textContent = "All moderation notifications are hidden. The audit records are still محفوظة.";
+    empty.textContent = "All moderation notifications are hidden. The audit records are still saved.";
     list.replaceChildren(empty);
   }
 });
