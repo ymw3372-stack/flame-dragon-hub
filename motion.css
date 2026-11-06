@@ -862,6 +862,7 @@ body{padding-bottom:0!important}
   right:18px!important;
   transform:none!important;
   gap:9px!important;
+  flex-direction:column-reverse!important;
 }
 .fdh-account-reminder-tab{
   min-height:45px!important;
