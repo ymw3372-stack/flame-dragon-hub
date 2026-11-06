@@ -72,9 +72,6 @@
 
         <div class="fdh-footer-bottom"><span>© FLAME DRAGON HUB · Unofficial EvoWorld companion</span><span>Made for the EvoWorld community</span></div>
       </div>`;
-    const languageDock=document.querySelector(".fdh-language-dock");
-    const marquee=footer.querySelector(".fdh-bottom-marquee");
-    if(languageDock && marquee) marquee.insertAdjacentElement("afterend",languageDock);
     document.body.appendChild(footer);
 
     const playerName=localStorage.getItem("flameDragonProfileName")||"FLAME DRAGON";
@@ -92,47 +89,64 @@
     }
   }
 
-  // Right-side account reminder: a compact prompt that guides visitors to registration.
+  // Visible account prompt pinned to the lower-right corner.
   function addAccountReminder(){
     if(currentFile==="account.html" || document.querySelector(".fdh-account-reminder"))return;
     try{
       if(localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1")return;
     }catch(_){}
+    const language=(localStorage.getItem("flameDragonLanguage")||"en").toLowerCase();
+    const copy={
+      en:{tab:"Have an account?",question:"Have you created an account?",desc:"If you already have an account, choose Yes. Otherwise, create one to access your hub profile.",yes:"Yes",no:"No, I'll create one",close:"Close"},
+      ar:{tab:"عندك حساب؟",question:"هل أنشأت حسابًا؟",desc:"لو عندك حساب اختار أيوه، ولو لسه تقدر تنشئ حساب جديد من هنا.",yes:"أيوه",no:"لا، هعمل حساب",close:"إغلاق"},
+      de:{tab:"Schon ein Konto?",question:"Hast du bereits ein Konto erstellt?",desc:"Wenn du schon ein Konto hast, wähle Ja. Andernfalls kannst du hier eins erstellen.",yes:"Ja",no:"Nein, Konto erstellen",close:"Schließen"},
+      ru:{tab:"Есть аккаунт?",question:"Ты уже создал аккаунт?",desc:"Если аккаунт уже есть, выбери «Да». Иначе создай его здесь.",yes:"Да",no:"Нет, создать",close:"Закрыть"},
+      hi:{tab:"खाता है?",question:"क्या आपने खाता बनाया है?",desc:"यदि आपका खाता है तो हाँ चुनें, अन्यथा यहाँ नया खाता बनाएँ।",yes:"हाँ",no:"नहीं, बनाऊँगा",close:"बंद करें"},
+      es:{tab:"¿Tienes cuenta?",question:"¿Ya has creado una cuenta?",desc:"Si ya tienes una cuenta, elige Sí. Si no, puedes crearla aquí.",yes:"Sí",no:"No, crear cuenta",close:"Cerrar"},
+      tr:{tab:"Hesabın var mı?",question:"Bir hesap oluşturdun mu?",desc:"Zaten hesabın varsa Evet'i seç. Yoksa buradan oluşturabilirsin.",yes:"Evet",no:"Hayır, oluştur",close:"Kapat"}
+    };
+    const text=copy[language]||copy.en;
     const widget=document.createElement("aside");
     widget.className="fdh-account-reminder";
     widget.innerHTML=`
       <button class="fdh-account-reminder-tab" type="button" aria-expanded="false" aria-controls="fdhAccountReminderPanel">
         <span class="fdh-account-reminder-icon" aria-hidden="true">✦</span>
-        <span>Account</span>
+        <span></span>
       </button>
       <section class="fdh-account-reminder-panel" id="fdhAccountReminderPanel" hidden aria-label="Account reminder">
-        <button class="fdh-account-reminder-close" type="button" aria-label="Close reminder">×</button>
+        <button class="fdh-account-reminder-close" type="button" aria-label=""></button>
         <span class="fdh-account-reminder-kicker">FLAME DRAGON HUB</span>
-        <h2>Have you created an account?</h2>
-        <p>Create an account to make it easier to access your hub profile.</p>
+        <h2></h2>
+        <p></p>
         <div class="fdh-account-reminder-actions">
-          <button class="fdh-account-reminder-yes" type="button">Yes</button>
-          <button class="fdh-account-reminder-no" type="button">No, I'll create one</button>
+          <button class="fdh-account-reminder-yes" type="button"></button>
+          <button class="fdh-account-reminder-no" type="button"></button>
         </div>
       </section>`;
     document.body.appendChild(widget);
     const tab=widget.querySelector(".fdh-account-reminder-tab");
     const panel=widget.querySelector(".fdh-account-reminder-panel");
+    tab.querySelector("span:last-child").textContent=text.tab;
+    panel.querySelector("h2").textContent=text.question;
+    panel.querySelector("p").textContent=text.desc;
+    const yes=widget.querySelector(".fdh-account-reminder-yes");
+    const no=widget.querySelector(".fdh-account-reminder-no");
+    const closeButton=widget.querySelector(".fdh-account-reminder-close");
+    yes.textContent=text.yes;no.textContent=text.no;closeButton.textContent="×";
+    closeButton.setAttribute("aria-label",text.close);
     const close=()=>{panel.hidden=true;tab.setAttribute("aria-expanded","false");};
     tab.addEventListener("click",()=>{
       const open=panel.hidden;
       panel.hidden=!open;
       tab.setAttribute("aria-expanded",String(open));
     });
-    widget.querySelector(".fdh-account-reminder-close").addEventListener("click",close);
-    widget.querySelector(".fdh-account-reminder-yes").addEventListener("click",()=>{
+    closeButton.addEventListener("click",close);
+    yes.addEventListener("click",()=>{
       try{sessionStorage.setItem("fdhAccountPromptDismissed","1");}catch(_){}
       widget.classList.add("is-dismissed");
       window.setTimeout(()=>widget.remove(),420);
     });
-    widget.querySelector(".fdh-account-reminder-no").addEventListener("click",()=>{
-      window.location.href="account.html";
-    });
+    no.addEventListener("click",()=>{window.location.href="account.html#account";});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close();});
   }
 
