@@ -639,3 +639,188 @@ body{padding-bottom:118px!important}
   .fdh-language-dock .fdh-language-label{font-size:10px!important}
   .fdh-language-dock select{min-height:42px!important;padding:8px 10px!important}
 }
+
+
+/* ===== Footer rebuild: full-width translucent language rail + Hamza-style columns ===== */
+.fdh-global-footer{
+  width:100%!important;
+  margin:28px 0 0!important;
+  padding:0 0 18px!important;
+  overflow:visible!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.fdh-global-footer .fdh-footer-inner{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+.fdh-global-footer .fdh-bottom-marquee{
+  margin-top:12px!important;
+  margin-bottom:18px!important;
+}
+.fdh-global-footer .fdh-language-dock{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:76px!important;
+  margin:0!important;
+  padding:12px clamp(18px,4vw,58px)!important;
+  border:1px solid rgba(235,239,248,.22)!important;
+  border-left:0!important;
+  border-right:0!important;
+  border-radius:0!important;
+  background:rgba(18,16,24,.30)!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+}
+.fdh-global-footer .fdh-language-dock .fdh-language{
+  width:min(1320px,100%)!important;
+  min-height:50px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:24px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.fdh-global-footer .fdh-language-dock .fdh-language-label{
+  color:rgba(255,242,233,.94)!important;
+  font-size:12px!important;
+  letter-spacing:1.2px!important;
+}
+.fdh-global-footer .fdh-language-dock select{
+  flex:1 1 auto!important;
+  width:100%!important;
+  min-height:46px!important;
+  padding:10px 15px!important;
+  color:#fff!important;
+  background:rgba(255,255,255,.055)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+  box-shadow:none!important;
+}
+.fdh-global-footer .fdh-footer-main{
+  display:grid!important;
+  grid-template-columns:minmax(260px,1.5fr) minmax(150px,.7fr) minmax(210px,.9fr)!important;
+  align-items:start!important;
+  justify-content:stretch!important;
+  gap:clamp(28px,5vw,76px)!important;
+  width:min(1180px,92%)!important;
+  margin:0 auto!important;
+  padding:44px 0 34px!important;
+}
+.fdh-global-footer .fdh-footer-brand{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  min-width:0!important;
+}
+.fdh-global-footer .fdh-footer-brandline{
+  justify-content:flex-start!important;
+  min-width:0!important;
+  gap:13px!important;
+}
+.fdh-global-footer .fdh-footer-logo{
+  width:62px!important;
+  height:62px!important;
+}
+.fdh-global-footer .fdh-footer-brandtext{
+  align-items:flex-start!important;
+  text-align:left!important;
+  gap:5px!important;
+}
+.fdh-global-footer .fdh-footer-brandtext strong{
+  font-size:clamp(18px,2vw,25px)!important;
+}
+.fdh-global-footer .fdh-footer-brandtext small{
+  font-size:9px!important;
+}
+.fdh-global-footer .fdh-footer-brand p{
+  max-width:360px!important;
+  margin:18px 0 0!important;
+  color:rgba(232,222,218,.68)!important;
+  font-size:13px!important;
+  line-height:1.85!important;
+}
+.fdh-global-footer .fdh-footer-column{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:12px!important;
+  min-width:0!important;
+}
+.fdh-global-footer .fdh-footer-column h3{
+  margin:4px 0 8px!important;
+  color:#ffbd91!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+}
+.fdh-global-footer .fdh-footer-column>a:not(.fdh-footer-profile){
+  color:rgba(245,233,228,.76)!important;
+  font-size:13px!important;
+  font-weight:650!important;
+  text-decoration:none!important;
+  transition:color .2s ease,transform .2s ease!important;
+}
+.fdh-global-footer .fdh-footer-column>a:hover{
+  color:#fff!important;
+  transform:translateX(4px)!important;
+}
+.fdh-global-footer .fdh-footer-support .fdh-footer-profile{
+  justify-content:flex-start!important;
+  min-width:0!important;
+  margin-top:4px!important;
+}
+.fdh-global-footer .fdh-footer-profile-copy{
+  align-items:flex-start!important;
+  text-align:left!important;
+}
+.fdh-global-footer .fdh-footer-bottom{
+  width:min(1180px,92%)!important;
+  margin:0 auto!important;
+  padding:18px 0 8px!important;
+  border-top:1px solid rgba(235,239,248,.12)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  color:rgba(225,215,210,.58)!important;
+  font-size:11px!important;
+  text-align:left!important;
+}
+body{padding-bottom:0!important}
+@media(max-width:760px){
+  .fdh-global-footer .fdh-language-dock{min-height:68px!important;padding:9px 16px!important}
+  .fdh-global-footer .fdh-language-dock .fdh-language{gap:12px!important;min-height:48px!important}
+  .fdh-global-footer .fdh-language-dock .fdh-language-label{font-size:10px!important;letter-spacing:.5px!important}
+  .fdh-global-footer .fdh-language-dock select{min-height:42px!important;font-size:12px!important}
+  .fdh-global-footer .fdh-footer-main{
+    grid-template-columns:1fr 1fr!important;
+    gap:30px 22px!important;
+    padding:32px 0 26px!important;
+  }
+  .fdh-global-footer .fdh-footer-brand{grid-column:1/-1!important}
+  .fdh-global-footer .fdh-footer-brand p{max-width:520px!important}
+}
+@media(max-width:460px){
+  .fdh-global-footer .fdh-footer-main{grid-template-columns:1fr 1fr!important;gap:26px 16px!important}
+  .fdh-global-footer .fdh-footer-brandline{gap:9px!important}
+  .fdh-global-footer .fdh-footer-logo{width:48px!important;height:48px!important}
+  .fdh-global-footer .fdh-footer-brandtext strong{font-size:15px!important}
+  .fdh-global-footer .fdh-footer-brandtext small{font-size:7px!important;letter-spacing:.1em!important}
+  .fdh-global-footer .fdh-footer-column h3{font-size:12px!important}
+  .fdh-global-footer .fdh-footer-column>a:not(.fdh-footer-profile){font-size:12px!important}
+  .fdh-global-footer .fdh-footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:7px!important}
+}
