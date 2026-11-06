@@ -7,10 +7,10 @@
 
 .fdh-scroll-track{position:fixed;z-index:99999;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.045);pointer-events:none}
 .fdh-scroll-progress{display:block;width:0;height:100%;background:linear-gradient(90deg,#ff553d,#ffad65,#ffe0a1);box-shadow:0 0 10px rgba(255,112,61,.72);transition:width .09s linear}
-.fdh-word{display:inline-block;opacity:0;transform:translateY(16px) rotateX(-35deg);filter:blur(3px);animation:fdh-word-in 1.2s cubic-bezier(.2,.75,.2,1) forwards;animation-delay:var(--fdh-word-delay,0ms)}
+.fdh-word{display:inline-block;opacity:0;transform:translateY(22px) rotateX(-28deg);filter:blur(4px);animation:fdh-word-in 1.55s cubic-bezier(.18,.72,.18,1) forwards;animation-delay:var(--fdh-word-delay,0ms)}
 @keyframes fdh-word-in{to{opacity:1;transform:translateY(0) rotateX(0);filter:blur(0)}}
-.fdh-reveal{opacity:0;transform:translate3d(0,14px,0);transition:opacity .75s ease,transform .8s cubic-bezier(.18,.72,.18,1);transition-delay:var(--fdh-delay,0ms)}
-.fdh-reveal.fdh-visible{opacity:1;transform:translate3d(0,0,0)}
+.fdh-reveal{opacity:0;transform:translate3d(0,28px,0) scale(.985);filter:blur(4px);transition:opacity 1.15s ease,transform 1.25s cubic-bezier(.18,.72,.18,1),filter 1.15s ease;transition-delay:var(--fdh-delay,0ms);will-change:opacity,transform,filter}
+.fdh-reveal.fdh-visible{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0)}
 .hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step,.fav-card{transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s ease,border-color .4s ease}
 .hub-card:hover,.evolution-card:hover,.guide-card:hover,.skin-card:hover,.welcome-card:hover,.signin-step:hover,.fav-card:hover{transform:translateY(-5px);box-shadow:0 16px 38px rgba(0,0,0,.24),0 0 22px rgba(255,115,57,.10)}
 .fdh-dragon-atmosphere{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate;opacity:.30;contain:paint}
@@ -824,3 +824,25 @@ body{padding-bottom:0!important}
   .fdh-global-footer .fdh-footer-column>a:not(.fdh-footer-profile){font-size:12px!important}
   .fdh-global-footer .fdh-footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:7px!important}
 }
+
+
+/* ===== Right-side account reminder ===== */
+.fdh-account-reminder{position:fixed;z-index:99990;right:18px;top:50%;display:flex;flex-direction:column;align-items:flex-end;gap:12px;transform:translateY(-50%);font-family:Arial,Helvetica,sans-serif}
+.fdh-account-reminder-tab{display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid rgba(255,151,116,.48);border-radius:999px;background:linear-gradient(115deg,rgba(95,25,42,.94),rgba(35,17,31,.96));color:#fff1e9;font-size:13px;font-weight:850;letter-spacing:.035em;box-shadow:0 8px 28px rgba(0,0,0,.32),0 0 24px rgba(255,83,80,.14);backdrop-filter:blur(14px);cursor:pointer;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.fdh-account-reminder-tab:hover{transform:translateX(-4px);border-color:rgba(255,190,150,.8);box-shadow:0 10px 32px rgba(0,0,0,.38),0 0 28px rgba(255,100,85,.22)}
+.fdh-account-reminder-icon{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:rgba(255,151,116,.16);color:#ffc18e;font-size:15px}
+.fdh-account-reminder-panel{position:relative;width:min(340px,calc(100vw - 36px));padding:24px 21px 20px;border:1px solid rgba(255,151,116,.34);border-radius:19px;background:linear-gradient(145deg,rgba(36,18,31,.97),rgba(14,12,22,.98));color:#fff4ef;box-shadow:0 18px 55px rgba(0,0,0,.48),0 0 32px rgba(255,75,82,.12);backdrop-filter:blur(18px);animation:fdh-account-panel-in .48s cubic-bezier(.18,.72,.18,1) both}
+.fdh-account-reminder-panel[hidden]{display:none}
+@keyframes fdh-account-panel-in{from{opacity:0;transform:translateX(18px) scale(.97);filter:blur(5px)}to{opacity:1;transform:translateX(0) scale(1);filter:blur(0)}}
+.fdh-account-reminder-close{position:absolute;top:9px;right:11px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.07);color:#f4d8d0;font-size:22px;line-height:1;cursor:pointer}
+.fdh-account-reminder-kicker{display:block;margin-bottom:10px;color:#ffb18e;font-size:9px;font-weight:900;letter-spacing:.18em}
+.fdh-account-reminder-panel h2{max-width:260px;margin:0 0 9px;color:#fff4ef;font-size:19px;line-height:1.35}
+.fdh-account-reminder-panel p{margin:0 0 18px;color:rgba(246,225,219,.72);font-size:12px;line-height:1.7}
+.fdh-account-reminder-actions{display:grid;grid-template-columns:.7fr 1.3fr;gap:9px}
+.fdh-account-reminder-actions button{min-height:42px;padding:9px 11px;border:1px solid rgba(255,160,128,.34);border-radius:10px;font-size:12px;font-weight:850;cursor:pointer;transition:transform .25s ease,filter .25s ease,border-color .25s ease}
+.fdh-account-reminder-actions button:hover{transform:translateY(-2px);filter:brightness(1.12);border-color:rgba(255,190,150,.7)}
+.fdh-account-reminder-yes{background:rgba(255,255,255,.07);color:#f8e7e1}
+.fdh-account-reminder-no{background:linear-gradient(105deg,#e94e45,#a92c50);color:white;box-shadow:0 5px 16px rgba(185,43,65,.22)}
+.fdh-account-reminder.is-dismissed{opacity:0;transform:translate(16px,-50%);transition:opacity .4s ease,transform .4s ease}
+@media(max-width:600px){.fdh-account-reminder{right:10px;top:auto;bottom:18px;transform:none;gap:9px}.fdh-account-reminder-tab{min-height:44px;padding:0 14px;font-size:12px}.fdh-account-reminder-panel{width:min(320px,calc(100vw - 20px));padding:22px 17px 17px}.fdh-account-reminder-panel h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.fdh-account-reminder-panel{animation:none}.fdh-account-reminder-tab,.fdh-account-reminder-actions button{transition:none}.fdh-reveal,.fdh-word{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}}
