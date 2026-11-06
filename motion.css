@@ -78,7 +78,7 @@ main.settings-page{
 .fdh-bonus-codes strong{display:block;margin:0 0 3px;color:#ffb47f;font-size:10px;letter-spacing:.09em}
 .fdh-bonus-codes p{margin:0;color:#ead9d0;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
 @media(max-width:800px){.fdh-bonus-codes{width:min(620px,92%);margin:5px auto 0}}
-.fdh-flying-dragon{animation:none!important}}
+/* Keep the atmospheric dragon moving; previous static override removed. */
 
 
 /* ===== Transparent centered global footer + responsive continuous ticker ===== */
@@ -195,4 +195,53 @@ main.settings-page{
 @media(prefers-reduced-motion:reduce){
   .fdh-marquee-track{animation:none!important;transform:none!important}
   .fdh-footer-logo{animation:none!important;transform:none!important}
+}
+
+
+/* ===== Larger translucent ticker lettering + animated flying dragon ===== */
+.fdh-bottom-marquee{
+  min-height:58px!important;
+  padding:15px 0!important;
+  background:transparent!important;
+}
+.fdh-marquee-track{
+  gap:0!important;
+  animation:fdh-marquee-travel 30s linear infinite!important;
+}
+.fdh-marquee-group span{
+  font-size:clamp(23px,2.25vw,31px)!important;
+  line-height:1.2!important;
+  font-weight:950!important;
+  letter-spacing:.13em!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-text-stroke:1px rgba(255,220,195,.68);
+  text-shadow:0 0 14px rgba(255,145,90,.22)!important;
+}
+@media(max-width:650px){
+  .fdh-bottom-marquee{min-height:52px!important;padding:13px 0!important}
+  .fdh-marquee-group span{
+    font-size:clamp(19px,4.5vw,24px)!important;
+    -webkit-text-stroke:.8px rgba(255,220,195,.68);
+  }
+}
+/* Smooth cinematic flight across the page with banking turns and gentle bobbing. */
+.fdh-flying-dragon{
+  animation:fdh-dragon-flight 34s ease-in-out infinite!important;
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+@keyframes fdh-dragon-flight{
+  0%{transform:translate3d(-30vw,2vh,0) rotate(-12deg) scale(.88)}
+  12%{transform:translate3d(-4vw,-5vh,0) rotate(8deg) scale(.98)}
+  25%{transform:translate3d(24vw,3vh,0) rotate(22deg) scale(1.06)}
+  38%{transform:translate3d(55vw,-6vh,0) rotate(-5deg) scale(1.12)}
+  50%{transform:translate3d(86vw,2vh,0) rotate(-18deg) scale(1.04)}
+  62%{transform:translate3d(112vw,-4vh,0) rotate(12deg) scale(.98)}
+  75%{transform:translate3d(76vw,5vh,0) rotate(28deg) scale(.92)}
+  88%{transform:translate3d(24vw,-3vh,0) rotate(-8deg) scale(1.02)}
+  100%{transform:translate3d(-30vw,2vh,0) rotate(-12deg) scale(.88)}
+}
+@media(prefers-reduced-motion:reduce){
+  .fdh-flying-dragon{animation:none!important}
 }
