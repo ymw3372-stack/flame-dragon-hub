@@ -92,6 +92,50 @@
     }
   }
 
+  // Right-side account reminder: a compact prompt that guides visitors to registration.
+  function addAccountReminder(){
+    if(currentFile==="account.html" || document.querySelector(".fdh-account-reminder"))return;
+    try{
+      if(localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1")return;
+    }catch(_){}
+    const widget=document.createElement("aside");
+    widget.className="fdh-account-reminder";
+    widget.innerHTML=`
+      <button class="fdh-account-reminder-tab" type="button" aria-expanded="false" aria-controls="fdhAccountReminderPanel">
+        <span class="fdh-account-reminder-icon" aria-hidden="true">✦</span>
+        <span>Account</span>
+      </button>
+      <section class="fdh-account-reminder-panel" id="fdhAccountReminderPanel" hidden aria-label="Account reminder">
+        <button class="fdh-account-reminder-close" type="button" aria-label="Close reminder">×</button>
+        <span class="fdh-account-reminder-kicker">FLAME DRAGON HUB</span>
+        <h2>Have you created an account?</h2>
+        <p>Create an account to make it easier to access your hub profile.</p>
+        <div class="fdh-account-reminder-actions">
+          <button class="fdh-account-reminder-yes" type="button">Yes</button>
+          <button class="fdh-account-reminder-no" type="button">No, I'll create one</button>
+        </div>
+      </section>`;
+    document.body.appendChild(widget);
+    const tab=widget.querySelector(".fdh-account-reminder-tab");
+    const panel=widget.querySelector(".fdh-account-reminder-panel");
+    const close=()=>{panel.hidden=true;tab.setAttribute("aria-expanded","false");};
+    tab.addEventListener("click",()=>{
+      const open=panel.hidden;
+      panel.hidden=!open;
+      tab.setAttribute("aria-expanded",String(open));
+    });
+    widget.querySelector(".fdh-account-reminder-close").addEventListener("click",close);
+    widget.querySelector(".fdh-account-reminder-yes").addEventListener("click",()=>{
+      try{sessionStorage.setItem("fdhAccountPromptDismissed","1");}catch(_){}
+      widget.classList.add("is-dismissed");
+      window.setTimeout(()=>widget.remove(),420);
+    });
+    widget.querySelector(".fdh-account-reminder-no").addEventListener("click",()=>{
+      window.location.href="account.html";
+    });
+    document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close();});
+  }
+
   // Change the running CSS animation's playback rate without resetting its timeline.
   // updatePlaybackRate preserves the current animation position while easing to the new speed.
   function addMarqueeHoverSlowdown(){
@@ -195,6 +239,7 @@
   function init(){
     addScrollProgress();
     addGlobalFooter();
+    addAccountReminder();
     addMarqueeHoverSlowdown();
     if(typeof addBonusPanel==="function")addBonusPanel();
     addReveal();
