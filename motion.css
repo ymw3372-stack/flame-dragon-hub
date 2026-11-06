@@ -909,3 +909,63 @@ body{padding-bottom:0!important}
   outline:2px solid rgba(255,190,145,.88)!important;
   outline-offset:3px!important;
 }
+
+
+/* Crisp account prompt; pin the Home shortcut to the upper-right corner. */
+.fdh-account-reminder--home{
+  top:96px!important;
+  right:18px!important;
+  bottom:auto!important;
+  left:auto!important;
+  transform:none!important;
+  flex-direction:column!important;
+  align-items:flex-end!important;
+  gap:9px!important;
+}
+.fdh-account-reminder--home .fdh-account-reminder-tab{
+  max-width:min(360px,calc(100vw - 28px))!important;
+  min-height:46px!important;
+  padding:9px 15px!important;
+  justify-content:flex-start!important;
+  white-space:normal!important;
+  text-align:start!important;
+  line-height:1.35!important;
+  background:rgba(43,24,34,.78)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.fdh-account-reminder,
+.fdh-account-reminder *{
+  filter:none!important;
+  text-shadow:none!important;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.fdh-account-reminder-tab,
+.fdh-account-reminder-panel{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.fdh-account-reminder-panel{
+  animation:fdh-account-panel-in .32s ease both!important;
+}
+@keyframes fdh-account-panel-in{
+  from{opacity:0;transform:translateY(-7px) scale(.99)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.fdh-account-reminder--home .fdh-account-reminder-panel{
+  width:min(340px,calc(100vw - 28px))!important;
+  background:rgba(28,19,29,.88)!important;
+}
+@media(max-width:600px){
+  .fdh-account-reminder--home{
+    top:82px!important;
+    right:10px!important;
+    bottom:auto!important;
+    left:auto!important;
+  }
+  .fdh-account-reminder--home .fdh-account-reminder-tab{
+    max-width:calc(100vw - 20px)!important;
+    font-size:12px!important;
+  }
+}
