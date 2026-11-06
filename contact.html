@@ -40,7 +40,7 @@
     .contact-option strong{position:relative;font-size:14px;font-weight:850}
     .contact-option small{position:relative;margin-top:7px;color:#c9b09c;font-size:11px;line-height:1.6}
     .contact-note{display:flex;gap:12px;align-items:flex-start;margin-top:17px;padding:14px 15px;border:1px solid rgba(255,177,99,.16);border-radius:14px;background:rgba(255,140,57,.055);color:#cbb39f;font-size:11px;line-height:1.7}
-    .contact-note span{font-size:16px}
+    .contact-note span{font-size:16px}.contact-note-copy{flex:1;min-width:0}.contact-note-dismiss{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid rgba(255,177,99,.25);border-radius:8px;background:rgba(255,140,57,.09);color:#ffd0a7;font:inherit;font-size:10px;font-weight:800;cursor:pointer;transition:background .2s ease,border-color .2s ease}.contact-note-dismiss:hover{background:rgba(255,140,57,.18);border-color:rgba(255,177,99,.5)}.contact-note-dismiss span{font-size:14px;line-height:1}
     .contact-form-card{padding:24px;border:1px solid rgba(255,159,91,.24);border-radius:22px;background:linear-gradient(155deg,rgba(39,22,16,.96),rgba(18,12,10,.96));box-shadow:0 20px 60px rgba(0,0,0,.27),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(14px)}
     .contact-form-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
     .contact-form-heading h2{margin:0;color:#fff1e4;font-size:22px;font-weight:900}
@@ -125,7 +125,7 @@
             <small>For other questions or anything that does not fit above.</small>
           </button>
         </div>
-        <div class="contact-note"><span>🔥</span><div><strong>Help us understand the issue.</strong><br>Include the page name, what you expected to happen and what happened instead. Please do not include passwords or private account details.</div></div>
+        <div class="contact-note" id="contactNote"><span>🔥</span><div class="contact-note-copy"><strong>Help us understand the issue.</strong><br>Include the page name, what you expected to happen and what happened instead. Please do not include passwords or private account details.</div><button class="contact-note-dismiss" id="dismissContactNote" type="button" aria-label="Dismiss notification" title="Dismiss">Dismiss <span aria-hidden="true">×</span></button></div>
       </section>
 
       <section class="contact-form-card contact-reveal" aria-labelledby="contactFormTitle">
@@ -199,6 +199,14 @@
       const attachment = document.getElementById("contactAttachment");
       const submit = document.getElementById("contactSubmit");
       const options = [...document.querySelectorAll(".contact-option")];
+      const contactNote = document.getElementById("contactNote");
+      const dismissContactNote = document.getElementById("dismissContactNote");
+      const CONTACT_NOTE_DISMISSED_KEY = "fdhContactNoteDismissed";
+      if (contactNote && localStorage.getItem(CONTACT_NOTE_DISMISSED_KEY) === "1") contactNote.hidden = true;
+      dismissContactNote?.addEventListener("click", () => {
+        if (contactNote) contactNote.hidden = true;
+        localStorage.setItem(CONTACT_NOTE_DISMISSED_KEY, "1");
+      });
       const MAX_IMAGE_BYTES = 500 * 1024;
 
       function selectTopic(value) {
