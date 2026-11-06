@@ -146,7 +146,6 @@
         <span>FLAME DRAGON</span><span>SKINS EDITOR</span>
         <span>EVOWORLD</span><span>YOUR SKIN · YOUR STYLE</span>
       </div>
-      <div class="fdh-dragon-speech">🐉 Subscribe to FLAME DRAGON EVOWORLD for more adventures! 🔥</div>
       <img class="fdh-flying-dragon" src="assets/skins/evolution-creatures/dragon.webp" alt="" loading="lazy">
     `;
     document.body.prepend(layer);
