@@ -349,11 +349,11 @@ main.settings-page{
 }
 @keyframes fdh-dragon-flight-spin{
  0%{transform:translate3d(-8vw,2vh,0) rotate(-18deg) scale(.82)}
- 18%{transform:translate3d(18vw,-5vh,0) rotate(95deg) scale(.95)}
- 36%{transform:translate3d(42vw,3vh,0) rotate(205deg) scale(1.08)}
- 54%{transform:translate3d(68vw,-6vh,0) rotate(320deg) scale(1.12)}
- 72%{transform:translate3d(88vw,4vh,0) rotate(455deg) scale(.98)}
- 88%{transform:translate3d(30vw,-3vh,0) rotate(610deg) scale(.9)}
+ 18%{transform:translate3d(18vw,-5vh,0) rotate(111.6deg) scale(.95)}
+ 36%{transform:translate3d(42vw,3vh,0) rotate(241.2deg) scale(1.08)}
+ 54%{transform:translate3d(68vw,-6vh,0) rotate(370.8deg) scale(1.12)}
+ 72%{transform:translate3d(88vw,4vh,0) rotate(500.4deg) scale(.98)}
+ 88%{transform:translate3d(30vw,-3vh,0) rotate(615.6deg) scale(.9)}
  100%{transform:translate3d(-8vw,2vh,0) rotate(702deg) scale(.82)}
 }
 .fdh-dragon-speech{
@@ -1064,7 +1064,7 @@ body{padding-bottom:0!important}
   display:none!important;
 }
 .fdh-dragon-atmosphere .fdh-flying-dragon{
-  animation:fdh-dragon-flight-spin 18s ease-in-out infinite!important;
+  animation:fdh-dragon-flight-spin 18s linear infinite!important;
 }
 @media(prefers-reduced-motion:reduce){
   .fdh-dragon-atmosphere .fdh-flying-dragon{animation:none!important}
