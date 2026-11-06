@@ -245,3 +245,25 @@ main.settings-page{
 @media(prefers-reduced-motion:reduce){
   .fdh-flying-dragon{animation:none!important}
 }
+
+
+/* Put the ticker above the complete footer header block, not below it. */
+.fdh-global-footer .fdh-bottom-marquee{
+  order:-1;
+  margin:0 0 13px calc(50% - 50vw)!important;
+  background:transparent!important;
+  border-top:0!important;
+  border-bottom:1px solid rgba(220,225,240,.13)!important;
+}
+.fdh-global-footer .fdh-marquee-group span{
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-text-stroke:1px rgba(235,239,255,.48)!important;
+  text-shadow:0 0 12px rgba(205,215,255,.12)!important;
+}
+@media(max-width:650px){
+  .fdh-global-footer .fdh-bottom-marquee{margin-bottom:10px!important}
+  .fdh-global-footer .fdh-marquee-group span{-webkit-text-stroke:.8px rgba(235,239,255,.48)!important}
+}
+/* The site does not promote third-party bonus codes. */
+.bonus-codes,.fdh-bonus-codes{display:none!important}

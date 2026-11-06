@@ -33,6 +33,12 @@
     footer.className="fdh-global-footer";
     footer.innerHTML=`
       <div class="fdh-footer-inner">
+        <div class="fdh-bottom-marquee" aria-label="FLAME DRAGON HUB announcement">
+          <div class="fdh-marquee-track">
+            <div class="fdh-marquee-group"><span>🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span></div>
+            <div class="fdh-marquee-group" aria-hidden="true"><span>🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span></div>
+          </div>
+        </div>
         <div class="fdh-footer-main">
           <a class="fdh-footer-brandline" href="index.html" aria-label="FLAME DRAGON HUB Home">
             <img class="fdh-footer-logo" src="assets/logo.png" alt="">
@@ -49,12 +55,7 @@
             <span class="fdh-footer-profile-copy"><strong class="fdh-footer-player-name">FLAME DRAGON</strong><small>YOUR PROFILE</small></span>
           </a>
         </div>
-        <div class="fdh-bottom-marquee" aria-label="FLAME DRAGON HUB announcement">
-          <div class="fdh-marquee-track">
-            <div class="fdh-marquee-group"><span>🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span></div>
-            <div class="fdh-marquee-group" aria-hidden="true"><span>🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span></div>
-          </div>
-        </div>
+
         <div class="fdh-footer-bottom"><span>© FLAME DRAGON HUB · Unofficial EvoWorld companion</span><a href="contact.html">Contact</a></div>
       </div>`;
     document.body.appendChild(footer);
