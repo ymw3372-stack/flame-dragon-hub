@@ -75,6 +75,30 @@
     }
   }
 
+  // Change the running CSS animation's playback rate without resetting its timeline.
+  // updatePlaybackRate preserves the current animation position while easing to the new speed.
+  function addMarqueeHoverSlowdown(){
+    const marquee=document.querySelector(".fdh-global-footer .fdh-bottom-marquee");
+    if(!marquee || marquee.dataset.fdhSpeedControl==="true")return;
+    marquee.dataset.fdhSpeedControl="true";
+    const setSpeed=(rate)=>{
+      marquee.querySelectorAll(".fdh-marquee-track").forEach(track=>{
+        track.getAnimations().forEach(animation=>{
+          const name=animation.animationName || animation.effect?.getTiming?.().easing;
+          if(animation.animationName==="fdh-marquee-travel"){
+            animation.updatePlaybackRate(rate);
+          }
+        });
+      });
+    };
+    marquee.addEventListener("pointerenter",()=>setSpeed(0.28),{passive:true});
+    marquee.addEventListener("pointerleave",()=>setSpeed(1),{passive:true});
+    marquee.addEventListener("focusin",()=>setSpeed(0.28));
+    marquee.addEventListener("focusout",event=>{
+      if(!marquee.contains(event.relatedTarget))setSpeed(1);
+    });
+  }
+
   function addPointerTilt(){
     if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
     const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
@@ -154,6 +178,7 @@
   function init(){
     addScrollProgress();
     addGlobalFooter();
+    addMarqueeHoverSlowdown();
     if(typeof addBonusPanel==="function")addBonusPanel();
     addReveal();
     addPointerTilt();
