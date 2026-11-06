@@ -97,13 +97,13 @@
     }catch(_){}
     const language=(localStorage.getItem("flameDragonLanguage")||"en").toLowerCase();
     const copy={
-      en:{tab:"Have an account?",question:"Have you created an account?",desc:"If you already have an account, choose Yes. Otherwise, create one to access your hub profile.",yes:"Yes",no:"No, I'll create one",close:"Close"},
-      ar:{tab:"عندك حساب؟",question:"هل أنشأت حسابًا؟",desc:"لو عندك حساب اختار أيوه، ولو لسه تقدر تنشئ حساب جديد من هنا.",yes:"أيوه",no:"لا، هعمل حساب",close:"إغلاق"},
-      de:{tab:"Schon ein Konto?",question:"Hast du bereits ein Konto erstellt?",desc:"Wenn du schon ein Konto hast, wähle Ja. Andernfalls kannst du hier eins erstellen.",yes:"Ja",no:"Nein, Konto erstellen",close:"Schließen"},
-      ru:{tab:"Есть аккаунт?",question:"Ты уже создал аккаунт?",desc:"Если аккаунт уже есть, выбери «Да». Иначе создай его здесь.",yes:"Да",no:"Нет, создать",close:"Закрыть"},
-      hi:{tab:"खाता है?",question:"क्या आपने खाता बनाया है?",desc:"यदि आपका खाता है तो हाँ चुनें, अन्यथा यहाँ नया खाता बनाएँ।",yes:"हाँ",no:"नहीं, बनाऊँगा",close:"बंद करें"},
-      es:{tab:"¿Tienes cuenta?",question:"¿Ya has creado una cuenta?",desc:"Si ya tienes una cuenta, elige Sí. Si no, puedes crearla aquí.",yes:"Sí",no:"No, crear cuenta",close:"Cerrar"},
-      tr:{tab:"Hesabın var mı?",question:"Bir hesap oluşturdun mu?",desc:"Zaten hesabın varsa Evet'i seç. Yoksa buradan oluşturabilirsin.",yes:"Evet",no:"Hayır, oluştur",close:"Kapat"}
+      en:{tab:"Have you created an account?",question:"Have you created an account?",desc:"If you already have an account, choose Yes. Otherwise, create one to access your hub profile.",yes:"Yes",no:"No, I'll create one",close:"Close"},
+      ar:{tab:"هل أنشأت حسابًا؟",question:"هل أنشأت حسابًا؟",desc:"لو عندك حساب اختار أيوه، ولو لسه تقدر تنشئ حساب جديد من هنا.",yes:"أيوه",no:"لا، هعمل حساب",close:"إغلاق"},
+      de:{tab:"Hast du ein Konto erstellt?",question:"Hast du bereits ein Konto erstellt?",desc:"Wenn du schon ein Konto hast, wähle Ja. Andernfalls kannst du hier eins erstellen.",yes:"Ja",no:"Nein, Konto erstellen",close:"Schließen"},
+      ru:{tab:"Ты создал аккаунт?",question:"Ты уже создал аккаунт?",desc:"Если аккаунт уже есть, выбери «Да». Иначе создай его здесь.",yes:"Да",no:"Нет, создать",close:"Закрыть"},
+      hi:{tab:"क्या आपने खाता बनाया है?",question:"क्या आपने खाता बनाया है?",desc:"यदि आपका खाता है तो हाँ चुनें, अन्यथा यहाँ नया खाता बनाएँ।",yes:"हाँ",no:"नहीं, बनाऊँगा",close:"बंद करें"},
+      es:{tab:"¿Has creado una cuenta?",question:"¿Ya has creado una cuenta?",desc:"Si ya tienes una cuenta, elige Sí. Si no, puedes crearla aquí.",yes:"Sí",no:"No, crear cuenta",close:"Cerrar"},
+      tr:{tab:"Hesap oluşturdun mu?",question:"Bir hesap oluşturdun mu?",desc:"Zaten hesabın varsa Evet'i seç. Yoksa buradan oluşturabilirsin.",yes:"Evet",no:"Hayır, oluştur",close:"Kapat"}
     };
     const text=copy[language]||copy.en;
     const widget=document.createElement("aside");
