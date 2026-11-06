@@ -844,5 +844,5 @@ body{padding-bottom:0!important}
 .fdh-account-reminder-yes{background:rgba(255,255,255,.07);color:#f8e7e1}
 .fdh-account-reminder-no{background:linear-gradient(105deg,#e94e45,#a92c50);color:white;box-shadow:0 5px 16px rgba(185,43,65,.22)}
 .fdh-account-reminder.is-dismissed{opacity:0;transform:translate(16px,-50%);transition:opacity .4s ease,transform .4s ease}
-@media(max-width:600px){.fdh-account-reminder{right:10px;top:auto;bottom:18px;transform:none;gap:9px}.fdh-account-reminder-tab{min-height:44px;padding:0 14px;font-size:12px}.fdh-account-reminder-panel{width:min(320px,calc(100vw - 20px));padding:22px 17px 17px}.fdh-account-reminder-panel h2{font-size:17px}}
+@media(max-width:600px){.fdh-account-reminder{right:10px;top:auto;bottom:18px;transform:none;gap:9px}.fdh-account-reminder.is-dismissed{transform:translateX(16px)}.fdh-account-reminder-tab{min-height:44px;padding:0 14px;font-size:12px}.fdh-account-reminder-panel{width:min(320px,calc(100vw - 20px));padding:22px 17px 17px}.fdh-account-reminder-panel h2{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.fdh-account-reminder-panel{animation:none}.fdh-account-reminder-tab,.fdh-account-reminder-actions button{transition:none}.fdh-reveal,.fdh-word{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}}
