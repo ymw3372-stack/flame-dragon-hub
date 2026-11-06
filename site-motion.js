@@ -162,7 +162,7 @@
 
   function addPointerTilt(){
     if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
-    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
+    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.account-profile-card,.account-card,.contact-layout > *";
     document.querySelectorAll(selector).forEach(card=>{
       if(card.classList.contains("fdh-tilt"))return;
       card.classList.add("fdh-tilt");
@@ -194,7 +194,7 @@
       if(/^\s+$/.test(part)){heading.appendChild(document.createTextNode(part));return;}
       const span=document.createElement("span");
       span.className="fdh-word";
-      span.style.setProperty("--fdh-word-delay",Math.min(n*95,760)+"ms");
+      span.style.setProperty("--fdh-word-delay",Math.min(n*120,960)+"ms");
       span.textContent=part;
       heading.appendChild(span);
       n++;
@@ -211,7 +211,7 @@
     items.forEach((el,i)=>{
       if(el.closest("form,.auth-card,.login-card,.contact-form-card,.no-motion,.fdh-global-footer")||el.matches("form")||el.classList.contains("fdh-reveal"))return;
       el.classList.add("fdh-reveal");
-      el.style.setProperty("--fdh-delay",Math.min((i%3)*65,130)+"ms");
+      el.style.setProperty("--fdh-delay",Math.min((i%4)*140,420)+"ms");
     });
     const targets=document.querySelectorAll(".fdh-reveal");
     if(!("IntersectionObserver" in window)){targets.forEach(el=>el.classList.add("fdh-visible"));return;}
