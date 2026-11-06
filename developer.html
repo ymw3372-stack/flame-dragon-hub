@@ -322,6 +322,8 @@ body:after{
 <section class="dev-panel" id="banManagementPanel">
 <h2>Ban Management</h2>
 <p class="muted">Manage current and expired restrictions in one place. Your owner account is protected.</p>
+<button id="toggleBanManagement" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="banManagementContent">⌄ Show Ban Management</button>
+<div id="banManagementContent" class="dev-hidden">
 <div class="dev-ban-summary">
 <div class="dev-ban-stat"><span>Active bans</span><strong id="activeBanCount">—</strong></div>
 <div class="dev-ban-stat"><span>Expired bans</span><strong id="expiredBanCount">—</strong></div>
@@ -332,12 +334,22 @@ body:after{
 <button id="refreshBanManagement" class="dev-button" type="button">↻ Refresh bans</button>
 </div>
 <div id="banManagementList" aria-live="polite"><p class="dev-section-note">Loading moderation records…</p></div>
+</div>
 </section>
 <section class="dev-panel" id="securityActivityPanel">
 <h2>Security Center &amp; Admin Activity</h2>
 <p class="muted">A protected record of moderation actions performed by the verified owner.</p>
-<div class="dev-message" id="securityStatus">Owner protection is active. The owner account cannot be kicked or banned from this dashboard.</div>
+<button id="toggleAdminSecurity" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="adminSecurityContent">⌄ Show Admin Security</button>
+<div id="adminSecurityContent" class="dev-hidden">
+<div class="dev-message" id="securityStatus">
+  <span>Owner protection is active. The owner account cannot be kicked or banned from this dashboard.</span>
+  <button id="dismissSecurityNotice" class="dev-button dev-copy" type="button" aria-label="Dismiss security notice">Dismiss</button>
+</div>
+<div class="dev-inline-actions" style="justify-content:flex-end">
+  <button id="dismissAllModerationNotices" class="dev-button dev-copy" type="button">Clear visible notifications</button>
+</div>
 <div id="moderationActivityList"><p class="dev-section-note">Loading activity log…</p></div>
+</div>
 </section>
 <section class="dev-panel">
 <h2>Program Visitors</h2>
