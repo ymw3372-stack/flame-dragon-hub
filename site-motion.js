@@ -25,13 +25,53 @@
     update();
   }
 
-  // Keep the clean layout while restoring the announcement ticker and bonus panel.
-  function removeExtraBottomUI(){
-    const style=document.createElement("style");
-    style.id="fdh-clean-bottom-ui";
-    style.textContent=".fdh-global-footer,.fdh-language-dock{display:none!important}body{padding-bottom:0!important}";
-    document.head.appendChild(style);
-    document.querySelectorAll(".fdh-global-footer,.fdh-language-dock").forEach(el=>el.remove());
+  // Shared transparent footer with centered navigation, saved player profile and a
+  // viewport-wide continuous ticker. The profile data stays local to this browser.
+  function addGlobalFooter(){
+    if(document.querySelector(".fdh-global-footer"))return;
+    const footer=document.createElement("footer");
+    footer.className="fdh-global-footer";
+    footer.innerHTML=`
+      <div class="fdh-footer-inner">
+        <div class="fdh-footer-main">
+          <a class="fdh-footer-brandline" href="index.html" aria-label="FLAME DRAGON HUB Home">
+            <img class="fdh-footer-logo" src="assets/logo.png" alt="">
+            <span class="fdh-footer-brandtext"><strong>FLAME DRAGON HUB</strong><small>YOUR EVOWORLD COMPANION</small></span>
+          </a>
+          <nav class="fdh-footer-nav" aria-label="Footer navigation">
+            <a href="index.html">Home</a><a href="evolutions.html">Evolutions</a>
+            <a href="skins.html">Skins</a><a href="favorites.html">Favorites</a>
+            <a href="settings.html">Settings</a><a href="contact.html">Contact</a>
+            <a href="developer.html">Developer</a>
+          </nav>
+          <a class="fdh-footer-profile" href="account.html" aria-label="Open your player profile">
+            <span class="fdh-footer-avatar" aria-hidden="true">🐉</span>
+            <span class="fdh-footer-profile-copy"><strong class="fdh-footer-player-name">FLAME DRAGON</strong><small>YOUR PROFILE</small></span>
+          </a>
+        </div>
+        <div class="fdh-bottom-marquee" aria-label="FLAME DRAGON HUB announcement">
+          <div class="fdh-marquee-track">
+            <span>🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span>
+            <span aria-hidden="true">🔥 FLAME DRAGON HUB&nbsp; · &nbsp;YOUR EVOWORLD COMPANION&nbsp; · &nbsp;EXPLORE EVOLUTIONS&nbsp; · &nbsp;DISCOVER SKINS&nbsp; · &nbsp;STAY LEGENDARY&nbsp; ✦&nbsp;</span>
+          </div>
+        </div>
+        <div class="fdh-footer-bottom"><span>© FLAME DRAGON HUB · Unofficial EvoWorld companion</span><a href="contact.html">Contact</a></div>
+      </div>`;
+    document.body.appendChild(footer);
+
+    const playerName=localStorage.getItem("flameDragonProfileName")||"FLAME DRAGON";
+    footer.querySelector(".fdh-footer-player-name").textContent=playerName.slice(0,24);
+    const avatar=footer.querySelector(".fdh-footer-avatar");
+    const savedImage=localStorage.getItem("flameDragonProfileImage");
+    if(savedImage && /^data:image\/(?:webp|jpeg|png|gif);base64,/i.test(savedImage)){
+      const image=document.createElement("img");
+      image.src=savedImage;
+      image.alt="";
+      avatar.replaceChildren(image);
+      avatar.classList.add("has-image");
+    }else{
+      avatar.textContent=localStorage.getItem("flameDragonProfileAvatar")||"🐉";
+    }
   }
 
   function addPointerTilt(){
@@ -112,8 +152,8 @@
 
   function init(){
     addScrollProgress();
-    removeExtraBottomUI();
-    addBonusPanel();
+    addGlobalFooter();
+    if(typeof addBonusPanel==="function")addBonusPanel();
     addReveal();
     addPointerTilt();
     addDragonAtmosphere();
