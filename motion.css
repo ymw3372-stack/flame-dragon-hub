@@ -374,3 +374,33 @@ main.settings-page{
 @media(prefers-reduced-motion:reduce){
  .fdh-dragon-atmosphere .fdh-flying-dragon,.fdh-dragon-speech{animation:none!important}
 }
+
+
+/* ===== Subtle ticker refinement: slightly larger, lower, translucent, slower on hover ===== */
+.fdh-global-footer .fdh-bottom-marquee{
+  min-height:118px!important;
+  padding:34px 0!important;
+  margin-top:28px!important;
+  margin-bottom:22px!important;
+}
+.fdh-global-footer .fdh-marquee-group span{
+  font-size:clamp(39px,4.45vw,62px)!important;
+  -webkit-text-stroke:1.4px rgba(245,247,255,.40)!important;
+  text-shadow:0 0 18px rgba(220,230,255,.12)!important;
+}
+.fdh-global-footer .fdh-bottom-marquee:hover .fdh-marquee-track,
+.fdh-global-footer .fdh-bottom-marquee:focus-within .fdh-marquee-track{
+  animation-duration:72s!important;
+}
+@media(max-width:650px){
+  .fdh-global-footer .fdh-bottom-marquee{
+    min-height:86px!important;
+    padding:25px 0!important;
+    margin-top:17px!important;
+    margin-bottom:15px!important;
+  }
+  .fdh-global-footer .fdh-marquee-group span{
+    font-size:clamp(29px,7.4vw,41px)!important;
+    -webkit-text-stroke:1px rgba(245,247,255,.40)!important;
+  }
+}
