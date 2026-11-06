@@ -117,7 +117,7 @@
     };
     const text=isHome?(homeCopy[language]||homeCopy.en):(copy[language]||copy.en);
     const widget=document.createElement("aside");
-    widget.className="fdh-account-reminder";
+    widget.className="fdh-account-reminder"+(isHome?" fdh-account-reminder--home":"");
     widget.innerHTML=`
       <button class="fdh-account-reminder-tab" type="button" aria-expanded="false" aria-controls="fdhAccountReminderPanel">
         <span class="fdh-account-reminder-icon" aria-hidden="true">✦</span>
