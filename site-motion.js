@@ -40,24 +40,41 @@
           </div>
         </div>
         <div class="fdh-footer-main">
-          <a class="fdh-footer-brandline" href="index.html" aria-label="FLAME DRAGON HUB Home">
-            <img class="fdh-footer-logo" src="assets/logo.png" alt="">
-            <span class="fdh-footer-brandtext"><strong>FLAME DRAGON HUB</strong><small>YOUR EVOWORLD COMPANION</small></span>
-          </a>
-          <nav class="fdh-footer-nav" aria-label="Footer navigation">
-            <a href="index.html">Home</a><a href="evolutions.html">Evolutions</a>
-            <a href="skins.html">Skins</a><a href="favorites.html">Favorites</a>
-            <a href="settings.html">Settings</a><a href="contact.html">Contact</a>
+          <section class="fdh-footer-brand">
+            <a class="fdh-footer-brandline" href="index.html" aria-label="FLAME DRAGON HUB Home">
+              <img class="fdh-footer-logo" src="assets/logo.png" alt="">
+              <span class="fdh-footer-brandtext"><strong>FLAME DRAGON HUB</strong><small>YOUR EVOWORLD COMPANION</small></span>
+            </a>
+            <p>Explore EvoWorld evolutions, discover skins, and customize your experience with FLAME DRAGON HUB.</p>
+          </section>
+
+          <nav class="fdh-footer-column fdh-footer-pages" aria-label="Pages">
+            <h3>Pages</h3>
+            <a href="index.html">Home</a>
+            <a href="evolutions.html">Evolutions</a>
+            <a href="skins.html">Skins Library</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="settings.html">Settings</a>
             <a href="developer.html">Developer</a>
           </nav>
-          <a class="fdh-footer-profile" href="account.html" aria-label="Open your player profile">
-            <span class="fdh-footer-avatar" aria-hidden="true">🐉</span>
-            <span class="fdh-footer-profile-copy"><strong class="fdh-footer-player-name">FLAME DRAGON</strong><small>YOUR PROFILE</small></span>
-          </a>
+
+          <div class="fdh-footer-column fdh-footer-support">
+            <h3>Support</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="install-guide.html">Installation Guide</a>
+            <a href="about.html">About FLAME DRAGON HUB</a>
+            <a class="fdh-footer-profile" href="account.html" aria-label="Open your player profile">
+              <span class="fdh-footer-avatar" aria-hidden="true">🐉</span>
+              <span class="fdh-footer-profile-copy"><strong class="fdh-footer-player-name">FLAME DRAGON</strong><small>YOUR PROFILE</small></span>
+            </a>
+          </div>
         </div>
 
-        <div class="fdh-footer-bottom"><span>© FLAME DRAGON HUB · Unofficial EvoWorld companion</span><a href="contact.html">Contact</a></div>
+        <div class="fdh-footer-bottom"><span>© FLAME DRAGON HUB · Unofficial EvoWorld companion</span><span>Made for the EvoWorld community</span></div>
       </div>`;
+    const languageDock=document.querySelector(".fdh-language-dock");
+    const marquee=footer.querySelector(".fdh-bottom-marquee");
+    if(languageDock && marquee) marquee.insertAdjacentElement("afterend",languageDock);
     document.body.appendChild(footer);
 
     const playerName=localStorage.getItem("flameDragonProfileName")||"FLAME DRAGON";
