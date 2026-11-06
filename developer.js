@@ -980,6 +980,17 @@ toggleSecurityCenter?.addEventListener("click", () => {
   toggleSecurityCenter.textContent = next ? "⌃ Hide Security Center" : "⌄ Show Security Center";
 });
 
+const toggleCommunicationCenter = $("toggleCommunicationCenter");
+const communicationCenterContent = $("communicationCenterContent");
+toggleCommunicationCenter?.addEventListener("click", () => {
+  const next = toggleCommunicationCenter.getAttribute("aria-expanded") !== "true";
+  toggleCommunicationCenter.setAttribute("aria-expanded", String(next));
+  communicationCenterContent?.classList.toggle("dev-hidden", !next);
+  toggleCommunicationCenter.textContent = next
+    ? "⌃ Hide Contact & Notification Center"
+    : "⌄ Show Contact & Notification Center";
+});
+
 const toggleBanManagement = $("toggleBanManagement");
 const banManagementContent = $("banManagementContent");
 toggleBanManagement?.addEventListener("click", () => {
