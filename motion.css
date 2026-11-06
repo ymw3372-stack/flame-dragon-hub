@@ -846,3 +846,66 @@ body{padding-bottom:0!important}
 .fdh-account-reminder.is-dismissed{opacity:0;transform:translate(16px,-50%);transition:opacity .4s ease,transform .4s ease}
 @media(max-width:600px){.fdh-account-reminder{right:10px;top:auto;bottom:18px;transform:none;gap:9px}.fdh-account-reminder.is-dismissed{transform:translateX(16px)}.fdh-account-reminder-tab{min-height:44px;padding:0 14px;font-size:12px}.fdh-account-reminder-panel{width:min(320px,calc(100vw - 20px));padding:22px 17px 17px}.fdh-account-reminder-panel h2{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.fdh-account-reminder-panel{animation:none}.fdh-account-reminder-tab,.fdh-account-reminder-actions button{transition:none}.fdh-reveal,.fdh-word{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}}
+
+
+/* ===== Visual polish: softer reveals, glass account prompt, compact ticker ===== */
+.fdh-word{filter:blur(2px)!important;transform:translateY(18px) rotateX(-18deg)!important;animation-duration:1.45s!important}
+.fdh-reveal{filter:blur(1.4px)!important;transform:translate3d(0,22px,0) scale(.99)!important;transition:opacity 1.05s ease,transform 1.15s cubic-bezier(.18,.72,.18,1),filter 1.05s ease!important}
+.fdh-reveal.fdh-visible{filter:blur(0)!important;transform:translate3d(0,0,0) scale(1)!important}
+.fdh-global-footer .fdh-bottom-marquee{min-height:52px!important;padding:8px 0!important}
+.fdh-global-footer .fdh-marquee-group span{font-size:clamp(16px,1.45vw,20px)!important;letter-spacing:.095em!important}
+@media(max-width:650px){.fdh-global-footer .fdh-bottom-marquee{min-height:48px!important;padding:7px 0!important}.fdh-global-footer .fdh-marquee-group span{font-size:16px!important}}
+
+.fdh-account-reminder{
+  top:auto!important;
+  bottom:22px!important;
+  right:18px!important;
+  transform:none!important;
+  gap:9px!important;
+  flex-direction:column-reverse!important;
+}
+.fdh-account-reminder-tab{
+  min-height:45px!important;
+  padding:0 15px!important;
+  border-color:rgba(255,190,160,.34)!important;
+  background:rgba(43,24,34,.48)!important;
+  color:rgba(255,246,240,.94)!important;
+  box-shadow:0 7px 22px rgba(0,0,0,.18)!important;
+  backdrop-filter:blur(9px)!important;
+  -webkit-backdrop-filter:blur(9px)!important;
+}
+.fdh-account-reminder-tab:hover{background:rgba(58,29,39,.62)!important}
+.fdh-account-reminder-panel{
+  background:rgba(28,19,29,.66)!important;
+  border-color:rgba(255,190,160,.27)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.24)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+}
+.fdh-account-reminder-panel p{color:rgba(255,239,231,.78)!important}
+.fdh-account-reminder.is-dismissed{transform:translateX(16px)!important}
+@media(max-width:600px){
+  .fdh-account-reminder{right:10px!important;bottom:14px!important}
+  .fdh-account-reminder.is-dismissed{transform:translateX(16px)!important}
+}
+
+/* Consistent, restrained finish across the hub pages. */
+.navbar{
+  border-bottom:1px solid rgba(255,170,130,.16)!important;
+  background:rgba(17,12,17,.58)!important;
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+}
+.nav-links a{
+  border-radius:10px!important;
+  transition:color .28s ease,background .28s ease,transform .28s ease!important;
+}
+.nav-links a:hover{background:rgba(255,135,100,.09)!important}
+.contact-option,.hub-card,.evolution-card,.guide-card,.skin-card,.welcome-card,.signin-step,.fav-card{
+  border-color:rgba(255,170,130,.19);
+  box-shadow:0 12px 30px rgba(0,0,0,.13);
+}
+.contact-option:focus-visible,.dev-button:focus-visible,.fdh-account-reminder button:focus-visible,.nav-links a:focus-visible{
+  outline:2px solid rgba(255,190,145,.88)!important;
+  outline-offset:3px!important;
+}

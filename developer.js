@@ -42,6 +42,25 @@ const banLoadErrors = new Map();
 const moderationBusy = new Set();
 let moderationLogEntries = [];
 const DISMISSED_MODERATION_KEY = "fdhDismissedModerationLogs";
+const DISMISSED_CONTACT_KEY = "fdhDismissedContactMessages";
+function getDismissedContactMessageIds() {
+  try {
+    const value = JSON.parse(localStorage.getItem(DISMISSED_CONTACT_KEY) || "[]");
+    return new Set(Array.isArray(value) ? value.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+function setContactMessageDismissed(id, dismissed) {
+  const ids = getDismissedContactMessageIds();
+  if (dismissed) ids.add(String(id));
+  else ids.delete(String(id));
+  try {
+    localStorage.setItem(DISMISSED_CONTACT_KEY, JSON.stringify([...ids]));
+  } catch (error) {
+    console.warn("Could not save dismissed contact messages:", error);
+  }
+}
 function getDismissedModerationIds() {
   try {
     const value = JSON.parse(localStorage.getItem(DISMISSED_MODERATION_KEY) || "[]");
@@ -634,29 +653,6 @@ async function loadModerationActivity() {
   }
 }
 
-function exportAccountsCsv() {
-  if (!isAdminUser(auth.currentUser)) return;
-  const rows = [["UID","Email","Display name","Provider","Email verified","Created","Ban status","Ban reason"]];
-  for (const user of cachedUsers) {
-    const ban = banByUser.get(user.uid) || null;
-    rows.push([
-      user.uid, user.email || "", user.displayName || "", user.provider || "",
-      user.emailVerified === true ? "yes" : "no", formatDate(user.createdAt),
-      isBanActive(ban) ? "banned" : "active", ban?.reason || ""
-    ]);
-  }
-  const csv = rows.map(row => row.map(value =>
-    '"' + String(value ?? "").replace(/"/g, '""') + '"'
-  ).join(",")).join("\r\n");
-  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "flame-dragon-accounts-" + new Date().toISOString().slice(0,10) + ".csv";
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
 // Read stored accounts without sorting or displaying their last sign-in timestamps.
 async function readUsers() {
   const snapshot = await getDocs(query(collection(db, "users"), limit(MAX_USERS)));
@@ -869,13 +865,16 @@ async function loadContactInbox() {
   try {
     const snapshot = await getDocs(query(collection(db,"contactMessages"),orderBy("createdAt","desc"),limit(100)));
     const selected = $("contactStatusFilter")?.value || "all";
+    const showDismissed = Boolean($("showDismissedContactMessages")?.checked);
+    const dismissedIds = getDismissedContactMessageIds();
     const messages = snapshot.docs.map(item => ({id:item.id,...item.data()}))
-      .filter(item => selected === "all" || item.status === selected);
+      .filter(item => selected === "all" || item.status === selected)
+      .filter(item => showDismissed ? dismissedIds.has(String(item.id)) : !dismissedIds.has(String(item.id)));
     list.replaceChildren();
     if (!messages.length) {
       const empty = document.createElement("p");
       empty.className = "dev-section-note";
-      empty.textContent = "No messages found for this filter.";
+      empty.textContent = showDismissed ? "No dismissed messages found." : "No active messages found for this filter.";
       list.append(empty);
       return;
     }
@@ -940,7 +939,16 @@ async function loadContactInbox() {
           save.disabled = false;
         }
       });
-      controls.append(select,save);
+      const dismiss = document.createElement("button");
+      dismiss.type = "button";
+      dismiss.className = "dev-button danger";
+      dismiss.textContent = showDismissed ? "↶ Restore" : "✕ Dismiss";
+      dismiss.setAttribute("aria-label", (showDismissed ? "Restore" : "Dismiss") + " message " + (item.reference || item.id));
+      dismiss.addEventListener("click", () => {
+        setContactMessageDismissed(item.id, !showDismissed);
+        loadContactInbox();
+      });
+      controls.append(select,save,dismiss);
       card.append(controls);
       list.append(card);
     }
@@ -1033,6 +1041,7 @@ toggleContactInbox?.addEventListener("click", () => {
 });
 $("refreshContactInbox")?.addEventListener("click",loadContactInbox);
 $("contactStatusFilter")?.addEventListener("change",loadContactInbox);
+$("showDismissedContactMessages")?.addEventListener("change",loadContactInbox);
 
 const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
 const extensionAnalyticsContent = $("extensionAnalyticsContent");
@@ -1067,7 +1076,6 @@ $("refreshBanManagement")?.addEventListener("click", async () => {
   await loadBanManagementData();
   await loadModerationActivity();
 });
-$("exportAccounts")?.addEventListener("click", exportAccountsCsv);
 $("refreshUsers")?.addEventListener("click", () => { loadDashboard(); });
 
 // New sign-ins happen on other tabs and on the site itself, so the dashboard

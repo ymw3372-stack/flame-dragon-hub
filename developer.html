@@ -306,7 +306,7 @@ body:after{
 <input id="userSearch" type="search" placeholder="Search by name, email or UID…" autocomplete="off" aria-label="Search accounts">
 <select id="accountStatusFilter" aria-label="Filter accounts by status"><option value="all">All statuses</option><option value="active">Active accounts</option><option value="banned">Banned accounts</option><option value="unverified">Unverified email</option></select>
 <select id="accountSortOrder" aria-label="Sort accounts"><option value="newest">Newest registration</option><option value="oldest">Oldest registration</option></select>
-<button id="exportAccounts" class="dev-button" type="button">↓ Export CSV</button>
+
 <button id="refreshUsers" class="dev-button" type="button">↻ Refresh</button>
 </div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Account</th><th>Provider</th><th>Email status</th><th>Created</th><th>Details</th></tr></thead><tbody id="usersTable"><tr><td colspan="5">Loading accounts…</td></tr></tbody></table></div><p id="userCount" class="dev-foot"></p>
@@ -371,6 +371,7 @@ body:after{
 <select id="contactStatusFilter" aria-label="Filter contact messages">
 <option value="all">All messages</option><option value="New">New</option><option value="In Progress">In Progress</option><option value="Resolved">Resolved</option>
 </select>
+<label class="dev-check" style="margin:0 4px"><input id="showDismissedContactMessages" type="checkbox"> Show dismissed</label>
 <button id="refreshContactInbox" class="dev-button" type="button">↻ Refresh inbox</button>
 </div>
 <div id="contactInboxList" aria-live="polite"><p class="dev-section-note">Open the inbox to load messages.</p></div>
