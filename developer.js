@@ -971,6 +971,15 @@ async function loadUniqueProgramVisitors() {
   }
 }
 
+const toggleSecurityCenter = $("toggleSecurityCenter");
+const securityCenterContent = $("securityCenterContent");
+toggleSecurityCenter?.addEventListener("click", () => {
+  const next = toggleSecurityCenter.getAttribute("aria-expanded") !== "true";
+  toggleSecurityCenter.setAttribute("aria-expanded", String(next));
+  securityCenterContent?.classList.toggle("dev-hidden", !next);
+  toggleSecurityCenter.textContent = next ? "⌃ Hide Security Center" : "⌄ Show Security Center";
+});
+
 const toggleBanManagement = $("toggleBanManagement");
 const banManagementContent = $("banManagementContent");
 toggleBanManagement?.addEventListener("click", () => {
@@ -1042,6 +1051,36 @@ toggleContactInbox?.addEventListener("click", () => {
 $("refreshContactInbox")?.addEventListener("click",loadContactInbox);
 $("contactStatusFilter")?.addEventListener("change",loadContactInbox);
 $("showDismissedContactMessages")?.addEventListener("change",loadContactInbox);
+ 
+// The public Contact guidance notice can also be managed from this protected dashboard.
+const CONTACT_NOTICE_DISMISSED_KEY = "fdhContactNoteDismissed";
+const contactNoticeState = $("contactNoticeState");
+function refreshContactNoticeState() {
+  const hidden = localStorage.getItem(CONTACT_NOTICE_DISMISSED_KEY) === "1";
+  if (contactNoticeState) {
+    contactNoticeState.textContent = hidden
+      ? "The Contact notice is currently hidden in this browser."
+      : "The Contact notice is currently visible in this browser.";
+  }
+}
+$("showContactNotice")?.addEventListener("click", () => {
+  localStorage.removeItem(CONTACT_NOTICE_DISMISSED_KEY);
+  refreshContactNoticeState();
+});
+$("hideContactNotice")?.addEventListener("click", () => {
+  localStorage.setItem(CONTACT_NOTICE_DISMISSED_KEY, "1");
+  refreshContactNoticeState();
+});
+const toggleContactNoticeControls = $("toggleContactNoticeControls");
+const contactNoticeControlsContent = $("contactNoticeControlsContent");
+toggleContactNoticeControls?.addEventListener("click", () => {
+  const next = toggleContactNoticeControls.getAttribute("aria-expanded") !== "true";
+  toggleContactNoticeControls.setAttribute("aria-expanded", String(next));
+  contactNoticeControlsContent?.classList.toggle("dev-hidden", !next);
+  toggleContactNoticeControls.textContent = next ? "⌃ Hide Contact Notice Controls" : "⌄ Show Contact Notice Controls";
+  if (next) refreshContactNoticeState();
+});
+
 
 const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
 const extensionAnalyticsContent = $("extensionAnalyticsContent");

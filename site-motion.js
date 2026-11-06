@@ -92,10 +92,20 @@
   // Visible account prompt pinned to the lower-right corner.
   function addAccountReminder(){
     if(currentFile==="account.html" || document.querySelector(".fdh-account-reminder"))return;
+    const isHome=currentFile==="index.html" || currentFile==="";
     try{
-      if(localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1")return;
+      if(!isHome && (localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1"))return;
     }catch(_){}
     const language=(localStorage.getItem("flameDragonLanguage")||"en").toLowerCase();
+    const homeCopy={
+      en:{tab:"Sign in / Create Account",question:"Welcome to FLAME DRAGON HUB",desc:"Sign in to access your account, or create one to save your profile and favorites.",yes:"Sign in",no:"Create account",close:"Close"},
+      ar:{tab:"تسجيل الدخول / إنشاء حساب",question:"أهلًا بك في FLAME DRAGON HUB",desc:"سجّل الدخول لحسابك أو أنشئ حسابًا لحفظ ملفك الشخصي ومفضلاتك.",yes:"تسجيل الدخول",no:"إنشاء حساب",close:"إغلاق"},
+      de:{tab:"Anmelden / Konto erstellen",question:"Willkommen bei FLAME DRAGON HUB",desc:"Melde dich an oder erstelle ein Konto, um Profil und Favoriten zu speichern.",yes:"Anmelden",no:"Konto erstellen",close:"Schließen"},
+      ru:{tab:"Войти / Создать аккаунт",question:"Добро пожаловать в FLAME DRAGON HUB",desc:"Войдите или создайте аккаунт, чтобы сохранять профиль и избранное.",yes:"Войти",no:"Создать аккаунт",close:"Закрыть"},
+      hi:{tab:"साइन इन / खाता बनाएँ",question:"FLAME DRAGON HUB में आपका स्वागत है",desc:"अपनी प्रोफ़ाइल और पसंदीदा चीज़ें सहेजने के लिए साइन इन करें या खाता बनाएँ।",yes:"साइन इन",no:"खाता बनाएँ",close:"बंद करें"},
+      es:{tab:"Iniciar sesión / Crear cuenta",question:"Te damos la bienvenida a FLAME DRAGON HUB",desc:"Inicia sesión o crea una cuenta para guardar tu perfil y favoritos.",yes:"Iniciar sesión",no:"Crear cuenta",close:"Cerrar"},
+      tr:{tab:"Giriş yap / Hesap oluştur",question:"FLAME DRAGON HUB'a hoş geldin",desc:"Profilini ve favorilerini kaydetmek için giriş yap veya hesap oluştur.",yes:"Giriş yap",no:"Hesap oluştur",close:"Kapat"}
+    };
     const copy={
       en:{tab:"Have you created an account?",question:"Have you created an account?",desc:"If you already have an account, choose Yes. Otherwise, create one to access your hub profile.",yes:"Yes",no:"No, I'll create one",close:"Close"},
       ar:{tab:"هل أنشأت حسابًا؟",question:"هل أنشأت حسابًا؟",desc:"لو عندك حساب اختار أيوه، ولو لسه تقدر تنشئ حساب جديد من هنا.",yes:"أيوه",no:"لا، هعمل حساب",close:"إغلاق"},
@@ -105,7 +115,7 @@
       es:{tab:"¿Has creado una cuenta?",question:"¿Ya has creado una cuenta?",desc:"Si ya tienes una cuenta, elige Sí. Si no, puedes crearla aquí.",yes:"Sí",no:"No, crear cuenta",close:"Cerrar"},
       tr:{tab:"Hesap oluşturdun mu?",question:"Bir hesap oluşturdun mu?",desc:"Zaten hesabın varsa Evet'i seç. Yoksa buradan oluşturabilirsin.",yes:"Evet",no:"Hayır, oluştur",close:"Kapat"}
     };
-    const text=copy[language]||copy.en;
+    const text=isHome?(homeCopy[language]||homeCopy.en):(copy[language]||copy.en);
     const widget=document.createElement("aside");
     widget.className="fdh-account-reminder";
     widget.innerHTML=`
@@ -146,7 +156,8 @@
       widget.classList.add("is-dismissed");
       window.setTimeout(()=>widget.remove(),420);
     });
-    no.addEventListener("click",()=>{window.location.href="account.html#account";});
+    no.addEventListener("click",()=>{window.location.href=isHome?"account.html#createAccount":"account.html#account";});
+    if(isHome) yes.addEventListener("click",()=>{window.location.href="account.html#authEmail";});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close();});
   }
 

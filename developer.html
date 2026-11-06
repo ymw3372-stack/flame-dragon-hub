@@ -319,6 +319,11 @@ body:after{
 </div>
 </div>
 </section>
+<section class="dev-panel" id="securityCenterPanel">
+<h2>Security Center</h2>
+<p class="muted">All owner security tools, account restrictions and administrator activity are managed here.</p>
+<button id="toggleSecurityCenter" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="securityCenterContent">⌄ Show Security Center</button>
+<div id="securityCenterContent" class="dev-hidden">
 <section class="dev-panel" id="banManagementPanel">
 <h2>Ban Management</h2>
 <p class="muted">Manage current and expired restrictions in one place. Your owner account is protected.</p>
@@ -351,6 +356,8 @@ body:after{
 <div id="moderationActivityList"><p class="dev-section-note">Loading activity log…</p></div>
 </div>
 </section>
+</div>
+</section>
 <section class="dev-panel">
 <h2>Program Visitors</h2>
 <p class="muted">Unique browser profiles that opened the hub. No sign-in required; another browser or device counts separately.</p>
@@ -375,6 +382,18 @@ body:after{
 <button id="refreshContactInbox" class="dev-button" type="button">↻ Refresh inbox</button>
 </div>
 <div id="contactInboxList" aria-live="polite"><p class="dev-section-note">Open the inbox to load messages.</p></div>
+</div>
+</section>
+<section class="dev-panel" id="contactNoticeControlsPanel">
+<h2>Contact Notice Controls</h2>
+<p class="muted">Control the small guidance notice shown above the message form on the public Contact page. These settings apply to this browser only.</p>
+<button id="toggleContactNoticeControls" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="contactNoticeControlsContent">⌄ Show Contact Notice Controls</button>
+<div id="contactNoticeControlsContent" class="dev-hidden">
+<div class="dev-message"><span id="contactNoticeState">Checking Contact notice visibility…</span></div>
+<div class="dev-inline-actions">
+<button id="showContactNotice" class="dev-button" type="button">Show Contact Notice</button>
+<button id="hideContactNotice" class="dev-button danger" type="button">Hide Contact Notice</button>
+</div>
 </div>
 </section>
 <section class="dev-panel">
