@@ -41,6 +41,24 @@ const loadedBanUsers = new Set();
 const banLoadErrors = new Map();
 const moderationBusy = new Set();
 let moderationLogEntries = [];
+const DISMISSED_MODERATION_KEY = "fdhDismissedModerationLogs";
+function getDismissedModerationIds() {
+  try {
+    const value = JSON.parse(localStorage.getItem(DISMISSED_MODERATION_KEY) || "[]");
+    return new Set(Array.isArray(value) ? value.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+function dismissModerationNotice(id) {
+  const dismissed = getDismissedModerationIds();
+  dismissed.add(String(id));
+  try {
+    localStorage.setItem(DISMISSED_MODERATION_KEY, JSON.stringify([...dismissed]));
+  } catch (error) {
+    console.warn("Could not save dismissed moderation notices:", error);
+  }
+}
 
 function showGate(message, title = "Administrator access required") {
   $("devContent")?.classList.add("dev-hidden");
@@ -562,7 +580,18 @@ async function loadModerationActivity() {
       return;
     }
     const labels = { ban: "Account banned", unban: "Ban removed", kick: "Account signed out" };
-    for (const entry of moderationLogEntries.slice(0, 40)) {
+    const dismissedIds = getDismissedModerationIds();
+    const visibleEntries = moderationLogEntries.filter(entry => !dismissedIds.has(String(entry.id)));
+    if (!visibleEntries.length) {
+      const empty = document.createElement("p");
+      empty.className = "dev-section-note";
+      empty.textContent = moderationLogEntries.length
+        ? "All moderation notifications are hidden. The audit records are still محفوظة."
+        : "No moderation actions have been recorded yet.";
+      list.append(empty);
+      return;
+    }
+    for (const entry of visibleEntries.slice(0, 40)) {
       const row = document.createElement("div");
       row.className = "dev-log-item";
       const time = document.createElement("span");
@@ -581,7 +610,22 @@ async function loadModerationActivity() {
         entry.reason ? "Reason: " + entry.reason : ""
       ].filter(Boolean).join(" · ");
       body.append(heading, meta);
-      row.append(time, body);
+      const dismiss = document.createElement("button");
+      dismiss.type = "button";
+      dismiss.className = "dev-button dev-copy";
+      dismiss.textContent = "Dismiss";
+      dismiss.setAttribute("aria-label", "Hide this moderation notification");
+      dismiss.addEventListener("click", () => {
+        dismissModerationNotice(entry.id);
+        row.remove();
+        if (!list.querySelector(".dev-log-item")) {
+          const empty = document.createElement("p");
+          empty.className = "dev-section-note";
+          empty.textContent = "All moderation notifications are hidden. The audit records are still محفوظة.";
+          list.append(empty);
+        }
+      });
+      row.append(time, body, dismiss);
       list.append(row);
     }
   } catch (error) {
@@ -918,6 +962,41 @@ async function loadUniqueProgramVisitors() {
     console.warn("Unique program visitors could not be loaded:", error);
   }
 }
+
+const toggleBanManagement = $("toggleBanManagement");
+const banManagementContent = $("banManagementContent");
+toggleBanManagement?.addEventListener("click", () => {
+  const next = toggleBanManagement.getAttribute("aria-expanded") !== "true";
+  toggleBanManagement.setAttribute("aria-expanded", String(next));
+  banManagementContent?.classList.toggle("dev-hidden", !next);
+  toggleBanManagement.textContent = next ? "⌃ Hide Ban Management" : "⌄ Show Ban Management";
+});
+
+const toggleAdminSecurity = $("toggleAdminSecurity");
+const adminSecurityContent = $("adminSecurityContent");
+toggleAdminSecurity?.addEventListener("click", () => {
+  const next = toggleAdminSecurity.getAttribute("aria-expanded") !== "true";
+  toggleAdminSecurity.setAttribute("aria-expanded", String(next));
+  adminSecurityContent?.classList.toggle("dev-hidden", !next);
+  toggleAdminSecurity.textContent = next ? "⌃ Hide Admin Security" : "⌄ Show Admin Security";
+});
+
+$("dismissSecurityNotice")?.addEventListener("click", () => $("securityStatus")?.remove());
+$("dismissAllModerationNotices")?.addEventListener("click", () => {
+  const ids = moderationLogEntries.map(entry => String(entry.id));
+  try {
+    localStorage.setItem(DISMISSED_MODERATION_KEY, JSON.stringify([...getDismissedModerationIds(), ...ids]));
+  } catch (error) {
+    console.warn("Could not save dismissed moderation notices:", error);
+  }
+  const list = $("moderationActivityList");
+  if (list) {
+    const empty = document.createElement("p");
+    empty.className = "dev-section-note";
+    empty.textContent = "All moderation notifications are hidden. The audit records are still محفوظة.";
+    list.replaceChildren(empty);
+  }
+});
 
 const toggleAllAccounts = $("toggleAllAccounts");
 const accountsContent = $("accountsContent");
