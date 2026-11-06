@@ -206,7 +206,7 @@
     // Skins Library has its own category/card animation; shared reveal transforms break its grid.
     if(reduceMotion || currentFile==="skins.html")return;
     document.querySelectorAll("main h1,main h2,main h3,.hero h1,.contact-hero h1,.signin-hero h1").forEach(splitHeading);
-    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
+    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,main .account-profile-card,main .account-card,.contact-layout > *";
     const items=[...document.querySelectorAll(selector)];
     items.forEach((el,i)=>{
       if(el.closest("form,.auth-card,.login-card,.contact-form-card,.no-motion,.fdh-global-footer")||el.matches("form")||el.classList.contains("fdh-reveal"))return;
