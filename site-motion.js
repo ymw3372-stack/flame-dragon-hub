@@ -92,6 +92,50 @@
     }
   }
 
+  // Right-side account reminder: a compact prompt that guides visitors to registration.
+  function addAccountReminder(){
+    if(currentFile==="account.html" || document.querySelector(".fdh-account-reminder"))return;
+    try{
+      if(localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1")return;
+    }catch(_){}
+    const widget=document.createElement("aside");
+    widget.className="fdh-account-reminder";
+    widget.innerHTML=`
+      <button class="fdh-account-reminder-tab" type="button" aria-expanded="false" aria-controls="fdhAccountReminderPanel">
+        <span class="fdh-account-reminder-icon" aria-hidden="true">✦</span>
+        <span>Account</span>
+      </button>
+      <section class="fdh-account-reminder-panel" id="fdhAccountReminderPanel" hidden aria-label="Account reminder">
+        <button class="fdh-account-reminder-close" type="button" aria-label="Close reminder">×</button>
+        <span class="fdh-account-reminder-kicker">FLAME DRAGON HUB</span>
+        <h2>Have you created an account?</h2>
+        <p>Create an account to make it easier to access your hub profile.</p>
+        <div class="fdh-account-reminder-actions">
+          <button class="fdh-account-reminder-yes" type="button">Yes</button>
+          <button class="fdh-account-reminder-no" type="button">No, I'll create one</button>
+        </div>
+      </section>`;
+    document.body.appendChild(widget);
+    const tab=widget.querySelector(".fdh-account-reminder-tab");
+    const panel=widget.querySelector(".fdh-account-reminder-panel");
+    const close=()=>{panel.hidden=true;tab.setAttribute("aria-expanded","false");};
+    tab.addEventListener("click",()=>{
+      const open=panel.hidden;
+      panel.hidden=!open;
+      tab.setAttribute("aria-expanded",String(open));
+    });
+    widget.querySelector(".fdh-account-reminder-close").addEventListener("click",close);
+    widget.querySelector(".fdh-account-reminder-yes").addEventListener("click",()=>{
+      try{sessionStorage.setItem("fdhAccountPromptDismissed","1");}catch(_){}
+      widget.classList.add("is-dismissed");
+      window.setTimeout(()=>widget.remove(),420);
+    });
+    widget.querySelector(".fdh-account-reminder-no").addEventListener("click",()=>{
+      window.location.href="account.html";
+    });
+    document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close();});
+  }
+
   // Change the running CSS animation's playback rate without resetting its timeline.
   // updatePlaybackRate preserves the current animation position while easing to the new speed.
   function addMarqueeHoverSlowdown(){
@@ -118,7 +162,7 @@
 
   function addPointerTilt(){
     if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
-    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
+    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.account-profile-card,.account-card,.contact-layout > *";
     document.querySelectorAll(selector).forEach(card=>{
       if(card.classList.contains("fdh-tilt"))return;
       card.classList.add("fdh-tilt");
@@ -150,7 +194,7 @@
       if(/^\s+$/.test(part)){heading.appendChild(document.createTextNode(part));return;}
       const span=document.createElement("span");
       span.className="fdh-word";
-      span.style.setProperty("--fdh-word-delay",Math.min(n*95,760)+"ms");
+      span.style.setProperty("--fdh-word-delay",Math.min(n*120,960)+"ms");
       span.textContent=part;
       heading.appendChild(span);
       n++;
@@ -162,12 +206,12 @@
     // Skins Library has its own category/card animation; shared reveal transforms break its grid.
     if(reduceMotion || currentFile==="skins.html")return;
     document.querySelectorAll("main h1,main h2,main h3,.hero h1,.contact-hero h1,.signin-hero h1").forEach(splitHeading);
-    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.contact-layout > *";
+    const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,main .account-profile-card,main .account-card,.contact-layout > *";
     const items=[...document.querySelectorAll(selector)];
     items.forEach((el,i)=>{
       if(el.closest("form,.auth-card,.login-card,.contact-form-card,.no-motion,.fdh-global-footer")||el.matches("form")||el.classList.contains("fdh-reveal"))return;
       el.classList.add("fdh-reveal");
-      el.style.setProperty("--fdh-delay",Math.min((i%3)*65,130)+"ms");
+      el.style.setProperty("--fdh-delay",Math.min((i%4)*140,420)+"ms");
     });
     const targets=document.querySelectorAll(".fdh-reveal");
     if(!("IntersectionObserver" in window)){targets.forEach(el=>el.classList.add("fdh-visible"));return;}
@@ -195,6 +239,7 @@
   function init(){
     addScrollProgress();
     addGlobalFooter();
+    addAccountReminder();
     addMarqueeHoverSlowdown();
     if(typeof addBonusPanel==="function")addBonusPanel();
     addReveal();
