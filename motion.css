@@ -1057,3 +1057,15 @@ body{padding-bottom:0!important}
     -webkit-text-stroke:1.1px rgba(255,174,130,.52)!important;
   }
 }
+
+
+/* Final atmosphere cleanup: remove decorative background words and speed up the dragon. */
+.fdh-dragon-atmosphere .fdh-dragon-words{
+  display:none!important;
+}
+.fdh-dragon-atmosphere .fdh-flying-dragon{
+  animation:fdh-dragon-flight-spin 18s ease-in-out infinite!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .fdh-dragon-atmosphere .fdh-flying-dragon{animation:none!important}
+}
