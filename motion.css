@@ -969,3 +969,91 @@ body{padding-bottom:0!important}
     font-size:12px!important;
   }
 }
+
+
+/* ===== Final visual correction: true top-right prompt, crisp text, clear marquee ===== */
+/* Use a more specific home selector so older bottom-right rules cannot win. */
+.fdh-account-reminder.fdh-account-reminder--home{
+  position:fixed!important;
+  top:112px!important;
+  right:20px!important;
+  bottom:auto!important;
+  left:auto!important;
+  margin:0!important;
+  transform:none!important;
+  flex-direction:column!important;
+  align-items:flex-end!important;
+  z-index:100100!important;
+}
+.fdh-account-reminder.fdh-account-reminder--home .fdh-account-reminder-tab{
+  min-height:52px!important;
+  max-width:min(390px,calc(100vw - 32px))!important;
+  padding:12px 19px!important;
+  font-size:14px!important;
+  line-height:1.4!important;
+  white-space:normal!important;
+  background:rgba(30,17,27,.72)!important;
+  border-color:rgba(255,177,139,.38)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.fdh-account-reminder.fdh-account-reminder--home .fdh-account-reminder-panel{
+  width:min(360px,calc(100vw - 32px))!important;
+  background:rgba(25,16,26,.86)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+/* Never blur readable site copy during reveal or after the animation. */
+.fdh-word,
+.fdh-reveal,
+.fdh-reveal.fdh-visible,
+.fdh-word *,
+.fdh-reveal *{
+  filter:none!important;
+  -webkit-filter:none!important;
+  text-shadow:none!important;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.fdh-reveal{
+  transition:opacity .7s ease,transform .7s cubic-bezier(.18,.72,.18,1)!important;
+}
+/* Slightly larger moving ticker with a genuinely transparent strip. */
+.fdh-global-footer .fdh-bottom-marquee{
+  min-height:116px!important;
+  padding:32px 0!important;
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.fdh-global-footer .fdh-marquee-group span{
+  font-size:clamp(40px,4.6vw,64px)!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-text-stroke:1.5px rgba(255,174,130,.52)!important;
+  text-shadow:none!important;
+}
+@media(max-width:650px){
+  .fdh-account-reminder.fdh-account-reminder--home{
+    top:92px!important;
+    right:10px!important;
+    bottom:auto!important;
+    left:auto!important;
+  }
+  .fdh-account-reminder.fdh-account-reminder--home .fdh-account-reminder-tab{
+    max-width:calc(100vw - 20px)!important;
+    min-height:48px!important;
+    padding:10px 14px!important;
+    font-size:12px!important;
+  }
+  .fdh-global-footer .fdh-bottom-marquee{
+    min-height:88px!important;
+    padding:24px 0!important;
+  }
+  .fdh-global-footer .fdh-marquee-group span{
+    font-size:clamp(29px,7.5vw,42px)!important;
+    -webkit-text-stroke:1.1px rgba(255,174,130,.52)!important;
+  }
+}
