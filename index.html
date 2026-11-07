@@ -632,11 +632,11 @@ a {
 
 
 /* v1.0.4 migration announcement */
-.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:22px;margin:8px auto 38px;padding:22px 24px;border:1px solid #ff647766;border-radius:18px;background:linear-gradient(110deg,#421b31,#211827 68%,#1b1725);box-shadow:0 14px 36px #0005;overflow:hidden}
-.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:220px;height:220px;border-radius:50%;background:#ff465722;filter:blur(35px);pointer-events:none}
-.update-announcement-copy{position:relative;min-width:0}.update-announcement-kicker{display:inline-block;margin-bottom:8px;color:#ffd27c;font-size:10px;font-weight:950;letter-spacing:2px}.update-announcement h2{margin:0 0 7px;color:#fff1f4;font-size:clamp(18px,2.5vw,23px)}
-.update-announcement p{margin:0;color:#d3c2d0;font-size:13px;line-height:1.7}.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:11px;background:linear-gradient(110deg,#ed3c58,#982747);color:white;text-decoration:none;font-size:11px;font-weight:950;letter-spacing:.5px;box-shadow:0 8px 22px #ed3c5833;transition:transform .2s,filter .2s}.update-announcement-button:hover{transform:translateY(-2px);filter:brightness(1.12)}
-@media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:0 auto 30px;padding:19px}.update-announcement-button{width:100%}}
+.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:32px clamp(24px,4vw,42px);border:1px solid #ff647799;border-radius:22px;background:linear-gradient(110deg,#4b1b35,#241827 68%,#1b1725);box-shadow:0 18px 46px #0007,0 0 32px #ff46571c;overflow:hidden;min-height:190px}
+.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:280px;height:280px;border-radius:50%;background:#ff465733;filter:blur(42px);pointer-events:none}
+.update-announcement-copy{position:relative;min-width:0;max-width:680px}.update-announcement-kicker{display:inline-block;margin-bottom:12px;color:#ffd27c;font-size:12px;font-weight:950;letter-spacing:2.2px}.update-announcement h2{margin:0 0 11px;color:#fff1f4;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
+.update-announcement p{margin:0;color:#ead9e5;font-size:16px;line-height:1.8}.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border-radius:13px;background:linear-gradient(110deg,#ed3c58,#982747);color:white;text-decoration:none;font-size:13px;font-weight:950;letter-spacing:.6px;box-shadow:0 10px 26px #ed3c5844;transition:transform .2s,filter .2s}.update-announcement-button:hover{transform:translateY(-3px);filter:brightness(1.14)}
+@media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:10px auto 32px;padding:24px 20px;min-height:0;gap:20px}.update-announcement h2{font-size:25px}.update-announcement p{font-size:15px}.update-announcement-button{width:100%;min-height:54px;font-size:13px}}
 
 /* EvoWorld compatibility disclaimer */
 .evo-compat-warning{display:flex;gap:13px;align-items:flex-start;margin:18px auto 26px;padding:16px 18px;border:1px solid #e8a83b88;border-left:4px solid #e8a83b;border-radius:13px;background:linear-gradient(110deg,#392916,#241d19);color:#fff3dc;box-shadow:0 10px 28px #0003}
@@ -687,9 +687,9 @@ a {
 </aside>
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker">🔥 NEW SKINS ADDED · EXTENSION v1.0.4</span>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">🔥 NEW SKINS ADDED · EXTENSION v1.0.4</span>
     <h2 id="update-announcement-title">Lots of new skins have arrived!</h2>
-    <p>We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.0.4 extension, then explore the expanded Skin Library and discover your new favorites.</p>
+    <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.0.4 extension, then explore the expanded Skin Library and discover your new favorites.</p>
   </div>
   <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.4/FLAME_DRAGON_HUB_v1.0.4.zip">DOWNLOAD v1.0.4 ↓</a>
 </section>
