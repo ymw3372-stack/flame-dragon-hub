@@ -55,7 +55,7 @@ setText("home-card-skins-title",home.skinsTitle);setText("home-card-skins-descri
 setText("home-card-evolutions-title",home.evolutionsTitle);setText("home-card-evolutions-description",home.evolutionsDescription);
 setText("home-card-settings-title",home.settingsTitle);setText("home-card-settings-description",home.settingsDescription);
 setText("home-guide-kicker",home.guideKicker);setText("install-guide-title",home.guideTitle);setText("home-guide-description",home.guideDescription);setText("home-guide-button",home.guideButton);
-setText("home-footer-brand","· "+home.footerBrand.replace(/^· /,""));setText("home-footer-community",home.footerCommunity);
+const footerBrand=document.getElementById("home-footer-brand");if(footerBrand)footerBrand.innerHTML="<strong>FLAME DRAGON HUB</strong> "+home.footerBrand;setText("home-footer-community",home.footerCommunity);
 setText("fdh-language-label",home.languageLabel);setText("fdh-quick-caption",home.quickCaption);
 const languageControl=document.getElementById("fdhLanguage");if(languageControl)languageControl.value=code;
 const quickAccount=document.getElementById("fdh-quick-account");if(quickAccount)quickAccount.textContent=home.quickAccount;
