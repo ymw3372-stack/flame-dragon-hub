@@ -285,7 +285,8 @@
 
   function addSlowHeadingMotion(){
     if(reduceMotion)return;
-    document.querySelectorAll("main h1,.hero .main-title").forEach(splitHeading);
+    document.querySelectorAll("main h1,.hero .main-title").forEach(el=>el.classList.add("fdh-heading-arrive"));
+    document.querySelectorAll("main .hero p,main .subtitle").forEach(el=>el.classList.add("fdh-copy-arrive"));
   }
 
   function addDragonAtmosphere(){
