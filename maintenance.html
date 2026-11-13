@@ -78,7 +78,7 @@ select{max-width:180px;padding:9px 12px;border:1px solid rgba(255,255,255,.18);b
    nodes.status.textContent=t.status;
    nodes.title.textContent=t.title+" ";
    const accent=document.createElement("span");accent.textContent=t.accent;nodes.title.appendChild(accent);
-   nodes.lead.textContent=t.lead;nodes.arabic.textContent=t.arabic;nodes.safe.textContent=t.safe;
+   nodes.lead.textContent=t.lead;nodes.arabic.textContent=t.arabic;nodes.arabic.hidden=code!=="en"&&code!=="ar";nodes.safe.textContent=t.safe;
    nodes.enter.textContent=t.enter;nodes.language.textContent=t.language;
    try{localStorage.setItem("flameDragonLanguage",code)}catch(_){}
  }
