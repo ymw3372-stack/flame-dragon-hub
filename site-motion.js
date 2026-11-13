@@ -246,6 +246,48 @@
     targets.forEach(el=>observer.observe(el));
   }
 
+  function addSunlightLayer(){
+    if(document.querySelector(".fdh-sunlight-layer"))return;
+    const layer=document.createElement("div");
+    layer.className="fdh-sunlight-layer";
+    layer.setAttribute("aria-hidden","true");
+    document.body.prepend(layer);
+  }
+
+  function addImageDraw(){
+    if(reduceMotion || currentFile==="skins.html")return;
+    const images=[...document.querySelectorAll("main img")].filter(img=>
+      !img.closest(".brand,.no-motion,.fdh-global-footer,.fdh-dragon-atmosphere") &&
+      !img.classList.contains("fdh-no-draw") &&
+      !/logo|avatar|icon/i.test((img.alt||"")+" "+(img.getAttribute("src")||""))
+    );
+    if(!images.length)return;
+    const reveal=img=>img.classList.add("fdh-image-drawn");
+    if(!("IntersectionObserver" in window)){
+      images.forEach(img=>{img.classList.add("fdh-image-draw");reveal(img);});
+      return;
+    }
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    },{threshold:.08,rootMargin:"0px 0px -20px 0px"});
+    images.forEach(img=>{
+      img.classList.add("fdh-image-draw");
+      if(img.complete && img.naturalWidth)observer.observe(img);
+      else img.addEventListener("load",()=>observer.observe(img),{once:true});
+      img.addEventListener("error",()=>{img.classList.add("fdh-image-drawn");},{once:true});
+    });
+  }
+
+  function addSlowHeadingMotion(){
+    if(reduceMotion)return;
+    document.querySelectorAll("main h1,.hero .main-title").forEach(splitHeading);
+  }
+
   function addDragonAtmosphere(){
     if(document.querySelector(".fdh-dragon-atmosphere"))return;
     const layer=document.createElement("div");
