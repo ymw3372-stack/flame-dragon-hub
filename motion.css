@@ -1230,3 +1230,17 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
   .fdh-sunlight-layer{opacity:.62}
   .fdh-sunlight-layer:after{width:95vw;height:95vw;left:-42vw;top:-56vw}
 }
+
+
+/* Gentle, readable text entrance without splitting or replacing heading markup. */
+.fdh-heading-arrive{animation:fdh-heading-arrive 1.8s cubic-bezier(.18,.72,.18,1) both}
+.fdh-copy-arrive{animation:fdh-copy-arrive 2.15s cubic-bezier(.18,.72,.18,1) both;animation-delay:180ms}
+@keyframes fdh-heading-arrive{
+  from{opacity:0;transform:translate3d(0,18px,0);filter:blur(5px)}
+  to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+@keyframes fdh-copy-arrive{
+  from{opacity:0;transform:translate3d(0,14px,0);filter:blur(3px)}
+  to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+@media(prefers-reduced-motion:reduce){.fdh-heading-arrive,.fdh-copy-arrive{animation:none!important}}
