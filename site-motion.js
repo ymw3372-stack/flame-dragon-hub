@@ -305,6 +305,9 @@
 
   function init(){
     addScrollProgress();
+    addSunlightLayer();
+    addSlowHeadingMotion();
+    addImageDraw();
     addGlobalFooter();
     addAccountReminder();
     addMarqueeHoverSlowdown();
