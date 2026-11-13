@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#120f20">
+<meta name="description" content="FLAME DRAGON HUB is almost ready. We're adding the final touches.">
+<title>Almost Ready · FLAME DRAGON HUB</title>
+<link rel="icon" href="assets/logo.png" type="image/png">
+<style>
+:root{color-scheme:dark;--gold:#f4cf83;--cream:#fff2d8;--muted:#c9c1d5;--violet:#171326}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;display:grid;place-items:center;overflow-x:hidden;padding:28px 16px;color:var(--cream);background:radial-gradient(ellipse at 50% 0%,rgba(130,91,155,.22),transparent 48%),linear-gradient(145deg,#0c0a16 0%,#19142a 52%,#100d1d 100%)}
+body:before,body:after{content:"";position:fixed;pointer-events:none;border-radius:50%;filter:blur(35px);z-index:0}
+body:before{width:420px;height:420px;top:-250px;left:-130px;background:radial-gradient(circle,rgba(244,207,131,.12),transparent 70%);animation:glowDrift 22s ease-in-out infinite alternate}
+body:after{width:500px;height:500px;right:-260px;bottom:-300px;background:radial-gradient(circle,rgba(151,111,204,.15),transparent 70%);animation:glowDrift 28s ease-in-out infinite alternate-reverse}
+@keyframes glowDrift{to{transform:translate(70px,55px) scale(1.12)}}
+.maintenance-shell{position:relative;z-index:1;width:min(760px,100%);padding:clamp(25px,5vw,54px);text-align:center;border:1px solid rgba(244,207,131,.25);border-radius:28px;background:linear-gradient(145deg,rgba(34,27,51,.91),rgba(18,15,31,.96));box-shadow:0 28px 90px rgba(0,0,0,.42),0 0 48px rgba(244,207,131,.07);backdrop-filter:blur(18px);animation:cardEnter 1.2s cubic-bezier(.2,.75,.2,1) both}
+@keyframes cardEnter{from{opacity:0;transform:translateY(24px) scale(.985);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+.brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:36px;color:#fff;font-weight:900;letter-spacing:1.8px;font-size:clamp(15px,3vw,20px)}
+.brand img{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(244,207,131,.35))}
+.brand span{color:var(--gold)}
+.status{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border:1px solid rgba(244,207,131,.28);border-radius:999px;color:var(--gold);background:rgba(244,207,131,.075);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.status:before{content:"";width:7px;height:7px;border-radius:50%;background:#e8bd70;box-shadow:0 0 12px #e8bd70;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45;transform:scale(.78)}}
+h1{margin:23px 0 12px;font-size:clamp(36px,7vw,64px);line-height:1.04;letter-spacing:-1.8px;color:#fff4df}
+h1 span{display:block;margin-top:8px;color:var(--gold);text-shadow:0 0 28px rgba(244,207,131,.18)}
+.lead{max-width:560px;margin:0 auto;color:#e6deed;font-size:clamp(15px,2.3vw,18px);line-height:1.85}
+.arabic{max-width:570px;margin:18px auto 0;color:#f3e6d2;font-size:clamp(15px,2.2vw,17px);line-height:2;direction:rtl}
+.safe-note{margin:20px auto 0;color:var(--muted);font-size:13px;line-height:1.8}
+.action{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:54px;margin-top:30px;padding:0 25px;border:1px solid rgba(255,235,191,.72);border-radius:14px;color:#261b12;background:linear-gradient(110deg,#f0c878,#ffe5a8 55%,#e8b85f);font-size:14px;font-weight:900;letter-spacing:.25px;text-decoration:none;box-shadow:0 10px 30px rgba(225,177,91,.22),inset 0 1px rgba(255,255,255,.65);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
+.action:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 15px 38px rgba(225,177,91,.32)}
+.action:focus-visible,select:focus-visible{outline:3px solid #fff0bd;outline-offset:4px}
+.arrow{font-size:20px;transition:transform .25s ease}.action:hover .arrow{transform:translateX(4px)}
+.language-row{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:26px;color:#c9c1d5;font-size:12px}
+select{max-width:180px;padding:9px 12px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#fff;background:#211b32;font:inherit}
+.footer{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.09);color:#b8accb;font-size:10px;font-weight:700;letter-spacing:1.7px}
+@media(max-width:520px){.maintenance-shell{padding:27px 19px;border-radius:21px}.brand{margin-bottom:28px}.action{width:100%}.footer{font-size:9px;letter-spacing:1px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="maintenance-shell">
+  <div class="brand"><img src="assets/logo.png" alt=""><span>FLAME DRAGON</span> HUB</div>
+  <div class="status" id="status">TEMPORARY MAINTENANCE</div>
+  <h1 id="title">We're almost <span>ready.</span></h1>
+  <p class="lead" id="lead">We're adding the final touches to FLAME DRAGON HUB to make your experience even better. We'll be back very soon.</p>
+  <p class="arabic" id="arabic">أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل. سنعود قريبًا.</p>
+  <p class="safe-note" id="safe">Your account and saved data are safe. Nothing is being deleted.</p>
+  <a class="action" id="enter" href="./index.html"><span id="enterText">Enter FLAME DRAGON HUB</span><span class="arrow" aria-hidden="true">→</span></a>
+  <div class="language-row"><label for="language" id="languageLabel">Language</label>
+    <select id="language" aria-label="Language">
+      <option value="en">English</option><option value="ar">العربية</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="es">Español</option><option value="tr">Türkçe</option>
+    </select>
+  </div>
+  <footer class="footer">FLAME DRAGON HUB · YOUR EVOWORLD COMPANION</footer>
+</main>
+<script>
+(()=>{
+ const copy={
+ en:{status:"TEMPORARY MAINTENANCE",title:"We're almost",accent:"ready.",lead:"We're adding the final touches to FLAME DRAGON HUB to make your experience even better. We'll be back very soon.",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل. سنعود قريبًا.",safe:"Your account and saved data are safe. Nothing is being deleted.",enter:"Enter FLAME DRAGON HUB",language:"Language",dir:"ltr"},
+ ar:{status:"صيانة مؤقتة",title:"أوشكنا على",accent:"الانتهاء!",lead:"نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل. سنعود قريبًا جدًا.",arabic:"الموقع تحت الصيانة والتحديث حاليًا. حسابك وبياناتك المحفوظة بأمان ولم يتم حذف أي شيء.",safe:"حسابك وبياناتك المحفوظة في أمان. لم يتم حذف أي شيء.",enter:"الدخول إلى FLAME DRAGON HUB",language:"اللغة",dir:"rtl"},
+ de:{status:"VORÜBERGEHENDE WARTUNG",title:"Wir sind fast",accent:"fertig.",lead:"Wir geben FLAME DRAGON HUB den letzten Schliff, damit dein Erlebnis noch besser wird. Wir sind bald zurück.",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل.",safe:"Dein Konto und deine gespeicherten Daten sind sicher. Es wird nichts gelöscht.",enter:"FLAME DRAGON HUB öffnen",language:"Sprache",dir:"ltr"},
+ ru:{status:"ВРЕМЕННОЕ ОБСЛУЖИВАНИЕ",title:"Мы почти",accent:"готовы.",lead:"Мы завершаем последние улучшения FLAME DRAGON HUB. Скоро мы вернёмся с ещё более удобным сайтом.",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل.",safe:"Ваш аккаунт и сохранённые данные в безопасности. Ничего не удаляется.",enter:"Открыть FLAME DRAGON HUB",language:"Язык",dir:"ltr"},
+ hi:{status:"अस्थायी रखरखाव",title:"हम लगभग",accent:"तैयार हैं।",lead:"हम FLAME DRAGON HUB को बेहतर बनाने के लिए अंतिम बदलाव कर रहे हैं। हम जल्द वापस आएँगे।",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل.",safe:"आपका खाता और सहेजा गया डेटा सुरक्षित है। कुछ भी हटाया नहीं जा रहा है।",enter:"FLAME DRAGON HUB खोलें",language:"भाषा",dir:"ltr"},
+ es:{status:"MANTENIMIENTO TEMPORAL",title:"Ya casi",accent:"estamos listos.",lead:"Estamos dando los últimos retoques a FLAME DRAGON HUB para mejorar tu experiencia. Volveremos muy pronto.",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل.",safe:"Tu cuenta y tus datos guardados están seguros. No se está eliminando nada.",enter:"Entrar en FLAME DRAGON HUB",language:"Idioma",dir:"ltr"},
+ tr:{status:"GEÇİCİ BAKIM",title:"Neredeyse",accent:"hazırız.",lead:"FLAME DRAGON HUB deneyimini daha iyi hâle getirmek için son dokunuşları yapıyoruz. Çok yakında döneceğiz.",arabic:"أوشكنا على الانتهاء! نضع اللمسات الأخيرة على FLAME DRAGON HUB لنقدم لكم تجربة أفضل.",safe:"Hesabın ve kayıtlı verilerin güvende. Hiçbir şey silinmiyor.",enter:"FLAME DRAGON HUB'a gir",language:"Dil",dir:"ltr"}
+ };
+ const nodes={status:document.getElementById("status"),title:document.getElementById("title"),lead:document.getElementById("lead"),arabic:document.getElementById("arabic"),safe:document.getElementById("safe"),enter:document.getElementById("enterText"),language:document.getElementById("languageLabel")};
+ const select=document.getElementById("language");
+ let saved="en";try{saved=localStorage.getItem("flameDragonLanguage")||"en"}catch(_){}
+ if(!copy[saved])saved="en";
+ select.value=saved;
+ function apply(code){
+   const t=copy[code]||copy.en;
+   document.documentElement.lang=code;document.documentElement.dir=t.dir;
+   nodes.status.textContent=t.status;
+   nodes.title.textContent=t.title+" ";
+   const accent=document.createElement("span");accent.textContent=t.accent;nodes.title.appendChild(accent);
+   nodes.lead.textContent=t.lead;nodes.arabic.textContent=t.arabic;nodes.arabic.hidden=code!=="en"&&code!=="ar";nodes.safe.textContent=t.safe;
+   nodes.enter.textContent=t.enter;nodes.language.textContent=t.language;
+   try{localStorage.setItem("flameDragonLanguage",code)}catch(_){}
+ }
+ select.addEventListener("change",()=>apply(select.value));
+ apply(saved);
+})();
+</script>
+</body>
+</html>

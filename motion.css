@@ -32,7 +32,7 @@
   88%{transform:translate3d(20vw,3vh,0) rotate(535deg) scaleX(-1)}
   100%{transform:translate3d(-28vw,0,0) rotate(712deg) scale(1)}
 }
-body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track){position:relative;z-index:1}
+body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track):not(.fdh-sunlight-layer){position:relative;z-index:1}
 .fdh-global-footer{position:relative;isolation:isolate;overflow:hidden;margin:64px 0 0;padding:48px max(4vw,18px) 18px;border-top:1px solid rgba(255,154,91,.38);background:radial-gradient(ellipse at 15% 0%,rgba(255,104,48,.13),transparent 42%),linear-gradient(180deg,rgba(24,13,14,.97),rgba(10,8,12,.99));color:#f8e9df}
 .fdh-global-footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 25%,rgba(255,165,93,.045) 50%,transparent 72%);background-size:220% 100%;animation:fdh-footer-glow 12s ease-in-out infinite}
 @keyframes fdh-footer-glow{0%,100%{background-position:100% 0}50%{background-position:0 0}}
@@ -1173,3 +1173,74 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
   }
   main p,.contact-hero p{font-size:13px}
 }
+
+
+/* Warm sunrise atmosphere across the Hub pages (not the maintenance screen). */
+.fdh-sunlight-layer{
+  position:fixed;inset:-8%;z-index:0;overflow:hidden;pointer-events:none;
+  opacity:.76;mix-blend-mode:screen;contain:paint;
+  background:
+    radial-gradient(ellipse 58% 44% at 5% 0%,rgba(255,218,143,.25),transparent 74%),
+    radial-gradient(ellipse 42% 38% at 94% 8%,rgba(255,177,91,.18),transparent 76%),
+    radial-gradient(ellipse 70% 38% at 48% 100%,rgba(255,197,116,.09),transparent 78%);
+  animation:fdh-sunlight-drift 32s ease-in-out infinite alternate;
+}
+.fdh-sunlight-layer:before{
+  content:"";position:absolute;inset:-22%;
+  background:conic-gradient(from 218deg at 6% 2%,
+    transparent 0deg,rgba(255,224,164,.075) 10deg,transparent 24deg,
+    transparent 38deg,rgba(255,205,130,.055) 49deg,transparent 66deg,
+    transparent 92deg,rgba(255,226,171,.045) 105deg,transparent 122deg,
+    transparent 360deg);
+  filter:blur(24px);transform-origin:6% 2%;
+  animation:fdh-sun-rays 46s ease-in-out infinite alternate;
+}
+.fdh-sunlight-layer:after{
+  content:"";position:absolute;width:min(68vw,760px);height:min(68vw,760px);
+  left:-25vw;top:-43vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,225,164,.19) 0%,rgba(255,190,105,.085) 35%,transparent 70%);
+  filter:blur(26px);animation:fdh-sun-orb 24s ease-in-out infinite alternate;
+}
+@keyframes fdh-sunlight-drift{
+  0%{transform:translate3d(-1.5%,0,0) scale(1)}
+  100%{transform:translate3d(1.5%,1.2%,0) scale(1.035)}
+}
+@keyframes fdh-sun-rays{
+  0%{transform:rotate(-3deg) scale(1)}
+  100%{transform:rotate(5deg) scale(1.05)}
+}
+@keyframes fdh-sun-orb{
+  0%{transform:translate3d(0,0,0) scale(.96);opacity:.72}
+  100%{transform:translate3d(8vw,5vh,0) scale(1.08);opacity:1}
+}
+
+/* Slow image-drawing reveal for artwork and screenshots. */
+.fdh-image-draw{
+  clip-path:inset(0 100% 0 0 round 10px);
+  opacity:.72;
+  transition:clip-path 1.75s cubic-bezier(.2,.72,.18,1),opacity 1.35s ease;
+  will-change:clip-path,opacity;
+}
+.fdh-image-draw.fdh-image-drawn{clip-path:inset(0 0 0 0 round 10px);opacity:1}
+@media(prefers-reduced-motion:reduce){
+  .fdh-sunlight-layer,.fdh-sunlight-layer:before,.fdh-sunlight-layer:after{animation:none!important}
+  .fdh-image-draw,.fdh-image-draw.fdh-image-drawn{clip-path:none;opacity:1;transition:none;will-change:auto}
+}
+@media(max-width:700px){
+  .fdh-sunlight-layer{opacity:.62}
+  .fdh-sunlight-layer:after{width:95vw;height:95vw;left:-42vw;top:-56vw}
+}
+
+
+/* Gentle, readable text entrance without splitting or replacing heading markup. */
+.fdh-heading-arrive{animation:fdh-heading-arrive 1.8s cubic-bezier(.18,.72,.18,1) both}
+.fdh-copy-arrive{animation:fdh-copy-arrive 2.15s cubic-bezier(.18,.72,.18,1) both;animation-delay:180ms}
+@keyframes fdh-heading-arrive{
+  from{opacity:0;transform:translate3d(0,18px,0);filter:blur(5px)}
+  to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+@keyframes fdh-copy-arrive{
+  from{opacity:0;transform:translate3d(0,14px,0);filter:blur(3px)}
+  to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+@media(prefers-reduced-motion:reduce){.fdh-heading-arrive,.fdh-copy-arrive{animation:none!important}}
