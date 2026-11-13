@@ -3,7 +3,10 @@ const CACHE_NAME = "flame-dragon-hub-v15";
 
 const FILES_TO_CACHE = [
   "./",
-  "./index.html",\n  "./maintenance.html",\n  "./motion.css",\n  "./site-motion.js",
+  "./index.html",
+  "./maintenance.html",
+  "./motion.css",
+  "./site-motion.js",
   "./welcome.html",
   "./evolutions.html",
   "./skins.html",
