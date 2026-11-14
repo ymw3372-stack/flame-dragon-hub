@@ -73,6 +73,40 @@ service cloud.firestore {
     allow update, delete: if false;
   }
 
+  // Public ratings and comments. Visitors may submit append-only reviews; only the
+  // verified administrator can hide or restore the public list. Reviews are never deleted.
+  match /publicReviewSettings/{settingsId} {
+    allow get: if settingsId == 'global';
+    allow list: if false;
+    allow create, update: if isAdmin()
+      && settingsId == 'global'
+      && request.resource.data.keys().hasOnly(['visible', 'updatedAt', 'updatedBy'])
+      && request.resource.data.keys().hasAll(['visible', 'updatedAt', 'updatedBy'])
+      && request.resource.data.visible is bool
+      && request.resource.data.updatedAt == request.time
+      && request.resource.data.updatedBy == request.auth.uid;
+    allow delete: if false;
+  }
+
+  match /publicReviews/{reviewId} {
+    allow read: if isAdmin()
+      || !exists(/databases/$(database)/documents/publicReviewSettings/global)
+      || get(/databases/$(database)/documents/publicReviewSettings/global).data.visible == true;
+    allow create: if request.resource.data.keys().hasOnly(['name', 'rating', 'comment', 'createdAt'])
+      && request.resource.data.keys().hasAll(['name', 'rating', 'comment', 'createdAt'])
+      && request.resource.data.name is string
+      && request.resource.data.name.size() >= 1
+      && request.resource.data.name.size() <= 32
+      && request.resource.data.rating is int
+      && request.resource.data.rating >= 1
+      && request.resource.data.rating <= 5
+      && request.resource.data.comment is string
+      && request.resource.data.comment.size() >= 1
+      && request.resource.data.comment.size() <= 500
+      && request.resource.data.createdAt == request.time;
+    allow update, delete: if false;
+  }
+
   // Moderation records are readable by the owner of that account and by the admin.
   // Only the verified admin can write them, and the admin cannot target their own UID.
   match /userBans/{uid} {
