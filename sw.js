@@ -1,10 +1,13 @@
 
-const CACHE_NAME = "flame-dragon-hub-v15";
+const CACHE_NAME = "flame-dragon-hub-v16";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
-  "./maintenance.html",
+  "./install-guide.html",
+  "./extension-update.html",
+  "./extension-update.json",
+  "./contact.html",
   "./motion.css",
   "./site-motion.js",
   "./welcome.html",

@@ -631,7 +631,7 @@ a {
 }
 
 
-/* v1.0.4 migration announcement */
+/* v1.2.1 migration announcement */
 .update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:32px clamp(24px,4vw,42px);border:1px solid #ff647799;border-radius:22px;background:linear-gradient(110deg,#4b1b35,#241827 68%,#1b1725);box-shadow:0 18px 46px #0007,0 0 32px #ff46571c;overflow:hidden;min-height:190px}
 .update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:280px;height:280px;border-radius:50%;background:#ff465733;filter:blur(42px);pointer-events:none}
 .update-announcement-copy{position:relative;min-width:0;max-width:680px}.update-announcement-kicker{display:inline-block;margin-bottom:12px;color:#ffd27c;font-size:12px;font-weight:950;letter-spacing:2.2px}.update-announcement h2{margin:0 0 11px;color:#fff1f4;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
@@ -689,11 +689,11 @@ a {
 
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker" id="update-announcement-kicker">🔥 NEW SKINS ADDED · EXTENSION v1.0.4</span>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">🔥 NEW SKINS ADDED · EXTENSION v1.2.1</span>
     <h2 id="update-announcement-title">Lots of new skins have arrived!</h2>
-    <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.0.4 extension, then explore the expanded Skin Library and discover your new favorites.</p>
+    <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.2.1 extension, then explore the expanded Skin Library and discover your new favorites.</p>
   </div>
-  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.4/FLAME_DRAGON_HUB_v1.0.4.zip" id="home-announcement-button">DOWNLOAD v1.0.4 ↓</a>
+  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.2.1/FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip" id="home-announcement-button">DOWNLOAD v1.2.1 ↓</a>
 </section>
 
     <section class="orbit-section" aria-label="Quick navigation">
@@ -710,11 +710,11 @@ a {
           <div class="orbit-position">
             <a class="orbit-card"
                id="extensionDownloadButton"
-               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/v1.0.4/FLAME_DRAGON_HUB_v1.0.4.zip"
+               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.2.1/FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip"
                download>
               <span class="card-icon">⬇</span>
-              <strong id="home-card-update-title">UPDATE EXTENSION · v1.0.4</strong>
-              <small id="home-card-update-description">Direct ZIP download · v1.0.4</small>
+              <strong id="home-card-update-title">UPDATE EXTENSION · v1.2.1</strong>
+              <small id="home-card-update-description">Direct ZIP download · v1.2.1</small>
             </a>
           </div>
 
@@ -951,8 +951,8 @@ a {
   function hideDownloadedUpdate(event) {
     const state = event?.detail;
     const alreadyDownloaded =
-      document.documentElement.getAttribute("data-fdh-v103-downloaded") === "true";
-    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.0.3")) return;
+      document.documentElement.getAttribute("data-fdh-v121-downloaded") === "true";
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.2.1")) return;
 
     if (announcement) {
       announcement.hidden = true;

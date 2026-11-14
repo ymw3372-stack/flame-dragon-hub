@@ -1178,7 +1178,7 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 /* Warm sunrise atmosphere across the Hub pages (not the maintenance screen). */
 .fdh-sunlight-layer{
   position:fixed;inset:-8%;z-index:0;overflow:hidden;pointer-events:none;
-  opacity:.76;mix-blend-mode:screen;contain:paint;
+  opacity:.62;mix-blend-mode:screen;contain:paint;
   background:
     radial-gradient(ellipse 58% 44% at 5% 0%,rgba(255,218,143,.25),transparent 74%),
     radial-gradient(ellipse 42% 38% at 94% 8%,rgba(255,177,91,.18),transparent 76%),
@@ -1218,7 +1218,7 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 .fdh-image-draw{
   clip-path:inset(0 100% 0 0 round 10px);
   opacity:.72;
-  transition:clip-path 1.75s cubic-bezier(.2,.72,.18,1),opacity 1.35s ease;
+  transition:clip-path 1.25s cubic-bezier(.2,.72,.18,1),opacity 1s ease;
   will-change:clip-path,opacity;
 }
 .fdh-image-draw.fdh-image-drawn{clip-path:inset(0 0 0 0 round 10px);opacity:1}
@@ -1227,7 +1227,7 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
   .fdh-image-draw,.fdh-image-draw.fdh-image-drawn{clip-path:none;opacity:1;transition:none;will-change:auto}
 }
 @media(max-width:700px){
-  .fdh-sunlight-layer{opacity:.62}
+  .fdh-sunlight-layer{opacity:.50}
   .fdh-sunlight-layer:after{width:95vw;height:95vw;left:-42vw;top:-56vw}
 }
 

@@ -403,9 +403,23 @@ body:after{
 </section>
 </div>
 </section>
+<section class="dev-panel" id="publicReviewsPanel">
+<h2>Public Ratings &amp; Reviews</h2>
+<p class="muted">Review community ratings and control whether all public comments are visible. Hiding reviews never deletes them.</p>
+<button id="togglePublicReviews" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="publicReviewsContent">⌄ Show Public Reviews</button>
+<div id="publicReviewsContent" class="dev-hidden">
+<div class="dev-message" id="publicReviewsVisibilityState">Checking public review visibility…</div>
+<div class="dev-inline-actions">
+<button id="showPublicReviews" class="dev-button" type="button">Show All Comments</button>
+<button id="hidePublicReviews" class="dev-button danger" type="button">Hide All Comments</button>
+<button id="refreshPublicReviews" class="dev-button" type="button">↻ Refresh Reviews</button>
+</div>
+<div id="publicReviewsAdminList" aria-live="polite"><p class="dev-section-note">Open this section to load community reviews.</p></div>
+</div>
+</section>
 <section class="dev-panel">
 <h2>Extension Analytics</h2>
-<p class="muted">Anonymous extension stats. ZIP downloads and website clicks are separate; install and gameplay tracking are not available in v1.0.3.</p>
+<p class="muted">Anonymous extension stats. ZIP downloads and website clicks are separate; install and gameplay tracking are not available in v1.2.1.</p>
 <button id="toggleExtensionAnalytics" class="dev-button gold dev-master-toggle" type="button" aria-expanded="false" aria-controls="extensionAnalyticsContent">⌄ Show Extension Analytics</button>
 <div id="extensionAnalyticsContent" class="dev-hidden">
 <div class="dev-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
@@ -413,7 +427,7 @@ body:after{
 <article class="dev-card"><span>Download button clicks</span><strong id="extensionDownloadClicks">—</strong></article><article class="dev-card"><span>Installation events recorded</span><strong id="extensionInstalls">—</strong></article><article class="dev-card"><span>Usage sessions recorded</span><strong id="extensionUsageSessions">—</strong></article>
 <article class="dev-card"><span>Latest download click</span><strong id="extensionLastClick" style="font-size:15px">—</strong></article>
 </div>
-<div class="dev-message">Installations and gameplay sessions are not tracked by v1.0.3. A ZIP download does not confirm either.</div>
+<div class="dev-message">Installations and gameplay sessions are not tracked by v1.2.1. A ZIP download does not confirm either.</div>
 <div class="dev-table-wrap"><table class="dev-table"><thead><tr><th>Event</th><th>Source</th><th>Date</th></tr></thead><tbody id="extensionEventsTable"><tr><td colspan="3">Loading extension events…</td></tr></tbody></table></div>
 </div>
 </section>
