@@ -1093,6 +1093,87 @@ toggleContactNoticeControls?.addEventListener("click", () => {
 });
 
 
+const publicReviewSettingsRef = doc(db, "publicReviewSettings", "global");
+const publicReviewsAdminList = $("publicReviewsAdminList");
+const publicReviewsVisibilityState = $("publicReviewsVisibilityState");
+
+async function loadPublicReviewsAdmin() {
+  if (!publicReviewsAdminList) return;
+  publicReviewsAdminList.textContent = "Loading community reviews…";
+  try {
+    const settings = await getDoc(publicReviewSettingsRef);
+    const visible = !settings.exists() || settings.data().visible !== false;
+    if (publicReviewsVisibilityState) {
+      publicReviewsVisibilityState.textContent = visible
+        ? "Public comments are currently visible to visitors."
+        : "All public comments are hidden. Every review remains saved and can be shown again.";
+    }
+    const snapshot = await getDocs(query(collection(db, "publicReviews"), orderBy("createdAt", "desc"), limit(100)));
+    if (!snapshot.size) {
+      publicReviewsAdminList.textContent = "No community reviews have been submitted yet.";
+      return;
+    }
+    const fragment = document.createDocumentFragment();
+    snapshot.forEach(item => {
+      const data = item.data();
+      const card = document.createElement("article");
+      card.className = "dev-item";
+      const head = document.createElement("div");
+      head.className = "dev-inline-actions";
+      head.style.justifyContent = "space-between";
+      const author = document.createElement("strong");
+      author.textContent = String(data.name || "Community member").slice(0, 32);
+      const rating = document.createElement("span");
+      const score = Math.max(1, Math.min(5, Number(data.rating) || 1));
+      rating.textContent = "★".repeat(score) + "☆".repeat(5-score);
+      rating.style.color = "#f4d27a";
+      head.append(author, rating);
+      const comment = document.createElement("p");
+      comment.className = "muted";
+      comment.style.whiteSpace = "pre-wrap";
+      comment.textContent = String(data.comment || "").slice(0, 500);
+      const date = document.createElement("small");
+      date.className = "dev-foot";
+      date.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : "Just submitted";
+      card.append(head, comment, date);
+      fragment.append(card);
+    });
+    publicReviewsAdminList.replaceChildren(fragment);
+  } catch (error) {
+    console.error("Could not load public reviews:", error);
+    publicReviewsAdminList.textContent = "Could not load reviews. Check Firestore Rules and your connection.";
+  }
+}
+
+async function setPublicReviewsVisible(visible) {
+  try {
+    await setDoc(publicReviewSettingsRef, {
+      visible,
+      updatedAt: serverTimestamp(),
+      updatedBy: auth.currentUser.uid
+    }, { merge: true });
+    await loadPublicReviewsAdmin();
+  } catch (error) {
+    console.error("Could not update review visibility:", error);
+    if (publicReviewsVisibilityState) {
+      publicReviewsVisibilityState.textContent = "Could not update visibility. Publish the latest firestore.rules and try again.";
+    }
+  }
+}
+
+const togglePublicReviews = $("togglePublicReviews");
+const publicReviewsContent = $("publicReviewsContent");
+togglePublicReviews?.addEventListener("click", () => {
+  const next = togglePublicReviews.getAttribute("aria-expanded") !== "true";
+  togglePublicReviews.setAttribute("aria-expanded", String(next));
+  publicReviewsContent?.classList.toggle("dev-hidden", !next);
+  togglePublicReviews.textContent = next ? "⌃ Hide Public Reviews" : "⌄ Show Public Reviews";
+  if (next) loadPublicReviewsAdmin();
+});
+$("showPublicReviews")?.addEventListener("click", () => setPublicReviewsVisible(true));
+$("hidePublicReviews")?.addEventListener("click", () => setPublicReviewsVisible(false));
+$("refreshPublicReviews")?.addEventListener("click", loadPublicReviewsAdmin);
+
 const toggleExtensionAnalytics = $("toggleExtensionAnalytics");
 const extensionAnalyticsContent = $("extensionAnalyticsContent");
 toggleExtensionAnalytics?.addEventListener("click", () => {
