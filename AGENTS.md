@@ -14,6 +14,11 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
   embedded document swallows `pointermove`, so such a card would freeze mid-lean.
 - `preferences.js` is injected on every page: language dock, custom background,
   accent colour, light level, YouTube prompt, visitor analytics.
+- `contact.html` renders the public reviews itself (inline module): it reads
+  `publicReviews` and `publicReviewSettings/global`. Only the verified owner
+  (`ymw3372@gmail.com`, see `ADMIN_EMAILS`) sees the Pin button; the pin lives in
+  `publicReviewSettings/global.pinnedId` with a `fdhPinnedReviewId` localStorage
+  fallback. Keep `firestore.rules` in step when that document grows fields.
 - Background light is controlled by the `--fdh-glow` CSS variable on `body`
   (`motion.css`). `body[data-glow="calm|medium|bright"]` sets it, and both
   `.fdh-sunlight-layer` and `.fdh-bg-layer` multiply their opacity by it, so the

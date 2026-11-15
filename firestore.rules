@@ -74,15 +74,19 @@ service cloud.firestore {
   }
 
   // Public ratings and comments. Visitors may submit append-only reviews; only the
-  // verified administrator can hide or restore the public list. Reviews are never deleted.
+  // verified administrator can hide or restore the public list, or pin one review
+  // to the top. Reviews are never deleted.
   match /publicReviewSettings/{settingsId} {
     allow get: if settingsId == 'global';
     allow list: if false;
     allow create, update: if isAdmin()
       && settingsId == 'global'
-      && request.resource.data.keys().hasOnly(['visible', 'updatedAt', 'updatedBy'])
+      && request.resource.data.keys().hasOnly(['visible', 'pinnedId', 'updatedAt', 'updatedBy'])
       && request.resource.data.keys().hasAll(['visible', 'updatedAt', 'updatedBy'])
       && request.resource.data.visible is bool
+      && (!('pinnedId' in request.resource.data)
+          || request.resource.data.pinnedId == null
+          || request.resource.data.pinnedId is string)
       && request.resource.data.updatedAt == request.time
       && request.resource.data.updatedBy == request.auth.uid;
     allow delete: if false;
