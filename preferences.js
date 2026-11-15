@@ -100,7 +100,19 @@ const newLanguage=document.getElementById("fdhLanguage");
 newLanguage.value=current();
 newLanguage.addEventListener("change",event=>{localStorage.setItem(K,event.target.value);apply();});
 const accountShortcut=document.querySelector('#fdh-quick-tools .fdh-login');
-if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.innerHTML='✦ <span id="fdh-quick-account" data-fdh="login">CREATE ACCOUNT — CLICK HERE</span>';apply();}
+if(accountShortcut){accountShortcut.href="account.html#account";accountShortcut.innerHTML='✦ <span id="fdh-quick-account" data-fdh="login">CREATE ACCOUNT — CLICK HERE</span>';apply();
+  const syncAccountShortcut=()=>{let on=false;try{on=localStorage.getItem("fdhHasAccountSession")==="1";}catch(_){}
+    accountShortcut.style.display=on?"none":"";
+    const tools=document.getElementById("fdh-quick-tools");
+    if(tools){const guide=tools.querySelector(".fdh-guide");
+      if(guide)guide.style.gridColumn=on?"1/-1":"";
+      const caption=document.getElementById("fdh-quick-caption");
+      if(caption)caption.style.display=on?"none":"";}
+  };
+  syncAccountShortcut();
+  window.addEventListener("storage",event=>{if(!event.key||event.key==="fdhHasAccountSession")syncAccountShortcut();});
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncAccountShortcut();});
+}
 
 })();
 

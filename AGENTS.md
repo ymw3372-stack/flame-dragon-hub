@@ -35,6 +35,14 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
 - `extension/` is the unpacked Chrome extension (its own `manifest.json`).
   The published ZIP is a *different* tree built from `tools/`; it is not
   produced from this folder.
+- Signed-in state for the UI is the `fdhHasAccountSession` localStorage flag,
+  written only by `auth.js` on `account.html`. Two prompts must hide when it is
+  `"1"`: the right-side account reminder (`site-motion.js`, `addAccountReminder`)
+  and the Home "CREATE ACCOUNT" shortcut (`preferences.js`). Both listen for the
+  cross-tab `storage` event plus `visibilitychange`, so signing in on the account
+  page clears them without a reload. Hide the reminder with inline
+  `display`/`style.display`, not `hidden`, because the author rules set
+  `display:flex`.
 
 ## Conventions
 

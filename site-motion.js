@@ -95,8 +95,9 @@
   function addAccountReminder(){
     if(currentFile==="account" || document.querySelector(".fdh-account-reminder"))return;
     const isHome=currentFile==="index";
+    const signedIn=()=>{try{return localStorage.getItem("fdhHasAccountSession")==="1";}catch(_){return false;}};
     try{
-      if(!isHome && (localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1"))return;
+      if(!isHome && sessionStorage.getItem("fdhAccountPromptDismissed")==="1")return;
     }catch(_){}
     const language=(localStorage.getItem("flameDragonLanguage")||"en").toLowerCase();
     const homeCopy={
@@ -161,6 +162,15 @@
     no.addEventListener("click",()=>{window.location.href=isHome?"account.html#createAccount":"account.html#account";});
     if(isHome) yes.addEventListener("click",()=>{window.location.href="account.html#authEmail";});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close();});
+
+    // Hide the prompt once the visitor is signed in. auth.js writes
+    // fdhHasAccountSession on account.html, so a cross-tab storage event (or a
+    // return to this tab) is what flips the state here. Inline display is used
+    // because the author rules set display:flex, which beats [hidden].
+    const syncVisibility=()=>{widget.style.display=signedIn()?"none":"";};
+    syncVisibility();
+    window.addEventListener("storage",event=>{if(!event.key||event.key==="fdhHasAccountSession")syncVisibility();});
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncVisibility();});
   }
 
   // Change the running CSS animation's playback rate without resetting its timeline.
