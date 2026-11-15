@@ -48,7 +48,7 @@ jobs:
           grep -q 'email_verified' firestore.rules
           grep -q 'recordAuthEvent' auth.js
           for page in index.html evolutions.html skins.html favorites.html settings.html account.html profile.html about.html guide.html skin-studio.html; do
-            grep -q 'href="developer.html"' "$page"
+            grep -Eq 'href="/?developer\.html"' "$page"
           done
           grep -q 'developer-link' style.css
           echo "Dashboard wiring and admin protection checks passed."
