@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#100b10">
 <title>Skins | FLAME DRAGON HUB</title>
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css">
 
 <style>
 /* ===== Skins page — matches the shared FLAME DRAGON HUB theme ===== */
@@ -250,6 +250,8 @@
   box-shadow: 0 7px 22px rgba(0, 0, 0, 0.16);
   transform-origin: center;
   transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 322px;
 }
 
 .vault-card:hover,
@@ -761,7 +763,7 @@ body::after {
 main.reaper-vault{margin-top:0!important;padding-top:0!important;}
 main.reaper-vault>:first-child{margin-top:0!important;}
 </style>
-<link rel="stylesheet" href="/motion.css">
+<link rel="stylesheet" href="motion.css">
 </head>
 
 <body>
@@ -769,19 +771,19 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 
 
 <header class="navbar">
-  <a class="brand" href="/index.html" aria-label="FLAME DRAGON HUB Home">
-    <img src="/assets/logo.png" alt="">
+  <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
+    <img src="assets/logo.png" alt="">
     <span>FLAME DRAGON HUB</span>
   </a>
 
   <nav class="nav-links" aria-label="Main navigation">
-    <a href="/index.html">Home</a>
-    <a href="/evolutions.html">Evolutions</a>
-    <a href="/skins.html" class="active" aria-current="page">Skins</a>
-    <a href="/favorites.html">Favorites</a>
-    <a href="/settings.html">Settings</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/developer.html" class="developer-link" title="Owner access">✦ Developer</a>
+    <a href="index.html">Home</a>
+    <a href="evolutions.html">Evolutions</a>
+    <a href="skins.html" class="active" aria-current="page">Skins</a>
+    <a href="favorites.html">Favorites</a>
+    <a href="settings.html">Settings</a>
+      <a href="contact.html">Contact</a>
+      <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
   </nav>
 </header>
 
@@ -909,7 +911,7 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 
 <div id="vaultToast" class="vault-toast" role="status" hidden></div>
 
-<script src="/skins-data.js?v=archive-skins-1"></script>
+<script src="skins-data.js?v=archive-skins-1"></script>
 
 <script>
 (() => {
@@ -999,6 +1001,8 @@ main.reaper-vault>:first-child{margin-top:0!important;}
       const grid = document.getElementById(`grid-${category.id}`);
       if (!grid) continue;
 
+      const fragment = document.createDocumentFragment();
+
       category.skins.forEach((skin, index) => {
         const i = index + 1;
         const id = skinKey(category, i);
@@ -1053,6 +1057,7 @@ main.reaper-vault>:first-child{margin-top:0!important;}
         name.dataset.nameFor = id;
         name.textContent = displayName(category, i);
         name.title = displayName(category, i);
+        card.dataset.name = displayName(category, i).toLowerCase();
 
         const subtitle = document.createElement('div');
         subtitle.className = 'vault-sub';
@@ -1094,8 +1099,10 @@ main.reaper-vault>:first-child{margin-top:0!important;}
         addHoverInfo(details, 'Image', skin.file || 'Unknown');
 
         card.append(art, meta, details);
-        grid.appendChild(card);
+        fragment.appendChild(card);
       });
+
+      grid.appendChild(fragment);
     }
 
     document.getElementById('vaultTotalCount').textContent =
@@ -1207,8 +1214,10 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 
       nameElement.textContent = label;
       nameElement.title = label;
+      card.dataset.name = label.toLowerCase();
     });
 
+    lastSort = null;
     filterAndSort();
     toast(value === null ? 'Original label restored' : 'Skin name saved');
   }
@@ -1227,6 +1236,8 @@ main.reaper-vault>:first-child{margin-top:0!important;}
     finishRename(null);
   });
 
+  let lastSort = null;
+
   function filterAndSort() {
     const query = document.getElementById('vaultSearch')
       .value.trim().toLowerCase();
@@ -1236,6 +1247,8 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 
     const sort = document.getElementById('vaultSort').value;
     const favorites = getFavs();
+    const resort = sort !== lastSort;
+    lastSort = sort;
 
     let visibleTotal = 0;
 
@@ -1248,49 +1261,42 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 
       const cards = [...grid.querySelectorAll('.vault-card')];
 
-      cards.sort((a, b) => {
-        if (
-          sort === 'favorites' &&
-          favorites.includes(a.dataset.id) !==
-          favorites.includes(b.dataset.id)
-        ) {
-          return favorites.includes(a.dataset.id) ? -1 : 1;
-        }
+      if (resort) {
+        cards.sort((a, b) => {
+          if (
+            sort === 'favorites' &&
+            favorites.includes(a.dataset.id) !==
+            favorites.includes(b.dataset.id)
+          ) {
+            return favorites.includes(a.dataset.id) ? -1 : 1;
+          }
 
-        if (sort === 'az' || sort === 'za') {
-          const nameA = a.querySelector('.vault-name')
-            .textContent.toLowerCase();
-          const nameB = b.querySelector('.vault-name')
-            .textContent.toLowerCase();
+          if (sort === 'az' || sort === 'za') {
+            const nameA = a.dataset.name || '';
+            const nameB = b.dataset.name || '';
 
-          return sort === 'az'
-            ? nameA.localeCompare(nameB)
-            : nameB.localeCompare(nameA);
-        }
+            return sort === 'az'
+              ? nameA.localeCompare(nameB)
+              : nameB.localeCompare(nameA);
+          }
 
-        return Number(a.dataset.order) - Number(b.dataset.order);
-      });
+          return Number(a.dataset.order) - Number(b.dataset.order);
+        });
 
-      cards.forEach(card => grid.appendChild(card));
+        cards.forEach(card => grid.appendChild(card));
+      }
 
       let visibleInCategory = 0;
+      const matchesCategory =
+        selectedCategory === 'all' || selectedCategory === category.id;
+      const categoryTitle = category.title.toLowerCase();
 
       cards.forEach(card => {
-        const display = card.querySelector('.vault-name')
-          .textContent.toLowerCase();
+        const searchable =
+          (card.dataset.name || '') + ' ' + categoryTitle + ' ' +
+          card.dataset.id.toLowerCase();
 
-        const searchable = [
-          display,
-          category.title.toLowerCase(),
-          card.dataset.id.toLowerCase()
-        ].join(' ');
-
-        const matchesCategory =
-          selectedCategory === 'all' ||
-          selectedCategory === category.id;
-
-        const matchesSearch = searchable.includes(query);
-        const visible = matchesCategory && matchesSearch;
+        const visible = matchesCategory && searchable.includes(query);
 
         card.classList.toggle('vault-hidden', !visible);
 
@@ -1306,11 +1312,18 @@ main.reaper-vault>:first-child{margin-top:0!important;}
     noResults.classList.toggle('vault-hidden', visibleTotal > 0);
   }
 
+  let searchTimer = null;
+
   ['vaultSearch', 'vaultCategory', 'vaultSort'].forEach(id => {
     const element = document.getElementById(id);
     element.addEventListener(
       id === 'vaultSearch' ? 'input' : 'change',
-      filterAndSort
+      id === 'vaultSearch'
+        ? () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(filterAndSort, 140);
+          }
+        : filterAndSort
     );
   });
 
@@ -1318,9 +1331,9 @@ main.reaper-vault>:first-child{margin-top:0!important;}
 })();
 </script>
 
-<script src="/script.js"></script>
-<script src="/preferences.js"></script>
-<script src="/cursor-glow.js"></script>
-<script src="/site-motion.js" defer></script>
+<script src="script.js"></script>
+<script src="preferences.js"></script>
+<script src="cursor-glow.js"></script>
+<script src="site-motion.js" defer></script>
 </body>
 </html>

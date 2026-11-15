@@ -1,7 +1,9 @@
 /* FLAME DRAGON HUB — slow cinematic motion system */
 (() => {
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const currentFile = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  // Normalised to the extension-less slug so clean URLs (/skins) and
+  // file URLs (/skins.html) resolve to the same page identity.
+  const currentFile = (location.pathname.split("/").pop() || "index.html").toLowerCase().replace(/\.html$/, "") || "index";
 
   function addScrollProgress() {
     if (document.querySelector(".fdh-scroll-track")) return;
@@ -91,8 +93,8 @@
 
   // Visible account prompt pinned to the lower-right corner.
   function addAccountReminder(){
-    if(currentFile==="account.html" || document.querySelector(".fdh-account-reminder"))return;
-    const isHome=currentFile==="index.html" || currentFile==="";
+    if(currentFile==="account" || document.querySelector(".fdh-account-reminder"))return;
+    const isHome=currentFile==="index";
     try{
       if(!isHome && (localStorage.getItem("fdhHasAccountSession")==="1" || sessionStorage.getItem("fdhAccountPromptDismissed")==="1"))return;
     }catch(_){}
@@ -186,7 +188,7 @@
   }
 
   function addPointerTilt(){
-    if(reduceMotion || currentFile==="skins.html" || window.matchMedia?.("(pointer: coarse)").matches)return;
+    if(reduceMotion || currentFile==="skins" || window.matchMedia?.("(pointer: coarse)").matches)return;
     const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.account-profile-card,.account-card,.contact-layout > *";
     document.querySelectorAll(selector).forEach(card=>{
       if(card.classList.contains("fdh-tilt"))return;
@@ -229,7 +231,7 @@
 
   function addReveal(){
     // Skins Library has its own category/card animation; shared reveal transforms break its grid.
-    if(reduceMotion || currentFile==="skins.html")return;
+    if(reduceMotion || currentFile==="skins")return;
     // Keep headings as normal text so words wrap naturally without overlapping.
     const selector="main > section,main > article,main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,main .account-profile-card,main .account-card,.contact-layout > *";
     const items=[...document.querySelectorAll(selector)];
@@ -255,7 +257,7 @@
   }
 
   function addImageDraw(){
-    if(reduceMotion || currentFile==="skins.html")return;
+    if(reduceMotion || currentFile==="skins")return;
     const images=[...document.querySelectorAll("main img")].filter(img=>
       !img.closest(".brand,.no-motion,.fdh-global-footer,.fdh-dragon-atmosphere") &&
       !img.classList.contains("fdh-no-draw") &&

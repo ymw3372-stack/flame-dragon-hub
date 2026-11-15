@@ -1175,7 +1175,7 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 }
 
 
-/* Warm sunrise atmosphere across the Hub pages (not the maintenance screen). */
+/* Warm sunrise atmosphere across the Hub pages. */
 .fdh-sunlight-layer{
   position:fixed;inset:-8%;z-index:0;overflow:hidden;pointer-events:none;
   opacity:.62;mix-blend-mode:screen;contain:paint;
