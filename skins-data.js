@@ -766,6 +766,50 @@ const skinsData = {
       {
         "file": "xmas2025-2.png",
         "name": "xmas2025_2"
+      },
+      {
+        "file": "barbarianWarrior.png",
+        "name": "Barbarian Warrior"
+      },
+      {
+        "file": "buffalo.png",
+        "name": "Buffalo"
+      },
+      {
+        "file": "crimsonNinja.png",
+        "name": "Crimson Ninja"
+      },
+      {
+        "file": "futuristicReaper.png",
+        "name": "Futuristic Reaper"
+      },
+      {
+        "file": "golem.png",
+        "name": "Golem"
+      },
+      {
+        "file": "halloween.png",
+        "name": "Halloween"
+      },
+      {
+        "file": "iceCreamReaper.png",
+        "name": "Ice Cream Reaper"
+      },
+      {
+        "file": "magician.png",
+        "name": "Magician"
+      },
+      {
+        "file": "phantomDragon.png",
+        "name": "Phantom Dragon"
+      },
+      {
+        "file": "redMoonReaper.png",
+        "name": "Red Moon Reaper"
+      },
+      {
+        "file": "xmas.png",
+        "name": "Xmas"
       }
     ]
   },
@@ -1032,6 +1076,18 @@ const skinsData = {
       {
         "file": "xmas2025.png",
         "name": "xmas2025"
+      },
+      {
+        "file": "oppressed.png",
+        "name": "Oppressed"
+      },
+      {
+        "file": "redMoonReaper.png",
+        "name": "Red Moon Reaper"
+      },
+      {
+        "file": "xmas2023.png",
+        "name": "Xmas2023"
       }
     ]
   },
@@ -1250,6 +1306,26 @@ const skinsData = {
       {
         "file": "xmas2025.png",
         "name": "xmas2025"
+      },
+      {
+        "file": "cyclops.png",
+        "name": "Cyclops"
+      },
+      {
+        "file": "headless.png",
+        "name": "Headless"
+      },
+      {
+        "file": "jungleReaper.png",
+        "name": "Jungle Reaper"
+      },
+      {
+        "file": "miner.png",
+        "name": "Miner"
+      },
+      {
+        "file": "redMoonReaper.png",
+        "name": "Red Moon Reaper"
       }
     ]
   },
@@ -1440,6 +1516,26 @@ const skinsData = {
       {
         "file": "xmas2025-2.png",
         "name": "Xmas2025 2"
+      },
+      {
+        "file": "demonic.png",
+        "name": "Demonic"
+      },
+      {
+        "file": "earthlyGhost.png",
+        "name": "Earthly Ghost"
+      },
+      {
+        "file": "headless.png",
+        "name": "Headless"
+      },
+      {
+        "file": "redMoonGhost.png",
+        "name": "Red Moon Ghost"
+      },
+      {
+        "file": "xmas2023.png",
+        "name": "Xmas2023"
       }
     ]
   },

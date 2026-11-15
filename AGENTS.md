@@ -25,6 +25,13 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
   whole backdrop dims from one place. Default is `calm`.
 - `sw.js` is the service worker; `CACHE_NAME` must be bumped whenever cached
   assets change so returning visitors pick up the new files.
+- `skins.html` builds its grid from `skins-data.js`; image files live in
+  `assets/skins/<folder>/`. The extension ships its own catalog
+  (`skins.json` + a `skins/` tree inside the published ZIP), which can hold
+  skins the site is missing. When the two drift, diff them by skin *name*
+  (the extension sometimes misspells a filename, e.g. `ninga.png` vs the
+  site's `ninja.png`, and renames others from camelCase to kebab-case) and copy
+  any genuinely new images into `assets/skins/` before adding the entry.
 - `extension/` is the unpacked Chrome extension (its own `manifest.json`).
   The published ZIP is a *different* tree built from `tools/`; it is not
   produced from this folder.
