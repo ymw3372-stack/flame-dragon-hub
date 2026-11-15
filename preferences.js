@@ -12,17 +12,23 @@
   const BG_PRESETS = new Set(["evoworld", "ember", "midnight", "forest"]);
   const DEFAULT_BG = "evoworld";
   const DEFAULT_ACCENT = "#ff6a2b";
+  const GLOW_LEVELS = new Set(["calm", "medium", "bright"]);
+  const DEFAULT_GLOW = "calm";
   const apply = () => {
     if (!document.body) return;
     let bg = DEFAULT_BG;
     let accent = DEFAULT_ACCENT;
+    let glow = DEFAULT_GLOW;
     try {
       const savedBg = localStorage.getItem("flameDragonBg");
       if (BG_PRESETS.has(savedBg)) bg = savedBg;
       const savedAccent = localStorage.getItem("flameDragonAccent");
       if (/^#[0-9a-f]{6}$/i.test(savedAccent || "")) accent = savedAccent;
+      const savedGlow = localStorage.getItem("flameDragonGlow");
+      if (GLOW_LEVELS.has(savedGlow)) glow = savedGlow;
     } catch (_) {}
     document.body.dataset.bg = bg;
+    document.body.dataset.glow = glow;
     document.body.style.setProperty("--fdh-accent", accent);
     if (!document.querySelector(".fdh-bg-layer")) {
       const layer = document.createElement("div");

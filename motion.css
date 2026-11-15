@@ -1197,22 +1197,23 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 }
 
 
-/* Warm sunrise atmosphere across the Hub pages. */
+/* Warm sunrise atmosphere across the Hub pages. Kept faint by default and
+   scaled by --fdh-glow so it never washes the page out. */
 .fdh-sunlight-layer{
   position:fixed;inset:-8%;z-index:0;overflow:hidden;pointer-events:none;
-  opacity:.62;mix-blend-mode:screen;contain:paint;
+  opacity:calc(.34 * var(--fdh-glow,1));mix-blend-mode:screen;contain:paint;
   background:
-    radial-gradient(ellipse 58% 44% at 5% 0%,rgba(255,218,143,.25),transparent 74%),
-    radial-gradient(ellipse 42% 38% at 94% 8%,rgba(255,177,91,.18),transparent 76%),
-    radial-gradient(ellipse 70% 38% at 48% 100%,rgba(255,197,116,.09),transparent 78%);
+    radial-gradient(ellipse 58% 44% at 5% 0%,rgba(255,218,143,.20),transparent 74%),
+    radial-gradient(ellipse 42% 38% at 94% 8%,rgba(255,177,91,.14),transparent 76%),
+    radial-gradient(ellipse 70% 38% at 48% 100%,rgba(255,197,116,.07),transparent 78%);
   animation:fdh-sunlight-drift 32s ease-in-out infinite alternate;
 }
 .fdh-sunlight-layer:before{
   content:"";position:absolute;inset:-22%;
   background:conic-gradient(from 218deg at 6% 2%,
-    transparent 0deg,rgba(255,224,164,.075) 10deg,transparent 24deg,
-    transparent 38deg,rgba(255,205,130,.055) 49deg,transparent 66deg,
-    transparent 92deg,rgba(255,226,171,.045) 105deg,transparent 122deg,
+    transparent 0deg,rgba(255,224,164,.05) 10deg,transparent 24deg,
+    transparent 38deg,rgba(255,205,130,.038) 49deg,transparent 66deg,
+    transparent 92deg,rgba(255,226,171,.03) 105deg,transparent 122deg,
     transparent 360deg);
   filter:blur(24px);transform-origin:6% 2%;
   animation:fdh-sun-rays 46s ease-in-out infinite alternate;
@@ -1220,7 +1221,7 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 .fdh-sunlight-layer:after{
   content:"";position:absolute;width:min(68vw,760px);height:min(68vw,760px);
   left:-25vw;top:-43vw;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,225,164,.19) 0%,rgba(255,190,105,.085) 35%,transparent 70%);
+  background:radial-gradient(circle,rgba(255,225,164,.13) 0%,rgba(255,190,105,.06) 35%,transparent 70%);
   filter:blur(26px);animation:fdh-sun-orb 24s ease-in-out infinite alternate;
 }
 @keyframes fdh-sunlight-drift{
@@ -1316,7 +1317,13 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
 body{
   --fdh-accent:#ff6a2b;
   --fdh-bg-base:#0b0709;
+  --fdh-glow:.32;
 }
+/* Light Level, chosen in Settings. Scales both glow layers so the backdrop can
+   be calmed down without losing the tint. "Calm" is the default. */
+body[data-glow="calm"]{--fdh-glow:.32}
+body[data-glow="medium"]{--fdh-glow:.62}
+body[data-glow="bright"]{--fdh-glow:1}
 body[data-bg]{background:var(--fdh-bg-base)!important}
 /* Retire the built-in drifting glows while a custom background is active. */
 body[data-bg]::before,body[data-bg]::after{content:none!important;animation:none!important}
@@ -1325,14 +1332,15 @@ body[data-bg]::before,body[data-bg]::after{content:none!important;animation:none
   inset:-25%;
   z-index:-1;
   pointer-events:none;
+  opacity:var(--fdh-glow);
   background:
     radial-gradient(52% 46% at 20% 16%,
-      color-mix(in srgb, var(--fdh-accent) 58%, transparent), transparent 72%),
+      color-mix(in srgb, var(--fdh-accent) 34%, transparent), transparent 72%),
     radial-gradient(48% 44% at 82% 24%,
-      color-mix(in srgb, var(--fdh-accent) 40%, transparent), transparent 74%),
+      color-mix(in srgb, var(--fdh-accent) 24%, transparent), transparent 74%),
     radial-gradient(56% 50% at 60% 90%,
-      color-mix(in srgb, var(--fdh-accent) 48%, transparent), transparent 76%);
-  filter:saturate(1.15);
+      color-mix(in srgb, var(--fdh-accent) 28%, transparent), transparent 76%);
+  filter:saturate(1.05);
   animation:fdh-bg-drift 26s ease-in-out infinite alternate;
 }
 /* A second, slower layer adds the aurora shimmer. */
@@ -1340,13 +1348,13 @@ body[data-bg]::before,body[data-bg]::after{content:none!important;animation:none
   content:"";
   position:absolute;
   inset:0;
-  opacity:.7;
+  opacity:calc(.4 * var(--fdh-glow));
   mix-blend-mode:screen;
   background:
     radial-gradient(40% 32% at 30% 70%,
-      color-mix(in srgb, var(--fdh-accent) 52%, transparent), transparent 72%),
+      color-mix(in srgb, var(--fdh-accent) 30%, transparent), transparent 72%),
     radial-gradient(36% 30% at 72% 40%,
-      color-mix(in srgb, var(--fdh-accent) 42%, transparent), transparent 74%);
+      color-mix(in srgb, var(--fdh-accent) 24%, transparent), transparent 74%);
   filter:blur(26px);
   animation:fdh-bg-aurora 34s ease-in-out infinite alternate;
 }

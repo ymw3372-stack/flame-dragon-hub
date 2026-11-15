@@ -10,8 +10,12 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
   linked by most pages.
 - `cursor-glow.js` owns the pointer glow and the 3D card tilt (single source of
   truth for tilt — do not add a second tilt implementation elsewhere).
-- `preferences.js` is injected on every page: language dock, theme, custom
-  background, YouTube prompt, visitor analytics.
+- `preferences.js` is injected on every page: language dock, custom background,
+  accent colour, light level, YouTube prompt, visitor analytics.
+- Background light is controlled by the `--fdh-glow` CSS variable on `body`
+  (`motion.css`). `body[data-glow="calm|medium|bright"]` sets it, and both
+  `.fdh-sunlight-layer` and `.fdh-bg-layer` multiply their opacity by it, so the
+  whole backdrop dims from one place. Default is `calm`.
 - `sw.js` is the service worker; `CACHE_NAME` must be bumped whenever cached
   assets change so returning visitors pick up the new files.
 - `extension/` is the unpacked Chrome extension (its own `manifest.json`).
