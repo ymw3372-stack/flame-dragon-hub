@@ -9,7 +9,9 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
 - `motion.css` + `site-motion.js` hold the shared motion/visual layer and are
   linked by most pages.
 - `cursor-glow.js` owns the pointer glow and the 3D card tilt (single source of
-  truth for tilt — do not add a second tilt implementation elsewhere).
+  truth for tilt — do not add a second tilt implementation elsewhere). Max lean
+  is 7deg. Cards containing an `iframe`/`video` are skipped on purpose: the
+  embedded document swallows `pointermove`, so such a card would freeze mid-lean.
 - `preferences.js` is injected on every page: language dock, custom background,
   accent colour, light level, YouTube prompt, visitor analytics.
 - Background light is controlled by the `--fdh-glow` CSS variable on `body`

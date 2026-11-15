@@ -43,10 +43,23 @@
     "main .profile-card,main .signin-step,.account-profile-card," +
     ".account-card,.contact-layout > *";
 
-  const MAX = 11; // degrees at the far edge — pronounced, still readable
+  const MAX = 7; // degrees at the far edge — gentle lean, stays readable
+
+  // Cards holding a video/iframe are skipped: the embedded document swallows
+  // pointermove, so the card would freeze mid-lean and never straighten out.
+  const HOLDS_EMBED = "iframe, video, embed, object";
+
+  const wired = new Set();
+
+  const reset = (card) => {
+    card.style.setProperty("--fdh-tilt-x", "0deg");
+    card.style.setProperty("--fdh-tilt-y", "0deg");
+  };
 
   const wire = (card) => {
-    if (card.classList.contains("fdh-tilt")) return;
+    if (wired.has(card)) return;
+    if (card.querySelector(HOLDS_EMBED)) return;
+    wired.add(card);
     card.classList.add("fdh-tilt");
     card.addEventListener("pointermove", (event) => {
       const rect = card.getBoundingClientRect();
@@ -58,11 +71,18 @@
       card.style.setProperty("--fdh-mx", ((nx + 0.5) * 100).toFixed(1) + "%");
       card.style.setProperty("--fdh-my", ((ny + 0.5) * 100).toFixed(1) + "%");
     }, { passive: true });
-    card.addEventListener("pointerleave", () => {
-      card.style.setProperty("--fdh-tilt-x", "0deg");
-      card.style.setProperty("--fdh-tilt-y", "0deg");
-    }, { passive: true });
+    card.addEventListener("pointerleave", () => reset(card), { passive: true });
+    card.addEventListener("pointercancel", () => reset(card), { passive: true });
   };
+
+  // Safety net: if focus or the pointer is handed away mid-lean, flatten every
+  // card so nothing is left stuck at an angle.
+  const flattenAll = () => wired.forEach(reset);
+  window.addEventListener("blur", flattenAll);
+  document.addEventListener("pointerleave", flattenAll);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) flattenAll();
+  });
 
   const spotlight = () => document.querySelectorAll(CARD_SELECTOR).forEach(wire);
 
