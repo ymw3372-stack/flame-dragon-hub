@@ -1563,26 +1563,6 @@ body::after {
 }
 
 
-/* THEME SELECT */
-
-#themeSelect {
-    min-width: 170px;
-
-    padding: 10px 12px;
-
-    border: 1px solid rgba(255, 105, 25, 0.30);
-    border-radius: 10px;
-
-    background: rgba(20, 5, 2, 0.75);
-
-    color: #fff5e6;
-
-    font-size: 13px;
-
-    cursor: pointer;
-}
-
-
 /* SWITCH */
 
 .switch {
@@ -1690,71 +1670,7 @@ body::after {
         align-items: flex-start;
     }
 
-    #themeSelect {
-        min-width: 145px;
-    }
 }
-/* =========================
-   THEMES
-   ========================= */
-
-/* DARK NIGHT */
-
-body[data-theme="night"] {
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(80, 90, 120, 0.25) 0%,
-            rgba(30, 35, 55, 0.12) 25%,
-            transparent 50%
-        ),
-        linear-gradient(
-            135deg,
-            #05070d 0%,
-            #101522 45%,
-            #070910 100%
-        );
-}
-
-
-/* PURPLE VOID */
-
-body[data-theme="void"] {
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(150, 60, 255, 0.28) 0%,
-            rgba(80, 30, 160, 0.12) 25%,
-            transparent 50%
-        ),
-        linear-gradient(
-            135deg,
-            #0c0414 0%,
-            #210b35 45%,
-            #08030d 100%
-        );
-}
-
-
-/* FROST */
-
-body[data-theme="frost"] {
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(100, 210, 255, 0.25) 0%,
-            rgba(50, 130, 190, 0.10) 25%,
-            transparent 50%
-        ),
-        linear-gradient(
-            135deg,
-            #041016 0%,
-            #0b2530 45%,
-            #03090d 100%
-        );
-}
-
-
 /* PERFORMANCE MODE */
 
 body.performance-mode::before,

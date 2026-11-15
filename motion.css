@@ -1,8 +1,28 @@
 /* FLAME DRAGON HUB — Ember motion + shared footer */
 
-.fdh-tilt{transform-style:preserve-3d;transition:transform .22s ease-out,box-shadow .4s ease,border-color .35s ease}
-.fdh-tilt:hover{transform:perspective(1000px) rotateX(var(--fdh-tilt-x,0deg)) rotateY(var(--fdh-tilt-y,0deg)) translateY(-2px)}
-@media(prefers-reduced-motion:reduce){.fdh-tilt,.fdh-tilt:hover{transition:none!important;transform:none!important}}
+/* Pointer glow: a soft halo trailing the cursor, tinted by the chosen accent. */
+.cursor-glow{
+  position:fixed;
+  z-index:9998;
+  top:0;
+  left:0;
+  width:420px;
+  height:420px;
+  margin:-210px 0 0 -210px;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle,
+    color-mix(in srgb, var(--fdh-accent, #ff4657) 34%, transparent) 0%,
+    color-mix(in srgb, var(--fdh-accent, #ff4657) 15%, transparent) 32%,
+    transparent 72%);
+  transition:opacity .35s ease;
+  will-change:transform,opacity;
+}
+body.pointer-glow-active .cursor-glow{opacity:1}
+@media(hover:none),(prefers-reduced-motion:reduce){.cursor-glow{display:none}}
+
+/* Card highlight follows the pointer (see .fdh-tilt::after at the end of this file). */
 
 
 .fdh-scroll-track{position:fixed;z-index:99999;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.045);pointer-events:none}
@@ -32,7 +52,7 @@
   88%{transform:translate3d(20vw,3vh,0) rotate(535deg) scaleX(-1)}
   100%{transform:translate3d(-28vw,0,0) rotate(712deg) scale(1)}
 }
-body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track):not(.fdh-sunlight-layer){position:relative;z-index:1}
+body>*:not(.fdh-dragon-atmosphere):not(.fdh-scroll-track):not(.fdh-sunlight-layer):not(.cursor-glow):not(.fdh-bg-layer){position:relative;z-index:1}
 .fdh-global-footer{position:relative;isolation:isolate;overflow:hidden;margin:64px 0 0;padding:48px max(4vw,18px) 18px;border-top:1px solid rgba(255,154,91,.38);background:radial-gradient(ellipse at 15% 0%,rgba(255,104,48,.13),transparent 42%),linear-gradient(180deg,rgba(24,13,14,.97),rgba(10,8,12,.99));color:#f8e9df}
 .fdh-global-footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 25%,rgba(255,165,93,.045) 50%,transparent 72%);background-size:220% 100%;animation:fdh-footer-glow 12s ease-in-out infinite}
 @keyframes fdh-footer-glow{0%,100%{background-position:100% 0}50%{background-position:0 0}}
@@ -889,12 +909,14 @@ body{padding-bottom:0!important}
   .fdh-account-reminder.is-dismissed{transform:translateX(16px)!important}
 }
 
-/* Consistent, restrained finish across the hub pages. */
+/* Consistent, restrained finish across the hub pages.
+   The bar itself stays fully transparent so the page atmosphere shows through;
+   only a soft tint + blur keeps the links readable. */
 .navbar{
   border-bottom:1px solid rgba(255,170,130,.16)!important;
-  background:rgba(17,12,17,.58)!important;
-  backdrop-filter:blur(16px)!important;
-  -webkit-backdrop-filter:blur(16px)!important;
+  background:transparent!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
 }
 .nav-links a{
   border-radius:10px!important;
@@ -1244,3 +1266,104 @@ main :is(section,article,.hub-card,.evolution-card,.guide-card,.skin-card,.welco
   to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
 }
 @media(prefers-reduced-motion:reduce){.fdh-heading-arrive,.fdh-copy-arrive{animation:none!important}}
+
+
+/* ============================================================
+   3D pointer tilt — placed last so it wins over .fdh-reveal's
+   transform (which is !important) and the plain :hover lift.
+   The card leans toward wherever the pointer sits: edges lean
+   most, the middle stays flat, top looks down, bottom looks up.
+   The extra .fdh-reveal.fdh-visible selectors are needed because
+   that two-class rule outranks a single class at equal priority.
+   ============================================================ */
+.fdh-tilt,
+.fdh-reveal.fdh-tilt,
+.fdh-reveal.fdh-visible.fdh-tilt{
+  transform-style:preserve-3d!important;
+  transform:perspective(900px) rotateX(var(--fdh-tilt-x,0deg)) rotateY(var(--fdh-tilt-y,0deg))!important;
+  transition:transform .18s ease-out,box-shadow .45s ease,border-color .35s ease!important;
+  will-change:transform;
+}
+.fdh-tilt:hover{
+  box-shadow:0 26px 60px -18px rgba(0,0,0,.6),0 0 40px rgba(255,120,60,.16)!important;
+}
+/* A highlight that slides toward the pointer, evohamza-style. */
+.fdh-tilt::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(340px circle at var(--fdh-mx,50%) var(--fdh-my,50%),
+    rgba(255,180,120,.20),rgba(255,120,60,.08) 38%,transparent 68%);
+  transition:opacity .3s ease;
+}
+.fdh-tilt:hover::after{opacity:1}
+@media(prefers-reduced-motion:reduce){
+  .fdh-tilt,.fdh-tilt:hover{transform:none!important;transition:none!important}
+  .fdh-tilt::after{display:none}
+}
+
+
+/* ============================================================
+   Custom backgrounds — an evohamza-style living backdrop whose
+   colour the user picks in Settings. body[data-bg] selects the
+   preset; --fdh-accent tints it. A dedicated .fdh-bg-layer keeps
+   this clear of each page's own body::before/::after decorations.
+   ============================================================ */
+body{
+  --fdh-accent:#ff6a2b;
+  --fdh-bg-base:#0b0709;
+}
+body[data-bg]{background:var(--fdh-bg-base)!important}
+/* Retire the built-in drifting glows while a custom background is active. */
+body[data-bg]::before,body[data-bg]::after{content:none!important;animation:none!important}
+.fdh-bg-layer{
+  position:fixed;
+  inset:-25%;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(52% 46% at 20% 16%,
+      color-mix(in srgb, var(--fdh-accent) 58%, transparent), transparent 72%),
+    radial-gradient(48% 44% at 82% 24%,
+      color-mix(in srgb, var(--fdh-accent) 40%, transparent), transparent 74%),
+    radial-gradient(56% 50% at 60% 90%,
+      color-mix(in srgb, var(--fdh-accent) 48%, transparent), transparent 76%);
+  filter:saturate(1.15);
+  animation:fdh-bg-drift 26s ease-in-out infinite alternate;
+}
+/* A second, slower layer adds the aurora shimmer. */
+.fdh-bg-layer::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.7;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(40% 32% at 30% 70%,
+      color-mix(in srgb, var(--fdh-accent) 52%, transparent), transparent 72%),
+    radial-gradient(36% 30% at 72% 40%,
+      color-mix(in srgb, var(--fdh-accent) 42%, transparent), transparent 74%);
+  filter:blur(26px);
+  animation:fdh-bg-aurora 34s ease-in-out infinite alternate;
+}
+@keyframes fdh-bg-drift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(2.2%,-1.6%,0) scale(1.05)}
+  100%{transform:translate3d(-1.8%,1.9%,0) scale(1.02)}
+}
+@keyframes fdh-bg-aurora{
+  0%{transform:translate3d(-3%,2%,0) rotate(0deg)}
+  100%{transform:translate3d(3%,-2%,0) rotate(6deg)}
+}
+/* Presets differ in base tone. */
+body[data-bg="evoworld"]{--fdh-bg-base:#050b16}
+body[data-bg="ember"]{--fdh-bg-base:#120603}
+body[data-bg="midnight"]{--fdh-bg-base:#08080f}
+body[data-bg="forest"]{--fdh-bg-base:#04100a}
+@media(prefers-reduced-motion:reduce){
+  .fdh-bg-layer,.fdh-bg-layer::after{animation:none!important}
+}

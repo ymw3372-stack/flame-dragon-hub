@@ -187,27 +187,6 @@
     });
   }
 
-  function addPointerTilt(){
-    if(reduceMotion || currentFile==="skins" || window.matchMedia?.("(pointer: coarse)").matches)return;
-    const selector="main .hub-card,main .evolution-card,main .guide-card,main .skin-card,main .welcome-card,main .signin-step,main .fav-card,main .panel,main .settings-card,.account-profile-card,.account-card,.contact-layout > *";
-    document.querySelectorAll(selector).forEach(card=>{
-      if(card.classList.contains("fdh-tilt"))return;
-      card.classList.add("fdh-tilt");
-      card.addEventListener("pointermove",event=>{
-        const rect=card.getBoundingClientRect();
-        if(!rect.width||!rect.height)return;
-        const x=(event.clientX-rect.left)/rect.width;
-        const y=(event.clientY-rect.top)/rect.height;
-        card.style.setProperty("--fdh-tilt-x",((.5-y)*5).toFixed(2)+"deg");
-        card.style.setProperty("--fdh-tilt-y",((x-.5)*5).toFixed(2)+"deg");
-      },{passive:true});
-      card.addEventListener("pointerleave",()=>{
-        card.style.setProperty("--fdh-tilt-x","0deg");
-        card.style.setProperty("--fdh-tilt-y","0deg");
-      },{passive:true});
-    });
-  }
-
   function splitHeading(heading){
     if(heading.dataset.fdhSplit || heading.closest("a,button,form,.brand,.no-motion,.fdh-global-footer")) return;
     const text=heading.textContent.trim();
@@ -265,24 +244,34 @@
     );
     if(!images.length)return;
     const reveal=img=>img.classList.add("fdh-image-drawn");
+    images.forEach(img=>img.classList.add("fdh-image-draw"));
     if(!("IntersectionObserver" in window)){
-      images.forEach(img=>{img.classList.add("fdh-image-draw");reveal(img);});
+      images.forEach(reveal);
       return;
     }
+    // The drawn state is what un-clips the image. Observing the image itself
+    // never fires: while clipped its intersection ratio is 0, so a threshold
+    // observer would wait forever. Watch an un-clipped ancestor instead.
     const observer=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
-          reveal(entry.target);
+          reveal(entry.target.__fdhImage||entry.target);
           observer.unobserve(entry.target);
         }
       });
-    },{threshold:.08,rootMargin:"0px 0px -20px 0px"});
+    },{threshold:.06,rootMargin:"0px 0px -20px 0px"});
     images.forEach(img=>{
-      img.classList.add("fdh-image-draw");
-      if(img.complete && img.naturalWidth)observer.observe(img);
-      else img.addEventListener("load",()=>observer.observe(img),{once:true});
-      img.addEventListener("error",()=>{img.classList.add("fdh-image-drawn");},{once:true});
+      const target=img.parentElement||img;
+      target.__fdhImage=img;
+      observer.observe(target);
     });
+    // Safety net: nothing should stay hidden if the observer never reports.
+    window.setTimeout(()=>images.forEach(img=>{
+      if(!img.classList.contains("fdh-image-drawn")){
+        const rect=img.getBoundingClientRect();
+        if(rect.top<window.innerHeight&&rect.bottom>0)reveal(img);
+      }
+    }),1500);
   }
 
   function addSlowHeadingMotion(){
@@ -316,7 +305,6 @@
     addMarqueeHoverSlowdown();
     if(typeof addBonusPanel==="function")addBonusPanel();
     addReveal();
-    addPointerTilt();
     addDragonAtmosphere();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();

@@ -34,32 +34,6 @@
             background-attachment: fixed;
         }
 
-        /* Themes picked in Settings, copied from style.css. Pinning the gradient to
-           the viewport keeps it identical to index.html however tall this page is. */
-        body[data-theme="night"] {
-          background:
-            radial-gradient(circle at 50% 45%,
-              rgba(80,90,120,.25) 0%, rgba(30,35,55,.12) 25%, transparent 50%),
-            linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
-            background-attachment: fixed, fixed;
-        }
-
-        body[data-theme="void"] {
-          background:
-            radial-gradient(circle at 50% 45%,
-              rgba(150,60,255,.28) 0%, rgba(80,30,160,.12) 25%, transparent 50%),
-            linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
-            background-attachment: fixed, fixed;
-        }
-
-        body[data-theme="frost"] {
-          background:
-            radial-gradient(circle at 50% 45%,
-              rgba(100,210,255,.25) 0%, rgba(50,130,190,.10) 25%, transparent 50%),
-            linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
-            background-attachment: fixed, fixed;
-        }
-
         body::before,
         body::after {
             content: none;
@@ -194,12 +168,6 @@
 
         .setting-row small { color: #b8aab8; }
 
-        #themeSelect {
-            border-color: rgba(255, 80, 100, .30);
-            background: rgba(16, 9, 14, .75);
-            color: #fff4f6;
-        }
-
         .slider {
             background: rgba(255, 244, 246, .14);
             border-color: rgba(255, 80, 100, .25);
@@ -214,6 +182,29 @@
 
         .switch input:checked + .slider::before { background: #ff4657; }
 
+        .color-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-control input[type="color"] {
+            width: 54px;
+            height: 40px;
+            padding: 3px;
+            border: 1px solid rgba(255, 80, 100, .35);
+            border-radius: 10px;
+            background: rgba(255, 65, 85, .08);
+            cursor: pointer;
+        }
+
+        .color-control output {
+            font: 700 13px Arial, sans-serif;
+            letter-spacing: .5px;
+            color: #ffc9a1;
+            text-transform: uppercase;
+        }
+
         .settings-button {
             display: inline-flex;
             align-items: center;
@@ -224,7 +215,6 @@
             background: rgba(255, 65, 85, .08);
             color: #ff9da7;
         }
-
         .settings-button:hover {
             color: #ffffff;
             background: rgba(255, 65, 85, .18);
@@ -327,16 +317,28 @@ main.settings-page>.settings-grid{margin-top:10px!important;margin-bottom:0!impo
 
                 <div class="setting-row">
                     <div>
-                        <strong>Theme</strong>
-                        <small>Change the visual style of the hub.</small>
+                        <strong>Background</strong>
+                        <small>Pick the living backdrop behind the hub.</small>
                     </div>
 
-                    <select id="themeSelect">
-                        <option value="ember">Ember Warmth</option>
-                        <option value="night">Dark Night</option>
-                        <option value="void">Purple Void</option>
-                        <option value="frost">Frost</option>
+                    <select id="backgroundSelect">
+                        <option value="evoworld">EvoWorld</option>
+                        <option value="ember">Ember</option>
+                        <option value="midnight">Midnight</option>
+                        <option value="forest">Forest</option>
                     </select>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Background Colour</strong>
+                        <small>Choose the glow colour of your background.</small>
+                    </div>
+
+                    <div class="color-control">
+                        <input type="color" id="accentColor" value="#ff6a2b" aria-label="Background colour">
+                        <output id="accentColorValue">#ff6a2b</output>
+                    </div>
                 </div>
             </article>
 

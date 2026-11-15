@@ -48,41 +48,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Themes picked in Settings. Gradients are copied from style.css so a theme
-   selected there looks identical here. The higher specificity of
-   body[data-theme] makes these override the base background above, while
-   "ember" (the default) intentionally keeps the crimson shell. */
-
-body[data-theme="night"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(80,90,120,.25) 0%,
-      rgba(30,35,55,.12) 25%,
-      transparent 50%),
-    linear-gradient(135deg, #05070d 0%, #101522 45%, #070910 100%);
-  background-attachment: fixed, fixed;
-}
-
-body[data-theme="void"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(150,60,255,.28) 0%,
-      rgba(80,30,160,.12) 25%,
-      transparent 50%),
-    linear-gradient(135deg, #0c0414 0%, #210b35 45%, #08030d 100%);
-  background-attachment: fixed, fixed;
-}
-
-body[data-theme="frost"] {
-  background:
-    radial-gradient(circle at 50% 45%,
-      rgba(100,210,255,.25) 0%,
-      rgba(50,130,190,.10) 25%,
-      transparent 50%),
-    linear-gradient(135deg, #041016 0%, #0b2530 45%, #03090d 100%);
-  background-attachment: fixed, fixed;
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -631,12 +596,19 @@ a {
 }
 
 
-/* v1.2.1 migration announcement */
-.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:32px clamp(24px,4vw,42px);border:1px solid #ff647799;border-radius:22px;background:linear-gradient(110deg,#4b1b35,#241827 68%,#1b1725);box-shadow:0 18px 46px #0007,0 0 32px #ff46571c;overflow:hidden;min-height:190px}
-.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:280px;height:280px;border-radius:50%;background:#ff465733;filter:blur(42px);pointer-events:none}
-.update-announcement-copy{position:relative;min-width:0;max-width:680px}.update-announcement-kicker{display:inline-block;margin-bottom:12px;color:#ffd27c;font-size:12px;font-weight:950;letter-spacing:2.2px}.update-announcement h2{margin:0 0 11px;color:#fff1f4;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
-.update-announcement p{margin:0;color:#fff0f3;font-size:clamp(19px,2.15vw,22px);font-weight:600;line-height:1.85;max-width:760px;text-shadow:0 1px 10px #0005}.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border-radius:13px;background:linear-gradient(110deg,#ed3c58,#982747);color:white;text-decoration:none;font-size:13px;font-weight:950;letter-spacing:.6px;box-shadow:0 10px 26px #ed3c5844;transition:transform .2s,filter .2s}.update-announcement-button:hover{transform:translateY(-3px);filter:brightness(1.14)}
-@media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:10px auto 32px;padding:24px 20px;min-height:0;gap:20px}.update-announcement h2{font-size:25px}.update-announcement p{font-size:18px;line-height:1.8}.update-announcement-button{width:100%;min-height:54px;font-size:13px}}
+/* v1.2.1 migration announcement — gold, high-contrast "new update" card */
+.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:38px clamp(24px,4vw,42px) 32px;border:1px solid #f4c869aa;border-radius:22px;background:linear-gradient(110deg,#3a2c10,#241d0f 60%,#1a160c);box-shadow:0 18px 46px #0007,0 0 38px #f4c8692e;overflow:hidden;min-height:190px}
+.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:300px;height:300px;border-radius:50%;background:#f4c86940;filter:blur(46px);pointer-events:none}
+.update-announcement:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,#ffe9a81f 50%,transparent 72%);background-size:220% 100%;animation:fdhGoldSheen 6s ease-in-out infinite}
+@keyframes fdhGoldSheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.update-announcement-copy{position:relative;min-width:0;max-width:680px}
+.update-announcement-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border:1px solid #f7d488;border-radius:999px;background:linear-gradient(110deg,#f7d488,#d9a441);color:#3a2a08;font-size:12px;font-weight:950;letter-spacing:1.6px;box-shadow:0 6px 20px #d9a44159;text-transform:uppercase}
+.update-announcement h2{margin:0 0 11px;color:#fff7e6;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
+.update-announcement p{margin:0;color:#f7ecd6;font-size:clamp(19px,2.15vw,22px);font-weight:600;line-height:1.85;max-width:760px;text-shadow:0 1px 10px #0005}
+.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border-radius:13px;background:linear-gradient(110deg,#ffe08a,#e0a83a);color:#3a2a08;text-decoration:none;font-size:13px;font-weight:950;letter-spacing:.6px;box-shadow:0 10px 26px #d9a44166;transition:transform .2s,filter .2s}
+.update-announcement-button:hover{transform:translateY(-3px);filter:brightness(1.08)}
+@media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:10px auto 32px;padding:30px 20px 24px;min-height:0;gap:20px}.update-announcement h2{font-size:25px}.update-announcement p{font-size:18px;line-height:1.8}.update-announcement-button{width:100%;min-height:54px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.update-announcement:after{animation:none}}
 
 /* EvoWorld compatibility disclaimer */
 .evo-compat-warning{display:flex;gap:13px;align-items:flex-start;margin:18px auto 26px;padding:16px 18px;border:1px solid #e8a83b88;border-left:4px solid #e8a83b;border-radius:13px;background:linear-gradient(110deg,#392916,#241d19);color:#fff3dc;box-shadow:0 10px 28px #0003}
@@ -689,7 +661,7 @@ a {
 
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker" id="update-announcement-kicker">🔥 NEW SKINS ADDED · EXTENSION v1.2.1</span>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">✨ NEW UPDATE · v1.2.1</span>
     <h2 id="update-announcement-title">Lots of new skins have arrived!</h2>
     <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.2.1 extension, then explore the expanded Skin Library and discover your new favorites.</p>
   </div>
@@ -968,6 +940,7 @@ a {
 })();
 </script>
 <script src="preferences.js"></script>
+<script src="cursor-glow.js"></script>
 <script src="site-motion.js" defer></script>
 </body>
 </html>
