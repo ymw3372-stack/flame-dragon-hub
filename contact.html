@@ -249,7 +249,7 @@
   <script type="module">
     import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp, addDoc, collection, getDocs, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp, addDoc, collection, getDocs, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -336,6 +336,24 @@
           pinButton.setAttribute("aria-label", (isPinned ? "Unpin" : "Pin") + " this review");
           pinButton.addEventListener("click", () => togglePin(review.id, !isPinned));
           actions.append(pinButton);
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "review-pin-button";
+          deleteButton.textContent = "Delete";
+          deleteButton.addEventListener("click", async () => {
+            if (!confirm("Permanently delete this review?")) return;
+            deleteButton.disabled = true;
+            try {
+              await deleteDoc(doc(db, "publicReviews", review.id));
+              reviewStatus.textContent = "Review deleted.";
+              await loadPublicReviews();
+            } catch (error) {
+              console.error("Could not delete review:", error);
+              reviewStatus.textContent = "Could not delete this review. Check administrator access and Firestore rules.";
+              deleteButton.disabled = false;
+            }
+          });
+          actions.append(deleteButton);
         }
         head.append(name, actions);
         const stars = document.createElement("div");
@@ -439,6 +457,11 @@
         const comment = document.getElementById("reviewComment").value.trim();
         const rating = Number(document.getElementById("reviewRating").value);
         if (!name || !comment || !Number.isInteger(rating) || rating < 1 || rating > 5) return;
+        const reviewer = auth.currentUser;
+        if (!reviewer || !reviewer.emailVerified) {
+          reviewStatus.textContent = "Sign in with a verified account before publishing a review.";
+          return;
+        }
         const lastReview = Number(localStorage.getItem("fdhPublicReviewLastSent") || 0);
         if (Date.now() - lastReview < 30000) {
           reviewStatus.textContent = "Please wait a little before posting another review.";
@@ -447,7 +470,8 @@
         reviewSubmit.disabled = true;
         reviewStatus.textContent = "Publishing your review…";
         try {
-          await addDoc(collection(db, "publicReviews"), {
+          await setDoc(doc(db, "publicReviews", reviewer.uid), {
+            uid: reviewer.uid,
             name: name.slice(0, 32),
             rating,
             comment: comment.slice(0, 500),
