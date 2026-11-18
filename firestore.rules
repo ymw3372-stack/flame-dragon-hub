@@ -96,8 +96,14 @@ service cloud.firestore {
     allow read: if isAdmin()
       || !exists(/databases/$(database)/documents/publicReviewSettings/global)
       || get(/databases/$(database)/documents/publicReviewSettings/global).data.visible == true;
-    allow create: if request.resource.data.keys().hasOnly(['name', 'rating', 'comment', 'createdAt'])
-      && request.resource.data.keys().hasAll(['name', 'rating', 'comment', 'createdAt'])
+    // One review per verified account: the document ID is the authenticated UID.
+    // Create-only prevents a single account from flooding the collection with new records.
+    allow create: if signedIn()
+      && request.auth.token.email_verified == true
+      && reviewId == request.auth.uid
+      && request.resource.data.keys().hasOnly(['uid', 'name', 'rating', 'comment', 'createdAt'])
+      && request.resource.data.keys().hasAll(['uid', 'name', 'rating', 'comment', 'createdAt'])
+      && request.resource.data.uid == request.auth.uid
       && request.resource.data.name is string
       && request.resource.data.name.size() >= 1
       && request.resource.data.name.size() <= 32
@@ -108,7 +114,8 @@ service cloud.firestore {
       && request.resource.data.comment.size() >= 1
       && request.resource.data.comment.size() <= 500
       && request.resource.data.createdAt == request.time;
-    allow update, delete: if false;
+    allow update: if false;
+    allow delete: if isAdmin();
   }
 
   // Moderation records are readable by the owner of that account and by the admin.
