@@ -11,6 +11,7 @@ import {
   const profileAvatar = document.getElementById("profileAvatar");
   const avatarOptions = document.querySelectorAll("[data-avatar]");
   const avatarUpload = document.getElementById("avatarUpload");
+  const guestEditNotice = document.getElementById("guestEditNotice");
   if (!profileName || !profileAvatar || !avatarUpload) return;
 
   const firebaseConfig = {
@@ -55,6 +56,7 @@ import {
     profileName.textContent = "Guest";
     showEmoji(DEFAULT_AVATAR);
     setEditingEnabled(false);
+    if (guestEditNotice) guestEditNotice.hidden = false;
     // Remove legacy browser-wide profile data so it cannot leak between accounts.
     try {
       localStorage.removeItem("flameDragonProfileName");
@@ -176,6 +178,7 @@ import {
 
     activeUser = user;
     profileReady = false;
+    if (guestEditNotice) guestEditNotice.hidden = true;
     setEditingEnabled(false);
     profileName.textContent = "Loading profile…";
     showEmoji(DEFAULT_AVATAR);
