@@ -87,6 +87,7 @@
     .review-pin-button{border:1px solid rgba(255,193,135,.5);border-radius:8px;background:rgba(255,150,60,.14);color:#ffd9a8;font:inherit;font-size:11px;font-weight:800;padding:4px 10px;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease}
     .review-pin-button:hover{background:rgba(255,150,60,.26);border-color:rgba(255,205,125,.8)}
     .review-pin-button[aria-pressed="true"]{background:linear-gradient(120deg,#f6c36d,#e98a43);color:#281308;border-color:transparent}
+    .reviews-admin-and-list{display:grid;gap:10px;min-width:0}.review-admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(255,190,120,.2);border-radius:12px;background:rgba(0,0,0,.2);color:#d9c1ad;font-size:11px}.review-admin-toolbar[hidden]{display:none}.review-admin-actions{display:flex;gap:8px;flex-wrap:wrap}.review-admin-toolbar button:disabled{opacity:.45;cursor:not-allowed}.review-select-label{display:inline-flex;align-items:center;gap:5px;color:#ffd9a8;font-size:11px;font-weight:800;cursor:pointer}.review-select-label input{accent-color:#f6b56b;width:15px;height:15px}
     .reviews-empty{padding:18px;border:1px dashed rgba(255,190,120,.2);border-radius:13px;color:#bda794;font-size:12px;line-height:1.7;text-align:center}
     @media(max-width:820px){.reviews-layout{grid-template-columns:1fr}}
     .contact-reveal{opacity:1;transform:none}
@@ -219,7 +220,16 @@
           <p class="reviews-status" id="publicReviewStatus" role="status" aria-live="polite"></p>
           <small style="color:#a99280;font-size:10px;line-height:1.6">Keep comments respectful. Do not include passwords or private information.</small>
         </form>
-        <div class="reviews-list" id="publicReviewsList" aria-live="polite"><p class="reviews-empty">Loading community reviews…</p></div>
+        <div class="reviews-admin-and-list">
+          <div class="review-admin-toolbar" id="reviewAdminToolbar" hidden>
+            <span id="reviewSelectionCount">0 selected · selecting applies to the reviews shown here.</span>
+            <div class="review-admin-actions">
+              <button class="review-pin-button" id="selectAllReviews" type="button">Select all shown</button>
+              <button class="review-pin-button" id="deleteSelectedReviews" type="button" disabled>Delete selected</button>
+            </div>
+          </div>
+          <div class="reviews-list" id="publicReviewsList" aria-live="polite"><p class="reviews-empty">Loading community reviews…</p></div>
+        </div>
       </div>
     </section>
   </main>
@@ -249,7 +259,7 @@
   <script type="module">
     import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, deleteDoc, serverTimestamp, addDoc, collection, getDocs, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, deleteDoc, writeBatch, serverTimestamp, addDoc, collection, getDocs, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDhj1G--S8S2oqQxoi1PkPvI4Msmw_klq0",
@@ -297,6 +307,67 @@
       try { pinnedId = localStorage.getItem(PINNED_KEY) || null; } catch (error) { pinnedId = null; }
 
       let adminViewer = false;
+      const selectedReviewIds = new Set();
+      let currentReviewIds = [];
+      const adminToolbar = document.getElementById("reviewAdminToolbar");
+      const selectAllReviewsButton = document.getElementById("selectAllReviews");
+      const deleteSelectedReviewsButton = document.getElementById("deleteSelectedReviews");
+      const selectionCount = document.getElementById("reviewSelectionCount");
+
+      function updateReviewSelectionUI() {
+        if (adminToolbar) adminToolbar.hidden = !adminViewer;
+        const selectedCount = selectedReviewIds.size;
+        if (selectionCount) selectionCount.textContent = `${selectedCount} selected · ${currentReviewIds.length} shown (up to 50).`;
+        if (deleteSelectedReviewsButton) deleteSelectedReviewsButton.disabled = !adminViewer || selectedCount === 0;
+        if (selectAllReviewsButton) {
+          const allSelected = currentReviewIds.length > 0 && currentReviewIds.every(id => selectedReviewIds.has(id));
+          selectAllReviewsButton.textContent = allSelected ? "Clear selection" : "Select all shown";
+        }
+        reviewList?.querySelectorAll("[data-review-select]").forEach(input => {
+          input.checked = selectedReviewIds.has(input.dataset.reviewSelect);
+        });
+      }
+
+      selectAllReviewsButton?.addEventListener("click", () => {
+        const allSelected = currentReviewIds.length > 0 && currentReviewIds.every(id => selectedReviewIds.has(id));
+        if (allSelected) currentReviewIds.forEach(id => selectedReviewIds.delete(id));
+        else currentReviewIds.forEach(id => selectedReviewIds.add(id));
+        updateReviewSelectionUI();
+      });
+
+      deleteSelectedReviewsButton?.addEventListener("click", async () => {
+        if (!adminViewer || !selectedReviewIds.size) return;
+        const ids = currentReviewIds.filter(id => selectedReviewIds.has(id));
+        if (!ids.length) return;
+        if (!confirm(`Permanently delete ${ids.length} selected review(s)? This cannot be undone.`)) return;
+        deleteSelectedReviewsButton.disabled = true;
+        if (selectAllReviewsButton) selectAllReviewsButton.disabled = true;
+        reviewStatus.textContent = `Deleting ${ids.length} selected review(s)…`;
+        try {
+          const batch = writeBatch(db);
+          ids.forEach(id => batch.delete(doc(db, "publicReviews", id)));
+          if (pinnedId && ids.includes(pinnedId)) {
+            pinnedId = null;
+            try { localStorage.removeItem(PINNED_KEY); } catch (error) { /* ignore */ }
+            batch.set(reviewSettingsRef, {
+              visible: reviewsVisible,
+              pinnedId: null,
+              updatedAt: serverTimestamp(),
+              updatedBy: auth.currentUser?.uid || ""
+            }, { merge: true });
+          }
+          await batch.commit();
+          selectedReviewIds.clear();
+          reviewStatus.textContent = `${ids.length} review(s) deleted.`;
+          await loadPublicReviews();
+        } catch (error) {
+          console.error("Could not bulk-delete reviews:", error);
+          reviewStatus.textContent = "Could not delete the selected reviews. Check administrator access and Firestore rules.";
+          updateReviewSelectionUI();
+        } finally {
+          if (selectAllReviewsButton) selectAllReviewsButton.disabled = false;
+        }
+      });
       onAuthStateChanged(auth, user => {
         const next = isAdminUser(user);
         if (next === adminViewer) return;
@@ -321,6 +392,22 @@
         if (created) date.textContent = created.toLocaleDateString();
         actions.append(date);
         if (adminViewer && review.id) {
+          const selectLabel = document.createElement("label");
+          selectLabel.className = "review-select-label";
+          const selectInput = document.createElement("input");
+          selectInput.type = "checkbox";
+          selectInput.dataset.reviewSelect = review.id;
+          selectInput.checked = selectedReviewIds.has(review.id);
+          selectInput.setAttribute("aria-label", "Select review by " + (review.name || "community member"));
+          selectInput.addEventListener("change", () => {
+            if (selectInput.checked) selectedReviewIds.add(review.id);
+            else selectedReviewIds.delete(review.id);
+            updateReviewSelectionUI();
+          });
+          const selectText = document.createElement("span");
+          selectText.textContent = "Select";
+          selectLabel.append(selectInput, selectText);
+          actions.append(selectLabel);
           const isPinned = review.id === pinnedId;
           if (isPinned) {
             const badge = document.createElement("span");
@@ -409,6 +496,9 @@
           reviewsVisible = settingsVisible;
           if (!settingsVisible) {
             reviewList.replaceChildren();
+            currentReviewIds = [];
+            selectedReviewIds.clear();
+            updateReviewSelectionUI();
             const hidden = document.createElement("p");
             hidden.className = "reviews-empty";
             hidden.textContent = "Community reviews are temporarily hidden. Your saved reviews have not been deleted.";
@@ -418,6 +508,8 @@
           }
           const snapshot = await getDocs(query(collection(db, "publicReviews"), orderBy("createdAt", "desc"), limit(50)));
           const reviews = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+          currentReviewIds = reviews.map(item => item.id);
+          for (const id of [...selectedReviewIds]) if (!currentReviewIds.includes(id)) selectedReviewIds.delete(id);
           if (pinnedId) {
             const index = reviews.findIndex(item => item.id === pinnedId);
             if (index > 0) reviews.unshift(reviews.splice(index, 1)[0]);
@@ -439,6 +531,7 @@
           if (reviewSummary) reviewSummary.textContent = reviews.length
             ? "★ " + average + " / 5 · " + reviews.length + (reviews.length === 1 ? " review" : " reviews")
             : "No ratings yet";
+          updateReviewSelectionUI();
         } catch (error) {
           console.warn("Public reviews could not be loaded:", error);
           reviewList.replaceChildren();
@@ -447,6 +540,9 @@
           message.textContent = "Reviews are temporarily unavailable. Please try again later.";
           reviewList.append(message);
           if (reviewSummary) reviewSummary.textContent = "Ratings unavailable";
+          currentReviewIds = [];
+          selectedReviewIds.clear();
+          updateReviewSelectionUI();
         }
       }
 
