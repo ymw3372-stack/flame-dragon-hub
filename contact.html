@@ -496,6 +496,9 @@
           reviewsVisible = settingsVisible;
           if (!settingsVisible) {
             reviewList.replaceChildren();
+            currentReviewIds = [];
+            selectedReviewIds.clear();
+            updateReviewSelectionUI();
             const hidden = document.createElement("p");
             hidden.className = "reviews-empty";
             hidden.textContent = "Community reviews are temporarily hidden. Your saved reviews have not been deleted.";
