@@ -179,28 +179,6 @@ service cloud.firestore {
 
       allow delete: if false;
 
-      // Private profile data is stored per account, never in shared browser storage.
-      match /profile/{profileId} {
-        allow read: if profileId == 'settings' && isOwner(uid) && !isBanned(uid);
-        allow create, update: if profileId == 'settings'
-          && isOwner(uid) && !isBanned(uid)
-          && request.resource.data.keys().hasOnly([
-            'displayName', 'avatarEmoji', 'avatarImage', 'updatedAt'
-          ])
-          && request.resource.data.keys().hasAll([
-            'displayName', 'avatarEmoji', 'avatarImage', 'updatedAt'
-          ])
-          && request.resource.data.displayName is string
-          && request.resource.data.displayName.size() >= 1
-          && request.resource.data.displayName.size() <= 24
-          && request.resource.data.avatarEmoji is string
-          && request.resource.data.avatarEmoji.size() <= 16
-          && request.resource.data.avatarImage is string
-          && request.resource.data.avatarImage.size() <= 800000
-          && request.resource.data.updatedAt == request.time;
-        allow delete: if false;
-      }
-
       match /activity/{eventId} {
         allow read: if isAdmin() || (isOwner(uid) && !isBanned(uid));
 
