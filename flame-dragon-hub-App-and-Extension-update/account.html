@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100b10">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <title>Account | FLAME DRAGON HUB</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .account-page{max-width:1040px;margin:38px auto;padding:18px}
+    .account-layout{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:20px;align-items:start}
+    .account-profile-card{padding:26px;color:#f8fafc;background:linear-gradient(145deg,#171b27,#10121b);border:1px solid rgba(255,138,36,.42);border-radius:24px;box-shadow:0 14px 42px rgba(0,0,0,.25);text-align:center}
+    .account-profile-card h2{margin:0 0 8px;color:#ffb16e}
+    .account-profile-card .profile-avatar{width:112px;height:112px;margin:18px auto 12px;border-radius:50%;border:2px solid #ff963d;display:flex;align-items:center;justify-content:center;font-size:54px;background-color:rgba(255,150,61,.12);background-position:center;background-size:cover;background-repeat:no-repeat;overflow:hidden}
+    .account-profile-card .avatar-options{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;margin:14px 0}
+    .account-profile-card .avatar-options button{min-width:40px;min-height:38px;border:1px solid rgba(255,150,61,.4);border-radius:10px;background:rgba(255,150,61,.1);color:white;cursor:pointer;font-size:20px}
+    .account-profile-card .upload-avatar{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 12px;border:1px solid rgba(255,150,61,.45);border-radius:10px;background:rgba(255,150,61,.12);color:#ffcf9e;cursor:pointer;font-size:13px}
+    .account-profile-card .upload-avatar input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+    .account-profile-card .profile-info p,.account-profile-card .profile-hint{color:#b8becb;font-size:13px}
+    .account-profile-card .profile-button{margin-top:8px;padding:10px 15px;border:1px solid rgba(255,150,61,.4);border-radius:11px;color:#ffcf9e;background:rgba(255,150,61,.1);cursor:pointer}
+    .account-profile-stats{margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,.1);color:#cbd5e1}
+    .account-profile-stats strong{display:block;color:#ffb16e;font-size:24px}
+    .account-back{display:inline-block;margin:0 0 18px;padding:10px 16px;color:#ffb16e;background:rgba(255,138,36,.09);border:1px solid rgba(255,138,36,.35);border-radius:14px;text-decoration:none}
+    .account-page{max-width:1100px}
+    .account-section-label{margin:0 0 16px;color:#ffb16e;font-size:22px;font-weight:800;text-align:left}
+    .account-profile-card,.account-card{min-width:0}
+    .account-card{padding:26px;color:#f8fafc;background:linear-gradient(145deg,#171b27,#10121b);border:1px solid rgba(255,138,36,.42);border-radius:24px;box-shadow:0 14px 42px rgba(0,0,0,.25);text-align:left}
+    .account-card h1{margin:0 0 10px;color:#ffb16e;font-size:28px}
+    .account-card .account-subtitle{color:#b8becb;line-height:1.6}
+    .account-card label{display:block;margin:16px 0 7px;color:#e7d9d0;font-size:13px;font-weight:700}
+    .account-card input[type=email],.account-card input[type=password]{display:block;width:100%;min-height:44px;padding:11px 13px;border:1px solid rgba(255,150,61,.3);border-radius:10px;background:#0c1019;color:#fff;outline:none}
+    .account-card input:focus{border-color:#ff963d;box-shadow:0 0 0 3px rgba(255,150,61,.12)}
+    .account-card button{width:100%;min-height:43px;margin-top:11px;padding:10px 14px;border:1px solid rgba(255,150,61,.4);border-radius:10px;background:rgba(255,150,61,.12);color:#ffcf9e;font-weight:700;cursor:pointer}
+    .account-card .account-primary{background:linear-gradient(100deg,#e65b27,#b82d45);border-color:#ff8b52;color:white}
+    .account-card .account-google{background:#f7f7f7;color:#252525;border-color:#ddd}
+    .account-card .account-forgot{background:transparent;border-color:transparent;text-decoration:underline}
+    #authStatus{padding:12px;border-radius:10px;background:rgba(255,150,61,.08);color:#ffd2a8;line-height:1.5}
+    .upload-avatar{cursor:pointer}
+    #avatarUpload{display:block;width:100%;max-width:260px;margin:8px auto;color:#d8c4b6;font-size:12px}
+    @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-page{margin:18px auto;padding:14px}.account-card{padding:20px}}
+  
+        .settings-grid {
+            max-width: 1050px;
+            margin: 24px auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        /* ===== Shared chrome + settings skin - matches index.html =====
+           style.css ships a warm ember shell (two drifting orange glows on
+           body::before / body::after), a sticky .topbar / .navigation header,
+           and ember-coloured settings/profile widgets. index.html uses none of
+           that: it is a plain .navbar / .nav-links shell on a flat #100b10
+           background. This block switches off the ember rules and re-points
+           the shared widgets at the crimson palette; layout is untouched. */
+        body {
+            color: #fff4f6;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(ellipse at 50% 35%, rgba(130, 22, 45, .20), transparent 45%),
+                #100b10;
+            background-attachment: fixed;
+        }
+
+        body::before,
+        body::after {
+            content: none;
+            display: none;
+            background: none;
+            box-shadow: none;
+            animation: none;
+            filter: none;
+        }
+
+        /* ===== Header - same shell as index.html / evolutions.html ===== */
+        .navbar {
+            position: relative;
+            z-index: 100;
+            width: min(1150px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff4f6;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .brand img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(255, 55, 80, .7));
+        }
+
+        .brand span { color: #ff4657; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #b8aab8;
+            font-size: 13px;
+            transition: .25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: #fff;
+            background: rgba(255, 70, 87, .12);
+            border-color: rgba(255, 70, 87, .38);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 70, 87, .15);
+            border-color: rgba(255, 70, 87, .42);
+            box-shadow: 0 0 18px rgba(255, 70, 87, .10);
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                padding: 14px 0;
+                gap: 10px;
+            }
+            .nav-links { justify-content: flex-start; width: 100%; }
+        }
+
+        .bonus-codes {
+            border-color: rgba(255, 80, 100, .45);
+            background: rgba(20, 10, 18, .96);
+        }
+
+        .bonus-codes strong { color: #ff9da7; }
+
+        
+/* ===== Account page: match the main FLAME DRAGON HUB interface ===== */
+.account-page{width:min(1050px,92%);max-width:1050px;margin:34px auto 60px;padding:0 0 30px}
+.account-layout{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:20px}
+.account-profile-card,.account-card{color:#fff4f6;background:linear-gradient(145deg,rgba(43,22,33,.82),rgba(18,13,20,.94));border:1px solid rgba(255,80,100,.28);border-radius:22px;box-shadow:0 15px 35px rgba(0,0,0,.35),inset 0 0 35px rgba(255,55,75,.025)}
+.account-profile-card h2,.account-card h1{color:#fff4f6}
+.account-profile-card .account-section-label{color:#ff9da7;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.account-profile-card .profile-avatar{border-color:rgba(255,80,100,.55);background-color:rgba(255,65,85,.10);box-shadow:0 0 25px rgba(255,60,85,.15)}
+.account-profile-card .avatar-options button,.account-profile-card .upload-avatar{border-color:rgba(255,80,100,.32);background:rgba(255,65,85,.10);color:#ffb5bd}
+.account-profile-card .avatar-options button:hover,.account-profile-card .upload-avatar:hover{background:rgba(255,65,85,.20);border-color:rgba(255,90,110,.65);color:#fff}
+.account-profile-card .profile-info p,.account-profile-card .profile-hint,.account-card .account-subtitle{color:#b8aab8}
+.account-profile-card .profile-button{border-color:rgba(255,80,100,.30);background:rgba(255,65,85,.10);color:#ff9da7}
+.account-profile-card .profile-button:hover{color:#fff;background:rgba(255,65,85,.20);border-color:rgba(255,90,110,.65)}
+.account-profile-stats{border-top-color:rgba(255,80,100,.16);color:#b8aab8}
+.account-profile-stats strong{color:#ff6878}
+.account-back{color:#ff9da7;background:rgba(255,65,85,.08);border-color:rgba(255,80,100,.30)}
+.account-back:hover{color:#fff;background:rgba(255,65,85,.18);border-color:rgba(255,90,110,.65)}
+.account-card h1{font-size:28px;text-shadow:0 0 14px rgba(255,65,85,.35),0 0 30px rgba(255,45,65,.12)}
+.account-card label{color:#e8dce2}
+.account-card input[type=email],.account-card input[type=password]{border-color:rgba(255,80,100,.28);background:rgba(16,9,14,.85);color:#fff4f6}
+.account-card input:focus{border-color:#ff6878;box-shadow:0 0 0 3px rgba(255,70,87,.13)}
+.account-card button{border-color:rgba(255,80,100,.30);background:rgba(255,65,85,.09);color:#ffb0b9}
+.account-card button:hover{background:rgba(255,65,85,.18);border-color:rgba(255,90,110,.65);color:#fff}
+.account-card .account-primary{background:linear-gradient(100deg,#e83f55,#a92348);border-color:#ff6878;color:#fff}
+.account-card .account-google{background:#f7f7f7;color:#252525;border-color:#ddd}
+.account-card .account-google:hover{background:#fff;color:#111;border-color:#fff}
+.account-card .account-forgot{background:transparent;border-color:transparent;color:#ff9da7}
+#authStatus{background:rgba(255,65,85,.08);color:#ffb5bd;border:1px solid rgba(255,80,100,.14)}
+.account-profile-card .upload-avatar{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 12px;border-radius:10px;cursor:pointer}
+.account-profile-card .upload-avatar input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+#avatarUpload{display:block;width:100%;max-width:260px;margin:8px auto;color:#b8aab8;font-size:12px}
+@media(max-width:800px){.navbar{align-items:flex-start;flex-direction:column;justify-content:center;padding:14px 0;gap:10px}.nav-links{justify-content:flex-start;width:100%}}
+@media(max-width:760px){.account-page{width:92%;margin:22px auto 45px;padding:0}.account-layout{grid-template-columns:1fr}.account-profile-card,.account-card{padding:20px}}
+
+      .account-login-help{margin:14px 0;padding:15px 17px;border:1px solid rgba(255,80,100,.22);border-radius:13px;background:rgba(255,65,85,.055);color:#e8dce2;font-size:13px;line-height:1.65}
+    .account-login-help p{margin:0 0 9px}
+    .account-login-help ul{margin:8px 0;padding-left:20px}
+    .account-login-help li{margin:7px 0}
+    .account-login-help strong{color:#ffb5bd}
+    .account-login-help em{color:#ffd0a8;font-style:normal}
+    .account-login-help .account-help-note{margin:9px 0 0;color:#b8aab8;font-size:12px}
+  </style>
+
+<style>
+body{position:relative;isolation:isolate;overflow-x:hidden}
+body::before{content:"";display:block!important;position:fixed;inset:-20%;z-index:-1;pointer-events:none;opacity:.5;background-image:radial-gradient(2px 2px at 8% 18%,rgba(255,105,70,.9) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 22% 72%,rgba(100,155,255,.85) 50%,transparent 100%),radial-gradient(2px 2px at 44% 32%,rgba(255,75,90,.75) 50%,transparent 100%),radial-gradient(1px 1px at 68% 65%,rgba(130,125,255,.9) 50%,transparent 100%),radial-gradient(2px 2px at 88% 24%,rgba(255,130,75,.8) 50%,transparent 100%);background-size:360px 300px,420px 360px,520px 420px,460px 380px,390px 340px;animation:fdhParticleDrift 34s linear infinite}
+body::after{content:"";display:block!important;position:fixed;inset:-30%;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 18% 35%,rgba(255,45,55,.16),transparent 38%),radial-gradient(ellipse at 82% 62%,rgba(25,85,255,.17),transparent 40%),radial-gradient(ellipse at 52% 10%,rgba(130,35,180,.09),transparent 38%);filter:blur(22px);animation:fdhNebulaFlow 22s ease-in-out infinite alternate}
+@keyframes fdhParticleDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-90px,65px,0)}}
+@keyframes fdhNebulaFlow{0%{transform:translate3d(-2%,1%,0) scale(1)}100%{transform:translate3d(3%,-2%,0) scale(1.08)}}
+.account-profile-card,.account-card{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 55px rgba(0,0,0,.42),0 0 35px rgba(255,55,75,.07)}
+.account-card h1{background:linear-gradient(90deg,#fff,#ff8799 48%,#8d8bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.account-card .account-primary{background:linear-gradient(100deg,#ff3d32,#bd176e 55%,#254cff);box-shadow:0 0 22px rgba(255,55,85,.22),0 0 24px rgba(45,95,255,.15);transition:filter .2s,transform .2s,box-shadow .2s}
+.account-card .account-primary:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 0 28px rgba(255,55,85,.3),0 0 30px rgba(45,95,255,.2)}
+@media(prefers-reduced-motion:reduce){body::before,body::after{animation:none!important}}
+</style>
+<style>
+.account-login-help{margin:18px 0}
+.login-help-card{display:flex;align-items:center;gap:14px;width:100%;padding:15px 17px;border:1px solid rgba(255,138,36,.38);border-radius:15px;background:linear-gradient(115deg,rgba(255,80,60,.12),rgba(70,70,160,.12));color:#fff;text-decoration:none;transition:transform .2s,border-color .2s,background .2s;cursor:pointer}
+.login-help-card:hover{transform:translateY(-2px);border-color:rgba(255,190,100,.8);background:linear-gradient(115deg,rgba(255,80,60,.19),rgba(70,70,160,.18))}
+.login-help-card-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#ff634f,#a52d72);font-size:25px;font-weight:900;box-shadow:0 5px 18px #ff3d5533}
+.login-help-card-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.login-help-card-copy strong{color:#ffe0a8;font-size:16px}
+.login-help-card-copy small{color:#c9bdca;font-size:12px;line-height:1.5}
+.login-help-card-arrow{margin-left:auto;color:#ffd18c;font-size:24px}
+@media(prefers-reduced-motion:reduce){.login-help-card{transition:none}}
+</style>
+
+<link rel="stylesheet" href="motion.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
+      <img src="assets/logo.png" alt="">
+      <span>FLAME DRAGON HUB</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="evolutions.html">Evolutions</a>
+      <a href="skins.html">Skins</a>
+      <a href="favorites.html">App &amp; Extension</a>
+      <a href="settings.html">Settings</a>
+      <a href="account.html" class="active" aria-current="page">Account</a>
+        <a href="contact.html">Contact</a>
+        <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
+  </nav>
+  </header>
+  <main class="account-page">
+    <a class="account-back" href="settings.html">← Back to Settings</a>
+    <div class="account-layout">
+      <section class="account-profile-card" aria-labelledby="profileHeading">
+        <p class="account-section-label">Your Profile</p><h2 id="profileHeading">🎮 Player Profile</h2>
+        <div class="profile-avatar" id="profileAvatar">🐉</div>
+        <div class="avatar-options" id="avatarOptions" aria-label="Choose profile avatar">
+          <button type="button" data-avatar="🐉" aria-label="Dragon">🐉</button><button type="button" data-avatar="🔥" aria-label="Fire">🔥</button><button type="button" data-avatar="👹" aria-label="Ogre">👹</button><button type="button" data-avatar="⚡" aria-label="Lightning">⚡</button><button type="button" data-avatar="🌑" aria-label="Moon">🌑</button><button type="button" data-avatar="💀" aria-label="Skull">💀</button>
+          <label class="upload-avatar" for="avatarUpload">📷 Choose Photo</label>
+          <input type="file" id="avatarUpload" accept="image/png,image/jpeg,image/webp,image/gif" aria-label="Choose profile photo">
+        </div>
+        <div class="profile-info"><h2 id="profileName">FLAME DRAGON</h2><p>EvoWorld Explorer</p><button id="editProfile" class="profile-button" type="button">✏️ Edit Player Name</button></div>
+        <div class="account-profile-stats"><strong id="favoriteCount">0</strong><span>Favorites</span></div>
+        <p class="profile-hint">Your profile photo and player name are saved on this browser.</p>
+      </section>
+      <section id="account" class="account-card" aria-labelledby="accountHeading">
+        <h1 id="accountHeading">🐉 Your Account</h1>
+        <p class="account-subtitle">Sign in or create an account to join the hub.</p>
+        <div id="loginHelp" class="account-login-help">
+          <a class="login-help-card" href="signin-guide.html" aria-label="Open the complete sign-in guide">
+            <span class="login-help-card-icon" aria-hidden="true">?</span>
+            <span class="login-help-card-copy"><strong>Need help signing in?</strong><small>Open the step-by-step guide for email, Google, account creation and password recovery.</small></span>
+            <span class="login-help-card-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p id="authStatus" aria-live="polite">Checking account...</p>
+        <form id="authForm">
+          <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+          <label for="authPassword">Password</label><input id="authPassword" type="password" minlength="6" autocomplete="current-password" placeholder="At least 6 characters" required>
+          <button class="account-primary" type="submit">Sign in</button><button id="createAccount" class="account-secondary" type="button">Create account</button>
+        </form>
+        <button id="googleSignIn" class="account-google" type="button"><span>G</span> Continue with Google</button>
+        <button id="resetPassword" class="account-forgot" type="button">Forgot password?</button>
+        <button id="resendVerification" class="account-secondary" type="button" hidden>Resend verification email</button>
+        <button id="refreshVerification" class="account-secondary" type="button" hidden>I've verified my email</button>
+        <button id="signOut" class="account-secondary" type="button" hidden>Sign out</button>
+      </section>
+    </div>
+  </main>
+  <script src="profile.js"></script><script src="preferences.js"></script><script src="cursor-glow.js"></script><script type="module" src="auth.js"></script>
+  <script src="site-motion.js" defer></script>
+</body>
+</html>
