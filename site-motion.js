@@ -55,7 +55,7 @@
             <a href="index.html">Home</a>
             <a href="evolutions.html">Evolutions</a>
             <a href="skins.html">Skins Library</a>
-            <a href="favorites.html">Favorites</a>
+            <a href="favorites.html">App &amp; Extension</a>
             <a href="settings.html">Settings</a>
             <a href="developer.html">Developer</a>
           </nav>

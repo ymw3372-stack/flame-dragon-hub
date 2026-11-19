@@ -39,6 +39,7 @@
   const CARD_SELECTOR =
     "main .evolution-card,main .skin-card,main .vault-card,main .hub-card," +
     "main .orbit-card,main .guide-card,main .welcome-card,main .fav-card," +
+    "main .tp-card," +
     "main .panel,main .settings-card,main .about-card,main .dev-card," +
     "main .profile-card,main .signin-step,.account-profile-card," +
     ".account-card,.contact-layout > *";

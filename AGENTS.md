@@ -14,6 +14,12 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
   embedded document swallows `pointermove`, so such a card would freeze mid-lean.
 - `preferences.js` is injected on every page: language dock, custom background,
   accent colour, light level, YouTube prompt, visitor analytics.
+- `favorites.html` is the "App & Extension" page (the file name is legacy).
+  It is self-contained: an inline `<script>` holds the `PACKS` list of the 15
+  `assets/texture-packs/*.webp` backgrounds and renders the grid, the cursor
+  gallery, and a five-screen mock of the extension popup. Both the card grid and
+  the popup use one shared lightbox/slider; favourites go to
+  `flameDragonTextureFavorites` (pack ids, not skin names).
 - `contact.html` renders the public reviews itself (inline module): it reads
   `publicReviews` and `publicReviewSettings/global`. Only the verified owner
   (`ymw3372@gmail.com`, see `ADMIN_EMAILS`) sees the Pin button; the pin lives in
@@ -47,8 +53,9 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
 ## Conventions
 
 - Card selectors vary by page: `.orbit-card` (home), `.evolution-card`,
-  `.vault-card` (skins), `.fav-card`, `.guide-card`, `.settings-card`,
-  `.about-card`, `.dev-card`, `.profile-card`, `.contact-layout > *`.
+  `.vault-card` (skins), `.tp-card` (favorites / App & Extension), `.fav-card`,
+  `.guide-card`, `.settings-card`, `.about-card`, `.dev-card`,
+  `.profile-card`, `.contact-layout > *`.
   JavaScript-built grids (skins, favourites) render after load, so anything
   that decorates cards must also observe DOM mutations.
 - localStorage keys are namespaced `flameDragon*` (e.g. `flameDragonBg`,
@@ -65,6 +72,9 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
 - The first-visit YouTube prompt (`#fdh-yt-overlay`, z-index 1000000) covers the
   whole viewport. It is not a layout bug, but it does intercept the pointer
   until dismissed, which makes hover effects look broken during testing.
+- `motion.css` clips `img` elements with a `fdh-image-draw` reveal. Small images
+  inside a mock UI (extension popup tiles, cursor swatches) look broken under it,
+  so they carry `fdh-no-draw`.
 - Headless Chrome reports `hover: none` / `pointer: coarse`; override
   `window.matchMedia` when testing pointer-driven behaviour.
 - GitHub tokens in this environment are read-only: deliver via
