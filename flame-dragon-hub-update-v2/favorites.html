@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100b10">
+<title>App &amp; Extension | FLAME DRAGON HUB</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="motion.css">
+<style>
+:root{
+  --tp-text:#fff4f6;
+  --tp-muted:#b8aab8;
+  --tp-line:rgba(255,170,140,.16);
+  --tp-radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  color:var(--tp-text);
+  font-family:Arial,Helvetica,sans-serif;
+  text-align:left;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(130,22,45,.24),transparent 52%),
+    radial-gradient(ellipse at 90% 12%,rgba(255,150,80,.08),transparent 44%),
+    #100b10;
+  background-attachment:fixed;
+}
+/* style.css paints two drifting ember glows for the old shell; this page uses
+   the flat #100b10 backdrop the other hub pages use. */
+body::before,body::after{content:none!important;display:none!important}
+body.tp-locked{overflow:hidden}
+
+/* ===== header — same shell as index.html / skins.html ===== */
+.navbar{
+  position:relative;z-index:100;
+  width:min(1150px,92%);min-height:76px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.brand{display:flex;align-items:center;gap:10px;color:#fff4f6;font-size:16px;font-weight:900;letter-spacing:1px;white-space:nowrap;text-decoration:none}
+.brand img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,55,80,.7))}
+.brand span{color:#ff4657}
+.nav-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:7px;min-width:0}
+.nav-links a{display:inline-flex;align-items:center;justify-content:center;padding:10px 13px;border:1px solid transparent;border-radius:10px;color:#b8aab8;font-size:13px;text-decoration:none;transition:color .25s,background .25s,border-color .25s,transform .25s}
+.nav-links a:hover,.nav-links a:focus-visible{color:#fff;background:rgba(255,70,87,.12);border-color:rgba(255,70,87,.38);transform:translateY(-2px);outline:none}
+.nav-links a.active{color:#fff;background:rgba(255,70,87,.15);border-color:rgba(255,70,87,.42);box-shadow:0 0 18px rgba(255,70,87,.12)}
+@media(max-width:800px){
+  .navbar{flex-direction:column;align-items:flex-start;justify-content:center;padding:14px 0;gap:10px}
+  .navbar .nav-links{width:100%;justify-content:flex-start!important;flex-wrap:nowrap!important;row-gap:0!important;overflow-x:auto;overflow-y:hidden;padding-bottom:8px;scrollbar-width:thin}
+  .navbar .nav-links a{flex:0 0 auto;white-space:nowrap!important}
+}
+
+/* ===== page ===== */
+.tp-page{width:min(1320px,94%);margin:0 auto;padding:24px 0 84px}
+
+.tp-hero{
+  position:relative;overflow:hidden;
+  padding:clamp(24px,4.4vw,48px);
+  border:1px solid rgba(255,120,110,.22);border-radius:26px;
+  background:
+    radial-gradient(ellipse at 88% 6%,rgba(255,180,110,.14),transparent 40%),
+    linear-gradient(135deg,#2b1621,#120d14 72%);
+  box-shadow:0 22px 70px #0006;
+}
+.tp-kicker{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.2em;color:#ff9da7}
+.tp-hero h1{margin:12px 0 10px;font-size:clamp(30px,5vw,50px);line-height:1.05;color:#fff5f6}
+.tp-hero h1 em{font-style:normal;color:#ffb877}
+.tp-hero p{max-width:720px;margin:0;color:#c6b6c2;font-size:15px;line-height:1.75}
+.tp-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tp-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid rgba(255,207,140,.28);border-radius:999px;background:rgba(255,207,140,.06);color:#ffddb0;font-size:11px;font-weight:800;letter-spacing:.04em}
+.tp-chip b{color:#fff3dc}
+
+.tp-section{margin-top:46px;scroll-margin-top:20px}
+.tp-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.tp-section-head h2{margin:0;font-size:clamp(21px,3vw,29px);color:#fff}
+.tp-section-head p{margin:7px 0 0;color:var(--tp-muted);font-size:13px;line-height:1.55;max-width:640px}
+.tp-count{flex:0 0 auto;padding:7px 12px;border:1px solid rgba(255,120,130,.3);border-radius:999px;background:rgba(255,70,87,.08);color:#ff9da7;font-size:11px;font-weight:800;letter-spacing:.06em;white-space:nowrap}
+
+/* ===== background cards ===== */
+.tp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:16px}
+.tp-card-shell{opacity:0;transform:translate3d(0,20px,0);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0)*45ms)}
+.tp-card-shell.is-in{opacity:1;transform:none}
+
+.tp-card{
+  position:relative;display:flex;flex-direction:column;height:100%;
+  border:1px solid var(--tp-line);border-radius:var(--tp-radius);
+  background:linear-gradient(160deg,#261823,#130e15 78%);
+  box-shadow:0 14px 34px #0005;overflow:hidden;text-align:left;
+  transition:border-color .28s ease,box-shadow .3s ease,background .3s ease;
+}
+.tp-card:hover,.tp-card:focus-within{border-color:rgba(255,120,95,.55);box-shadow:0 22px 46px #0007,0 0 30px rgba(255,90,70,.14)}
+.tp-art-wrap:focus-visible{outline:2px solid rgba(255,190,145,.9);outline-offset:-3px}
+.tp-art-wrap{position:relative;overflow:hidden;aspect-ratio:16/10;background:#1d131d;cursor:pointer}
+.tp-art{display:block;width:100%;height:100%;object-fit:cover;animation:tpDrift var(--drift,26s) ease-in-out infinite alternate;animation-delay:calc(var(--i,0)*-1.4s);will-change:transform}
+.tp-card:hover .tp-art{filter:brightness(1.12) saturate(1.08)}
+.tp-sheen{
+  position:absolute;inset:-10% -40%;pointer-events:none;
+  background:linear-gradient(112deg,transparent 38%,rgba(255,220,190,.24) 50%,transparent 62%);
+  transform:translateX(-70%);
+  animation:tpSheen 8.5s ease-in-out infinite;animation-delay:calc(var(--i,0)*.5s);
+}
+.tp-badge{
+  position:absolute;left:10px;bottom:10px;padding:4px 8px;border-radius:7px;
+  background:rgba(10,6,10,.72);border:1px solid rgba(255,255,255,.16);
+  color:#ffe6cf;font-size:9px;font-weight:900;letter-spacing:.1em;backdrop-filter:blur(4px)
+}
+.tp-zoom{
+  position:absolute;top:10px;right:10px;width:28px;height:28px;display:grid;place-items:center;
+  border-radius:9px;background:rgba(10,6,10,.66);border:1px solid rgba(255,255,255,.18);
+  color:#ffe6cf;font-size:13px;opacity:0;transform:translateY(-4px);
+  transition:opacity .25s ease,transform .25s ease
+}
+.tp-card:hover .tp-zoom,.tp-art-wrap:focus-visible .tp-zoom{opacity:1;transform:none}
+.tp-card-meta{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:12px 13px 14px}
+.tp-card-meta h3{margin:0;font-size:13px;letter-spacing:.03em;color:#fff}
+.tp-card-meta p{margin:5px 0 0;font-size:11px;line-height:1.45;color:#b8aab8}
+.tp-heart{
+  flex:0 0 32px;width:32px;height:32px;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.16);border-radius:10px;background:rgba(255,255,255,.05);
+  color:#ff9da7;font-size:15px;line-height:1;cursor:pointer;transition:background .2s,border-color .2s,color .2s
+}
+.tp-heart:hover{background:rgba(255,70,87,.16);border-color:rgba(255,70,87,.6)}
+.tp-heart[aria-pressed="true"]{background:rgba(255,70,87,.2);border-color:rgba(255,105,122,.85);color:#ff5265}
+.tp-card.is-fav{border-color:rgba(255,105,122,.5)}
+
+@keyframes tpDrift{
+  0%{transform:scale(1.03) translate3d(0,0,0)}
+  50%{transform:scale(1.11) translate3d(-1.6%,1.3%,0)}
+  100%{transform:scale(1.06) translate3d(1.4%,-1%,0)}
+}
+@keyframes tpSheen{0%{transform:translateX(-75%)}52%,100%{transform:translateX(75%)}}
+
+/* ===== cursor gallery ===== */
+.tp-cursor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+.tp-cursor{
+  display:flex;align-items:center;gap:12px;padding:12px;min-height:96px;
+  border:1px solid var(--tp-line);border-radius:15px;
+  background:linear-gradient(150deg,#241722,#150f17);
+  transition:border-color .25s ease,background .25s ease
+}
+.tp-cursor:hover{border-color:rgba(255,150,120,.45);background:linear-gradient(150deg,#2c1a26,#181018)}
+.tp-cursor-well{flex:0 0 54px;width:54px;height:54px;display:grid;place-items:center;border-radius:14px;background:radial-gradient(circle at 50% 35%,rgba(255,150,110,.16),rgba(10,7,12,.9));border:1px solid rgba(255,255,255,.1)}
+.tp-cursor img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 4px 9px #0009)}
+.tp-cursor strong{display:block;font-size:12px;color:#fff}
+.tp-cursor span{display:block;margin-top:4px;font-size:10px;color:var(--tp-muted);letter-spacing:.04em}
+
+/* ===== extension / app preview ===== */
+.tp-preview-layout{display:grid;grid-template-columns:minmax(0,620px) minmax(0,1fr);gap:22px;align-items:start;justify-content:center}
+.tp-stage{
+  border:1px solid rgba(255,150,110,.24);border-radius:22px;overflow:hidden;
+  background:linear-gradient(160deg,#151a26,#0b0e16 72%);
+  box-shadow:0 22px 60px #0007
+}
+.tp-browserbar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#171b27;border-bottom:1px solid rgba(255,255,255,.08)}
+.tp-dots{display:flex;gap:5px}
+.tp-dots i{width:8px;height:8px;border-radius:50%;background:#4d5768}
+.tp-dots i:first-child{background:#ff6a5e}
+.tp-browserbar span{margin-left:6px;color:#9ba8bb;font-size:10px;letter-spacing:.09em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.tp-slider{position:relative;padding:14px}
+.tp-track{display:grid;width:min(100%,540px);margin:0 auto;overflow:hidden;border-radius:14px;background:#0b0e16;transition:height .35s cubic-bezier(.2,.7,.2,1)}
+/* All slides share one grid cell so the frame keeps the tallest height and the
+   page never jumps while flipping. */
+.tp-slide{
+  grid-area:1/1;align-self:start;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translate3d(22px,0,0) scale(.99);
+  transition:opacity .4s ease,transform .45s cubic-bezier(.2,.7,.2,1),visibility .4s;
+}
+.tp-slide.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+
+.tp-popup{padding:13px;color:#f4f6fb;font:12px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.tp-ext-header{display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #344056;border-radius:12px;background:linear-gradient(120deg,#191e2b,#2a1b17)}
+.tp-ext-header img{width:34px;height:34px;border:1px solid rgba(255,135,63,.5);border-radius:9px;object-fit:cover}
+.tp-ext-header h3{margin:0;color:#ffb06d;font-size:14px}
+.tp-ext-header p{margin:3px 0 0;color:#a4afc3;font-size:10px}
+.tp-ext-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:9px 0}
+.tp-ext-tab{padding:8px 3px;border:1px solid #2a3548;border-radius:7px;background:#202838;color:#b9c4d6;text-align:center;font-size:9.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tp-ext-tab.active{background:#542b1c;border-color:#ff873f;color:#ffe0c8}
+.tp-ext-section{margin-top:8px;padding:10px;border:1px solid #2a3548;border-radius:10px;background:#141925}
+.tp-ext-section h4{margin:0 0 8px;color:#ffd0ad;font-size:11px;letter-spacing:.04em}
+.tp-ext-pills{display:flex;flex-wrap:wrap;gap:6px}
+.tp-ext-pill{padding:6px 10px;border:1px solid #3a455c;border-radius:7px;background:#0f1420;color:#dce3ef;font-size:10px}
+.tp-ext-pill.on{border-color:#ff873f;background:#3a2116;color:#ffdcbe}
+.tp-ext-skins{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.tp-ext-skin{border:1px solid #2a3548;border-radius:8px;background:#0f1420;padding:4px;text-align:center}
+.tp-ext-skin img{width:100%;height:38px;object-fit:contain;display:block}
+.tp-ext-skin b{display:block;margin-top:3px;font-size:8px;color:#c9d3e2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tp-ext-skin.sel{border-color:#8b5cf6;background:#241a44;box-shadow:0 0 12px rgba(139,92,246,.35)}
+.tp-ext-replace{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tp-ext-replace div{padding:7px;border:1px solid #2a3548;border-radius:9px;background:#0f1420;text-align:center}
+.tp-ext-replace img{width:100%;height:58px;object-fit:contain;display:block}
+.tp-ext-replace small{display:block;margin-top:4px;color:#93a0b4;font-size:8.5px;letter-spacing:.08em}
+.tp-ext-replace b{display:block;font-size:9.5px;color:#e8edf7;margin-top:2px}
+.tp-ext-worlds{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.tp-ext-world{padding:4px;border:1px solid #30394a;border-radius:8px;background:#0f1420;text-align:center}
+.tp-ext-world img{width:100%;height:40px;object-fit:cover;border-radius:4px}
+.tp-ext-world b{display:block;margin-top:4px;font-size:8px;color:#e8edf7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tp-ext-cursors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.tp-ext-cursors div{display:grid;place-items:center;padding:5px;border:1px solid #30394a;border-radius:8px;background:#0f1420}
+.tp-ext-cursors img{width:24px;height:24px;object-fit:contain}
+.tp-ext-mapping{display:flex;align-items:center;gap:7px;padding:6px;border:1px solid #2a3548;border-radius:8px;background:#0f1420;margin-top:6px}
+.tp-ext-mapping img{width:28px;height:28px;object-fit:contain;border-radius:5px;background:#070a12}
+.tp-ext-mapping span{flex:1;min-width:0;font-size:9.5px;color:#dbe3ef;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tp-ext-mapping em{font-style:normal;font-size:8.5px;color:#8f9bb0}
+.tp-ext-foot{margin-top:8px;padding:2px 2px 0;color:#8f9bb0;font-size:9px;line-height:1.5}
+
+/* slider controls */
+.tp-slider-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.tp-arrow{
+  width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto;
+  border:1px solid rgba(255,150,110,.35);border-radius:11px;background:rgba(255,150,110,.08);
+  color:#ffd6b6;font-size:14px;cursor:pointer;transition:background .2s,transform .2s,border-color .2s
+}
+.tp-arrow:hover{background:rgba(255,150,110,.2);border-color:rgba(255,180,140,.7);transform:translateY(-1px)}
+.tp-arrow:disabled{opacity:.35;cursor:default;transform:none}
+.tp-dot-row{display:flex;align-items:center;justify-content:center;gap:7px;flex:1;min-width:0}
+.tp-dot{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.22);cursor:pointer;transition:width .25s ease,background .25s ease}
+.tp-dot.is-active{width:22px;border-radius:999px;background:linear-gradient(90deg,#ff7a5c,#ffb877)}
+.tp-slide-caption{min-height:16px;margin-top:9px;text-align:center;color:#c0b2bd;font-size:11px;letter-spacing:.04em}
+.tp-slide-caption b{color:#ffd0ad}
+
+.tp-side{display:grid;gap:12px}
+.tp-side-card{padding:15px 16px;border:1px solid var(--tp-line);border-radius:16px;background:linear-gradient(155deg,#241722,#150f17)}
+.tp-side-card h3{margin:0 0 9px;font-size:12px;letter-spacing:.1em;color:#ffc79b}
+.tp-side-card ul{margin:0;padding:0 0 0 16px;color:#bfb2bd;font-size:11.5px;line-height:1.75}
+.tp-side-card li::marker{color:#ff8a6b}
+.tp-side-card p{margin:0;color:#bfb2bd;font-size:11.5px;line-height:1.7}
+.tp-disclaimer{margin-top:16px;padding:13px 15px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03);color:#b8aab8;font-size:11.5px;line-height:1.65}
+
+/* ===== lightbox ===== */
+.tp-lightbox{
+  position:fixed;inset:0;z-index:999999;display:none;
+  align-items:center;justify-content:center;padding:clamp(12px,3vw,40px);
+  background:rgba(8,4,8,.92);backdrop-filter:blur(10px)
+}
+.tp-lightbox.is-open{display:flex;animation:tpFade .3s ease}
+.tp-lb-inner{width:min(1040px,100%);display:grid;gap:14px}
+.tp-lb-frame{position:relative;overflow:hidden;border:1px solid rgba(255,150,110,.35);border-radius:20px;background:#0a070c;box-shadow:0 30px 90px #000a}
+.tp-lb-img{display:block;width:100%;max-height:min(66vh,620px);object-fit:cover;animation:tpKenBurns 24s ease-in-out infinite alternate}
+.tp-lb-close{
+  position:absolute;top:12px;right:12px;width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.24);border-radius:12px;background:rgba(10,6,10,.7);
+  color:#fff;font-size:18px;cursor:pointer;transition:background .2s
+}
+.tp-lb-close:hover{background:rgba(255,70,87,.4)}
+.tp-lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.22);border-radius:50%;background:rgba(10,6,10,.66);
+  color:#fff;font-size:16px;cursor:pointer;transition:background .2s
+}
+.tp-lb-nav:hover{background:rgba(255,120,90,.4)}
+.tp-lb-prev{left:12px}.tp-lb-next{right:12px}
+.tp-lb-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.tp-lb-bar h3{margin:0;font-size:16px;color:#fff}
+.tp-lb-bar p{margin:5px 0 0;font-size:12px;color:#c0b2bd;max-width:640px;line-height:1.6}
+.tp-lb-heart{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
+  border:1px solid rgba(255,105,122,.55);border-radius:12px;background:rgba(255,70,87,.14);
+  color:#ff9da7;font-size:12px;font-weight:800;cursor:pointer
+}
+.tp-lb-heart[aria-pressed="true"]{background:rgba(255,70,87,.28);color:#ff5265}
+@keyframes tpFade{from{opacity:0}to{opacity:1}}
+@keyframes tpKenBurns{
+  0%{transform:scale(1) translate3d(0,0,0)}
+  50%{transform:scale(1.1) translate3d(-1.8%,1.4%,0)}
+  100%{transform:scale(1.04) translate3d(1.6%,-1.2%,0)}
+}
+
+@media(max-width:1000px){
+  .tp-preview-layout{grid-template-columns:minmax(0,1fr)}
+  .tp-side{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+}
+@media(max-width:650px){
+  .tp-page{width:calc(100% - 24px);padding-top:14px}
+  .tp-section{margin-top:34px}
+  .tp-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .tp-card-meta{padding:10px}
+  .tp-card-meta h3{font-size:11px}
+  .tp-card-meta p{font-size:10px}
+  .tp-zoom{display:none}
+  .tp-cursor-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .tp-cursor{flex-direction:column;align-items:flex-start;gap:8px;padding:9px;min-height:0}
+  .tp-ext-skins{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tp-ext-worlds{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tp-ext-cursors{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tp-ext-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tp-browserbar span{font-size:9px}
+  .tp-lb-img{max-height:52vh}
+}
+@media(prefers-reduced-motion:reduce){
+  .tp-art,.tp-sheen,.tp-lb-img{animation:none!important}
+  .tp-card-shell{opacity:1!important;transform:none!important}
+  .tp-slide{transition:opacity .2s linear}
+  .tp-lightbox.is-open{animation:none}
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <a class="brand" href="index.html" aria-label="FLAME DRAGON HUB Home">
+    <img src="assets/logo.png" alt="">
+    <span>FLAME DRAGON HUB</span>
+  </a>
+  <nav class="nav-links" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="evolutions.html">Evolutions</a>
+    <a href="skins.html">Skins</a>
+    <a href="favorites.html" class="active" aria-current="page">App &amp; Extension</a>
+    <a href="settings.html">Settings</a>
+    <a href="contact.html">Contact</a>
+    <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
+  </nav>
+</header>
+
+<main class="tp-page">
+  <section class="tp-hero">
+    <span class="tp-kicker">FLAME DRAGON HUB · COLLECTION</span>
+    <h1>App <em>&amp;</em> Extension</h1>
+    <p>Fifteen animated world backgrounds, the PC cursor set, and an interactive preview of the FLAME DRAGON HUB Chrome extension. Flip through the extension screens below to see exactly how it looks.</p>
+    <div class="tp-chips">
+      <span class="tp-chip">🌍 <b id="chipPacks">15</b> BACKGROUNDS</span>
+      <span class="tp-chip">🖱 <b id="chipCursors">10</b> PC CURSORS</span>
+      <span class="tp-chip">🧩 <b>1</b> EXTENSION</span>
+      <span class="tp-chip">✦ PREVIEW ONLY · NOTHING IS APPLIED</span>
+    </div>
+  </section>
+
+  <section class="tp-section" id="backgrounds">
+    <div class="tp-section-head">
+      <div>
+        <h2>Backgrounds</h2>
+        <p>Ten original world themes and five holiday arena packs. Every tile is animated — open one to see it full size and flip to the next.</p>
+      </div>
+      <span class="tp-count" id="packCount">15 PACKS</span>
+    </div>
+    <div class="tp-grid" id="packGrid"></div>
+  </section>
+
+  <section class="tp-section" id="cursors">
+    <div class="tp-section-head">
+      <div>
+        <h2>PC Cursor Gallery</h2>
+        <p>Original cursor artwork previews only. These samples do not change your browser or Windows pointer.</p>
+      </div>
+      <span class="tp-count">10 CURSORS</span>
+    </div>
+    <div class="tp-cursor-grid" id="cursorGrid"></div>
+  </section>
+
+  <section class="tp-section" id="extension">
+    <div class="tp-section-head">
+      <div>
+        <h2>Extension Preview</h2>
+        <p>Use the arrows, the dots, or swipe to flip between the five screens.</p>
+      </div>
+    </div>
+
+    <div class="tp-preview-layout">
+      <div class="tp-stage">
+        <div class="tp-browserbar"><div class="tp-dots"><i></i><i></i><i></i></div><span>CHROME EXTENSION · POPUP PREVIEW</span></div>
+        <div class="tp-slider" id="extSlider" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Extension screens">
+          <div class="tp-track" id="extTrack">
+            <div class="tp-slide is-active" data-slide="0">
+              <div class="tp-popup">
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt="FLAME DRAGON HUB extension icon"><div><h3>FLAME DRAGON HUB</h3><p>Sunlit Edition · EvoWorld cosmetic tools</p></div></div>
+                <div class="tp-ext-tabs"><div class="tp-ext-tab active">Ghosts</div><div class="tp-ext-tab">Grim Reaper</div><div class="tp-ext-tab">Pumpkin Ghost</div><div class="tp-ext-tab">Ghostly Reaper</div><div class="tp-ext-tab">Pets</div></div>
+                <div class="tp-ext-section"><h4>1 · Choose a skin collection</h4><div class="tp-ext-pills"><span class="tp-ext-pill on">All skins</span><span class="tp-ext-pill">Search skins</span><span class="tp-ext-pill">184 skins</span></div><div class="tp-ext-skins" id="extSkinGrid"></div></div>
+              </div>
+            </div>
+
+            <div class="tp-slide" data-slide="1">
+              <div class="tp-popup">
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>Replace one original skin · keep every frame</p></div></div>
+                <div class="tp-ext-section"><h4>2 · Choose the original skin to replace</h4>
+                  <div class="tp-ext-replace">
+                    <div><img src="assets/skins/grim-reaper/alien.png" alt=""><small>ORIGINAL TARGET</small><b>grim-reaper / alien</b></div>
+                    <div><img src="assets/skins/grim-reaper/archangel.webp" alt=""><small>WILL BE REPLACED WITH</small><b>Archangel</b></div>
+                  </div>
+                </div>
+                <div class="tp-ext-section"><h4>Actions</h4><div class="tp-ext-pills"><span class="tp-ext-pill on">+ Add / Update Active Skin</span><span class="tp-ext-pill">Restore original sprites</span><span class="tp-ext-pill">Reload EvoWorld</span></div></div>
+              </div>
+            </div>
+
+            <div class="tp-slide" data-slide="2">
+              <div class="tp-popup">
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>Worlds &amp; holiday packs</p></div></div>
+                <div class="tp-ext-section"><h4>10 worlds · 5 holiday arenas</h4><div class="tp-ext-worlds" id="extWorldPreview"></div></div>
+              </div>
+            </div>
+
+            <div class="tp-slide" data-slide="3">
+              <div class="tp-popup">
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>FLAME DRAGON · PC Cursor Studio</p></div></div>
+                <div class="tp-ext-section"><h4>Cursor set</h4><div class="tp-ext-cursors" id="extCursorGrid"></div></div>
+                <div class="tp-ext-section"><h4>Actions</h4><div class="tp-ext-pills"><span class="tp-ext-pill on">✓ Activate in game</span><span class="tp-ext-pill">Restore default pointer</span><span class="tp-ext-pill">Download .CUR for Windows</span></div></div>
+              </div>
+            </div>
+
+            <div class="tp-slide" data-slide="4">
+              <div class="tp-popup">
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>3 active mappings</p></div></div>
+                <div class="tp-ext-section"><h4>3 · Active Skins</h4>
+                  <div class="tp-ext-mapping"><img src="assets/skins/grim-reaper/alien.png" alt=""><span>grim-reaper / alien → Archangel</span><em>idle · fly · attack</em></div>
+                  <div class="tp-ext-mapping"><img src="assets/skins/ghost/cultist.png" alt=""><span>ghost / cultist → Necromancer</span><em>idle · fly · attack</em></div>
+                  <div class="tp-ext-mapping"><img src="assets/skins/pumpkin-ghost/anarchess.png" alt=""><span>pumpkin-ghost / anarchess → Ember King</span><em>idle · fly · attack</em></div>
+                </div>
+                <div class="tp-ext-foot">Static visual preview only · No extension settings, game settings, pointer settings, or skin mappings are changed from this page.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tp-slider-bar">
+            <button class="tp-arrow" type="button" id="extPrev" aria-label="Previous screen">‹</button>
+            <div class="tp-dot-row" id="extDots" role="tablist" aria-label="Choose screen"></div>
+            <button class="tp-arrow" type="button" id="extNext" aria-label="Next screen">›</button>
+          </div>
+          <div class="tp-slide-caption" id="extCaption" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <aside class="tp-side">
+        <div class="tp-side-card">
+          <h3>WHAT YOU CAN FLIP THROUGH</h3>
+          <ul>
+            <li>Skin library and collection tabs</li>
+            <li>Original → replacement picker</li>
+            <li>Worlds and holiday packs</li>
+            <li>PC cursor studio</li>
+            <li>Active skin mappings</li>
+          </ul>
+        </div>
+        <div class="tp-side-card">
+          <h3>GOOD TO KNOW</h3>
+          <p>The extension preview is a non-interactive visual reconstruction. The extension package itself is not edited or installed by this page, and any download or activation control shown here is illustrative only.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="tp-disclaimer">Everything on this page is a preview gallery. Backgrounds and cursors are shown as artwork only — nothing is installed, applied, or changed in your browser, your system pointer, or EvoWorld.</div>
+  </section>
+</main>
+
+<div class="tp-lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Background preview">
+  <div class="tp-lb-inner">
+    <div class="tp-lb-frame">
+      <img class="tp-lb-img" id="lbImg" alt="">
+      <button class="tp-lb-close" type="button" id="lbClose" aria-label="Close preview">✕</button>
+      <button class="tp-lb-nav tp-lb-prev" type="button" id="lbPrev" aria-label="Previous background">‹</button>
+      <button class="tp-lb-nav tp-lb-next" type="button" id="lbNext" aria-label="Next background">›</button>
+    </div>
+    <div class="tp-lb-bar">
+      <div>
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+      </div>
+      <button class="tp-lb-heart" type="button" id="lbHeart" aria-pressed="false"><span id="lbHeartIcon">♡</span><span id="lbHeartText">Save</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PACKS = [
+  {id:"magma",name:"MAGMA",desc:"Volcanic world: molten cracks, glowing lava and drifting embers.",image:"assets/texture-packs/magma.webp",assets:875},
+  {id:"ice",name:"ICE",desc:"Frozen realm: crystal ice, snowfall, aurora and blue-white light.",image:"assets/texture-packs/ice.webp",assets:875},
+  {id:"cherry",name:"CHERRY",desc:"Sakura spring: blossom trees, warm sun rays and falling petals.",image:"assets/texture-packs/cherry.webp",assets:875},
+  {id:"toxic",name:"TOXIC",desc:"Radioactive wasteland: glowing slime, mutant plants and spores.",image:"assets/texture-packs/toxic.webp",assets:875},
+  {id:"alien",name:"ALIEN",desc:"Extraterrestrial cosmos: ringed planets, nebulae and spiral galaxies.",image:"assets/texture-packs/alien.webp",assets:875},
+  {id:"savanna",name:"GOLDEN SAVANNA",desc:"Sunset plains: acacia silhouettes and a blazing golden sun.",image:"assets/texture-packs/savanna.webp",assets:875},
+  {id:"abyss",name:"DEEP ABYSS",desc:"Bioluminescent ocean depths: light shafts, jellies and glowing reefs.",image:"assets/texture-packs/abyss.webp",assets:875},
+  {id:"autumn",name:"ENCHANTED AUTUMN",desc:"Amber forest: maple trees, falling leaves and warm misty light.",image:"assets/texture-packs/autumn.webp",assets:875},
+  {id:"amethyst",name:"ROYAL AMETHYST",desc:"Crystal kingdom: violet gemstones, golden sparkles and prism light.",image:"assets/texture-packs/amethyst.webp",assets:875},
+  {id:"steampunk",name:"STEAMPUNK BRASS",desc:"Clockwork city: brass gears, copper haze, airships and sparks.",image:"assets/texture-packs/steampunk.webp",assets:875},
+  {id:"halloween",name:"Halloween Arena",desc:"Pumpkin orange, candlelight and cold fog.",image:"assets/texture-packs/halloween.webp",assets:10},
+  {id:"xmas",name:"Christmas Arena",desc:"Pine green, snow white and warm fairy lights.",image:"assets/texture-packs/xmas.webp",assets:10},
+  {id:"easter",name:"Easter Arena",desc:"Spring pastels, blossom and soft morning light.",image:"assets/texture-packs/easter.webp",assets:10},
+  {id:"lunar",name:"Lunar Arena",desc:"Lantern red, gold trim and a warm night glow.",image:"assets/texture-packs/lunar.webp",assets:10},
+  {id:"every-holiday",name:"Every Holiday Arena",desc:"Every seasonal palette folded into one festive arena.",image:"assets/texture-packs/every-holiday.webp",assets:10}
+];
+
+const CURSORS = ["emerald","cherry","royal_gold","cosmic","alien","shadow","ocean","magma","toxic","ice"];
+const PREVIEW_SKINS = [
+  ["alien","png"],["archangel","webp"],["assasin","png"],["abyss","png"],["autumn","png"],["Zombie","png"],
+  ["archive-01","png"],["archive-02","png"],["archive-03","png"],["archive-04","png"],["archive-05","png"],["archive-06","png"],["archive-07","png"],["bear","png"]
+];
+
+const favKey = "flameDragonTextureFavorites";
+const readFavs = () => { try { const v = JSON.parse(localStorage.getItem(favKey) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; } };
+const writeFavs = v => { try { localStorage.setItem(favKey, JSON.stringify(v)); } catch {} };
+const titleCase = s => s.replaceAll("_"," ").replace(/\b\w/g, c => c.toUpperCase());
+
+function renderPacks(instant){
+  const favs = readFavs();
+  const grid = document.getElementById("packGrid");
+  grid.replaceChildren();
+  const ordered = [...PACKS].sort((a,b) => Number(favs.includes(b.id)) - Number(favs.includes(a.id)));
+  document.getElementById("packCount").textContent = `${PACKS.length} PACKS · ${favs.length} SAVED`;
+  document.getElementById("chipPacks").textContent = String(PACKS.length);
+
+  ordered.forEach((pack, i) => {
+    const fav = favs.includes(pack.id);
+    const shell = document.createElement("div");
+    shell.className = "tp-card-shell" + (instant ? " is-in" : "");
+    shell.style.setProperty("--i", String(i % 12));
+
+    const card = document.createElement("article");
+    card.className = "tp-card" + (fav ? " is-fav" : "");
+
+    const artWrap = document.createElement("div");
+    artWrap.className = "tp-art-wrap";
+    artWrap.tabIndex = 0;
+    artWrap.setAttribute("role", "button");
+    artWrap.setAttribute("aria-label", `${pack.name} — open full preview`);
+    artWrap.addEventListener("click", () => openLightbox(pack.id));
+    artWrap.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openLightbox(pack.id); }
+    });
+    const img = document.createElement("img");
+    img.className = "tp-art fdh-no-draw";
+    img.src = pack.image;
+    img.alt = `${pack.name} background preview`;
+    img.loading = "lazy";
+    const sheen = document.createElement("span");
+    sheen.className = "tp-sheen";
+    const badge = document.createElement("span");
+    badge.className = "tp-badge";
+    badge.textContent = `${pack.assets} ASSETS`;
+    const zoom = document.createElement("span");
+    zoom.className = "tp-zoom";
+    zoom.textContent = "⤢";
+    artWrap.append(img, sheen, badge, zoom);
+
+    const meta = document.createElement("div");
+    meta.className = "tp-card-meta";
+    const info = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = pack.name;
+    const desc = document.createElement("p");
+    desc.textContent = pack.desc;
+    info.append(title, desc);
+
+    const heart = document.createElement("button");
+    heart.className = "tp-heart";
+    heart.type = "button";
+    heart.textContent = fav ? "♥" : "♡";
+    heart.setAttribute("aria-label", fav ? `Remove ${pack.name} from favorites` : `Add ${pack.name} to favorites`);
+    heart.setAttribute("aria-pressed", String(fav));
+    heart.addEventListener("click", event => { event.stopPropagation(); toggleFav(pack.id); });
+
+    meta.append(info, heart);
+    card.append(artWrap, meta);
+    shell.append(card);
+    grid.append(shell);
+  });
+}
+
+function toggleFav(id){
+  const next = readFavs();
+  const i = next.indexOf(id);
+  if (i >= 0) next.splice(i, 1); else next.push(id);
+  writeFavs(next);
+  renderPacks(true);
+  syncLightboxHeart();
+}
+
+function renderCursors(){
+  const grid = document.getElementById("cursorGrid");
+  grid.replaceChildren();
+  document.getElementById("chipCursors").textContent = String(CURSORS.length);
+  for (const name of CURSORS){
+    const card = document.createElement("article");
+    card.className = "tp-cursor";
+    const well = document.createElement("div");
+    well.className = "tp-cursor-well";
+    const img = document.createElement("img");
+    img.className = "fdh-no-draw";
+    img.src = `assets/cursors/${name}.png`;
+    img.alt = `${titleCase(name)} cursor preview`;
+    img.loading = "lazy";
+    well.append(img);
+    const text = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = titleCase(name);
+    const sub = document.createElement("span");
+    sub.textContent = "PC cursor artwork";
+    text.append(title, sub);
+    card.append(well, text);
+    grid.append(card);
+  }
+}
+
+function renderExtensionParts(){
+  const skins = document.getElementById("extSkinGrid");
+  PREVIEW_SKINS.forEach(([file, ext], i) => {
+    const tile = document.createElement("div");
+    tile.className = "tp-ext-skin" + (i === 3 ? " sel" : "");
+    const img = document.createElement("img");
+    img.className = "fdh-no-draw";
+    img.src = `assets/skins/grim-reaper/${file}.${ext}`;
+    img.alt = "";
+    img.loading = "lazy";
+    img.addEventListener("error", () => { img.src = "assets/skins/grim-reaper/alien.png"; }, { once: true });
+    const label = document.createElement("b");
+    label.textContent = titleCase(file.replace(/-0\d$/, ""));
+    tile.append(img, label);
+    skins.append(tile);
+  });
+
+  const worlds = document.getElementById("extWorldPreview");
+  PACKS.forEach(pack => {
+    const cell = document.createElement("div");
+    cell.className = "tp-ext-world";
+    const img = document.createElement("img");
+    img.className = "fdh-no-draw";
+    img.src = pack.image;
+    img.alt = pack.name;
+    img.loading = "lazy";
+    const label = document.createElement("b");
+    label.textContent = pack.name;
+    cell.append(img, label);
+    worlds.append(cell);
+  });
+
+  const cursors = document.getElementById("extCursorGrid");
+  CURSORS.forEach(name => {
+    const cell = document.createElement("div");
+    const img = document.createElement("img");
+    img.className = "fdh-no-draw";
+    img.src = `assets/cursors/${name}.png`;
+    img.alt = "";
+    img.loading = "lazy";
+    cell.append(img);
+    cursors.append(cell);
+  });
+}
+
+const SLIDE_LABELS = [
+  "Skin library and collection tabs",
+  "Original to replacement picker",
+  "Worlds and holiday packs",
+  "PC cursor studio",
+  "Active skin mappings"
+];
+let slideIndex = 0;
+
+function showSlide(next){
+  const slides = [...document.querySelectorAll("#extTrack .tp-slide")];
+  const total = slides.length;
+  slideIndex = (next + total) % total;
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("is-active", i === slideIndex);
+    slide.setAttribute("aria-hidden", String(i !== slideIndex));
+  });
+  document.querySelectorAll("#extDots .tp-dot").forEach((dot, i) => {
+    dot.classList.toggle("is-active", i === slideIndex);
+    dot.setAttribute("aria-selected", String(i === slideIndex));
+  });
+  syncTrackHeight();
+  const caption = document.getElementById("extCaption");
+  const strong = document.createElement("b");
+  strong.textContent = `Screen ${slideIndex + 1} / ${total}`;
+  caption.replaceChildren(strong, document.createTextNode(` · ${SLIDE_LABELS[slideIndex]}`));
+}
+
+/* The slides share one grid cell, so the frame would otherwise keep the tallest
+   slide's height. Pin it to the visible screen instead. */
+function syncTrackHeight(){
+  const track = document.getElementById("extTrack");
+  const active = track.querySelector(".tp-slide.is-active .tp-popup");
+  if (active) track.style.height = Math.ceil(active.getBoundingClientRect().height) + "px";
+}
+
+function initSlider(){
+  const track = document.getElementById("extTrack");
+  const dots = document.getElementById("extDots");
+  const slides = [...track.querySelectorAll(".tp-slide")];
+  slides.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "tp-dot";
+    dot.setAttribute("role", "tab");
+    dot.setAttribute("aria-label", `Screen ${i + 1}`);
+    dot.addEventListener("click", () => showSlide(i));
+    dots.append(dot);
+  });
+  document.getElementById("extPrev").addEventListener("click", () => showSlide(slideIndex - 1));
+  document.getElementById("extNext").addEventListener("click", () => showSlide(slideIndex + 1));
+
+  const slider = document.getElementById("extSlider");
+  slider.addEventListener("keydown", event => {
+    if (event.key === "ArrowRight") { event.preventDefault(); showSlide(slideIndex + 1); }
+    if (event.key === "ArrowLeft") { event.preventDefault(); showSlide(slideIndex - 1); }
+  });
+
+  let startX = null;
+  track.addEventListener("pointerdown", event => { startX = event.clientX; }, { passive: true });
+  track.addEventListener("pointerup", event => {
+    if (startX === null) return;
+    const delta = event.clientX - startX;
+    startX = null;
+    if (Math.abs(delta) > 45) showSlide(slideIndex + (delta < 0 ? 1 : -1));
+  }, { passive: true });
+  track.addEventListener("pointercancel", () => { startX = null; }, { passive: true });
+
+  showSlide(0);
+  window.addEventListener("resize", syncTrackHeight, { passive: true });
+  window.addEventListener("load", syncTrackHeight, { once: true });
+}
+
+let lbIndex = 0;
+let lbReturnFocus = null;
+
+const packAt = index => PACKS[(index + PACKS.length) % PACKS.length];
+
+function syncLightboxHeart(){
+  const box = document.getElementById("lightbox");
+  if (!box.classList.contains("is-open")) return;
+  const fav = readFavs().includes(packAt(lbIndex).id);
+  const heart = document.getElementById("lbHeart");
+  heart.setAttribute("aria-pressed", String(fav));
+  document.getElementById("lbHeartIcon").textContent = fav ? "♥" : "♡";
+  document.getElementById("lbHeartText").textContent = fav ? "Saved" : "Save";
+}
+
+function paintLightbox(){
+  const pack = packAt(lbIndex);
+  const img = document.getElementById("lbImg");
+  img.src = pack.image;
+  img.alt = `${pack.name} background preview`;
+  document.getElementById("lbTitle").textContent = pack.name;
+  document.getElementById("lbDesc").textContent = pack.desc;
+  syncLightboxHeart();
+}
+
+function openLightbox(id){
+  lbReturnFocus = document.activeElement;
+  const found = PACKS.findIndex(p => p.id === id);
+  lbIndex = found < 0 ? 0 : found;
+  paintLightbox();
+  document.getElementById("lightbox").classList.add("is-open");
+  document.body.classList.add("tp-locked");
+  document.getElementById("lbClose").focus();
+}
+
+function closeLightbox(){
+  document.getElementById("lightbox").classList.remove("is-open");
+  document.body.classList.remove("tp-locked");
+  if (lbReturnFocus && typeof lbReturnFocus.focus === "function") lbReturnFocus.focus();
+  lbReturnFocus = null;
+}
+
+function stepLightbox(delta){
+  lbIndex = (lbIndex + delta + PACKS.length) % PACKS.length;
+  const img = document.getElementById("lbImg");
+  img.style.animation = "none";
+  void img.offsetWidth;
+  img.style.animation = "";
+  paintLightbox();
+}
+
+function initLightbox(){
+  const box = document.getElementById("lightbox");
+  document.getElementById("lbClose").addEventListener("click", closeLightbox);
+  document.getElementById("lbPrev").addEventListener("click", () => stepLightbox(-1));
+  document.getElementById("lbNext").addEventListener("click", () => stepLightbox(1));
+  document.getElementById("lbHeart").addEventListener("click", () => toggleFav(packAt(lbIndex).id));
+  box.addEventListener("click", event => { if (event.target === box) closeLightbox(); });
+  document.addEventListener("keydown", event => {
+    if (!box.classList.contains("is-open")) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowRight") stepLightbox(1);
+    if (event.key === "ArrowLeft") stepLightbox(-1);
+  });
+
+  let touchStartX = null;
+  box.addEventListener("pointerdown", event => { touchStartX = event.clientX; }, { passive: true });
+  box.addEventListener("pointerup", event => {
+    if (touchStartX === null) return;
+    const delta = event.clientX - touchStartX;
+    touchStartX = null;
+    if (Math.abs(delta) > 60) stepLightbox(delta < 0 ? 1 : -1);
+  }, { passive: true });
+  box.addEventListener("pointercancel", () => { touchStartX = null; }, { passive: true });
+}
+
+let shellObserver = null;
+function observeShells(){
+  const shells = [...document.querySelectorAll(".tp-card-shell:not(.is-in)")];
+  if (!shells.length) return;
+  if (!("IntersectionObserver" in window)) { shells.forEach(s => s.classList.add("is-in")); return; }
+  if (!shellObserver){
+    shellObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){ entry.target.classList.add("is-in"); shellObserver.unobserve(entry.target); }
+      });
+    }, { threshold: .08, rootMargin: "0px 0px -30px 0px" });
+  }
+  shells.forEach(shell => shellObserver.observe(shell));
+}
+
+renderPacks(false);
+renderCursors();
+renderExtensionParts();
+initSlider();
+initLightbox();
+observeShells();
+</script>
+<script src="script.js"></script>
+<script src="preferences.js"></script>
+<script src="cursor-glow.js"></script>
+<script src="site-motion.js" defer></script>
+</body></html>
