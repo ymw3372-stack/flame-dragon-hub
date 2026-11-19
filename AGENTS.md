@@ -63,6 +63,20 @@ extension. No build step: pages are plain HTML/CSS/JS served as-is.
 - The in-app version label must match the release tag. Check `preferences.js`,
   `extension-update.json`, `extension/manifest.json`,
   `extension/background.js`, `extension/site-download-bridge.js`.
+- Every download link points at the GitHub release asset
+  `releases/download/<version>/FLAME_DRAGON_HUB_v<version>.zip`, so bumping the
+  version means editing the URL *and* the filename in `index.html` (announcement
+  button + orbit card), `extension-update.html`, `install-guide.html`,
+  `extension-update.json`, and the `FDH_UPDATE_*` constants in
+  `extension/background.js`.
+- The downloaded-update flags (`data-fdh-v<digits>-downloaded`) are version
+  encoded: `1.6.0` → `data-fdh-v160-downloaded`. Rename it in both
+  `index.html` and `extension/site-download-bridge.js` or the announcement card
+  never hides.
+- The home announcement card (`.update-announcement`) is a light frosted panel
+  on the dark page: white gradient, dark `#141a24` heading, `#4a566a` body, and
+  a silver button. Keep it light — the page-level motion layer multiplies
+  opacity, so dark-on-light text is what stays readable.
 
 ## Gotchas
 

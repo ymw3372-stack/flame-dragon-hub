@@ -1,12 +1,12 @@
 (() => {
-  const UPDATE_VERSION = "1.2.1";
+  const UPDATE_VERSION = "1.6.0";
 
   function applyDownloadState(state) {
     if (!state?.downloaded || state.version !== UPDATE_VERSION) return;
 
     const apply = () => {
       if (!document.documentElement) return;
-      document.documentElement.setAttribute("data-fdh-v121-downloaded", "true");
+      document.documentElement.setAttribute("data-fdh-v160-downloaded", "true");
       window.dispatchEvent(new CustomEvent("fdh-update-download-state", {
         detail: {
           downloaded: true,

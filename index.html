@@ -596,17 +596,17 @@ a {
 }
 
 
-/* v1.2.1 migration announcement — gold, high-contrast "new update" card */
-.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:38px clamp(24px,4vw,42px) 32px;border:1px solid #f4c869aa;border-radius:22px;background:linear-gradient(110deg,#3a2c10,#241d0f 60%,#1a160c);box-shadow:0 18px 46px #0007,0 0 38px #f4c8692e;overflow:hidden;min-height:190px}
-.update-announcement:before{content:"";position:absolute;inset:-70% auto auto -8%;width:300px;height:300px;border-radius:50%;background:#f4c86940;filter:blur(46px);pointer-events:none}
-.update-announcement:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,#ffe9a81f 50%,transparent 72%);background-size:220% 100%;animation:fdhGoldSheen 6s ease-in-out infinite}
-@keyframes fdhGoldSheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+/* v1.6.0 announcement — frosted white card */
+.update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:38px clamp(24px,4vw,42px) 32px;border:1px solid rgba(255,255,255,.85);border-radius:22px;background:linear-gradient(112deg,#ffffff,#f7f9fc 52%,#e9eef6);box-shadow:0 18px 48px #0006,0 0 44px rgba(214,226,244,.22);overflow:hidden;min-height:190px;isolation:isolate}
+.update-announcement:before{content:"";position:absolute;inset:-75% auto auto -10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,#dfe9f7cc,transparent 68%);filter:blur(28px);pointer-events:none}
+.update-announcement:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 32%,#ffffff9e 50%,transparent 68%);background-size:220% 100%;animation:fdhSilverSheen 6.5s ease-in-out infinite;mix-blend-mode:overlay}
+@keyframes fdhSilverSheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 .update-announcement-copy{position:relative;min-width:0;max-width:680px}
-.update-announcement-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border:1px solid #f7d488;border-radius:999px;background:linear-gradient(110deg,#f7d488,#d9a441);color:#3a2a08;font-size:12px;font-weight:950;letter-spacing:1.6px;box-shadow:0 6px 20px #d9a44159;text-transform:uppercase}
-.update-announcement h2{margin:0 0 11px;color:#fff7e6;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
-.update-announcement p{margin:0;color:#f7ecd6;font-size:clamp(19px,2.15vw,22px);font-weight:600;line-height:1.85;max-width:760px;text-shadow:0 1px 10px #0005}
-.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border-radius:13px;background:linear-gradient(110deg,#ffe08a,#e0a83a);color:#3a2a08;text-decoration:none;font-size:13px;font-weight:950;letter-spacing:.6px;box-shadow:0 10px 26px #d9a44166;transition:transform .2s,filter .2s}
-.update-announcement-button:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.update-announcement-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border:1px solid #c9d4e4;border-radius:999px;background:linear-gradient(110deg,#ffffff,#dde5f1);color:#25303f;font-size:12px;font-weight:950;letter-spacing:1.6px;box-shadow:0 6px 18px rgba(37,48,63,.14);text-transform:uppercase}
+.update-announcement h2{margin:0 0 11px;color:#141a24;font-size:clamp(25px,3.2vw,34px);line-height:1.2}
+.update-announcement p{margin:0;color:#4a566a;font-size:clamp(19px,2.15vw,22px);font-weight:600;line-height:1.85;max-width:760px}
+.update-announcement-button{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border:1px solid #b9c6d9;border-radius:13px;background:linear-gradient(110deg,#ffffff,#e2e9f4);color:#1b2432;text-decoration:none;font-size:13px;font-weight:950;letter-spacing:.6px;box-shadow:0 10px 26px rgba(31,44,63,.22),inset 0 1px 0 #fff;transition:transform .2s,box-shadow .2s,filter .2s}
+.update-announcement-button:hover{transform:translateY(-3px);filter:brightness(1.03);box-shadow:0 16px 32px rgba(31,44,63,.3),inset 0 1px 0 #fff}
 @media(max-width:700px){.update-announcement{align-items:stretch;flex-direction:column;margin:10px auto 32px;padding:30px 20px 24px;min-height:0;gap:20px}.update-announcement h2{font-size:25px}.update-announcement p{font-size:18px;line-height:1.8}.update-announcement-button{width:100%;min-height:54px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.update-announcement:after{animation:none}}
 
@@ -661,11 +661,11 @@ a {
 
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker" id="update-announcement-kicker">✨ NEW UPDATE · v1.2.1</span>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">✨ NEW UPDATE · v1.6.0</span>
     <h2 id="update-announcement-title">Lots of new skins have arrived!</h2>
-    <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.2.1 extension, then explore the expanded Skin Library and discover your new favorites.</p>
+    <p id="update-announcement-description">We’ve added many skins to the FLAME DRAGON HUB collection. Download the latest v1.6.0 extension, then explore the expanded Skin Library and discover your new favorites.</p>
   </div>
-  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.2.1/FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip" id="home-announcement-button">DOWNLOAD v1.2.1 ↓</a>
+  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.6.0/FLAME_DRAGON_HUB_v1.6.0.zip" id="home-announcement-button">DOWNLOAD v1.6.0 ↓</a>
 </section>
 
     <section class="orbit-section" aria-label="Quick navigation">
@@ -682,11 +682,11 @@ a {
           <div class="orbit-position">
             <a class="orbit-card"
                id="extensionDownloadButton"
-               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.2.1/FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip"
+               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/1.6.0/FLAME_DRAGON_HUB_v1.6.0.zip"
                download>
               <span class="card-icon">⬇</span>
-              <strong id="home-card-update-title">UPDATE EXTENSION · v1.2.1</strong>
-              <small id="home-card-update-description">Direct ZIP download · v1.2.1</small>
+              <strong id="home-card-update-title">UPDATE EXTENSION · v1.6.0</strong>
+              <small id="home-card-update-description">Direct ZIP download · v1.6.0</small>
             </a>
           </div>
 
@@ -923,10 +923,13 @@ a {
   function hideDownloadedUpdate(event) {
     const state = event?.detail;
     const alreadyDownloaded =
-      document.documentElement.getAttribute("data-fdh-v121-downloaded") === "true";
-    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.2.1")) return;
+      document.documentElement.getAttribute("data-fdh-v160-downloaded") === "true";
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.6.0")) return;
 
     if (announcement) {
+      /* The card's author rule sets display:flex, which beats [hidden]'s
+         display:none, so hide it inline. */
+      announcement.style.display = "none";
       announcement.hidden = true;
       announcement.setAttribute("aria-hidden", "true");
     }

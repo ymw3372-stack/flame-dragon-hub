@@ -1,13 +1,13 @@
-const FDH_UPDATE_VERSION = "1.2.1";
-const FDH_UPDATE_URL_PART = "/releases/download/1.2.1/FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip";
-const FDH_UPDATE_FILE = "FLAME_DRAGON_HUB_v1.2.1_sunlit_edition.zip";
-const FDH_UPDATE_STORAGE_KEY = "fdhCompletedUpdateDownload_1_2_1";
+const FDH_UPDATE_VERSION = "1.6.0";
+const FDH_UPDATE_URL_PART = "/releases/download/1.6.0/FLAME_DRAGON_HUB_v1.6.0.zip";
+const FDH_UPDATE_FILE = "FLAME_DRAGON_HUB_v1.6.0.zip";
+const FDH_UPDATE_STORAGE_KEY = "fdhCompletedUpdateDownload_1_6_0";
 
 function isTargetUpdateDownload(item) {
   if (!item || item.state !== "complete") return false;
   const filename = String(item.filename || "").replace(/\\/g, "/").split("/").pop() || "";
   const correctFilename = filename === FDH_UPDATE_FILE ||
-    (filename.startsWith("FLAME_DRAGON_HUB_v1.2.1") && filename.endsWith(".zip"));
+    (filename.startsWith("FLAME_DRAGON_HUB_v1.6.0") && filename.endsWith(".zip"));
   if (!correctFilename) return false;
 
   // Accept the exact tagged release URL and GitHub's "latest/download" alias.
@@ -22,7 +22,7 @@ function isTargetUpdateDownload(item) {
       return isGitHubHost && (
         path.includes(FDH_UPDATE_URL_PART) ||
         path.endsWith("/releases/latest/download/" + FDH_UPDATE_FILE) ||
-        path.endsWith("/releases/download/1.2.1/" + FDH_UPDATE_FILE)
+        path.endsWith("/releases/download/1.6.0/" + FDH_UPDATE_FILE)
       );
     } catch (_) {
       return raw.includes(FDH_UPDATE_URL_PART);
@@ -115,7 +115,7 @@ chrome.runtime.onMessageExternal.addListener(
 );
 
 // Check the browser's existing download history after this permission is granted,
-// so a v1.2.1 ZIP downloaded before the helper update can still be recognized.
+// so a v1.6.0 ZIP downloaded before the helper update can still be recognized.
 refreshUpdateDownloadStatus();
 
 // Preserve the existing extension service-worker initialization behavior.
