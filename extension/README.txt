@@ -1,4 +1,4 @@
-FLAME DRAGON HUB — Skin Bridge prototype (Chrome/Edge Manifest V3)
+FLAME DRAGON HUB 1.7.0 — Chrome Extension (Chrome/Edge Manifest V3)
 
 Install: unzip this project, open chrome://extensions or edge://extensions, enable Developer mode, choose Load unpacked, and select this extension folder.
 
