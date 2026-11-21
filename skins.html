@@ -896,6 +896,57 @@ main.reaper-vault>:first-child{margin-top:0!important;}
   }
 }
 
+
+/* ===== Compact Skin Library cards (reference-inspired sizing) ===== */
+.vault-grid {
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: 14px;
+}
+.vault-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 15px;
+  contain-intrinsic-size: auto 330px;
+}
+.vault-art {
+  flex: 0 0 154px;
+  height: 154px;
+  padding: 13px;
+}
+.vault-art img { max-height: 132px; }
+.vault-meta {
+  flex: 1 1 auto;
+  padding: 11px;
+}
+.vault-actions { gap: 6px; margin-top: 9px; }
+.vault-actions button { padding: 8px 5px; }
+@media (max-width: 1050px) {
+  .vault-grid {
+    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+    gap: 12px;
+  }
+  .vault-art { flex-basis: 140px; height: 140px; }
+  .vault-art img { max-height: 118px; }
+}
+@media (max-width: 650px) {
+  .vault-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 10px;
+  }
+  .vault-card { height: 100%; }
+  .vault-art { flex-basis: 126px; height: 126px; }
+  .vault-art img { max-height: 106px; }
+  .vault-meta { padding: 10px; }
+}
+@media (max-width: 370px) {
+  .vault-art { flex-basis: 116px; height: 116px; }
+  .vault-art img { max-height: 98px; }
+}
+
 </style>
 <link rel="stylesheet" href="motion.css">
 </head>
