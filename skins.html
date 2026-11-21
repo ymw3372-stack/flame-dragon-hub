@@ -738,6 +738,164 @@ body::after {
 /* Definitive compact page start: content sits directly below the navigation. */
 main.reaper-vault{margin-top:0!important;padding-top:0!important;}
 main.reaper-vault>:first-child{margin-top:0!important;}
+
+/* ===== FLAME DRAGON Skins Library — gallery refinement =====
+   Larger artwork, calmer motion and clearer card hierarchy.
+   Scoped to this page only; skin data and interactions stay untouched. */
+.reaper-vault {
+  width: min(1640px, 100%);
+  padding: 18px clamp(14px, 2.6vw, 34px) 34px;
+}
+
+.vault-category {
+  animation: none;
+}
+
+.vault-category-head {
+  margin-bottom: 20px;
+}
+
+.vault-category-head h2,
+.vault-category-head h2:hover {
+  transform: none;
+  text-shadow: none;
+  transition: color .22s ease;
+}
+
+.vault-category-head h2:hover {
+  color: #ff929b;
+}
+
+.vault-hero h1:hover {
+  transform: none;
+  text-shadow: 0 0 18px rgba(255, 65, 85, .24);
+}
+
+.vault-grid {
+  grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+  gap: 18px;
+}
+
+.vault-card {
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .19);
+  transition:
+    transform 260ms cubic-bezier(.2, .72, .25, 1),
+    border-color 240ms ease,
+    box-shadow 260ms ease;
+  contain-intrinsic-size: auto 390px;
+}
+
+.vault-card:hover,
+.vault-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(255, 100, 120, .58);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .3),
+              0 0 18px rgba(255, 60, 85, .13);
+}
+
+.vault-art {
+  height: 190px;
+  padding: 16px;
+  background:
+    radial-gradient(ellipse at 50% 72%, rgba(255, 65, 85, .15), transparent 66%),
+    linear-gradient(180deg, rgba(255, 255, 255, .018), transparent);
+}
+
+.vault-art img {
+  max-height: 166px;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .32));
+  transition: transform 260ms cubic-bezier(.2, .72, .25, 1),
+              filter 260ms ease;
+}
+
+.vault-card:hover .vault-art img,
+.vault-card:focus-within .vault-art img {
+  transform: translateY(-2px) scale(1.045);
+  filter: drop-shadow(0 10px 13px rgba(255, 65, 85, .16));
+}
+
+.vault-meta {
+  padding: 14px;
+}
+
+.vault-name {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.vault-sub {
+  margin-top: 7px;
+  font-size: 11px;
+}
+
+.vault-actions {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.vault-actions button {
+  padding: 9px 7px;
+  border-radius: 9px;
+  font-size: 11px;
+}
+
+.vault-hover-info {
+  transition: max-height 260ms ease, opacity 220ms ease, padding 260ms ease;
+}
+
+.vault-card:focus-within {
+  outline: 2px solid rgba(255, 146, 155, .55);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1050px) {
+  .vault-grid {
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 15px;
+  }
+  .vault-art { height: 174px; }
+  .vault-art img { max-height: 150px; }
+}
+
+@media (max-width: 650px) {
+  .reaper-vault {
+    padding: 12px 12px 24px;
+  }
+  .vault-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+  .vault-art {
+    height: clamp(136px, 37vw, 164px);
+    padding: 10px;
+  }
+  .vault-art img {
+    max-height: 100%;
+  }
+  .vault-meta { padding: 11px; }
+  .vault-name { font-size: 12px; }
+  .vault-actions { gap: 5px; }
+  .vault-actions button { padding: 8px 4px; font-size: 10px; }
+  .vault-card:hover,
+  .vault-card:focus-within { transform: none; }
+}
+
+@media (max-width: 370px) {
+  .vault-grid { gap: 8px; }
+  .vault-art { height: 128px; }
+  .vault-actions { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vault-card,
+  .vault-art img,
+  .vault-hover-info,
+  .vault-category-head h2 {
+    transition: none !important;
+  }
+}
+
 </style>
 <link rel="stylesheet" href="motion.css">
 </head>
