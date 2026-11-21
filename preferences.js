@@ -1,3 +1,14 @@
+/* Register the hub as an installable desktop PWA. Safe to call on every page. */
+(() => {
+  if (!("serviceWorker" in navigator) || window.__fdhPwaRegistrationStarted) return;
+  window.__fdhPwaRegistrationStarted = true;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(error => {
+      console.warn("FLAME DRAGON HUB app installation support could not start:", error);
+    });
+  }, { once: true });
+})();
+
 /* Load anonymous one-per-browser visitor counting on regular hub pages. */
 (() => {
   const tracker = document.createElement("script");
