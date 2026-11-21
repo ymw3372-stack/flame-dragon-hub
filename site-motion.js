@@ -1,3 +1,14 @@
+/* Register the hub as an installable desktop PWA. Safe to call on every page. */
+(() => {
+  if (!("serviceWorker" in navigator) || window.__fdhPwaRegistrationStarted) return;
+  window.__fdhPwaRegistrationStarted = true;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(error => {
+      console.warn("FLAME DRAGON HUB app installation support could not start:", error);
+    });
+  }, { once: true });
+})();
+
 /* FLAME DRAGON HUB — slow cinematic motion system */
 (() => {
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
