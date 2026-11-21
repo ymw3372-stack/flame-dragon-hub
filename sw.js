@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "flame-dragon-hub-v30";
+const CACHE_NAME = "flame-dragon-hub-v31";
 
 const FILES_TO_CACHE = [
   "./",
