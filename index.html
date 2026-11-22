@@ -10,10 +10,10 @@
 <link rel="icon" type="image/png" sizes="any" href="/assets/logo.png">
 
 <meta name="theme-color" content="#100b10">
-<title>FLAME DRAGON HUB 2.1.2 | EvoWorld Hub</title>
-<meta name="description" content="FLAME DRAGON HUB 2.1.2 — all 10 EvoWorld worlds visually repaired and new skins added. Explore the hub and download the latest release.">
-<meta property="og:title" content="FLAME DRAGON HUB 2.1.2 | EvoWorld Hub">
-<meta property="og:description" content="All 10 worlds visually repaired — and new skins added. Explore FLAME DRAGON HUB 2.1.2.">
+<title>FLAME DRAGON HUB 2.1.3 | EvoWorld Hub</title>
+<meta name="description" content="FLAME DRAGON HUB 2.1.3 — seamless backgrounds fixed, the Sphinx and pyramids restored across all 10 worlds, and space color transitions improved.">
+<meta property="og:title" content="FLAME DRAGON HUB 2.1.3 | EvoWorld Hub">
+<meta property="og:description" content="Seamless backgrounds fixed, the Sphinx and pyramids restored, and space colors harmonized across all 10 worlds.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLAME DRAGON HUB">
 <meta property="og:url" content="https://flamedragonhub.pages.dev/">
@@ -611,7 +611,7 @@ a {
 }
 
 
-/* v2.1.2 announcement — luminous ice-blue edition */
+/* v2.1.3 announcement — luminous ice-blue edition */
 .update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:38px clamp(24px,4vw,42px) 32px;border:1px solid rgba(180,232,255,.9);border-radius:22px;background:linear-gradient(112deg,#071d35,#07517c 52%,#102d50);box-shadow:0 18px 48px #0008,0 0 46px rgba(80,190,255,.32),inset 0 1px 0 rgba(255,255,255,.24);overflow:hidden;min-height:190px;isolation:isolate}
 .update-announcement:before{content:"";position:absolute;inset:-75% auto auto -10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(190,240,255,.72),transparent 68%);filter:blur(28px);pointer-events:none}
 .update-announcement:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 28%,rgba(255,255,255,.42) 50%,transparent 72%);background-size:220% 100%;animation:fdhSilverSheen 5.5s ease-in-out infinite;mix-blend-mode:screen}
@@ -676,11 +676,11 @@ a {
 
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker" id="update-announcement-kicker">FLAME DRAGON HUB 2.1.2</span>
-    <h2 id="update-announcement-title">All 10 worlds fixed — and new skins added!</h2>
-    <p id="update-announcement-description">I fixed all 10 worlds, improved their visuals, and added new skins too,seamless still laged ill fix it in xms in nest update!!</p>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">FLAME DRAGON HUB 2.1.3</span>
+    <h2 id="update-announcement-title">Seamless backgrounds fixed — pyramids restored!</h2>
+    <p id="update-announcement-description">I fixed the seamless background joins, restored the Sphinx and both pyramids across all 10 worlds, and smoothed the space color transitions. New skins are included too!</p>
   </div>
-  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.2/Flame.Dragon.Hub2.1.2.zip" id="home-announcement-button">Download FLAME DRAGON HUB 2.1.2 ↓</a>
+  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.3/Flame.Dragon.Hub2.1.3.zip" id="home-announcement-button">Download FLAME DRAGON HUB 2.1.3 ↓</a>
 </section>
 
     <section class="orbit-section" aria-label="Quick navigation">
@@ -697,11 +697,11 @@ a {
           <div class="orbit-position">
             <a class="orbit-card"
                id="extensionDownloadButton"
-               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.2/Flame.Dragon.Hub2.1.2.zip"
+               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.3/Flame.Dragon.Hub2.1.3.zip"
                download>
               <span class="card-icon">⬇</span>
-              <strong id="home-card-update-title">FLAME DRAGON HUB 2.1.2</strong>
-              <small id="home-card-update-description">Version 2.1.2 · Direct ZIP download</small>
+              <strong id="home-card-update-title">FLAME DRAGON HUB 2.1.3</strong>
+              <small id="home-card-update-description">Version 2.1.3 · Direct ZIP download</small>
             </a>
           </div>
 
@@ -939,7 +939,7 @@ a {
     const state = event?.detail;
     const alreadyDownloaded =
       document.documentElement.getAttribute("data-fdh-v160-downloaded") === "true";
-    if (!alreadyDownloaded && !(state?.downloaded && state.version === "2.1.2")) return;
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "2.1.3")) return;
 
     if (announcement) {
       /* The card's author rule sets display:flex, which beats [hidden]'s
