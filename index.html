@@ -976,7 +976,7 @@ a {
 
 <script>
 (() => {
- const links=[...document.querySelectorAll('a[href="install-guide.html"],a[href="./install-guide.html"]')];
+ const links=[...document.querySelectorAll('.install-guide-button')];
  if(!links.length)return;
  const overlay=document.createElement("div");overlay.id="fdh-guide-transition";overlay.setAttribute("aria-hidden","true");
  overlay.innerHTML="<span>FLAME DRAGON · INSTALL GUIDE</span>";document.body.append(overlay);
