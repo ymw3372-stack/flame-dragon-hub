@@ -633,6 +633,16 @@ a {
 .evo-compat-warning .warning-icon{font-size:22px;line-height:1.2;flex:0 0 auto}
 .evo-compat-warning strong{display:block;margin:0 0 5px;color:#ffd27c;font-size:14px;letter-spacing:.2px}
 .evo-compat-warning p{margin:0;color:#eadbc5;font-size:13px;line-height:1.65}
+
+#fdh-guide-transition{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 48%,rgba(255,91,105,.25),transparent 34%),linear-gradient(135deg,#100b10,#24101b 55%,#100b10);transition:opacity .48s ease}
+#fdh-guide-transition:before,#fdh-guide-transition:after{content:"";position:absolute;width:min(58vw,520px);aspect-ratio:1;border:1px solid rgba(255,190,130,.28);border-radius:50%;box-shadow:0 0 0 22px rgba(255,110,100,.035),0 0 70px rgba(255,70,90,.16);animation:fdhGuideRing 1.4s ease-out both}
+#fdh-guide-transition:after{width:min(40vw,350px);animation-delay:.08s;border-color:rgba(255,215,155,.36)}
+#fdh-guide-transition span{position:relative;z-index:1;color:#fff2e9;font-weight:950;letter-spacing:.22em;font-size:clamp(15px,2.2vw,24px);text-shadow:0 0 28px rgba(255,160,120,.7);transform:translateY(14px);opacity:0}
+#fdh-guide-transition.is-active{opacity:1}#fdh-guide-transition.is-active span{animation:fdhGuideTitle .55s .12s ease-out forwards}
+@keyframes fdhGuideRing{from{transform:scale(.42) rotate(-28deg);opacity:0}to{transform:scale(1.12) rotate(0);opacity:1}}
+@keyframes fdhGuideTitle{to{transform:translateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){#fdh-guide-transition,#fdh-guide-transition:before,#fdh-guide-transition:after{transition:none;animation:none}#fdh-guide-transition span{opacity:1;transform:none;animation:none}}
+
 </style>
 <link rel="stylesheet" href="motion.css">
 </head>
@@ -743,7 +753,7 @@ a {
         <h2 id="install-guide-title">Need help installing the extension?</h2>
         <p id="home-guide-description">Follow our step-by-step Chrome setup guide — from downloading the ZIP to launching FLAME DRAGON HUB.</p>
       </div>
-      <a class="install-guide-button" href="install-guide.html">
+      <a class="install-guide-button" href="favorites.html">
         <span class="guide-button-icon" aria-hidden="true">➜</span>
         <span id="home-guide-button">VIEW INSTALLATION GUIDE</span>
       </a>
@@ -963,5 +973,20 @@ a {
 <script src="preferences.js"></script>
 <script src="cursor-glow.js"></script>
 <script src="site-motion.js" defer></script>
+
+<script>
+(() => {
+ const links=[...document.querySelectorAll('.install-guide-button,.fdh-guide')];
+ if(!links.length)return;
+ const overlay=document.createElement("div");overlay.id="fdh-guide-transition";overlay.setAttribute("aria-hidden","true");
+ overlay.innerHTML="<span>FLAME DRAGON · INSTALL GUIDE</span>";document.body.append(overlay);
+ const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ links.forEach(link=>link.addEventListener("click",event=>{
+  if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  event.preventDefault();overlay.classList.add("is-active");
+  window.setTimeout(()=>{window.location.href=link.href;},reduced?0:560);
+ }));
+})();
+</script>
 </body>
 </html>

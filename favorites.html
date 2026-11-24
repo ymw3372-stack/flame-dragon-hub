@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#100b10">
-<title>App &amp; Extension | FLAME DRAGON HUB</title>
+<title>Install Guide | FLAME DRAGON HUB</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="motion.css">
 <style>
@@ -298,6 +298,46 @@ body.tp-locked{overflow:hidden}
   .tp-slide{transition:opacity .2s linear}
   .tp-lightbox.is-open{animation:none}
 }
+
+.install-showcase{position:relative;isolation:isolate;margin:30px 0 52px;padding:clamp(22px,4vw,42px);border:1px solid rgba(255,130,110,.3);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 82% 16%,rgba(255,115,95,.14),transparent 35%),radial-gradient(ellipse at 12% 95%,rgba(127,77,255,.13),transparent 38%),linear-gradient(135deg,#241522,#100d17 62%,#17101d);box-shadow:0 28px 85px #0008,0 0 42px rgba(255,80,90,.08)}
+.install-showcase:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.045) 50%,transparent 80%);background-size:220% 100%;animation:installSweep 9s ease-in-out infinite}
+@keyframes installSweep{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.install-showcase-heading{text-align:center;max-width:760px;margin:0 auto 30px;animation:installTextReveal .85s cubic-bezier(.2,.8,.2,1) both}
+.install-eyebrow{display:inline-block;color:#ffb58f;font-size:10px;font-weight:950;letter-spacing:.25em}
+.install-showcase-heading h2{margin:11px 0 9px;color:#fff;font-size:clamp(27px,4vw,42px);letter-spacing:-.03em;text-shadow:0 0 30px rgba(255,125,100,.22)}
+.install-showcase-heading p{margin:0;color:#c4b5c5;font-size:14px;line-height:1.7}
+.install-showcase-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:20px;align-items:stretch}
+.install-steps-panel,.skin-showcase-panel{position:relative;min-width:0;border:1px solid rgba(255,255,255,.1);border-radius:21px;background:linear-gradient(150deg,rgba(37,27,42,.94),rgba(17,14,24,.96));box-shadow:0 15px 45px #0005;overflow:hidden}
+.install-steps-panel{padding:clamp(18px,2.6vw,28px);animation:installTextReveal .8s .12s both}
+.install-panel-kicker{color:#e8bd79;font-size:10px;font-weight:950;letter-spacing:.18em}
+.install-steps-panel h3{margin:9px 0 19px;color:#fff;font-size:clamp(19px,2.2vw,25px);line-height:1.25}
+.install-roadmap{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.install-roadmap li{display:flex;align-items:flex-start;gap:12px;padding:10px 11px;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(255,255,255,.025);animation:installTextReveal .65s both;animation-delay:calc(var(--step,0)*75ms)}
+.install-roadmap li:nth-child(1){--step:1}.install-roadmap li:nth-child(2){--step:2}.install-roadmap li:nth-child(3){--step:3}.install-roadmap li:nth-child(4){--step:4}.install-roadmap li:nth-child(5){--step:5}.install-roadmap li:nth-child(6){--step:6}
+.install-roadmap li>span{flex:0 0 34px;width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,163,125,.35);border-radius:10px;background:linear-gradient(145deg,rgba(255,105,95,.2),rgba(137,82,220,.16));color:#ffd0a6;font-size:11px;font-weight:950}
+.install-roadmap b{display:block;color:#fff;font-size:13px}.install-roadmap p{margin:4px 0 0;color:#bdb0c0;font-size:11px;line-height:1.55}.install-roadmap code{color:#ffd29c;font-size:10px}
+.install-full-guide{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding:14px 16px;border:1px solid rgba(255,150,120,.55);border-radius:12px;background:linear-gradient(110deg,#b8324c,#7130a0);color:#fff;text-decoration:none;font-size:10px;font-weight:950;letter-spacing:.08em;box-shadow:0 10px 25px rgba(179,48,90,.2);transition:transform .25s,filter .25s,box-shadow .25s}
+.install-full-guide:hover{transform:translateY(-3px);filter:brightness(1.12);box-shadow:0 15px 32px rgba(179,48,90,.32)}.install-full-guide span{font-size:18px}
+.skin-showcase-panel{padding:18px 18px 15px;display:flex;flex-direction:column;min-height:100%;background:radial-gradient(ellipse at 50% 45%,rgba(105,72,190,.17),transparent 52%),linear-gradient(155deg,#171725,#0d0e18)}
+.skin-showcase-top,.skin-showcase-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#a9a0bd;font-size:9px;font-weight:900;letter-spacing:.13em}.skin-showcase-top b{color:#f1c78a;font-variant-numeric:tabular-nums}
+.skin-orbit{position:relative;display:grid;place-items:center;min-height:330px;flex:1;isolation:isolate;perspective:900px}
+.skin-orbit:before,.skin-orbit:after{content:"";position:absolute;width:78%;height:72%;border:1px solid rgba(184,150,255,.12);border-radius:50%;transform:rotate(-17deg);pointer-events:none}.skin-orbit:after{width:58%;height:88%;transform:rotate(24deg);border-color:rgba(255,170,125,.1)}
+.skin-orbit-glow{position:absolute;width:48%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(172,111,255,.32),rgba(255,110,120,.1) 45%,transparent 72%);filter:blur(16px);animation:skinGlowPulse 3.8s ease-in-out infinite}
+@keyframes skinGlowPulse{50%{transform:scale(1.22);opacity:.7}}
+.skin-orbit-card{position:absolute;display:grid;place-items:center;width:35%;height:66%;border:1px solid rgba(255,255,255,.14);border-radius:22px;background:linear-gradient(145deg,rgba(48,41,68,.9),rgba(17,16,29,.95));box-shadow:0 18px 38px #0009;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s,filter .5s;overflow:hidden}.skin-orbit-card img{width:90%;height:90%;object-fit:contain;filter:drop-shadow(0 12px 17px rgba(0,0,0,.55))}
+.skin-orbit-card.main-skin{z-index:3;width:43%;height:76%;border-color:rgba(255,191,135,.55);box-shadow:0 20px 55px #000b,0 0 35px rgba(171,112,255,.22);animation:skinHeroFloat 3.6s ease-in-out infinite}
+@keyframes skinHeroFloat{50%{transform:translateY(-9px) rotateY(-3deg)}}
+.skin-orbit-card.side-left{z-index:2;left:3%;opacity:.62;transform:translateX(12%) rotateY(23deg) scale(.8);filter:blur(.5px)}.skin-orbit-card.side-right{z-index:2;right:3%;opacity:.62;transform:translateX(-12%) rotateY(-23deg) scale(.8);filter:blur(.5px)}
+.skin-orbit.is-changing .main-skin{opacity:0;transform:translateY(18px) scale(.88) rotateY(18deg)}.skin-orbit.is-changing .side-left{transform:translateX(-8%) rotateY(32deg) scale(.72);opacity:.2}.skin-orbit.is-changing .side-right{transform:translateX(8%) rotateY(-32deg) scale(.72);opacity:.2}
+.skin-scanline{position:absolute;inset:-50% 0;pointer-events:none;background:linear-gradient(transparent 42%,rgba(255,255,255,.13) 50%,transparent 58%);animation:skinScan 5s linear infinite}
+@keyframes skinScan{to{transform:translateY(100%)}}
+.skin-showcase-caption{text-align:center;margin:2px 0 14px}.skin-showcase-label{color:#b39adf;font-size:9px;font-weight:950;letter-spacing:.2em}.skin-showcase-caption h3{margin:5px 0;color:#fff;font-size:clamp(19px,2.5vw,27px);text-shadow:0 0 20px rgba(190,150,255,.3)}.skin-showcase-caption p{margin:0;color:#c7a982;font-size:9px;font-weight:850;letter-spacing:.14em}
+.skin-showcase-progress{height:3px;margin:0 0 13px;border-radius:9px;background:#ffffff14;overflow:hidden}.skin-showcase-progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#9e78ff,#ff9b79);transition:width .35s ease}.skin-showcase-foot{font-size:8px;letter-spacing:.1em}
+@keyframes installTextReveal{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+@media(max-width:900px){.install-showcase-grid{grid-template-columns:1fr}.skin-showcase-panel{min-height:500px}.skin-orbit{min-height:330px}}
+@media(max-width:560px){.install-showcase{padding:18px 13px;border-radius:21px}.install-roadmap li{padding:9px}.install-roadmap p{font-size:10px}.skin-showcase-panel{min-height:440px;padding:14px 10px}.skin-orbit{min-height:290px}.skin-orbit-card{border-radius:15px}.skin-showcase-foot{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.install-showcase:before,.skin-orbit-glow,.skin-orbit-card.main-skin,.skin-scanline{animation:none!important}.install-showcase-heading,.install-steps-panel,.install-roadmap li{animation:none!important;opacity:1;transform:none;filter:none}.skin-orbit-card,.skin-showcase-progress span{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -310,7 +350,7 @@ body.tp-locked{overflow:hidden}
     <a href="index.html">Home</a>
     <a href="evolutions.html">Evolutions</a>
     <a href="skins.html">Skins</a>
-    <a href="favorites.html" class="active" aria-current="page">App &amp; Extension</a>
+    <a href="favorites.html" class="active" aria-current="page">Install Guide</a>
     <a href="settings.html">Settings</a>
     <a href="contact.html">Contact</a>
     <a href="developer.html" class="developer-link" title="Owner access">✦ Developer</a>
@@ -320,23 +360,44 @@ body.tp-locked{overflow:hidden}
 <main class="tp-page">
   <section class="tp-hero">
     <span class="tp-kicker">FLAME DRAGON HUB · COLLECTION</span>
-    <h1>App <em>&amp;</em> Extension</h1>
-    <p>Fifteen animated world backgrounds, the PC cursor set, and an interactive preview of the FLAME DRAGON HUB Chrome extension. Flip through the extension screens below to see exactly how it looks.</p>
+    <h1><em>Install</em> Guide</h1>
+    <p>Explore all original worlds, browse every skin, and follow the visual setup guide for FLAME DRAGON HUB.</p>
     <div class="tp-chips">
-      <span class="tp-chip">🌍 <b id="chipPacks">15</b> BACKGROUNDS</span>
+      <span class="tp-chip">🌍 <b id="chipPacks">10</b> ORIGINAL WORLDS</span>
       <span class="tp-chip">🖱 <b id="chipCursors">10</b> PC CURSORS</span>
       <span class="tp-chip">🧩 <b>1</b> EXTENSION</span>
       <span class="tp-chip">✦ PREVIEW ONLY · NOTHING IS APPLIED</span>
     </div>
   </section>
 
-  <section class="tp-section" id="backgrounds">
+  <section class="install-showcase" id="install-guide" aria-labelledby="installShowcaseTitle">
+<div class="install-showcase-heading"><span class="install-eyebrow">FLAME DRAGON HUB · QUICK START</span><h2 id="installShowcaseTitle">Install it. Explore everything.</h2><p>Your setup, clearly explained on the left. The complete skin collection comes alive on the right.</p></div>
+<div class="install-showcase-grid">
+<div class="install-steps-panel"><div class="install-panel-kicker">YOUR INSTALLATION ROADMAP</div><h3>Up and running in a few simple steps</h3>
+<ol class="install-roadmap">
+<li><span>01</span><div><b>Download the extension</b><p>Get the latest FLAME DRAGON HUB ZIP package.</p></div></li>
+<li><span>02</span><div><b>Extract the ZIP</b><p>Right-click the download and choose “Extract All”.</p></div></li>
+<li><span>03</span><div><b>Open Chrome Extensions</b><p>Visit <code>chrome://extensions</code> in Chrome.</p></div></li>
+<li><span>04</span><div><b>Enable Developer mode</b><p>Switch on Developer mode in the top-right corner.</p></div></li>
+<li><span>05</span><div><b>Load unpacked</b><p>Select the extracted folder containing <code>manifest.json</code>.</p></div></li>
+<li><span>06</span><div><b>Pin and enjoy</b><p>Pin FLAME DRAGON HUB, then open EvoWorld.</p></div></li>
+</ol><a class="install-full-guide" href="install-guide.html">OPEN THE FULL STEP-BY-STEP GUIDE <span>↗</span></a></div>
+<div class="skin-showcase-panel" aria-label="Animated showcase of all skins">
+<div class="skin-showcase-top"><span>THE SKIN COLLECTION</span><b id="showcaseCounter">01 / 184+</b></div>
+<div class="skin-orbit" id="skinOrbit"><div class="skin-orbit-glow"></div>
+<div class="skin-orbit-card side-left"><img id="showcasePrev" src="assets/skins/grim-reaper/alien.png" alt=""></div>
+<div class="skin-orbit-card main-skin"><img id="showcaseMain" src="assets/skins/grim-reaper/archangel.webp" alt="Featured EvoWorld skin"><span class="skin-scanline"></span></div>
+<div class="skin-orbit-card side-right"><img id="showcaseNext" src="assets/skins/grim-reaper/assasin.png" alt=""></div><div class="skin-orbit-particles" aria-hidden="true"></div></div>
+<div class="skin-showcase-caption"><span class="skin-showcase-label">NOW SHOWCASING</span><h3 id="showcaseName">Archangel</h3><p id="showcaseFamily">GRIM REAPER COLLECTION</p></div>
+<div class="skin-showcase-progress"><span id="showcaseProgress"></span></div><div class="skin-showcase-foot"><span>✦ EVERY SKIN · AUTOMATIC SHOWCASE</span><span id="showcaseTotal">LOADING COLLECTION…</span></div>
+</div></div></section>
+<section class="tp-section" id="backgrounds">
     <div class="tp-section-head">
       <div>
         <h2>Backgrounds</h2>
-        <p>Ten original world themes and five holiday arena packs. Every tile is animated — open one to see it full size and flip to the next.</p>
+        <p>Ten original EvoWorld worlds. Every tile is animated — open one to see it full size and flip to the next.</p>
       </div>
-      <span class="tp-count" id="packCount">15 PACKS</span>
+      <span class="tp-count" id="packCount">10 PACKS</span>
     </div>
     <div class="tp-grid" id="packGrid"></div>
   </section>
@@ -388,8 +449,8 @@ body.tp-locked{overflow:hidden}
 
             <div class="tp-slide" data-slide="2">
               <div class="tp-popup">
-                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>Worlds &amp; holiday packs</p></div></div>
-                <div class="tp-ext-section"><h4>10 worlds · 5 holiday arenas</h4><div class="tp-ext-worlds" id="extWorldPreview"></div></div>
+                <div class="tp-ext-header"><img src="assets/extension-preview/icon128.png" alt=""><div><h3>FLAME DRAGON HUB</h3><p>Original world themes</p></div></div>
+                <div class="tp-ext-section"><h4>10 original worlds</h4><div class="tp-ext-worlds" id="extWorldPreview"></div></div>
               </div>
             </div>
 
@@ -429,7 +490,7 @@ body.tp-locked{overflow:hidden}
           <ul>
             <li>Skin library and collection tabs</li>
             <li>Original → replacement picker</li>
-            <li>Worlds and holiday packs</li>
+            <li>Original world themes</li>
             <li>PC cursor studio</li>
             <li>Active skin mappings</li>
           </ul>
@@ -463,6 +524,7 @@ body.tp-locked{overflow:hidden}
   </div>
 </div>
 
+<script src="skins-data.js"></script>
 <script>
 const PACKS = [
   {id:"magma",name:"MAGMA",desc:"Volcanic world: molten cracks, glowing lava and drifting embers.",image:"assets/texture-packs/magma.webp",assets:875},
@@ -474,12 +536,7 @@ const PACKS = [
   {id:"abyss",name:"DEEP ABYSS",desc:"Bioluminescent ocean depths: light shafts, jellies and glowing reefs.",image:"assets/texture-packs/abyss.webp",assets:875},
   {id:"autumn",name:"ENCHANTED AUTUMN",desc:"Amber forest: maple trees, falling leaves and warm misty light.",image:"assets/texture-packs/autumn.webp",assets:875},
   {id:"amethyst",name:"ROYAL AMETHYST",desc:"Crystal kingdom: violet gemstones, golden sparkles and prism light.",image:"assets/texture-packs/amethyst.webp",assets:875},
-  {id:"steampunk",name:"STEAMPUNK BRASS",desc:"Clockwork city: brass gears, copper haze, airships and sparks.",image:"assets/texture-packs/steampunk.webp",assets:875},
-  {id:"halloween",name:"Halloween Arena",desc:"Pumpkin orange, candlelight and cold fog.",image:"assets/texture-packs/halloween.webp",assets:10},
-  {id:"xmas",name:"Christmas Arena",desc:"Pine green, snow white and warm fairy lights.",image:"assets/texture-packs/xmas.webp",assets:10},
-  {id:"easter",name:"Easter Arena",desc:"Spring pastels, blossom and soft morning light.",image:"assets/texture-packs/easter.webp",assets:10},
-  {id:"lunar",name:"Lunar Arena",desc:"Lantern red, gold trim and a warm night glow.",image:"assets/texture-packs/lunar.webp",assets:10},
-  {id:"every-holiday",name:"Every Holiday Arena",desc:"Every seasonal palette folded into one festive arena.",image:"assets/texture-packs/every-holiday.webp",assets:10}
+  {id:"steampunk",name:"STEAMPUNK BRASS",desc:"Clockwork city: brass gears, copper haze, airships and sparks.",image:"assets/texture-packs/steampunk.webp",assets:875}
 ];
 
 const CURSORS = ["emerald","cherry","royal_gold","cosmic","alien","shadow","ocean","magma","toxic","ice"];
@@ -641,7 +698,7 @@ function renderExtensionParts(){
 const SLIDE_LABELS = [
   "Skin library and collection tabs",
   "Original to replacement picker",
-  "Worlds and holiday packs",
+  "Original world themes",
   "PC cursor studio",
   "Active skin mappings"
 ];
@@ -808,6 +865,22 @@ renderExtensionParts();
 initSlider();
 initLightbox();
 observeShells();
+</script>
+
+<script>
+(() => {
+ if(typeof skinsData==="undefined"||!skinsData)return;
+ const collection=Object.entries(skinsData).flatMap(([family,data])=>(Array.isArray(data.skins)?data.skins:[]).map(skin=>({family,familyTitle:data.title||family,file:skin.file,name:skin.name||skin.file})));
+ if(!collection.length)return;
+ const path=skin=>"assets/skins/"+skin.family+"/"+encodeURIComponent(skin.file);
+ const main=document.getElementById("showcaseMain"),prev=document.getElementById("showcasePrev"),next=document.getElementById("showcaseNext"),name=document.getElementById("showcaseName"),family=document.getElementById("showcaseFamily"),counter=document.getElementById("showcaseCounter"),progress=document.getElementById("showcaseProgress"),total=document.getElementById("showcaseTotal"),orbit=document.getElementById("skinOrbit");
+ let index=Math.min(1,collection.length-1),timer=0;
+ const paint=()=>{const current=collection[index],before=collection[(index-1+collection.length)%collection.length],after=collection[(index+1)%collection.length];orbit.classList.add("is-changing");window.setTimeout(()=>{main.src=path(current);main.alt=current.name;prev.src=path(before);prev.alt=before.name;next.src=path(after);next.alt=after.name;name.textContent=current.name;family.textContent=(current.familyTitle||current.family).toUpperCase()+" COLLECTION";counter.textContent=String(index+1).padStart(2,"0")+" / "+collection.length;progress.style.width=((index+1)/collection.length*100)+"%";total.textContent=collection.length+" SKINS IN THE LIBRARY";orbit.classList.remove("is-changing");},220)};
+ const advance=()=>{index=(index+1)%collection.length;paint()};
+ [main,prev,next].forEach(img=>img.addEventListener("error",()=>{img.style.visibility="hidden"}));
+ paint();const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!reduced)timer=window.setInterval(advance,2400);
+ document.addEventListener("visibilitychange",()=>{if(document.hidden&&timer){clearInterval(timer);timer=0}else if(!document.hidden&&!reduced&&!timer)timer=window.setInterval(advance,2400)});
+})();
 </script>
 <script src="script.js"></script>
 <script src="preferences.js"></script>
