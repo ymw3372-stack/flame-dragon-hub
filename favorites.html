@@ -375,6 +375,24 @@ html.install-scroll-ready .install-roadmap li.is-visible{opacity:1;transform:tra
  .install-roadmap li,.skin-orbit-card{transition:none!important}
 }
 
+
+/* Left Install Guide: polished step-card carousel. The right showcase stays untouched. */
+.install-roadmap{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:0;min-height:184px;margin-top:4px}
+.install-roadmap li{grid-area:1/1;align-self:stretch;min-height:184px;display:flex;align-items:center;padding:clamp(20px,2.5vw,30px);gap:18px;border:1px solid rgba(255,183,137,.22);border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 14px 32px rgba(0,0,0,.2);opacity:0;visibility:hidden;pointer-events:none;transform:translateX(26px) scale(.985);filter:blur(3px);transition:opacity .48s ease,transform .58s cubic-bezier(.2,.75,.25,1),filter .48s ease,visibility .48s}
+.install-roadmap li.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(0) scale(1);filter:blur(0);border-color:rgba(255,169,125,.42);background:linear-gradient(135deg,rgba(255,126,104,.12),rgba(133,91,202,.09) 58%,rgba(255,255,255,.035));}
+.install-roadmap li>span{flex-basis:54px;width:54px;height:54px;border-radius:15px;font-size:17px;box-shadow:0 8px 22px rgba(255,100,90,.12)}
+.install-roadmap b{font-size:clamp(18px,1.7vw,21px);line-height:1.35}
+.install-roadmap p{font-size:clamp(15px,1.25vw,16px);line-height:1.7}
+.install-carousel-controls{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:18px}
+.install-step-arrow{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(255,170,130,.3);border-radius:12px;background:rgba(255,255,255,.045);color:#ffe0c5;font-size:23px;line-height:1;cursor:pointer;transition:background .22s,border-color .22s,transform .22s}
+.install-step-arrow:hover{background:rgba(255,112,100,.15);border-color:rgba(255,170,130,.65);transform:translateY(-2px)}
+.install-step-indicators{display:flex;align-items:center;justify-content:center;gap:8px}
+.install-step-dot{width:8px;height:8px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.25);cursor:pointer;transition:width .3s ease,background .3s ease}
+.install-step-dot.is-active{width:26px;background:linear-gradient(90deg,#ff806c,#d69aff)}
+.install-step-status{margin-top:11px;text-align:center;color:#bba9c6;font-size:10px;font-weight:900;letter-spacing:.18em;font-variant-numeric:tabular-nums}
+.install-roadmap code{font-size:13px}
+@media(max-width:560px){.install-roadmap,.install-roadmap li{min-height:190px}.install-roadmap li{padding:18px 14px;gap:12px}.install-roadmap li>span{flex-basis:46px;width:46px;height:46px;font-size:15px}.install-roadmap b{font-size:17px}.install-roadmap p{font-size:14px}.install-carousel-controls{gap:11px}}
+@media(prefers-reduced-motion:reduce){.install-roadmap li,.install-step-arrow,.install-step-dot{transition:none!important}.install-roadmap li{filter:none!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -411,14 +429,20 @@ html.install-scroll-ready .install-roadmap li.is-visible{opacity:1;transform:tra
 <div class="install-showcase-heading"><span class="install-eyebrow">FLAME DRAGON HUB · QUICK START</span><h2 id="installShowcaseTitle">Install it. Explore everything.</h2><p>Your setup, clearly explained on the left. The complete skin collection comes alive on the right.</p></div>
 <div class="install-showcase-grid">
 <div class="install-steps-panel"><div class="install-panel-kicker">YOUR INSTALLATION ROADMAP</div><h3>Up and running in a few simple steps</h3>
-<ol class="install-roadmap">
-<li><span>01</span><div><b>Download the extension</b><p>Get the latest FLAME DRAGON HUB ZIP package.</p></div></li>
-<li><span>02</span><div><b>Extract the ZIP</b><p>Right-click the download and choose “Extract All”.</p></div></li>
-<li><span>03</span><div><b>Open Chrome Extensions</b><p>Visit <code>chrome://extensions</code> in Chrome.</p></div></li>
-<li><span>04</span><div><b>Enable Developer mode</b><p>Switch on Developer mode in the top-right corner.</p></div></li>
-<li><span>05</span><div><b>Load unpacked</b><p>Select the extracted folder containing <code>manifest.json</code>.</p></div></li>
-<li><span>06</span><div><b>Pin and enjoy</b><p>Pin FLAME DRAGON HUB, then open EvoWorld.</p></div></li>
-</ol><a class="install-full-guide" href="install-guide.html">OPEN THE FULL STEP-BY-STEP GUIDE <span>↗</span></a></div>
+<ol class="install-roadmap" id="installRoadmap" aria-label="Installation steps">
+<li class="is-active" data-step="0" aria-hidden="false"><span>01</span><div><b>Download the extension</b><p>Get the latest FLAME DRAGON HUB ZIP package.</p></div></li>
+<li data-step="1" aria-hidden="true"><span>02</span><div><b>Extract the ZIP</b><p>Right-click the download and choose “Extract All”.</p></div></li>
+<li data-step="2" aria-hidden="true"><span>03</span><div><b>Open Chrome Extensions</b><p>Visit <code>chrome://extensions</code> in Chrome.</p></div></li>
+<li data-step="3" aria-hidden="true"><span>04</span><div><b>Enable Developer mode</b><p>Switch on Developer mode in the top-right corner.</p></div></li>
+<li data-step="4" aria-hidden="true"><span>05</span><div><b>Load unpacked</b><p>Select the extracted folder containing <code>manifest.json</code>.</p></div></li>
+<li data-step="5" aria-hidden="true"><span>06</span><div><b>Pin and enjoy</b><p>Pin FLAME DRAGON HUB, then open EvoWorld.</p></div></li>
+</ol>
+<div class="install-carousel-controls" id="installCarouselControls" aria-label="Step navigation">
+<button type="button" class="install-step-arrow" id="installStepPrev" aria-label="Previous step">‹</button>
+<div class="install-step-indicators" id="installStepIndicators" role="group" aria-label="Choose installation step"></div>
+<button type="button" class="install-step-arrow" id="installStepNext" aria-label="Next step">›</button>
+</div>
+<div class="install-step-status" id="installStepStatus" aria-live="polite">STEP 01 OF 06</div><a class="install-full-guide" href="install-guide.html">OPEN THE FULL STEP-BY-STEP GUIDE <span>↗</span></a></div>
 <div class="skin-showcase-panel" aria-label="Animated showcase of all skins">
 <div class="skin-showcase-top"><span>THE SKIN COLLECTION</span><b id="showcaseCounter">01 / 184+</b></div>
 <div class="skin-orbit" id="skinOrbit"><div class="skin-orbit-glow"></div>
@@ -914,20 +938,50 @@ observeShells();
  let index=Math.min(1,collection.length-1),timer=0;
  const paint=()=>{const current=collection[index],before=collection[(index-1+collection.length)%collection.length],after=collection[(index+1)%collection.length];orbit.classList.add("is-changing");window.setTimeout(()=>{main.src=path(current);main.alt=current.name;prev.src=path(before);prev.alt=before.name;next.src=path(after);next.alt=after.name;name.textContent=current.name;family.textContent=(current.familyTitle||current.family).toUpperCase()+" COLLECTION";counter.textContent=String(index+1).padStart(2,"0")+" / "+collection.length;progress.style.width=((index+1)/collection.length*100)+"%";total.textContent=collection.length+" SKINS IN THE LIBRARY";orbit.classList.remove("is-changing");},220)};
  const advance=()=>{index=(index+1)%collection.length;paint()};
- // Reveal each installation step only as it enters the reader's viewport.
- const steps=[...document.querySelectorAll(".install-roadmap li")];
+ // Left-column installation cards: one clear step at a time, with calm transitions.
+ const roadmap=document.getElementById("installRoadmap");
+ const steps=roadmap?[...roadmap.querySelectorAll("li")]:[];
+ const prevStep=document.getElementById("installStepPrev");
+ const nextStep=document.getElementById("installStepNext");
+ const indicators=document.getElementById("installStepIndicators");
+ const stepStatus=document.getElementById("installStepStatus");
  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- if(steps.length&&!reducedMotion&&"IntersectionObserver" in window){
-   document.documentElement.classList.add("install-scroll-ready");
-   const stepObserver=new IntersectionObserver(entries=>{
-     entries.forEach(entry=>{
-       if(entry.isIntersecting){
-         entry.target.classList.add("is-visible");
-         stepObserver.unobserve(entry.target);
-       }
-     });
-   },{threshold:.18,rootMargin:"0px 0px -7% 0px"});
-   steps.forEach(step=>stepObserver.observe(step));
+ let activeStep=0, stepTimer=0, stepPaused=false;
+ const paintStep=(next)=>{
+   if(!steps.length)return;
+   activeStep=(next+steps.length)%steps.length;
+   steps.forEach((step,i)=>{
+     step.classList.toggle("is-active",i===activeStep);
+     step.setAttribute("aria-hidden",String(i!==activeStep));
+   });
+   [...indicators.children].forEach((dot,i)=>{
+     dot.classList.toggle("is-active",i===activeStep);
+     dot.setAttribute("aria-current",i===activeStep?"step":"false");
+   });
+   stepStatus.textContent="STEP "+String(activeStep+1).padStart(2,"0")+" OF "+String(steps.length).padStart(2,"0");
+ };
+ const stopStepTimer=()=>{if(stepTimer){clearInterval(stepTimer);stepTimer=0}};
+ const startStepTimer=()=>{
+   stopStepTimer();
+   if(!reducedMotion&&!stepPaused&&!document.hidden)stepTimer=window.setInterval(()=>paintStep(activeStep+1),6200);
+ };
+ if(steps.length&&indicators){
+   steps.forEach((_,i)=>{
+     const dot=document.createElement("button");
+     dot.type="button";dot.className="install-step-dot";
+     dot.setAttribute("aria-label","Show installation step "+(i+1));
+     dot.addEventListener("click",()=>{paintStep(i);startStepTimer()});
+     indicators.append(dot);
+   });
+   prevStep.addEventListener("click",()=>{paintStep(activeStep-1);startStepTimer()});
+   nextStep.addEventListener("click",()=>{paintStep(activeStep+1);startStepTimer()});
+   const panel=document.querySelector(".install-steps-panel");
+   panel.addEventListener("pointerenter",()=>{stepPaused=true;stopStepTimer()});
+   panel.addEventListener("pointerleave",()=>{stepPaused=false;startStepTimer()});
+   panel.addEventListener("focusin",()=>{stepPaused=true;stopStepTimer()});
+   panel.addEventListener("focusout",event=>{if(!panel.contains(event.relatedTarget)){stepPaused=false;startStepTimer()}});
+   document.addEventListener("visibilitychange",startStepTimer);
+   paintStep(0);startStepTimer();
  }
  [main,prev,next].forEach(img=>img.addEventListener("error",()=>{img.style.visibility="hidden"}));
  paint();const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!reduced)timer=window.setInterval(advance,2400);
