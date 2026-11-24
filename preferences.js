@@ -71,7 +71,7 @@ const box=document.createElement("section");box.id="fdh-quick-tools";box.setAttr
 const hero=document.querySelector("main .hero");if(hero)hero.insertAdjacentElement("afterend",box);else document.querySelector("main").prepend(box);
 }
 function apply(){const code=current(),t=L[code],home=HOME[code]||HOME.en;document.documentElement.lang=code;document.documentElement.dir=t.dir;
-document.querySelectorAll(".nav-links a").forEach(a=>{const href=a.getAttribute("href");const i=["index.html","evolutions.html","skins.html","favorites.html","settings.html","contact.html","developer.html"].indexOf(href);if(i>=0)a.textContent=home.nav[i]});
+document.querySelectorAll(".nav-links a").forEach(a=>{const href=a.getAttribute("href");const i=["index.html","evolutions.html","skins.html","favorites.html","settings.html","contact.html","developer.html"].indexOf(href);if(i>=0)a.textContent=(i===3?({en:"Install Guide",ar:"دليل التثبيت",de:"Installationsanleitung",ru:"Руководство по установке",hi:"इंस्टॉल गाइड",es:"Guía de instalación",tr:"Kurulum Rehberi"}[lang]||"Install Guide"):home.nav[i])});
 const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
 const setHTML=(id,value)=>{const el=document.getElementById(id);if(el)el.innerHTML='<strong>FLAME DRAGON HUB</strong> '+value};
 const guide=document.querySelector('[data-fdh="guide"]');if(guide)guide.textContent=t.guide;
