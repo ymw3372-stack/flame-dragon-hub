@@ -10,9 +10,9 @@
 <link rel="icon" type="image/png" sizes="any" href="/assets/logo.png">
 
 <meta name="theme-color" content="#100b10">
-<title>FLAME DRAGON HUB 2.1.5 | EvoWorld Hub</title>
-<meta name="description" content="FLAME DRAGON HUB 2.1.5 — new background designs and houses across the EvoWorld experience.">
-<meta property="og:title" content="FLAME DRAGON HUB 2.1.5 | EvoWorld Hub">
+<title>FLAME DRAGON HUB 3.0.0 | EvoWorld Hub</title>
+<meta name="description" content="FLAME DRAGON HUB 3.0.0 — new background designs and houses across the EvoWorld experience.">
+<meta property="og:title" content="FLAME DRAGON HUB 3.0.0 | EvoWorld Hub">
 <meta property="og:description" content="New background designs and houses are now available in FLAME DRAGON HUB.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLAME DRAGON HUB">
@@ -614,7 +614,7 @@ a {
 }
 
 
-/* v2.1.5 announcement — reddish bronze / copper edition */
+/* v3.0.0 announcement — reddish bronze / copper edition */
 .update-announcement{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;width:min(980px,100%);margin:18px auto 42px;padding:38px clamp(24px,4vw,42px) 32px;border:1px solid rgba(231,143,111,.9);border-radius:22px;background:linear-gradient(112deg,#210d10,#71342d 52%,#351719);box-shadow:0 18px 48px #0008,0 0 46px rgba(214,91,72,.28),inset 0 1px 0 rgba(255,224,210,.26);overflow:hidden;min-height:190px;isolation:isolate}
 .update-announcement:before{content:"";position:absolute;inset:-75% auto auto -10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,194,166,.72),transparent 68%);filter:blur(28px);pointer-events:none}
 .update-announcement:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 28%,rgba(255,220,205,.48) 50%,transparent 72%);background-size:220% 100%;animation:fdhSilverSheen 5.5s ease-in-out infinite;mix-blend-mode:screen}
@@ -672,7 +672,7 @@ a {
       <div class="eyebrow" id="home-eyebrow">Your EvoWorld companion</div>
 
       <h1 class="main-title">
-        FLAME <span>DRAGON</span> <small class="home-version">2.1.5</small>
+        FLAME <span>DRAGON</span> <small class="home-version">3.0.0</small>
       </h1>
 
       <p class="subtitle" id="home-subtitle">
@@ -689,11 +689,11 @@ a {
 
 <section class="update-announcement" aria-labelledby="update-announcement-title">
   <div class="update-announcement-copy">
-    <span class="update-announcement-kicker" id="update-announcement-kicker">✨ FIX REAPER & LAST · v2.1.5</span>
-    <h2 id="update-announcement-title">Reapers fixed and looking better than ever!</h2>
-    <p id="update-announcement-description">The Reaper fixes are here — enjoy the improved Reaper appearance!</p>
+    <span class="update-announcement-kicker" id="update-announcement-kicker">✨ FINAL RELEASE · v3.0.0</span>
+    <h2 id="update-announcement-title">FLAME DRAGON HUB 3.0.0 — the final release is here!</h2>
+    <p id="update-announcement-description">The final version is ready. Animations have been fixed and refined for a smoother experience.</p>
   </div>
-  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.10new/FLAME_DRAGON_HUB_v2.1.5_reaperfix.zip" id="home-announcement-button">⬇ DOWNLOAD v2.1.5</a>
+  <a class="update-announcement-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/3.0.0/FLAME_DRAGON_HUB_v3.0.0.zip" id="home-announcement-button">⬇ DOWNLOAD v3.0.0</a>
 </section>
 
     <section class="orbit-section" aria-label="Quick navigation">
@@ -710,11 +710,11 @@ a {
           <div class="orbit-position">
             <a class="orbit-card"
                id="extensionDownloadButton"
-               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.10new/FLAME_DRAGON_HUB_v2.1.5_reaperfix.zip"
+               href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/3.0.0/FLAME_DRAGON_HUB_v3.0.0.zip"
                download>
               <span class="card-icon">⬇</span>
-              <strong id="home-card-update-title">FLAME DRAGON HUB 2.1.5</strong>
-              <small id="home-card-update-description">Version 2.1.5 · Direct ZIP download</small>
+              <strong id="home-card-update-title">FLAME DRAGON HUB 3.0.0</strong>
+              <small id="home-card-update-description">Version 3.0.0 · Direct ZIP download</small>
             </a>
           </div>
 
@@ -952,7 +952,7 @@ a {
     const state = event?.detail;
     const alreadyDownloaded =
       document.documentElement.getAttribute("data-fdh-v160-downloaded") === "true";
-    if (!alreadyDownloaded && !(state?.downloaded && state.version === "2.1.5")) return;
+    if (!alreadyDownloaded && !(state?.downloaded && state.version === "1.7.0")) return;
 
     if (announcement) {
       /* The card's author rule sets display:flex, which beats [hidden]'s
