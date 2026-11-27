@@ -1,7 +1,7 @@
 {
-  "name": "FLAME DRAGON HUB 2.1.5",
-  "short_name": "FLAME DRAGON 2.1.5",
-  "description": "FLAME DRAGON HUB 2.1.5 — smoother seamless worlds, restored pyramids and new skins.",
+  "name": "FLAME DRAGON HUB 3.0.0",
+  "short_name": "FLAME DRAGON 3.0.0",
+  "description": "FLAME DRAGON HUB 3.0.0 — final release with fixed and refined animations.",
   "id": "/",
   "start_url": "/index.html",
   "scope": "/",

@@ -316,8 +316,49 @@
     document.body.prepend(layer);
   }
 
+
+  function addReleaseAnnouncement(){
+    if(currentFile==="index" || document.querySelector(".fdh-release-announcement"))return;
+    const language=(localStorage.getItem("flameDragonLanguage")||"en").toLowerCase();
+    const copy={
+      en:{tag:"✦ FINAL RELEASE · 3.0.0",title:"FLAME DRAGON HUB 3.0.0 is here",body:"The final release is ready. Animations have been fixed and refined for a smoother experience.",button:"DOWNLOAD VERSION 3.0.0"},
+      ar:{tag:"✦ الإصدار النهائي · 3.0.0",title:"وصل الإصدار النهائي FLAME DRAGON HUB 3.0.0",body:"النسخة النهائية جاهزة. تم إصلاح الأنيميشن وتحسينه لتجربة أكثر سلاسة.",button:"تحميل الإصدار 3.0.0"},
+      de:{tag:"✦ FINALE VERSION · 3.0.0",title:"FLAME DRAGON HUB 3.0.0 ist da",body:"Die finale Version ist bereit. Animationen wurden repariert und für ein flüssigeres Erlebnis verbessert.",button:"VERSION 3.0.0 HERUNTERLADEN"},
+      ru:{tag:"✦ ФИНАЛЬНЫЙ РЕЛИЗ · 3.0.0",title:"FLAME DRAGON HUB 3.0.0 уже здесь",body:"Финальная версия готова. Анимации исправлены и улучшены для более плавной работы.",button:"СКАЧАТЬ ВЕРСИЮ 3.0.0"},
+      hi:{tag:"✦ अंतिम रिलीज़ · 3.0.0",title:"FLAME DRAGON HUB 3.0.0 आ गया है",body:"अंतिम संस्करण तैयार है। बेहतर अनुभव के लिए एनिमेशन ठीक और बेहतर किए गए हैं।",button:"संस्करण 3.0.0 डाउनलोड करें"},
+      es:{tag:"✦ VERSIÓN FINAL · 3.0.0",title:"Ya está aquí FLAME DRAGON HUB 3.0.0",body:"La versión final está lista. Se corrigieron y mejoraron las animaciones para una experiencia más fluida.",button:"DESCARGAR VERSIÓN 3.0.0"},
+      tr:{tag:"✦ SON SÜRÜM · 3.0.0",title:"FLAME DRAGON HUB 3.0.0 yayında",body:"Nihai sürüm hazır. Daha akıcı bir deneyim için animasyonlar düzeltildi ve geliştirildi.",button:"3.0.0 SÜRÜMÜNÜ İNDİR"}
+    };
+    const t=copy[language]||copy.en;
+    const banner=document.createElement("aside");
+    banner.className="fdh-release-announcement";
+    banner.setAttribute("aria-label","FLAME DRAGON HUB 3.0.0 release announcement");
+    const style=document.createElement("style");
+    style.textContent=`
+      .fdh-release-announcement{position:relative;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:22px;width:min(1120px,calc(100% - 36px));margin:18px auto 26px;padding:20px 24px;border:1px solid rgba(226,145,111,.72);border-radius:18px;background:linear-gradient(112deg,rgba(39,15,17,.97),rgba(105,48,39,.96) 52%,rgba(43,19,23,.97));box-shadow:0 14px 36px rgba(0,0,0,.32),0 0 28px rgba(205,91,67,.15),inset 0 1px rgba(255,222,204,.18);overflow:hidden}
+      .fdh-release-announcement:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 25%,rgba(255,218,196,.13) 50%,transparent 75%);background-size:220% 100%;animation:fdhReleaseShine 8s ease-in-out infinite}
+      .fdh-release-copy{position:relative;z-index:1;min-width:0}.fdh-release-tag{display:inline-block;margin-bottom:7px;padding:5px 10px;border:1px solid rgba(255,205,177,.46);border-radius:99px;background:rgba(180,87,59,.24);color:#ffe0ce;font-size:10px;font-weight:900;letter-spacing:1.2px}
+      .fdh-release-announcement h2{margin:0 0 5px;color:#fff5ef;font-size:clamp(19px,2.5vw,26px);line-height:1.25}.fdh-release-announcement p{margin:0;color:#f5d9ce;font-size:14px;line-height:1.65}
+      .fdh-release-button{position:relative;z-index:1;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 17px;border:1px solid #f3c5ad;border-radius:11px;background:linear-gradient(110deg,#f4d5c4,#d98d6d 55%,#edc0a8);color:#381718;text-decoration:none;font-size:11px;font-weight:950;letter-spacing:.35px;box-shadow:0 7px 20px rgba(0,0,0,.25);transition:transform .2s,filter .2s}
+      .fdh-release-button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+      @keyframes fdhReleaseShine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+      @media(max-width:680px){.fdh-release-announcement{align-items:stretch;flex-direction:column;width:calc(100% - 24px);margin:12px auto 20px;padding:18px;gap:14px}.fdh-release-announcement h2{font-size:20px}.fdh-release-announcement p{font-size:13px}.fdh-release-button{width:100%;min-height:48px}}
+      @media(prefers-reduced-motion:reduce){.fdh-release-announcement:after{animation:none}}
+    `;
+    banner.innerHTML='<div class="fdh-release-copy"><span class="fdh-release-tag"></span><h2></h2><p></p></div><a class="fdh-release-button" href="https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/3.0.0/FLAME_DRAGON_HUB_v3.0.0.zip" rel="noopener"></a>';
+    banner.querySelector(".fdh-release-tag").textContent=t.tag;
+    banner.querySelector("h2").textContent=t.title;
+    banner.querySelector("p").textContent=t.body;
+    banner.querySelector("a").textContent="⬇ "+t.button;
+    document.head.appendChild(style);
+    const anchor=document.querySelector("header.navbar, .guide-nav, body > nav, main > nav, .topbar");
+    if(anchor)anchor.insertAdjacentElement("afterend",banner);
+    else document.body.prepend(banner);
+  }
+
   function init(){
     addScrollProgress();
+    addReleaseAnnouncement();
     addSunlightLayer();
     addSlowHeadingMotion();
     addImageDraw();
