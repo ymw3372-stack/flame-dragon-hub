@@ -1,6 +1,6 @@
 {
-  "latestVersion": "2.1.5",
-  "minimumVersion": "2.1.5",
-  "downloadUrl": "https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/2.1.10new/FLAME_DRAGON_HUB_v2.1.5_reaperfix.zip",
-  "message": "FLAME DRAGON HUB 2.1.5 REAPER FIX is available. Reaper appearance fixes are included. Download the ZIP, extract it, and load the extracted folder in Chrome."
+  "latestVersion": "1.7.0",
+  "minimumVersion": "1.7.0",
+  "downloadUrl": "https://github.com/ymw3372-stack/flame-dragon-hub/releases/download/3.0.0/FLAME_DRAGON_HUB_v3.0.0.zip",
+  "message": "FLAME DRAGON HUB final release 3.0.0 is available. The package contains extension version 1.7.0, with animation fixes and refinements. Download the ZIP, extract it, and load the extracted folder in Chrome."
 }
